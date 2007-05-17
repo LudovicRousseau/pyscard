@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<SCRIPT>
+function exec (command) {
+  if (document.layers && navigator.javaEnabled()) {
+    window._command = command;
+    window.oldOnError = window.onerror;
+    window.onerror = function (err) {
+      if (err.indexOf ("User didn't grant") != -1) {
+        alert('Execution of ' + window._command +
+              ' not allowed by current browser settings.');
+        return true;
+      }
+      else return false;
+    }
+    netscape.security.PrivilegeManager.enablePrivilege
+('UniversalExecAccess');
+    java.lang.Runtime.getRuntime().exec(command);
+    window.onerror = window.oldOnError;
+  }
+  else if (document.all) {
+    window.oldOnError = window.onerror;
+    window._command = command;
+    window.onerror = function (err) {
+      if (err.indexOf('utomation') != -1) {
+        alert('Execution of ' + window._command +
+              ' not allowed by current browser settings.');
+        return true;
+      }
+      else return false;
+    };
+    var wsh = new ActiveXObject('WScript.Shell');
+    if (wsh)
+      wsh.Run(command);
+    window.onerror = window.oldOnError;
+  }
+}
+</SCRIPT>
+
+<head>
+<title>smartcard python framework samples</title>
+</head>
+<body bgcolor="#ffffff">
+<H1>pyscard library samples</h1>
+
+Last update : pyscard 1.6.0 (May 2007) 
+<p> <a href="pyscard-usersguide.html">pyscard</a> is a python module 
+  adding smart cards support to <a href="http://www.python.org">python</a>. 
+<p>It consists of <a href="html/smartcard.scard.scard-module.html">smartcard.scard</a>, 
+  an extension module wrapping Windows smart card base components (also known 
+  as PCSC), and <a href="smartcard.html">smartcard</a>, a python framework library 
+  hiding PCSC complexity. 
+<p align="center"><img src="images/pyscard.jpg" width="492" height="449" align="middle">
+<h2>&nbsp;</h2>
+<H2>Smartcard python framework samples</H2>
+<table border>
+  <tr> 
+    <td width="300">Display the ATR of inserted cards</td>
+    <td width="103"><a href="../Examples/simple/getATR.py" >view source</a></td>
+  </tr>
+  <tr> 
+    <td width="300">Selecting the DF_TELECOM of a card</td>
+    <td width="103"><a href="../Examples/simple/selectDF_TELECOM.py" >view source</a></td>
+  </tr>
+  <tr> 
+    <td width="300">A simple apdu tracer and interpreter</td>
+    <td width="103"><a href="../Examples/framework/sample_apduTracerInterpreter.py" >view 
+      source</a></td>
+  </tr>
+  <tr> 
+    <td width="300">Tracing connection events</td>
+    <td width="103"><a href="../Examples/framework/sample_ConsoleConnectionTracer.py" >view 
+      source</a></td>
+  </tr>
+  <tr> 
+    <td width="300">Detecting response apdu errors</td>
+    <td width="103"><a href="../Examples/framework/sample_ErrorChecking.py" >view 
+      source</a></td>
+  </tr>
+  <tr> 
+    <td width="300">Implementing a custom ErrorChecker</td>
+    <td width="103"><a href="../Examples/framework/sample_CustomErrorChecker.py" >view 
+      source</a></td>
+  </tr>
+  <tr> 
+    <td width="300">Implementing a custom card type</td>
+    <td width="103"><a href="../Examples/framework/sample_CustomCardType.py" >view 
+      source</a></td>
+  </tr>
+  <tr> 
+    <td width="300">Monitoring smartcard readers</td>
+    <td width="103"><a href="../Examples/framework/sample_MonitorReaders.py" >view 
+      source</a></td>
+  </tr>
+  <tr> 
+    <td width="300">Monitoring smartcard insertion/removal</td>
+    <td width="103"><a href="../Examples/framework/sample_MonitorCards.py" >view 
+      source</a></td>
+  </tr>
+  <tr> 
+    <td width="300">APDU/ATR byte to string utilities</td>
+    <td width="103"><a href="../Examples/framework/sample_toHexString.py" >view 
+      source</a></td>
+  </tr>
+</table>
+
+<hr>
+<p>This file is part of pyscard.</p>
+<p>pyscard is free software; you can redistribute it and/or modify it under 
+  the terms of the GNU Lesser General Public License as published by the Free 
+  Software Foundation; either version 2.1 of the License, or (at your option) 
+  any later version.</p>
+<p>pyscard is distributed in the hope that it will be useful, but WITHOUT 
+  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
+  FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more 
+  details.</p>
+<p>You should have received a copy of the GNU Lesser General Public License along 
+  with pyscard; if not, write to the Free Software Foundation, Inc., 51 Franklin 
+  St, Fifth Floor, Boston, MA 02110-1301 USA</p>
+</body>
+</html>
+
+
+
+
+
+

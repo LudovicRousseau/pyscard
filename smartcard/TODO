@@ -1,0 +1,11 @@
+- documentation and implementation of card services
+
+- documentation of CardConnectionDecorator; add a meaningful example (OP secure channel?)
+
+- more error checking chains
+
+- more unit tests
+
+- support of Mac OS X
+
+May 2007

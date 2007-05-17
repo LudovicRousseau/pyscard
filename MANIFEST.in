@@ -1,0 +1,29 @@
+include LICENSE
+include MANIFEST.in
+include README
+include smartcard/ACKS
+include smartcard/ChangeLog
+include smartcard/LICENSE
+include smartcard/README
+include smartcard/TODO
+include smartcard/scard/gemalto.ver
+include smartcard/scard/helpers.c
+include smartcard/scard/helpers.h
+include smartcard/scard/memlog.h
+include smartcard/scard/PcscDefs.i
+include smartcard/scard/PcscTypemaps.i
+include smartcard/scard/scard.def
+include smartcard/scard/scard.i
+include smartcard/scard/scard.rc
+include smartcard/scard/winscarddll.c
+include smartcard/scard/winscarddll.h
+recursive-include smartcard/wx *.ico
+recursive-include smartcard/Examples *.txt *.py *.ico
+include smartcard/test/configcheck.py
+recursive-include smartcard/test/framework *.txt *.py
+recursive-include smartcard/test/frameworkpcsc *.txt *.py
+recursive-include smartcard/test/scard *.txt *.py
+recursive-include smartcard/doc *.html *.jpg *.css *.js *.png *.txt
+
+
+

@@ -1,0 +1,5 @@
+LIBRARY      "_scard.pyd"
+DESCRIPTION  'Python PCSC scard module Dynamic Link Library'
+
+EXPORTS
+        init_scard
