@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<SCRIPT>
+function exec (command) {
+  if (document.layers && navigator.javaEnabled()) {
+    window._command = command;
+    window.oldOnError = window.onerror;
+    window.onerror = function (err) {
+      if (err.indexOf ("User didn't grant") != -1) {
+        alert('Execution of ' + window._command +
+              ' not allowed by current browser settings.');
+        return true;
+      }
+      else return false;
+    }
+    netscape.security.PrivilegeManager.enablePrivilege
+('UniversalExecAccess');
+    java.lang.Runtime.getRuntime().exec(command);
+    window.onerror = window.oldOnError;
+  }
+  else if (document.all) {
+    window.oldOnError = window.onerror;
+    window._command = command;
+    window.onerror = function (err) {
+      if (err.indexOf('utomation') != -1) {
+        alert('Execution of ' + window._command +
+              ' not allowed by current browser settings.');
+        return true;
+      }
+      else return false;
+    };
+    var wsh = new ActiveXObject('WScript.Shell');
+    if (wsh)
+      wsh.Run(command);
+    window.onerror = window.oldOnError;
+  }
+}
+</SCRIPT>
+
+<head>
+<title>scard samples</title>
+</head>
+<body bgcolor="#ffffff">
+<H1>smartcard.scard PCSC wrapper samples</h1>
+
+Last update : pyscard 1.6.0 (May 2007) 
+<p>Using the <a href="html/index.html">smartcard framework</a> is the preferred 
+  way to write python smart card application. You can however use the <a href="html/smartcard.scard.scard-module.html">smartcard.scard</a> 
+  library to write your python smart card application if you want to write your 
+  own python framework, or if you want to access some features of the SCardXXX 
+  C API not available in the smartcard framework. 
+<p>The of <a href="html/smartcard.scard.scard-module.html">smartcard.scard</a> 
+  module is a native extension module wrapping Windows smart card base components 
+  (also known as PCSC), whereas the <a href="html/index.html">smartcard framework</a> 
+  is a pure python framework hiding scard complexity and PCSC. 
+<p align="center"><img src="images/pyscard.jpg" width="492" height="449" align="middle">
+<h2>smartcard.scard samples</h2>
+<table border>
+  <tr> 
+    <td>get the ATR of a card</td>
+    <td><a href="../Examples/scard-api/sample_getATR.py" >view source</a></td>
+  </tr>
+  <tr> 
+    <td>get the attributes of a card</td>
+    <td><a href="../Examples/scard-api/sample_getAttrib.py">view source</a></td>
+  </tr>
+  <tr> 
+    <td>wait for card insertion/removal</td>
+    <td><a href="../Examples/scard-api/sample_getStatusChange.py">view source</a></td>
+  </tr>
+  <tr> 
+    <td>list the cards introduced in the system</td>
+    <td><a href="../Examples/scard-api/sample_listCards.py">view source</a></td>
+  </tr>
+  <tr> 
+    <td>locate cards in the system</td>
+    <td><a href="../Examples/scard-api/sample_locateCards.py">view source</a></td>
+  </tr>
+  <tr> 
+    <td>manage readers and reader groups</td>
+    <td><a href="../Examples/scard-api/sample_readerGroups.py">view source</a></td>
+  </tr>
+  <tr> 
+    <td>list smart card readers</td>
+    <td><a href="../Examples/scard-api/sample_readers.py">view source</a></td>
+  </tr>
+  <tr> 
+    <td>select the DF_TELECOM of a SIM card</td>
+    <td><a href="../Examples/scard-api/sample_selectDFTelecom.py">view source</a></td>
+  </tr>
+  <tr> 
+    <td>perform a simple smart card transaction</td>
+    <td><a href="../Examples/scard-api/sample_transaction.py">view source</a></td>
+  </tr>
+</table>
+
+<hr>
+<p>This file is part of pyscard.</p>
+<p>pyscard is free software; you can redistribute it and/or modify it under 
+  the terms of the GNU Lesser General Public License as published by the Free 
+  Software Foundation; either version 2.1 of the License, or (at your option) 
+  any later version.</p>
+<p>pyscard is distributed in the hope that it will be useful, but WITHOUT 
+  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
+  FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more 
+  details.</p>
+<p>You should have received a copy of the GNU Lesser General Public License along 
+  with pyscard; if not, write to the Free Software Foundation, Inc., 51 Franklin 
+  St, Fifth Floor, Boston, MA 02110-1301 USA</p>
+</body>
+</html>
+
+
+
+
+
+

@@ -1,0 +1,1385 @@
+<html>
+<head>
+    <title>pyscard smartcard module</title>
+    <body BGCOLOR="#ffffff">
+
+<h1>pyscard user's guide</h1>
+
+<pre>&nbsp;</pre>
+
+    <hr>
+<h1><a name="top"></a>Contents </h1>
+
+<ul>
+  <li> <a HREF="#copyright">Copyright</a> 
+  <li> <a HREF="#introduction">Introduction</a> 
+  <li><a href="#quickstart">Quick-Start </a> 
+    <ul>
+      <li><a href="#readercentric">The reader-centric approach</a></li>
+      <li><a href="#cardcentric">The card-centric approach</a> 
+        <ul>
+          <li><a href="#atrrequest">Requesting a card with a known ATR</a></li>
+          <li><a href="#anycardrequest">Requesting any card</a></li>
+          <li><a href="#customtyperequest">Designing custom card type requests</a></li>
+        </ul>
+      </li>
+      <li><a href="#objectcentric">The object-centric approach</a></li>
+    </ul>
+  <li><a href="#apdutracing">Tracing APDUs</a> 
+    <ul>
+      <li><a href="#bruteforcetracing">The brute force</a></li>
+      <li><a href="#connectionobservers">Using card connection observers to trace 
+        apdu transmission</a></li>
+    </ul>
+  </li>
+  <li><a href="#apduerror">Testing for APDU transmission errors </a> 
+    <ul>
+      <li><a href="#bruteforceerror">The brute force</a></li>
+      <li><a href="#errorcheckingchains">Using error checking chains to check 
+        for apdu transmission errors</a> 
+        <ul>
+          <li><a href="#errorcheckers">Error checkers</a></li>
+          <li><a href="#errorcheckingchains2">Error checking chains</a></li>
+          <li><a href="#filteringerrors">Filtering errors</a></li>
+          <li><a href="#cardconnectionchecking">Checking errors for a card connection</a></li>
+          <li><a href="#customerrorcheckers">Writing custom error checkers</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a HREF="#readers"> Smartcard readers</a> </li>
+  <ul>
+    <li> <a HREF="#listingreaders">Listing smartcard readers</a> 
+    <li><a href="#readergroups">Organizing smartcard readers into groups</a> 
+    <li><a href="#readermonitoring">Monitoring readers</a> 
+  </ul>
+  <li> <a href="smartcard.html"> Smartcard reference</a> 
+  <li><a href="#License">License</a>
+</ul>
+<hr>
+<a name="copyright"></a>
+<h2>Copyright</h2>
+<p>
+    
+<pre>Copyright 2001-2007 <a href="http://www.gemalto.com">gemalto</a><br>Author: Jean-Daniel Aussel, <a href="mailto:jean-daniel.aussel@gemalto.com">mailto:jean-daniel.aussel@gemalto.com</a></pre>
+<p>This file is part of pyscard.</p>
+<p>pyscard is free software; you can redistribute it and/or modify it under 
+  the terms of the GNU Lesser General Public License as published by the Free 
+  Software Foundation; either version 2.1 of the License, or (at your option) 
+  any later version.</p>
+<p>pyscard is distributed in the hope that it will be useful, but WITHOUT 
+  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
+  FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more 
+  details.</p>
+<p>You should have received a copy of the GNU Lesser General Public License along 
+  with pyscard; if not, write to the Free Software Foundation, Inc., 51 Franklin 
+  St, Fifth Floor, Boston, MA 02110-1301 USA<br>
+</p>
+<hr>
+<a name="introduction"></a><h2>Introduction</h2>
+<p> The pyscard smartcard library is a framework for building smart card 
+  aware applications in Python. The smartcard module is built on top of the <a href="scard.html"> 
+  PCSC API</a> Python wrapper module. 
+<p>pyscard supports Windows 2000 and XP by using the <a href="http://msdn2.microsoft.com/en-us/library/aa374731.aspx#smart_card_functions">Microsoft 
+  Smart Card Base</a> components, and linux by using <a href="http://pcsclite.alioth.debian.org/">PCSC-lite</a>.
+<p>&nbsp;
+<hr>
+<h2><a name="quickstart"></a>Quick-start</h2>
+<h2></h2>
+<h2></h2>
+<h2></h2>
+<h2></h2>
+<h3></h3>
+<h3></h3>
+<p>We will see in this section some variations on how to send APDU commands to
+  a smart card.</p>
+<p></p>
+<h3><a name="readercentric"></a>The reader-centric approach</h3>
+<p>In the reader-centric approach, we open a connection with a card thru a smart
+  card reader, and send APDU commands to the card using the connection:</p>
+<p></p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+  from smartcard.System import readers<br>
+  &gt;&gt;&gt; from smartcard.util import toHexString<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; r=readers()<br>
+  &gt;&gt;&gt; print r<br>
+  ['SchlumbergerSema Reflex USB v.2 0', 'Utimaco CardManUSB 0']<br>
+  &gt;&gt;&gt; connection = r[0].createConnection()<br>
+  &gt;&gt;&gt; connection.connect()<br>
+  &gt;&gt;&gt; SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]<br>
+  &gt;&gt;&gt; DF_TELECOM = [0x7F, 0x10]<br>
+  &gt;&gt;&gt; data, sw1, sw2 = connection.transmit( SELECT + DF_TELECOM )<br>
+  &gt;&gt;&gt; print &quot;%x %x&quot; % (sw1, sw2)<br>
+  9f 1a<br>
+  &gt;&gt;&gt;</font>
+<p>The list of available readers is retrieved with the <font face="Courier New, Courier, mono" size="2">readers()</font>
+  function. We create a connection with the first reader (index 0 for reader 1,
+  1 for reader 2, ...) with the <font face="Courier New, Courier, mono" size="2">r[0].createConnection()</font>
+  call and connect to the card with the <font face="Courier New, Courier, mono" size="2">connect()</font>
+  method of the connection. We can then send APDU commands to the card with the
+  <font face="Courier New, Courier, mono"> <font size="2"> transmit()</font></font>
+  method.
+<p>Scripts written with the reader centric approach however have the following
+  drawbacks:
+<ul>
+  <li>the reader index or reader name is hardcoded in the scripts; the scripts
+    must be edited to match each user configuration; for example in the previous
+    script, we would have to edit the script and change r[0] to r[1] for using
+    the second reader</li>
+  <li>there is no a-priori knowledge that the card is in the reader; to detect
+    card insertion, we would have to execute the script and eventually catch a
+    CardConnectionException that would indicate that there is no card in the reader.</li>
+  <li>there is no built-in check that the card in the reader is of the card type
+    we expect; in the previous example, we might try to select the DF_TELECOM
+    of an EMV card.</li>
+</ul>
+<p>Most of these issues are solved with the card-centric approach</p>
+<p><a href="#top">to the top</a></p>
+<h3><a name="cardcentric"></a>The card-centric approach</h3>
+<p>In the card-centric approach, we create a request for a specific type of card
+  and wait until a card matching the request is inserted. Once a matching card
+  is introduced, a connection to the card is automatically created and we can
+  send APDU commands to the card using this connection.</p>
+<h4><a name="atrrequest"></a>Requesting a card by ATR</h4>
+<p>The following scripts requests a card with a known ATR:</p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+  from smartcard.CardType import ATRCardType<br>
+  &gt;&gt;&gt; from smartcard.CardRequest import CardRequest<br>
+  &gt;&gt;&gt; from smartcard.util import toHexString, toBytes<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; cardtype = ATRCardType( toBytes( &quot;3B 16 94 20 02 01 00 00
+  0D&quot; ) )<br>
+  &gt;&gt;&gt; cardrequest = CardRequest( timeout=1, cardType=cardtype )<br>
+  &gt;&gt;&gt; cardservice = cardrequest.waitforcard()<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; cardservice.connection.connect()<br>
+  &gt;&gt;&gt; print toHexString( cardservice.connection.getATR() )<br>
+  3B 16 94 20 02 01 00 00 0D<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]<br>
+  &gt;&gt;&gt; DF_TELECOM = [0x7F, 0x10]<br>
+  &gt;&gt;&gt; data, sw1, sw2 = cardservice.connection.transmit( SELECT + DF_TELECOM
+  )<br>
+  &gt;&gt;&gt; print &quot;%x %x&quot; % (sw1, sw2)<br>
+  9f 1a<br>
+  &gt;&gt;&gt;</font></p>
+<p>To request a card with a know ATR, you must first create an <a href="epydoc/smartcard.CardType.ATRCardType-class.html">ATRCardType</a> 
+  object with the desired ATR:</p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+  cardtype = ATRCardType( toBytes( &quot;3B 16 94 20 02 01 00 00 0D&quot; ) )<br>
+  </font></p>
+<p>And then create a <a href="epydoc/smartcard.CardRequest.CardRequest-class.html">CardRequest</a> 
+  for this card type. In the sample, we request a time-out of 1 second.</p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+  cardrequest = CardRequest( timeout=1, cardType=cardtype )<br>
+  &gt;&gt;&gt; cardservice = cardrequest.waitforcard()<br>
+  </font></p>
+<p>The waitforcard() will either return with a card service or a time-out. The
+  card service connection attribute can be used thereafter to transmit APDU commands
+  to the card, as with the reader centric approach.</p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+  cardservice.connection.connect()<br>
+  &gt;&gt;&gt; print toHexString( cardservice.connection.getATR() )<br>
+  </font></p>
+<p>If necessary, the reader used for the connection can be accessed thru the <a href="epydoc/smartcard.CardConnection.CardConnection-class.html">CardConnection</a> 
+  object:</p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+  print cardservice.connection.getReader()<br>
+  SchlumbergerSema Reflex USB v.2 0</font></p>
+<p>The <a href="epydoc/smartcard.CardType.ATRCardType-class.html">ATRCardType</a> 
+  also supports masks:</p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+  from smartcard.CardType import ATRCardType<br>
+  &gt;&gt;&gt; from smartcard.CardRequest import CardRequest<br>
+  &gt;&gt;&gt; from smartcard.util import toHexString, toBytes<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; cardtype = ATRCardType( toBytes( &quot;3B 1<b>5</b> 94 20 02 01
+  00 00 0<b>F</b>&quot; ), toBytes( &quot;00 00 FF FF FF FF FF FF 00&quot; ) )<br>
+  &gt;&gt;&gt; cardrequest = CardRequest( timeout=1, cardType=cardtype )<br>
+  &gt;&gt;&gt; cardservice = cardrequest.waitforcard()<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; cardservice.connection.connect()<br>
+  &gt;&gt;&gt; print toHexString( cardservice.connection.getATR() )<br>
+  3B 1<b>6</b> 94 20 02 01 00 00 0<b>D</b></font></p>
+<p>Other CardTypes are available, and new CardTypes can be created, as described
+  below.</p>
+<p><a href="#top">to the top</a></p>
+<h3></h3>
+<h4><a name="anycardrequest"></a>Requesting any card</h4>
+<p>The <a href="epydoc/smartcard.CardType.AnyCardType-class.html">AnyCardType</a> 
+  is useful for requesting any card in any reader:</p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+  from smartcard.CardType import AnyCardType<br>
+  &gt;&gt;&gt; from smartcard.CardRequest import CardRequest<br>
+  &gt;&gt;&gt; from smartcard.util import toHexString<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; cardtype = AnyCardType()<br>
+  &gt;&gt;&gt; cardrequest = CardRequest( timeout=1, cardType=cardtype )<br>
+  &gt;&gt;&gt; cardservice = cardrequest.waitforcard()<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; cardservice.connection.connect()<br>
+  &gt;&gt;&gt; print toHexString( cardservice.connection.getATR() )<br>
+  3B 16 94 20 02 01 00 00 0D<br>
+  &gt;&gt;&gt; print cardservice.connection.getReader()<br>
+  SchlumbergerSema Reflex USB v.2 0</font></p>
+<p><a href="#top">to the top</a></p>
+<h3></h3>
+<h4><a name="customtyperequest"></a>Custom CardTypes</h4>
+<p>Custom CardTypes can be created, e.g. a card type that checks the ATR and the 
+  historical bytes of the card. To create a custom CardType, deriver your CardType 
+  class from the the <a href="epydoc/smartcard.CardType.CardType-class.html">CardType</a> 
+  base class (or any other CardType) and override the <font face="Courier New, Courier, mono" size="2">matches()</font> 
+  method. For exemple to create a DCCardType that will match cards with the direct 
+  convention (first byte of ATR to 0x3b):</p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+  from smartcard.CardType import CardType<br>
+  &gt;&gt;&gt; from smartcard.CardRequest import CardRequest<br>
+  &gt;&gt;&gt; from smartcard.util import toHexString<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; class DCCardType(CardType):<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;def matches( self, atr, reader=None ):<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return atr[0]==0x3B<br>
+  ...<br>
+  &gt;&gt;&gt; cardtype = DCCardType()<br>
+  &gt;&gt;&gt; cardrequest = CardRequest( timeout=1, cardType=cardtype )<br>
+  &gt;&gt;&gt; cardservice = cardrequest.waitforcard()<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; cardservice.connection.connect()<br>
+  &gt;&gt;&gt; print toHexString( cardservice.connection.getATR() )<br>
+  3B 16 94 20 02 01 00 00 0D<br>
+  &gt;&gt;&gt; print cardservice.connection.getReader()<br>
+  SchlumbergerSema Reflex USB v.2 0<br>
+  &gt;&gt;&gt;</font></p>
+<p>Scripts written with the card-centric approach fixes the problems of the reader-centric
+  approach:</p>
+<ul>
+  <li>there is no assumption concerning the reader index or reader name; the desired
+    card will be located in any reader</li>
+  <li>the request will block or time-out if the desired card type is not inserted</li>
+  <li>since we request the desired card type, the script is not played on an unknown
+    or uncompatible card</li>
+</ul>
+<p>Scripts written with the card-centric approach have however the following drawbacks:</p>
+<ul>
+  <li>the script is limited to a specific card type; we have to modify the script
+    if we want to execute the script on another card type. For exemple, we have
+    to modify the ATR of the card if we are using the ATRCardType. This can be
+    partially solved by having a custom CardType that matches several ATRs, though.</li>
+</ul>
+<p><a href="#top">to the top</a></p>
+<h3></h3>
+<h3><a name="objectcentric"></a>The object-centric approach</h3>
+<p>In the object-centric approach, we associate a high-level object with a set 
+  of smart cards supported by the object. For example we associate a javacard 
+  loader class with a set of javacard smart cards. We create a request for the 
+  specific object, and wait until a card supported by the object is inserted. 
+  Once a card supported by the object is inserted, we perform the required function 
+  by calling the objec methods.</p>
+<p><i>To be written...</i></p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF"> </font>
+<hr>
+<h2></h2>
+<h2><a name="apdutracing"></a>Tracing APDUs</h2>
+<h3><a name="bruteforcetracing"></a>The brute force</h3>
+<p>A straightforward way of tracing command and response APDUs is to insert print
+  statements around the transmit() method calls:</p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+  from smartcard.CardType import ATRCardType<br>
+  &gt;&gt;&gt; from smartcard.CardRequest import CardRequest<br>
+  &gt;&gt;&gt; from smartcard.util import toHexString, toBytes<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; cardtype = ATRCardType( toBytes( &quot;3B 16 94 20 02 01 00 00
+  0D&quot; ) )<br>
+  &gt;&gt;&gt; cardrequest = CardRequest( timeout=1, cardType=cardtype )<br>
+  &gt;&gt;&gt; cardservice = cardrequest.waitforcard()<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; cardservice.connection.connect()<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]<br>
+  &gt;&gt;&gt; DF_TELECOM = [0x7F, 0x10]<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; apdu = SELECT+DF_TELECOM<br>
+  &gt;&gt;&gt; print 'sending ' + toHexString(apdu)<br>
+  sending A0 A4 00 00 02 7F 10<br>
+  &gt;&gt;&gt; response, sw1, sw2 = cardservice.connection.transmit( apdu )<br>
+  &gt;&gt;&gt; print 'response: ', response, ' status words: ', &quot;%x %x&quot;
+  % (sw1, sw2)<br>
+  response: [] status words: 9f 1a<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; if sw1 == 0x9F:<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;GET_RESPONSE = [0XA0, 0XC0, 00, 00 ]<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;apdu = GET_RESPONSE + [sw2]<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;print 'sending ' + toHexString(apdu)<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;response, sw1, sw2 = cardservice.connection.transmit(
+  apdu )<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;print 'response: ', toHexString(response), ' status
+  words: ', &quot;%x %x&quot; % (sw1, sw2)<br>
+  ...<br>
+  sending A0 C0 00 00 1A<br>
+  response: 00 00 00 00 7F 10 02 00 00 00 00 00 0D 13 00 0A 04 00 83 8A 83 8A
+  00 01 00 00 status words: 90 0<br>
+  &gt;&gt;&gt;</font></p>
+<p>Scripts written this way are quite difficult to read, because there are more
+  tracing statements than actual apdu transmits..</p>
+<p>A small improvement in visibility would be to replace the print instructions
+  by functions, e.g.:</p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+  from smartcard.CardType import ATRCardType<br>
+  &gt;&gt;&gt; from smartcard.CardRequest import CardRequest<br>
+  &gt;&gt;&gt; from smartcard.util import toHexString, toBytes<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; cardtype = ATRCardType( toBytes( &quot;3B 16 94 20 02 01 00 00
+  0D&quot; ) )<br>
+  &gt;&gt;&gt; cardrequest = CardRequest( timeout=1, cardType=cardtype )<br>
+  &gt;&gt;&gt; cardservice = cardrequest.waitforcard()<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; cardservice.connection.connect()<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]<br>
+  &gt;&gt;&gt; DF_TELECOM = [0x7F, 0x10]<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; def trace_command(apdu):<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;print 'sending ' + toHexString(apdu)<br>
+  ...<br>
+  &gt;&gt;&gt; def trace_response( response, sw1, sw2 ):<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;if None==response: response=[]<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;print 'response: ', toHexString(response), ' status
+  words: ', &quot;%x %x&quot; % (sw1, sw2)<br>
+  ...<br>
+  &gt;&gt;&gt; apdu = SELECT+DF_TELECOM<br>
+  &gt;&gt;&gt; trace_command(apdu)<br>
+  sending A0 A4 00 00 02 7F 10<br>
+  &gt;&gt;&gt; response, sw1, sw2 = cardservice.connection.transmit( apdu )<br>
+  &gt;&gt;&gt; trace_response( response, sw1, sw2 )<br>
+  response: status words: 9f 1a<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; if sw1 == 0x9F:<br>
+  ... &nbsp;&nbsp;&nbsp;GET_RESPONSE = [0XA0, 0XC0, 00, 00 ]<br>
+  ... &nbsp;&nbsp;&nbsp;apdu = GET_RESPONSE + [sw2]<br>
+  ... &nbsp;&nbsp;&nbsp;trace_command(apdu)<br>
+  ... &nbsp;&nbsp;&nbsp;response, sw1, sw2 = cardservice.connection.transmit(
+  apdu )<br>
+  ... &nbsp;&nbsp;&nbsp;trace_response( response, sw1, sw2 )<br>
+  ...<br>
+  sending A0 C0 00 00 1A<br>
+  response: 00 00 00 00 7F 10 02 00 00 00 00 00 0D 13 00 0A 04 00 83 8A 83 8A
+  00 01 00 00 status words: 90 0<br>
+  &gt;&gt;&gt;</font></p>
+<p><a href="#top">to the top</a></p>
+<h3></h3>
+<h3><a name="connectionobservers"></a>Using card connection observers to trace
+  apdu transmission</h3>
+<p>The prefered solution is to implement a card connection observer, and register
+  the observer with the card connection. The card connection will then notify
+  the observer when card connection events occur (e.g. connection, disconnection,
+  apdu command or apdu response). This is illustrated in the following script:</p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+  from smartcard.CardType import AnyCardType<br>
+  &gt;&gt;&gt; from smartcard.CardRequest import CardRequest<br>
+  &gt;&gt;&gt; from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; GET_RESPONSE = [0XA0, 0XC0, 00, 00 ]<br>
+  &gt;&gt;&gt; SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]<br>
+  &gt;&gt;&gt; DF_TELECOM = [0x7F, 0x10]<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; cardtype = AnyCardType()<br>
+  &gt;&gt;&gt; cardrequest = CardRequest( timeout=10, cardType=cardtype )<br>
+  &gt;&gt;&gt; cardservice = cardrequest.waitforcard()<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; observer=ConsoleCardConnectionObserver()<br>
+  &gt;&gt;&gt; cardservice.connection.addObserver( observer )<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; cardservice.connection.connect()<br>
+  connecting to SchlumbergerSema Reflex USB v.2 0<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; apdu = SELECT+DF_TELECOM<br>
+  &gt;&gt;&gt; response, sw1, sw2 = cardservice.connection.transmit( apdu )<br>
+  &gt; A0 A4 00 00 02 7F 10<br>
+  &lt; [] 9F 1A<br>
+  &gt;&gt;&gt; if sw1 == 0x9F:<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;apdu = GET_RESPONSE + [sw2]<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;response, sw1, sw2 = cardservice.connection.transmit(
+  apdu )<br>
+  ... else:<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;print 'no DF_TELECOM'<br>
+  ...<br>
+  &gt; A0 C0 00 00 1A<br>
+  &lt; 00 00 00 00 7F 10 02 00 00 00 00 00 0D 13 00 0A 04 00 83 8A 83 8A 00 01
+  00 00 90 0<br>
+  &gt;&gt;&gt;</font></p>
+<p>In this script, a <a href="epydoc/smartcard.CardConnectionObserver.ConsoleCardConnectionObserver-class.html">ConsoleCardConnectionObserver</a> 
+  is attached to the card service connection once the watiforcard() call returns. 
+</p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+  observer=ConsoleCardConnectionObserver()<br>
+  &gt;&gt;&gt; cardservice.connection.addObserver( observer )<br>
+  </font></p>
+<p>On card connection events (connect, disconnect, transmit command apdu, receive 
+  response apdu), the card connection notifies its obersers with a <a href="epydoc/smartcard.CardConnectionEvent.CardConnectionEvent-class.html">CarConnectionEvent</a> 
+  including the event type and the event data. The <a href="epydoc/smartcard.CardConnectionObserver.ConsoleCardConnectionObserver-class.html">ConsoleCardConnectionObserver</a> 
+  is a simple observer that will print on the console the card connection events. 
+  The class definition is the following:</p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033ff">class ConsoleCardConnectionObserver(
+  CardConnectionObserver ):<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;def update( self, cardconnection, ccevent ):</font></p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033ff"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if
+  'connect'==ccevent.type:<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print
+  'connecting to ' + cardconnection.getReader()</font></p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033ff"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif
+  'disconnect'==ccevent.type:<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print
+  'disconnecting from ' + cardconnection.getReader()</font></p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033ff"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif
+  'command'==ccevent.type:<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print
+  '&gt; ', toHexString( ccevent.args[0] )</font></p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033ff"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif
+  'response'==ccevent.type:<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if []==ccevent.args[0]:<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print
+  '&lt; [] ', &quot;%-2X %-2X&quot; % tuple(ccevent.args[-2:])<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print '&lt; ', toHexString(ccevent.args[0]),
+  &quot;%-2X %-2X&quot; % tuple(ccevent.args[-2:])<br>
+  </font></p>
+<p>The console card connection observer is thus printing the connect, disconnect,
+  command and response apdu events:</p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+  cardservice.connection.connect()<br>
+  <b>connecting to SchlumbergerSema Reflex USB v.2 0</b><br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; apdu = SELECT+DF_TELECOM<br>
+  &gt;&gt;&gt; response, sw1, sw2 = cardservice.connection.transmit( apdu )<br>
+  <b>&gt; A0 A4 00 00 02 7F 10<br>
+  &lt; [] 9F 1A<br>
+  </b>&gt;&gt;&gt; if sw1 == 0x9F:<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;apdu = GET_RESPONSE + [sw2]<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;response, sw1, sw2 = cardservice.connection.transmit(
+  apdu )<br>
+  ... else:<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;print 'no DF_TELECOM'<br>
+  ...<br>
+  <b>&gt; A0 C0 00 00 1A<br>
+  &lt; 00 00 00 00 7F 10 02 00 00 00 00 00 0D 13 00 0A 04 00 83 8A 83 8A 00 01
+  00 00 90 0<br>
+  </b> </font></p>
+<p>A card connection observer's update methode is called upon card connection 
+  event, with the connection and the connection event as parameters. The <a href="epydoc/smartcard.CardConnectionEvent.CardConnectionEvent-class.html">CardConnectionEvent</a> 
+  class definition is the following:</p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033ff">class CardConnectionEvent:<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&quot;&quot;&quot;Base class for card connection events.<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;This event is notified by CardConnection objects.</font></p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033ff"> &nbsp;&nbsp;&nbsp;type:
+  'connect', 'disconnect', 'command', 'response'<br>
+  &nbsp;&nbsp;&nbsp;args: None for 'connect' or 'disconnect'<br>
+  &nbsp;&nbsp;&nbsp;command APDU byte list for 'command'<br>
+  &nbsp;&nbsp;&nbsp;[response data, sw1, sw2] for 'response'<br>
+  &nbsp;&nbsp;&nbsp;type: 'connect' args:&quot;&quot;&quot;<br>
+  &nbsp;&nbsp;&nbsp;def __init__( self, type, args=None):<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.type=type<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.args=args<br>
+  </font></p>
+<p>You can write your own card connection observer, for example to perform fancy
+  output in a wxWindows frame, or apdu interpretation. The following scripts defines
+  a small SELECT and GET RESPONSE apdu interpreter:</p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033ff">&gt;&gt;&gt;
+  from smartcard.CardType import AnyCardType<br>
+  &gt;&gt;&gt; from smartcard.CardRequest import CardRequest<br>
+  &gt;&gt;&gt; from smartcard.CardConnectionObserver import CardConnectionObserver<br>
+  &gt;&gt;&gt; from smartcard.util import toHexString<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; from string import replace<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; class TracerAndSELECTInterpreter( CardConnectionObserver ):<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;def update( self, cardconnection, ccevent ):<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if 'connect'==ccevent.type:<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print
+  'connecting to ' + cardconnection.getReader()<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif 'disconnect'==ccevent.type:<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print
+  'disconnecting from ' + cardconnection.getReader()<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif 'command'==ccevent.type:<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;str=toHexString(ccevent.args[0])<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;str
+  = replace( str , &quot;A0 A4 00 00 02&quot;, &quot;SELECT&quot; )<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;str
+  = replace( str , &quot;A0 C0 00 00&quot;, &quot;GET RESPONSE&quot; )<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print
+  '&gt; ', str<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif 'response'==ccevent.type:<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if
+  []==ccevent.args[0]:<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print
+  '&lt; [] ', &quot;%-2X %-2X&quot; % tuple(ccevent.args[-2:])<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print
+  '&lt; ', toHexString(ccevent.args[0]), &quot;%-2X %-2X&quot; % tuple(ccevent.args[-2:])<br>
+  ...<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; GET_RESPONSE = [0XA0, 0XC0, 00, 00 ]<br>
+  &gt;&gt;&gt; SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]<br>
+  &gt;&gt;&gt; DF_TELECOM = [0x7F, 0x10]<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; cardtype = AnyCardType()<br>
+  &gt;&gt;&gt; cardrequest = CardRequest( timeout=10, cardType=cardtype )<br>
+  &gt;&gt;&gt; cardservice = cardrequest.waitforcard()<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; observer=TracerAndSELECTInterpreter()<br>
+  &gt;&gt;&gt; cardservice.connection.addObserver( observer )<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; cardservice.connection.connect()<br>
+  connecting to SchlumbergerSema Reflex USB v.2 0<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; apdu = SELECT+DF_TELECOM<br>
+  &gt;&gt;&gt; response, sw1, sw2 = cardservice.connection.transmit( apdu )<br>
+  &gt; <b>SELECT</b> 7F 10<br>
+  &lt; [] 9F 1A<br>
+  &gt;&gt;&gt; if sw1 == 0x9F:<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;apdu = GET_RESPONSE + [sw2]<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;response, sw1, sw2 = cardservice.connection.transmit(
+  apdu )<br>
+  ... else:<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;print 'no DF_TELECOM'<br>
+  ...<br>
+  &gt; <b>GET RESPONSE</b> 1A<br>
+  &lt; 00 00 00 00 7F 10 02 00 00 00 00 00 0D 13 00 0A 04 00 83 8A 83 8A 00 01
+  00 00 90 0<br>
+  &gt;&gt;&gt;</font></p>
+<p><a href="#top">to the top</a></p>
+<h3></h3>
+<h2><a name="apduerror"></a>Testing for APDU transmission errors</h2>
+<p>Errors can and do happen when sending APDUs to smart cards. This discussion
+  discusses possible strategies to check and report APDU transmission errors.</p>
+<h3><a name="bruteforceerror"></a>The brute force for testing APDU transmission
+  errors</h3>
+<h3></h3>
+<p>As for APDU tracing, a straightforward way of checking for errors in response
+  APDUs during the execution of scripts is to insert testt statements after the
+  transmit() method calls:</p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+  from smartcard.CardType import AnyCardType<br>
+  &gt;&gt;&gt; from smartcard.CardRequest import CardRequest<br>
+  &gt;&gt;&gt; from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; GET_RESPONSE = [0XA0, 0XC0, 00, 00 ]<br>
+  &gt;&gt;&gt; SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]<br>
+  &gt;&gt;&gt; DF_TELECOM = [0x7F, 0x10]<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; cardtype = AnyCardType()<br>
+  &gt;&gt;&gt; cardrequest = CardRequest( timeout=10, cardType=cardtype )<br>
+  &gt;&gt;&gt; cardservice = cardrequest.waitforcard()<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; observer=ConsoleCardConnectionObserver()<br>
+  &gt;&gt;&gt; cardservice.connection.addObserver( observer )<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; cardservice.connection.connect()<br>
+  connecting to Utimaco CardManUSB 0<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; apdu = SELECT+DF_TELECOM<br>
+  &gt;&gt;&gt; response, sw1, sw2 = cardservice.connection.transmit( apdu )<br>
+  &gt; A0 A4 00 00 02 7F 10<br>
+  &lt; [] 6E 0<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; if sw1 in range(0x61, 0x6f):<br>
+  ... print &quot;Error: sw1: %x sw2: %x&quot; % (sw1, sw2)<br>
+  ...<br>
+  Error: sw1: 6e sw2: 0<br>
+  &gt;&gt;&gt; if sw1 == 0x9F:<br>
+  ... apdu = GET_RESPONSE + [sw2]<br>
+  ... response, sw1, sw2 = cardservice.connection.transmit( apdu )<br>
+  ...<br>
+  &gt;&gt;&gt; cardservice.connection.disconnect()<br>
+  disconnecting from Utimaco CardManUSB 0<br>
+  &gt;&gt;&gt;</font></p>
+<p>Scripts written this way are quite difficult to read, because there are more
+  error detection statements than actual apdu transmits.</p>
+<p>An improvement in visibility is to wrap the transmit instruction inside a function
+  mytransmit, e.g.:</p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+  from smartcard.CardType import AnyCardType<br>
+  &gt;&gt;&gt; from smartcard.CardRequest import CardRequest<br>
+  &gt;&gt;&gt; from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; def mytransmit( connection, apdu ):<br>
+  ... response, sw1, sw2 = connection.transmit( apdu )<br>
+  ... if sw1 in range(0x61, 0x6f):<br>
+  ... print &quot;Error: sw1: %x sw2: %x&quot; % (sw1, sw2)<br>
+  ... return response, sw1, sw2<br>
+  ...<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; GET_RESPONSE = [0XA0, 0XC0, 00, 00 ]<br>
+  &gt;&gt;&gt; SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]<br>
+  &gt;&gt;&gt; DF_TELECOM = [0x7F, 0x10]<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; cardtype = AnyCardType()<br>
+  &gt;&gt;&gt; cardrequest = CardRequest( timeout=10, cardType=cardtype )<br>
+  &gt;&gt;&gt; cardservice = cardrequest.waitforcard()<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; observer=ConsoleCardConnectionObserver()<br>
+  &gt;&gt;&gt; cardservice.connection.addObserver( observer )<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; cardservice.connection.connect()<br>
+  connecting to Utimaco CardManUSB 0<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; apdu = SELECT+DF_TELECOM<br>
+  &gt;&gt;&gt; response, sw1, sw2 = mytransmit( cardservice.connection, apdu )<br>
+  &gt; A0 A4 00 00 02 7F 10<br>
+  &lt; [] 6E 0<br>
+  Error: sw1: 6e sw2: 0<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; if sw1 == 0x9F:<br>
+  ... apdu = GET_RESPONSE + [sw2]<br>
+  ... response, sw1, sw2 = mytransmit( cardservice.connection, apdu )<br>
+  ...<br>
+  &gt;&gt;&gt; cardservice.connection.disconnect()<br>
+  disconnecting from Utimaco CardManUSB 0<br>
+  &gt;&gt;&gt;</font></p>
+<p>The prefered solution is for testing errors is to use smarcard.sw.ErrorChecker,
+  as described in the following section.</p>
+<p><a href="#top">to the top</a></p>
+<h3></h3>
+<h3><a name="errorcheckingchains"></a>Checking APDU transmission errors with error
+  checkers</h3>
+<p>Status word errors can occur from different sources. The ISO7816-4 standards
+  defines status words for sw1 in the range 0x62 to 0x6F and some values of sw2,
+  except for 0x66 which is reserved for security related issues. The ISO7816-8
+  standards define other status words, e.g. sw1=0x68 and sw2=0x83 or 0x84 for
+  command chaining errors. Other standards, like Open Platform, define additional
+  status words error, e.g. sw1=0x94 and sw2=0x84. </p>
+<p>The prefered strategy for status word error checking is based around individual
+  error checkers (smartcard.sw.ErrorChecker) that can be chained into an error
+  checking chain (smartcars.sw.ErrorCheckingChain).</p>
+<h4><a name="errorcheckers"></a>Error checkers</h4>
+<p>An error checker is a class deriving from <a href="epydoc/smartcard.sw.ErrorChecker.ErrorChecker-class.html">ErrorChecker</a> 
+  that checks for recognized sw1, sw2 error conditions when called, and raises 
+  an exception when finding such condition. This is illustrated in the following 
+  sample:</p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+  from smartcard.sw.ISO7816_4ErrorChecker import ISO7816_4ErrorChecker<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; errorchecker=ISO7816_4ErrorChecker()<br>
+  &gt;&gt;&gt; errorchecker( [], 0x90, 0x00 )<br>
+  &gt;&gt;&gt; errorchecker( [], 0x6A, 0x80 )<br>
+  Traceback (most recent call last):<br>
+  File &quot;&lt;stdin&gt;&quot;, line 1, in ?<br>
+  File &quot;D:\projects\pyscard-install\factory\python\lib\site-packages\smartcard\sw\ISO7816_4ErrorChecker.py&quot;,
+  line 137, in __call__<br>
+  raise exception( data, sw1, sw2, message )<br>
+  smartcard.sw.SWExceptions.CheckingErrorException: 'Status word exception: checking
+  error - Incorrect parameters in the data field!'<br>
+  &gt;&gt;&gt;</font></p>
+<p>The first call to error checker does not raise an exception, since 90 00 does
+  not report any error. The second calls however raises a CheckingErrorException.</p>
+<p><a href="#top">to the top</a></p>
+<h3></h3>
+<h4><a name="errorcheckingchains2"></a>Error checking chains</h4>
+<p>Error checkers can be chained into <a href="epydoc/smartcard.sw.ErrorCheckingChain.ErrorCheckingChain-class.html">error 
+  checking chain</a>. Each checker in the chain is called until an error condition 
+  is met, in which case an exception is raised. This is illustrated in the following 
+  sample:</p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+  from smartcard.sw.ISO7816_4ErrorChecker import ISO7816_4ErrorChecker<br>
+  &gt;&gt;&gt; from smartcard.sw.ISO7816_8ErrorChecker import ISO7816_8ErrorChecker<br>
+  &gt;&gt;&gt; from smartcard.sw.ISO7816_9ErrorChecker import ISO7816_9ErrorChecker<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; from smartcard.sw.ErrorCheckingChain import ErrorCheckingChain<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; errorchain = []<br>
+  &gt;&gt;&gt; errorchain=[ ErrorCheckingChain( errorchain, ISO7816_9ErrorChecker()
+  ),<br>
+  ... ErrorCheckingChain( errorchain, ISO7816_8ErrorChecker() ),<br>
+  ... ErrorCheckingChain( errorchain, ISO7816_4ErrorChecker() ) ]<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; errorchain[0]( [], 0x90, 0x00 )<br>
+  &gt;&gt;&gt; errorchain[0]( [], 0x6A, 0x8a )<br>
+  Traceback (most recent call last):<br>
+  File &quot;&lt;stdin&gt;&quot;, line 1, in ?<br>
+  File &quot;D:\projects\pyscard-install\factory\python\lib\site-packages\smartcard\sw\ErrorCheckingChain.py&quot;,
+  line 60,<br>
+  in __call__<br>
+  self.strategy( data, sw1, sw2 )<br>
+  File &quot;D:\projects\pyscard-install\factory\python\lib\site-packages\smartcard\sw\ISO7816_9ErrorChecker.py&quot;,
+  line 74, in __call__<br>
+  raise exception( data, sw1, sw2, message )<br>
+  smartcard.sw.SWExceptions.CheckingErrorException: 'Status word exception: checking
+  error - DF name already exists!'<br>
+  &gt;&gt;&gt;</font></p>
+<p>In this sample, an error checking chain is created that will check first for
+  iso 7816-9 errors, then iso7816-8 errors, and finally iso7816-4 errors.</p>
+<p>The first call to the error chain does not raise an exception, since 90 00
+  does not report any error. The second calls however raises a CheckingErrorException,
+  caused by the iso7816-9 error checker.</p>
+<p><a href="#top">to the top</a></p>
+<h3></h3>
+<h4><a name="filteringerrors"></a>Filtering exceptions</h4>
+<p>You can filter undesired exceptions in a chain by adding a filtered exception
+  to the error checking chain:</p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+  from smartcard.sw.ISO7816_4ErrorChecker import ISO7816_4ErrorChecker<br>
+  &gt;&gt;&gt; from smartcard.sw.ISO7816_8ErrorChecker import ISO7816_8ErrorChecker<br>
+  &gt;&gt;&gt; from smartcard.sw.ISO7816_9ErrorChecker import ISO7816_9ErrorChecker<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; from smartcard.sw.ErrorCheckingChain import ErrorCheckingChain<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; errorchain = []<br>
+  &gt;&gt;&gt; errorchain=[ ErrorCheckingChain( errorchain, ISO7816_9ErrorChecker()
+  ),<br>
+  ... ErrorCheckingChain( errorchain, ISO7816_8ErrorChecker() ),<br>
+  ... ErrorCheckingChain( errorchain, ISO7816_4ErrorChecker() ) ]<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; errorchain[0]( [], 0x90, 0x00 )<br>
+  &gt;&gt;&gt; errorchain[0]( [], 0x62, 0x00 )<br>
+  Traceback (most recent call last):<br>
+  File &quot;&lt;stdin&gt;&quot;, line 1, in ?<br>
+  File &quot;D:\projects\pyscard-install\factory\python\lib\site-packages\smartcard\sw\ErrorCheckingChain.py&quot;,
+  line 72, in __call__<br>
+  return self.next()( data, sw1, sw2 )<br>
+  File &quot;D:\projects\pyscard-install\factory\python\lib\site-packages\smartcard\sw\ErrorCheckingChain.py&quot;,
+  line 72, in __call__<br>
+  return self.next()( data, sw1, sw2 )<br>
+  File &quot;D:\projects\pyscard-install\factory\python\lib\site-packages\smartcard\sw\ErrorCheckingChain.py&quot;,
+  line 60, in __call__<br>
+  self.strategy( data, sw1, sw2 )<br>
+  File &quot;D:\projects\pyscard-install\factory\python\lib\site-packages\smartcard\sw\ISO7816_4ErrorChecker.py&quot;,
+  line 137, in __call__<br>
+  raise exception( data, sw1, sw2, message )<br>
+  smartcard.sw.SWExceptions.WarningProcessingException: 'Status word exception:
+  warning processing - Response padded/ More APDU commands expected!'<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; from smartcard.sw.SWExceptions import WarningProcessingException<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; errorchain[0].addFilterException( WarningProcessingException )<br>
+  &gt;&gt;&gt; errorchain[0]( [], 0x62, 0x00 )<br>
+  &gt;&gt;&gt;</font></p>
+<p></p>
+<p></p>
+<p>The first call to the error chain with sw1 sw2 = 62 00 raises a <a href="epydoc/smartcard.sw.SWExceptions.WarningProcessingException-class.html">WarningProcessingException</a>.</p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+  errorchain[0]( [], 0x62, 0x00 )<br>
+  Traceback (most recent call last):<br>
+  ...</font></p>
+<p>After adding a filter for <a href="epydoc/smartcard.sw.SWExceptions.WarningProcessingException-class.html">WarningProcessingException</a>, 
+  the second call to the error chain with sw1 sw2 = 62 00 does not raise any exception:</p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+  from smartcard.sw.SWExceptions import WarningProcessingException<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; errorchain[0].addFilterException( WarningProcessingException )<br>
+  &gt;&gt;&gt; errorchain[0]( [], 0x62, 0x00 )<br>
+  &gt;&gt;&gt;</font></p>
+<p><a href="#top">to the top</a></p>
+<h3></h3>
+<h4><a name="cardconnectionchecking"></a>Detecting response APDU errors for a
+  card connection</h4>
+<p></p>
+<p></p>
+<p>To detect APDU response errors during transmission, simply set the error checking
+  chain of the connection used for transmission:</p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033ff">from smartcard.CardType
+  import AnyCardType<br>
+  from smartcard.CardRequest import CardRequest<br>
+  from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver</font></p>
+<p><font color="#0033ff" face="Courier New, Courier, mono" size="2">from smartcard.sw.ErrorCheckingChain
+  import ErrorCheckingChain<br>
+  from smartcard.sw.ISO7816_4ErrorChecker import ISO7816_4ErrorChecker<br>
+  from smartcard.sw.ISO7816_8ErrorChecker import ISO7816_8ErrorChecker<br>
+  from smartcard.sw.SWExceptions import SWException, WarningProcessingException</font></p>
+<p><font color="#0033ff" face="Courier New, Courier, mono" size="2"># request
+  any card<br>
+  cardtype = AnyCardType()<br>
+  cardrequest = CardRequest( timeout=10, cardType=cardtype )<br>
+  cardservice = cardrequest.waitforcard()</font></p>
+<p><font color="#0033ff" face="Courier New, Courier, mono" size="2"># our error
+  checking chain<br>
+  errorchain=[]<br>
+  errorchain=[ ErrorCheckingChain( errorchain, ISO7816_8ErrorChecker() ),<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ErrorCheckingChain(
+  errorchain, ISO7816_4ErrorChecker() ) ]<br>
+  cardservice.connection.setErrorCheckingChain( errorchain )</font></p>
+<p><font color="#0033ff" face="Courier New, Courier, mono" size="2"># a console
+  tracer<br>
+  observer=ConsoleCardConnectionObserver()<br>
+  cardservice.connection.addObserver( observer )</font></p>
+<p><font color="#0033ff" face="Courier New, Courier, mono" size="2"># send a few
+  apdus; exceptions will occur upon errors<br>
+  cardservice.connection.connect()</font></p>
+<p><font color="#0033ff" face="Courier New, Courier, mono" size="2">try:<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;DF_TELECOM = [0x7F, 0x10]<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;apdu = SELECT+DF_TELECOM<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;response, sw1, sw2 = cardservice.connection.transmit(
+  apdu )<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;if sw1 == 0x9F:<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GET_RESPONSE = [0XA0, 0XC0,
+  00, 00 ]<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apdu = GET_RESPONSE + [sw2]<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;response, sw1, sw2 = cardservice.connection.transmit(
+  apdu )<br>
+  except SWException, e:<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;print str(e)</font></p>
+<p><br>
+  Executing the previous script on a SIM card will cause an output similar to:</p>
+<p><font color="#0033ff" face="Courier New, Courier, mono" size="2">connecting
+  to SchlumbergerSema Reflex USB v.2 0<br>
+  &gt; A0 A4 00 00 02 7F 10<br>
+  &lt; [] 9F 1A<br>
+  &gt; A0 C0 00 00 1A<br>
+  &lt; 00 00 00 00 7F 10 02 00 00 00 00 00 0D 13 00 0A 04 00 83 8A 83 8A 00 01
+  00 00 90 0<br>
+  disconnecting from SchlumbergerSema Reflex USB v.2 0<br>
+  disconnecting from SchlumbergerSema Reflex USB v.2 0</font></p>
+<p>whereas executing the script on a non-SIM card will result in:</p>
+<p><font color="#0033ff" face="Courier New, Courier, mono" size="2">connecting
+  to Utimaco CardManUSB 0<br>
+  &gt; A0 A4 00 00 02 7F 10<br>
+  &lt; [] 6E 0<br>
+  'Status word exception: checking error - Class (CLA) not supported!'<br>
+  disconnecting from Utimaco CardManUSB 0<br>
+  disconnecting from Utimaco CardManUSB 0</font></p>
+<p>To implement an error checking chain, create an <a href="epydoc/smartcard.sw.ErrorCheckingChain.ErrorCheckingChain-class.html">ErrorCheckingChain</a> 
+  object with the desired error checking strategies, and set this chain object 
+  as the card connection error checking chain. The card connection will use the 
+  chain for error checking upon reception of a response apdu:</p>
+<p><a href="#top">to the top</a></p>
+<h3></h3>
+<h4><a name="customerrorcheckers"></a>Writing a custom error checker</h4>
+<p>Implementing a custom error checker requires implementing a sub-class of <a href="epydoc/smartcard.sw.op21_ErrorChecker.op21_ErrorChecker-class.html">ErrorChecker</a>, 
+  and overriding the __call__ method. The following error checker raises a <a href="epydoc/smartcard.sw.SWExceptions.SecurityRelatedException-class.html">SecurityRelatedException</a> 
+  exception when sw1=0x66 and sw2=0x00:</p>
+<p><font color="#0033ff" face="Courier New, Courier, mono" size="2">from smartcard.sw.ErrorChecker
+  import ErrorChecker<br>
+  from smartcard.sw.SWExceptions import SecurityRelatedException</font></p>
+<p><font color="#0033ff" face="Courier New, Courier, mono" size="2">class MyErrorChecker(
+  ErrorChecker ):<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;def __call__( self, data, sw1, sw2 ):<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if 0x66==sw1 and 0x00==sw2:<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raise
+  SecurityRelatedException( data, sw1, sw2 )</font></p>
+<p>Custom checkers can be used standalone, as in the following sample, or chained
+  to other error checkers:</p>
+<p><font color="#0044ff" face="Courier New, Courier, mono" size="2">from smartcard.CardType
+  import AnyCardType<br>
+  from smartcard.CardRequest import CardRequest</font></p>
+<p><font color="#0044ff" face="Courier New, Courier, mono" size="2">from smartcard.sw.ErrorCheckingChain
+  import ErrorCheckingChain<br>
+  from smartcard.sw.ErrorChecker import ErrorChecker<br>
+  from smartcard.sw.SWExceptions import SecurityRelatedException</font></p>
+<p><font color="#0044ff" face="Courier New, Courier, mono" size="2">class MyErrorChecker(
+  ErrorChecker ):<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;def __call__( self, data, sw1, sw2 ):<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if 0x66==sw1 and 0x00==sw2:<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raise
+  SecurityRelatedException( data, sw1, sw2 )</font></p>
+<p><font color="#0044ff" face="Courier New, Courier, mono" size="2"># request
+  any card<br>
+  cardtype = AnyCardType()<br>
+  cardrequest = CardRequest( timeout=10, cardType=cardtype )<br>
+  cardservice = cardrequest.waitforcard()</font></p>
+<p><font color="#0044ff" face="Courier New, Courier, mono" size="2"># our error
+  checking chain<br>
+  errorchain=[]<br>
+  errorchain=[ ErrorCheckingChain( [], MyErrorChecker() ) ]<br>
+  cardservice.connection.setErrorCheckingChain( errorchain )</font></p>
+<p><font color="#0044ff" face="Courier New, Courier, mono" size="2"># send a few
+  apdus; exceptions will occur upon errors<br>
+  cardservice.connection.connect()</font></p>
+<p><font color="#0044ff" face="Courier New, Courier, mono" size="2">SELECT = [0xA0,
+  0xA4, 0x00, 0x00, 0x02]<br>
+  DF_TELECOM = [0x7F, 0x10]<br>
+  apdu = SELECT+DF_TELECOM<br>
+  response, sw1, sw2 = cardservice.connection.transmit( apdu )<br>
+  if sw1 == 0x9F:<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;GET_RESPONSE = [0XA0, 0XC0, 00, 00 ]<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;apdu = GET_RESPONSE + [sw2]<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;response, sw1, sw2 = cardservice.connection.transmit(
+  apdu )</font></p>
+<p></p>
+<p><font color="#0033ff" face="Courier New, Courier, mono" size="2"><br>
+  </font></p>
+<hr>
+<h2><a name="readers">Smartcard readers</a></h2>
+<h3><a name="listingreaders"></a>Listing Smartcard Readers</h3>
+<p>The easiest way to retrieve the list of smartcard readers is the smartcard.System.readers()
+  function:
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+  import smartcard.System<br>
+  &gt;&gt;&gt; print smartcard.System.readers()<br>
+  ['Schlumberger e-gate 0', 'SchlumbergerSema Reflex USB v.2 0', 'Utimaco CardManUSB
+  0']<br>
+  &gt;&gt;&gt;</font></p>
+<p><a href="#top">to the top</a></p>
+<h3></h3>
+<h3><a name="readergroups"></a>Organizing Smartcard Readers into reader groups</h3>
+<p>Reader group management is only available on Windows, since PCSC-lite does 
+  not currently supports reader groups management.
+<p>Readers can be organized in reader groups. To retrieve the smartcard reader 
+  groups, use readergroups(): 
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+  import smartcard.System<br>
+  &gt;&gt;&gt; print smartcard.System.readergroups()<br>
+  ['SCard$DefaultReaders']<br>
+  &gt;&gt;&gt;</font></p>
+<p>The readergroups() object has all the list attributes. To add a reader group,
+  simply use the + operator, e.g.:
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+  from smartcard.System import readergroups<br>
+  &gt;&gt;&gt; g=readergroups()<br>
+  &gt;&gt;&gt; print g<br>
+  ['SCard$DefaultReaders']<br>
+  &gt;&gt;&gt; g+='Biometric$Readers'<br>
+  &gt;&gt;&gt; print g<br>
+  ['SCard$DefaultReaders', 'Biometric$Readers']<br>
+  &gt;&gt;&gt;</font></p>
+<p>You can also use the append and insert methods, as well as the + operator,
+  e.g.:
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+  from smartcard.System import readergroups<br>
+  &gt;&gt;&gt; g=readergroups()<br>
+  &gt;&gt;&gt; print g<br>
+  ['SCard$DefaultReaders']<br>
+  &gt;&gt;&gt; g=g+['Biometric$Readers','Pinpad$Readers']<br>
+  &gt;&gt;&gt; print g<br>
+  ['SCard$DefaultReaders', 'Biometric$Readers', 'Pinpad$Readers']<br>
+  &gt;&gt;&gt;</font></p>
+<p>or
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+  from smartcard.System import readergroups<br>
+  &gt;&gt;&gt; g=readergroups()<br>
+  &gt;&gt;&gt; print g<br>
+  ['SCard$DefaultReaders']<br>
+  &gt;&gt;&gt; g.append('Biometric$Readers')<br>
+  &gt;&gt;&gt; g.insert(1,'Pinpad$Readers')<br>
+  &gt;&gt;&gt; print g<br>
+  ['SCard$DefaultReaders', 'Pinpad$Readers', 'Biometric$Readers']<br>
+  &gt;&gt;&gt;</font></p>
+<p>Smartcard reader groups are not persistent until a reader as been added to
+  the group. To add a reader to a reader group, use addreadertogroups():
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+  from smartcard.System import readergroups, addreadertogroups, readers<br>
+  &gt;&gt;&gt; g=readergroups()<br>
+  &gt;&gt;&gt; g+='USB$Readers'<br>
+  &gt;&gt;&gt; addreadertogroups( 'Schlumberger e-gate 0', 'USB$Readers' )<br>
+  &gt;&gt;&gt; readers( 'USB$Readers')<br>
+  ['Schlumberger e-gate 0']<br>
+  &gt;&gt;&gt;</font></p>
+<p>To remove a reader group, all list operators are available to manage reader
+  groups, including pop() or remove():
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+  from smartcard.System import readergroups, addreadertogroups, readers<br>
+  &gt;&gt;&gt; g=readergroups()<br>
+  &gt;&gt;&gt; g+='USB$Readers'<br>
+  &gt;&gt;&gt; print g<br>
+  ['SCard$DefaultReaders', 'USB$Readers']<br>
+  &gt;&gt;&gt; g.pop(1)<br>
+  'USB$Readers'<br>
+  &gt;&gt;&gt; g<br>
+  ['SCard$DefaultReaders']<br>
+  &gt;&gt;&gt; </font></p>
+<p>or</p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+  from smartcard.System import readergroups, addreadertogroups, readers<br>
+  &gt;&gt;&gt; g=readergroups()<br>
+  &gt;&gt;&gt; g+='USB$Readers'<br>
+  &gt;&gt;&gt; print g<br>
+  ['SCard$DefaultReaders', 'USB$Readers']<br>
+  &gt;&gt;&gt; readergroups().remove('USB$Readers')<br>
+  &gt;&gt;&gt; readergroups()<br>
+  ['SCard$DefaultReaders']<br>
+  &gt;&gt;&gt;</font></p>
+<p><a href="#top">to the top</a></p>
+<h3></h3>
+<h3><a name="readermonitoring"></a>Monitoring readers</h3>
+<p>You can monitor the insertion or removal of readers using the <a href="epydoc/smartcard.ReaderMonitoring.ReaderObserver-class.html">ReaderObserver</a> 
+  interface. 
+<p>To monitor reader insertion, create a <a href="epydoc/smartcard.ReaderMonitoring.ReaderObserver-class.html">ReaderObserver</a> 
+  object that implements an update() method that will be called upon reader/insertion 
+  removal. The following sample code implements a ReaderObserver that simply prints 
+  the inserted/removed readers on the standard output: 
+<pre><font face="Courier New, Courier, mono" size="2" color="#0033FF">from smartcard.ReaderMonitoring import ReaderObserver
+
+class printobserver( ReaderObserver ):
+    """A simple reader observer that is notified
+    when readers are added/removed from the system and
+    prints the list of readers
+    """
+    def update( self, observable, (addedreaders, removedreaders) ):
+        print "Added readers", addedreaders
+        print "Removed readers", removedreaders</font><font face="Courier New, Courier, mono" size="2">
+</font>  </pre>
+<p>To monitor reader insertion/removal, simply add the observer to the <a href="epydoc/smartcard.ReaderMonitoring.ReaderMonitor-class.html">ReaderMonitor</a>: 
+<pre><font face="Courier New, Courier, mono" size="2" color="#0033FF">from sys import stdin, exc_info
+from time import sleep
+
+from smartcard.ReaderMonitoring import ReaderMonitor, ReaderObserver
+
+try:
+    print "Add or remove a smartcard reader to the system."
+    print "This program will exit in 10 seconds"
+    print ""
+    readermonitor = ReaderMonitor()
+    readerobserver = printobserver()
+    readermonitor.addObserver( readerobserver )
+
+    sleep(10)
+
+    # don't forget to remove observer, or the
+    # monitor will poll forever...
+    readermonitor.deleteObserver(readerobserver)
+
+    print 'press Enter to continue'
+    stdin.readline()
+
+except error:
+    print exc_info()[0], ': ', exc_info()[1]
+</font></pre>
+<p><a href="#top">to the top</a>
+<h3></h3>
+<h3><a name="License"></a>License</h3>
+<h3>GNU LESSER GENERAL PUBLIC LICENSE</h3>
+<p>Version 2.1, February 1999</p>
+<p>Copyright (C) 1991, 1999 Free Software Foundation, Inc.<br>
+  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA<br>
+  Everyone is permitted to copy and distribute verbatim copies<br>
+  of this license document, but changing it is not allowed.</p>
+<p>[This is the first released version of the Lesser GPL. It also counts<br>
+  as the successor of the GNU Library Public License, version 2, hence<br>
+  the version number 2.1.]</p>
+<p>Preamble</p>
+<p>The licenses for most software are designed to take away your freedom to share 
+  and change it. By contrast, the GNU General Public Licenses are intended to 
+  guarantee your freedom to share and change free software--to make sure the software 
+  is free for all its users.</p>
+<p>This license, the Lesser General Public License, applies to some specially 
+  designated software packages--typically libraries--of the Free Software Foundation 
+  and other authors who decide to use it. You can use it too, but we suggest you 
+  first think carefully about whether this license or the ordinary General Public 
+  License is the better strategy to use in any particular case, based on the explanations 
+  below.</p>
+<p>When we speak of free software, we are referring to freedom of use, not price. 
+  Our General Public Licenses are designed to make sure that you have the freedom 
+  to distribute copies of free software (and charge for this service if you wish); 
+  that you receive source code or can get it if you want it; that you can change 
+  the software and use pieces of it in new free programs; and that you are informed 
+  that you can do these things.</p>
+<p>To protect your rights, we need to make restrictions that forbid distributors 
+  to deny you these rights or to ask you to surrender these rights. These restrictions 
+  translate to certain responsibilities for you if you distribute copies of the 
+  library or if you modify it.</p>
+<p>For example, if you distribute copies of the library, whether gratis or for 
+  a fee, you must give the recipients all the rights that we gave you. You must 
+  make sure that they, too, receive or can get the source code. If you link other 
+  code with the library, you must provide complete object files to the recipients, 
+  so that they can relink them with the library after making changes to the library 
+  and recompiling it. And you must show them these terms so they know their rights.</p>
+<p>We protect your rights with a two-step method: (1) we copyright the library, 
+  and (2) we offer you this license, which gives you legal permission to copy, 
+  distribute and/or modify the library.</p>
+<p>To protect each distributor, we want to make it very clear that there is no 
+  warranty for the free library. Also, if the library is modified by someone else 
+  and passed on, the recipients should know that what they have is not the original 
+  version, so that the original author's reputation will not be affected by problems 
+  that might be introduced by others.</p>
+<p>Finally, software patents pose a constant threat to the existence of any free 
+  program. We wish to make sure that a company cannot effectively restrict the 
+  users of a free program by obtaining a restrictive license from a patent holder. 
+  Therefore, we insist that any patent license obtained for a version of the library 
+  must be consistent with the full freedom of use specified in this license.</p>
+<p>Most GNU software, including some libraries, is covered by the ordinary GNU 
+  General Public License. This license, the GNU Lesser General Public License, 
+  applies to certain designated libraries, and is quite different from the ordinary 
+  General Public License. We use this license for certain libraries in order to 
+  permit linking those libraries into non-free programs.</p>
+<p>When a program is linked with a library, whether statically or using a shared 
+  library, the combination of the two is legally speaking a combined work, a derivative 
+  of the original library. The ordinary General Public License therefore permits 
+  such linking only if the entire combination fits its criteria of freedom. The 
+  Lesser General Public License permits more lax criteria for linking other code 
+  with the library.</p>
+<p>We call this license the &quot;Lesser&quot; General Public License because 
+  it does Less to protect the user's freedom than the ordinary General Public 
+  License. It also provides other free software developers Less of an advantage 
+  over competing non-free programs. These disadvantages are the reason we use 
+  the ordinary General Public License for many libraries. However, the Lesser 
+  license provides advantages in certain special circumstances.</p>
+<p>For example, on rare occasions, there may be a special need to encourage the 
+  widest possible use of a certain library, so that it becomes a de-facto standard. 
+  To achieve this, non-free programs must be allowed to use the library. A more 
+  frequent case is that a free library does the same job as widely used non-free 
+  libraries. In this case, there is little to gain by limiting the free library 
+  to free software only, so we use the Lesser General Public License.</p>
+<p>In other cases, permission to use a particular library in non-free programs 
+  enables a greater number of people to use a large body of free software. For 
+  example, permission to use the GNU C Library in non-free programs enables many 
+  more people to use the whole GNU operating system, as well as its variant, the 
+  GNU/Linux operating system.</p>
+<p>Although the Lesser General Public License is Less protective of the users' 
+  freedom, it does ensure that the user of a program that is linked with the Library 
+  has the freedom and the wherewithal to run that program using a modified version 
+  of the Library.</p>
+<p>The precise terms and conditions for copying, distribution and modification 
+  follow. Pay close attention to the difference between a &quot;work based on 
+  the library&quot; and a &quot;work that uses the library&quot;. The former contains 
+  code derived from the library, whereas the latter must be combined with the 
+  library in order to run.</p>
+<p>TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION</p>
+<p>0. This License Agreement applies to any software library or other program 
+  which contains a notice placed by the copyright holder or other authorized party 
+  saying it may be distributed under the terms of this Lesser General Public License 
+  (also called &quot;this License&quot;). Each licensee is addressed as &quot;you&quot;.</p>
+<p>A &quot;library&quot; means a collection of software functions and/or data 
+  prepared so as to be conveniently linked with application programs (which use 
+  some of those functions and data) to form executables.</p>
+<p>The &quot;Library&quot;, below, refers to any such software library or work 
+  which has been distributed under these terms. A &quot;work based on the Library&quot; 
+  means either the Library or any derivative work under copyright law: that is 
+  to say, a work containing the Library or a portion of it, either verbatim or 
+  with modifications and/or translated straightforwardly into another language. 
+  (Hereinafter, translation is included without limitation in the term &quot;modification&quot;.)</p>
+<p>&quot;Source code&quot; for a work means the preferred form of the work for 
+  making modifications to it. For a library, complete source code means all the 
+  source code for all modules it contains, plus any associated interface definition 
+  files, plus the scripts used to control compilation and installation of the 
+  library.</p>
+<p>Activities other than copying, distribution and modification are not covered 
+  by this License; they are outside its scope. The act of running a program using 
+  the Library is not restricted, and output from such a program is covered only 
+  if its contents constitute a work based on the Library (independent of the use 
+  of the Library in a tool for writing it). Whether that is true depends on what 
+  the Library does and what the program that uses the Library does.</p>
+<p>1. You may copy and distribute verbatim copies of the Library's complete source 
+  code as you receive it, in any medium, provided that you conspicuously and appropriately 
+  publish on each copy an appropriate copyright notice and disclaimer of warranty; 
+  keep intact all the notices that refer to this License and to the absence of 
+  any warranty; and distribute a copy of this License along with the Library.</p>
+<p>You may charge a fee for the physical act of transferring a copy, and you may 
+  at your option offer warranty protection in exchange for a fee.</p>
+<p>2. You may modify your copy or copies of the Library or any portion of it, 
+  thus forming a work based on the Library, and copy and distribute such modifications 
+  or work under the terms of Section 1 above, provided that you also meet all 
+  of these conditions:</p>
+<p> * a) The modified work must itself be a software library.<br>
+  * b) You must cause the files modified to carry prominent notices stating that 
+  you changed the files and the date of any change.<br>
+  * c) You must cause the whole of the work to be licensed at no charge to all 
+  third parties under the terms of this License.<br>
+  * d) If a facility in the modified Library refers to a function or a table of 
+  data to be supplied by an application program that uses the facility, other 
+  than as an argument passed when the facility is invoked, then you must make 
+  a good faith effort to ensure that, in the event an application does not supply 
+  such function or table, the facility still operates, and performs whatever part 
+  of its purpose remains meaningful.</p>
+<p> (For example, a function in a library to compute square roots has a purpose 
+  that is entirely well-defined independent of the application. Therefore, Subsection 
+  2d requires that any application-supplied function or table used by this function 
+  must be optional: if the application does not supply it, the square root function 
+  must still compute square roots.)</p>
+<p> These requirements apply to the modified work as a whole. If identifiable 
+  sections of that work are not derived from the Library, and can be reasonably 
+  considered independent and separate works in themselves, then this License, 
+  and its terms, do not apply to those sections when you distribute them as separate 
+  works. But when you distribute the same sections as part of a whole which is 
+  a work based on the Library, the distribution of the whole must be on the terms 
+  of this License, whose permissions for other licensees extend to the entire 
+  whole, and thus to each and every part regardless of who wrote it.</p>
+<p> Thus, it is not the intent of this section to claim rights or contest your 
+  rights to work written entirely by you; rather, the intent is to exercise the 
+  right to control the distribution of derivative or collective works based on 
+  the Library.</p>
+<p> In addition, mere aggregation of another work not based on the Library with 
+  the Library (or with a work based on the Library) on a volume of a storage or 
+  distribution medium does not bring the other work under the scope of this License. 
+</p>
+<p>3. You may opt to apply the terms of the ordinary GNU General Public License 
+  instead of this License to a given copy of the Library. To do this, you must 
+  alter all the notices that refer to this License, so that they refer to the 
+  ordinary GNU General Public License, version 2, instead of to this License. 
+  (If a newer version than version 2 of the ordinary GNU General Public License 
+  has appeared, then you can specify that version instead if you wish.) Do not 
+  make any other change in these notices.</p>
+<p>Once this change is made in a given copy, it is irreversible for that copy, 
+  so the ordinary GNU General Public License applies to all subsequent copies 
+  and derivative works made from that copy.</p>
+<p>This option is useful when you wish to copy part of the code of the Library 
+  into a program that is not a library.</p>
+<p>4. You may copy and distribute the Library (or a portion or derivative of it, 
+  under Section 2) in object code or executable form under the terms of Sections 
+  1 and 2 above provided that you accompany it with the complete corresponding 
+  machine-readable source code, which must be distributed under the terms of Sections 
+  1 and 2 above on a medium customarily used for software interchange.</p>
+<p>If distribution of object code is made by offering access to copy from a designated 
+  place, then offering equivalent access to copy the source code from the same 
+  place satisfies the requirement to distribute the source code, even though third 
+  parties are not compelled to copy the source along with the object code.</p>
+<p>5. A program that contains no derivative of any portion of the Library, but 
+  is designed to work with the Library by being compiled or linked with it, is 
+  called a &quot;work that uses the Library&quot;. Such a work, in isolation, 
+  is not a derivative work of the Library, and therefore falls outside the scope 
+  of this License.</p>
+<p>However, linking a &quot;work that uses the Library&quot; with the Library 
+  creates an executable that is a derivative of the Library (because it contains 
+  portions of the Library), rather than a &quot;work that uses the library&quot;. 
+  The executable is therefore covered by this License. Section 6 states terms 
+  for distribution of such executables.</p>
+<p>When a &quot;work that uses the Library&quot; uses material from a header file 
+  that is part of the Library, the object code for the work may be a derivative 
+  work of the Library even though the source code is not. Whether this is true 
+  is especially significant if the work can be linked without the Library, or 
+  if the work is itself a library. The threshold for this to be true is not precisely 
+  defined by law.</p>
+<p>If such an object file uses only numerical parameters, data structure layouts 
+  and accessors, and small macros and small inline functions (ten lines or less 
+  in length), then the use of the object file is unrestricted, regardless of whether 
+  it is legally a derivative work. (Executables containing this object code plus 
+  portions of the Library will still fall under Section 6.)</p>
+<p>Otherwise, if the work is a derivative of the Library, you may distribute the 
+  object code for the work under the terms of Section 6. Any executables containing 
+  that work also fall under Section 6, whether or not they are linked directly 
+  with the Library itself.</p>
+<p>6. As an exception to the Sections above, you may also combine or link a &quot;work 
+  that uses the Library&quot; with the Library to produce a work containing portions 
+  of the Library, and distribute that work under terms of your choice, provided 
+  that the terms permit modification of the work for the customer's own use and 
+  reverse engineering for debugging such modifications.</p>
+<p>You must give prominent notice with each copy of the work that the Library 
+  is used in it and that the Library and its use are covered by this License. 
+  You must supply a copy of this License. If the work during execution displays 
+  copyright notices, you must include the copyright notice for the Library among 
+  them, as well as a reference directing the user to the copy of this License. 
+  Also, you must do one of these things:</p>
+<p> * a) Accompany the work with the complete corresponding machine-readable source 
+  code for the Library including whatever changes were used in the work (which 
+  must be distributed under Sections 1 and 2 above); and, if the work is an executable 
+  linked with the Library, with the complete machine-readable &quot;work that 
+  uses the Library&quot;, as object code and/or source code, so that the user 
+  can modify the Library and then relink to produce a modified executable containing 
+  the modified Library. (It is understood that the user who changes the contents 
+  of definitions files in the Library will not necessarily be able to recompile 
+  the application to use the modified definitions.)<br>
+  * b) Use a suitable shared library mechanism for linking with the Library. A 
+  suitable mechanism is one that (1) uses at run time a copy of the library already 
+  present on the user's computer system, rather than copying library functions 
+  into the executable, and (2) will operate properly with a modified version of 
+  the library, if the user installs one, as long as the modified version is interface-compatible 
+  with the version that the work was made with.<br>
+  * c) Accompany the work with a written offer, valid for at least three years, 
+  to give the same user the materials specified in Subsection 6a, above, for a 
+  charge no more than the cost of performing this distribution.<br>
+  * d) If distribution of the work is made by offering access to copy from a designated 
+  place, offer equivalent access to copy the above specified materials from the 
+  same place.<br>
+  * e) Verify that the user has already received a copy of these materials or 
+  that you have already sent this user a copy. </p>
+<p>For an executable, the required form of the &quot;work that uses the Library&quot; 
+  must include any data and utility programs needed for reproducing the executable 
+  from it. However, as a special exception, the materials to be distributed need 
+  not include anything that is normally distributed (in either source or binary 
+  form) with the major components (compiler, kernel, and so on) of the operating 
+  system on which the executable runs, unless that component itself accompanies 
+  the executable.</p>
+<p>It may happen that this requirement contradicts the license restrictions of 
+  other proprietary libraries that do not normally accompany the operating system. 
+  Such a contradiction means you cannot use both them and the Library together 
+  in an executable that you distribute.</p>
+<p>7. You may place library facilities that are a work based on the Library side-by-side 
+  in a single library together with other library facilities not covered by this 
+  License, and distribute such a combined library, provided that the separate 
+  distribution of the work based on the Library and of the other library facilities 
+  is otherwise permitted, and provided that you do these two things:</p>
+<p> * a) Accompany the combined library with a copy of the same work based on 
+  the Library, uncombined with any other library facilities. This must be distributed 
+  under the terms of the Sections above.<br>
+  * b) Give prominent notice with the combined library of the fact that part of 
+  it is a work based on the Library, and explaining where to find the accompanying 
+  uncombined form of the same work. </p>
+<p>8. You may not copy, modify, sublicense, link with, or distribute the Library 
+  except as expressly provided under this License. Any attempt otherwise to copy, 
+  modify, sublicense, link with, or distribute the Library is void, and will automatically 
+  terminate your rights under this License. However, parties who have received 
+  copies, or rights, from you under this License will not have their licenses 
+  terminated so long as such parties remain in full compliance.</p>
+<p>9. You are not required to accept this License, since you have not signed it. 
+  However, nothing else grants you permission to modify or distribute the Library 
+  or its derivative works. These actions are prohibited by law if you do not accept 
+  this License. Therefore, by modifying or distributing the Library (or any work 
+  based on the Library), you indicate your acceptance of this License to do so, 
+  and all its terms and conditions for copying, distributing or modifying the 
+  Library or works based on it.</p>
+<p>10. Each time you redistribute the Library (or any work based on the Library), 
+  the recipient automatically receives a license from the original licensor to 
+  copy, distribute, link with or modify the Library subject to these terms and 
+  conditions. You may not impose any further restrictions on the recipients' exercise 
+  of the rights granted herein. You are not responsible for enforcing compliance 
+  by third parties with this License.</p>
+<p>11. If, as a consequence of a court judgment or allegation of patent infringement 
+  or for any other reason (not limited to patent issues), conditions are imposed 
+  on you (whether by court order, agreement or otherwise) that contradict the 
+  conditions of this License, they do not excuse you from the conditions of this 
+  License. If you cannot distribute so as to satisfy simultaneously your obligations 
+  under this License and any other pertinent obligations, then as a consequence 
+  you may not distribute the Library at all. For example, if a patent license 
+  would not permit royalty-free redistribution of the Library by all those who 
+  receive copies directly or indirectly through you, then the only way you could 
+  satisfy both it and this License would be to refrain entirely from distribution 
+  of the Library.</p>
+<p>If any portion of this section is held invalid or unenforceable under any particular 
+  circumstance, the balance of the section is intended to apply, and the section 
+  as a whole is intended to apply in other circumstances.</p>
+<p>It is not the purpose of this section to induce you to infringe any patents 
+  or other property right claims or to contest validity of any such claims; this 
+  section has the sole purpose of protecting the integrity of the free software 
+  distribution system which is implemented by public license practices. Many people 
+  have made generous contributions to the wide range of software distributed through 
+  that system in reliance on consistent application of that system; it is up to 
+  the author/donor to decide if he or she is willing to distribute software through 
+  any other system and a licensee cannot impose that choice.</p>
+<p>This section is intended to make thoroughly clear what is believed to be a 
+  consequence of the rest of this License.</p>
+<p>12. If the distribution and/or use of the Library is restricted in certain 
+  countries either by patents or by copyrighted interfaces, the original copyright 
+  holder who places the Library under this License may add an explicit geographical 
+  distribution limitation excluding those countries, so that distribution is permitted 
+  only in or among countries not thus excluded. In such case, this License incorporates 
+  the limitation as if written in the body of this License.</p>
+<p>13. The Free Software Foundation may publish revised and/or new versions of 
+  the Lesser General Public License from time to time. Such new versions will 
+  be similar in spirit to the present version, but may differ in detail to address 
+  new problems or concerns.</p>
+<p>Each version is given a distinguishing version number. If the Library specifies 
+  a version number of this License which applies to it and &quot;any later version&quot;, 
+  you have the option of following the terms and conditions either of that version 
+  or of any later version published by the Free Software Foundation. If the Library 
+  does not specify a license version number, you may choose any version ever published 
+  by the Free Software Foundation.</p>
+<p>14. If you wish to incorporate parts of the Library into other free programs 
+  whose distribution conditions are incompatible with these, write to the author 
+  to ask for permission. For software which is copyrighted by the Free Software 
+  Foundation, write to the Free Software Foundation; we sometimes make exceptions 
+  for this. Our decision will be guided by the two goals of preserving the free 
+  status of all derivatives of our free software and of promoting the sharing 
+  and reuse of software generally.</p>
+<p>NO WARRANTY</p>
+<p>15. BECAUSE THE LIBRARY IS LICENSED FREE OF CHARGE, THERE IS NO WARRANTY FOR 
+  THE LIBRARY, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN OTHERWISE 
+  STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES PROVIDE THE LIBRARY 
+  &quot;AS IS&quot; WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, 
+  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND 
+  FITNESS FOR A PARTICULAR PURPOSE. THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE 
+  OF THE LIBRARY IS WITH YOU. SHOULD THE LIBRARY PROVE DEFECTIVE, YOU ASSUME THE 
+  COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION.</p>
+<p>16. IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING WILL 
+  ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR REDISTRIBUTE 
+  THE LIBRARY AS PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY 
+  GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE 
+  OR INABILITY TO USE THE LIBRARY (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR 
+  DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR 
+  A FAILURE OF THE LIBRARY TO OPERATE WITH ANY OTHER SOFTWARE), EVEN IF SUCH HOLDER 
+  OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. </p>
+<hr>
+</body>
+</html>

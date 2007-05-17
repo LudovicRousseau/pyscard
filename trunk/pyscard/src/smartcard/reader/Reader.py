@@ -1,0 +1,63 @@
+"""Smart card Reader abstract class.
+
+__author__ = "gemalto http://www.gemalto.com"
+
+Copyright 2001-2007 gemalto
+Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
+
+This file is part of pyscard.
+
+pyscard is free software; you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation; either version 2.1 of the License, or
+(at your option) any later version.
+
+pyscard is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with pyscard; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+"""
+
+class Reader:
+    """Reader abstract class.
+
+    The reader class is responsible for creating connections
+    with a card.
+
+    Known subclasses: PCSCReader
+    """
+    def __init__( self, readername ):
+        """Constructs a new reader and store readername."""
+        self.name=readername
+
+    def addtoreadergroup( self, groupname ):
+        """Add reader to a reader group."""
+        pass
+
+    def removefromreadergroup( self, groupname ):
+        """Remove reader from a reader group."""
+        pass
+
+    def createConnection( self ):
+        """Returns a card connection thru reader."""
+        pass
+
+    def __eq__( self, other ):
+        """Returns 0 if self==other (same name)."""
+        if type(other)==type(self):
+            return self.name==other.name
+        else:
+            return 1
+
+    def __repr__( self ):
+        """Returns card reader name string for `object` calls."""
+        return "'%s'" % self.name
+
+    def __str__( self ):
+        """Returns card reader name string for str(object) calls."""
+        return self.name
+

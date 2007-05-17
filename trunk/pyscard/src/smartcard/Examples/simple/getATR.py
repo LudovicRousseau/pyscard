@@ -1,0 +1,41 @@
+#! /usr/bin/env python
+"""
+Sample script that displays the ATR of inserted cards.
+
+Copyright 2001-2007 gemalto
+Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
+
+This file is part of scard-python.
+
+scard-python is free software; you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation; either version 2.1 of the License, or
+(at your option) any later version.
+
+scard-python is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with scard-python; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+"""
+from smartcard.Exceptions import NoCardException
+from smartcard.System import readers
+from smartcard.util import toHexString
+
+for reader in readers():
+    try:
+        connection=reader.createConnection()
+        connection.connect()
+        print reader, toHexString( connection.getATR() )
+    except NoCardException:
+        print reader, 'no card inserted'
+
+
+import sys
+if 'win32'==sys.platform:
+    print 'press Enter to continue'
+    sys.stdin.read(1)
+
