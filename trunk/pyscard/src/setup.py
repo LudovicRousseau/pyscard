@@ -112,7 +112,7 @@ if hasattr(core, 'setup_keywords'):
           'Topic :: Security :: Smartcards',
           ]
     if 'download_url' in core.setup_keywords:
-        kw['download_url'] = ('http://www.gemalto.com/'
+        kw['download_url'] = ('http://sourceforge.net/projects/pyscard/'
                               '%s-%s.zip' % (kw['name'], kw['version']) )
 
 core.setup(**kw)
