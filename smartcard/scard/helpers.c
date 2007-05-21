@@ -625,7 +625,7 @@ dump a reader state list
 
     for( i=0; prl && i<prl->cRStates; i++ )
     {
-        printf("%s userdata: %lx current: %lx event: %lx \n",
+        printf("%s userdata: %p current: %lx event: %lx \n",
             prl->ars[i].szReader,
             prl->ars[i].pvUserData,
             prl->ars[i].dwCurrentState,
