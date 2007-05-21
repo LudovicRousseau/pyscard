@@ -3,6 +3,7 @@
         * maintenance release: 
                 - define LPCTSTR and LPTSTR for recent releases of pcsc-lite
                 - print formatting of userdata in SCardHelper_PrintReaderStateList
+                - updated home page and download links to point to sourceforge.net
 
 
 1.6.0
