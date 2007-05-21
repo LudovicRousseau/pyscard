@@ -37,9 +37,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     #ifndef TRUE
         #define TRUE (1==1)
     #endif
-    #ifndef LPCSTR
-        typedef const char* LPCSTR;
-    #endif
+    #define LPTSTR LPSTR
+    #define LPCTSTR LPCSTR
 #endif // PCSCLITE
 
 
