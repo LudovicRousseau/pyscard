@@ -2,11 +2,11 @@ Metadata-Version: 1.0
 Name: pyscard
 Version: 1.6.0
 Summary: Smartcard module for Python.
-Home-page: http://www.gemalto.com
+Home-page: http://pyscard.sourceforge.net/
 Author: Jean-Daniel Aussel
 Author-email: aussel.jean-daniel@gemalto.com
 License: GNU LESSER GENERAL PUBLIC LICENSE
-Download-URL: http://www.gemalto.com/pyscard-1.6.0.zip
+Download-URL: http://sourceforge.net/projects/pyscard/
 Description: Smartcard package for Python
 Platform: linux
 Platform: win32

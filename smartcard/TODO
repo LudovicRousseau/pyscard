@@ -2,6 +2,8 @@
 
 - documentation of CardConnectionDecorator; add a meaningful example (OP secure channel?)
 
+- documentation of wxPython classes
+
 - more error checking chains
 
 - more unit tests
