@@ -39,13 +39,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     #endif
 #endif // PCSCLITE
 
-#ifdef PCSCLITE
-    #define _LPCSTR const char*
-#endif // PCSCLITE
-#ifdef WIN32
-    #define _LPCSTR LPCSTR
-#endif // WIN32
-
 #ifdef WIN32
 typedef WINSCARDAPI HANDLE
 (WINAPI *SCARDACCESSSTARTEDEVENT)(void);

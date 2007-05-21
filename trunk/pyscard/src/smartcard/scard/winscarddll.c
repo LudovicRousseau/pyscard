@@ -248,7 +248,7 @@ WINAPI _defaultSCARDCANCELTRANSACTION(
 WINSCARDAPI LONG
 WINAPI _defaultSCARDCONNECTA(
     IN      SCARDCONTEXT hContext,
-    IN      _LPCSTR szReader,
+    IN      LPCSTR szReader,
     IN      DWORD dwShareMode,
     IN      DWORD dwPreferredProtocols,
     OUT     LPSCARDHANDLE phCard,
