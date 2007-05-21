@@ -43,7 +43,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     #define _LPCSTR const char*
 #endif // PCSCLITE
 #ifdef WIN32
-    typedef _LPCSTR LPCSTR
+    #define _LPCSTR LPCSTR
 #endif // WIN32
 
 #ifdef WIN32
