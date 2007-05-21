@@ -1,3 +1,10 @@
+1.6.1
+=====
+        * maintenance release: 
+                - define LPCTSTR and LPTSTR for recent releases of pcsc-lite
+                - print formatting of userdata in SCardHelper_PrintReaderStateList
+
+
 1.6.0
 =====
 
