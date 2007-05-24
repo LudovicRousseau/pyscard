@@ -48,6 +48,14 @@ elif 'linux-i586'==get_platform() or 'linux-i686'==get_platform():
     platform_include_dirs=['/usr/include/PCSC']
     platform_extra_compile_args=[]#['-ggdb', '-O0']
     platform_extra_link_args=[]#['-ggdb']
+elif 'macosx-10.3-fat'==get_platform():
+    platform__cc_defines=[('PCSCLITE', '1'),('__APPLE__','1')]
+    platform_swig_opts=['-DPCSCLITE']
+    platform_sources=[]
+    platform_libraries=['pcsclite']
+    platform_include_dirs=['PCSC']
+    platform_extra_compile_args=['-v','-framework', 'PCSC']#['-ggdb', '-O0']
+    platform_extra_link_args=[]#['-ggdb']
 else:
     platform_cc_defines=[]
     platform_sources=[]
