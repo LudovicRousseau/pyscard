@@ -22,7 +22,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #ifdef WIN32
     #include <windows.h>
 #endif
+
+#ifdef __APPLE__
+#include <PCSC/winscard.h>
+#else
 #include <winscard.h>
+#endif
+
 #include <Python.h>
 
 #include "helpers.h"
