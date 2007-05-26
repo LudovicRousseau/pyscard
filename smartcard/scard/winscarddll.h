@@ -23,13 +23,15 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #endif
 
 #ifdef __APPLE__
-#ifndef PCSC_API
-#define PCSC_API
-#endif
-#include <PCSC/winscard.h>
-#else
+    #ifndef PCSC_API
+        #define PCSC_API
+    #endif
+    #include <PCSC/wintypes.h>
+    #include <PCSC/winscard.h>
+    #define LPCTSTR char*
+#else //__APPLE__
 #include <winscard.h>
-#endif
+#endif 
 
 #ifdef PCSCLITE
     #define WINSCARDAPI PCSC_API
