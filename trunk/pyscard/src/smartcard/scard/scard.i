@@ -148,8 +148,12 @@ Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #endif
 
 #ifdef PCSCLITE
-#include <reader.h>
-#endif
+    #ifdef __APPLE__
+        //#include <PCSC/reader.h>
+    #else
+        #include <reader.h>
+    #endif
+#endif //PCSCLITE
 
 #include "helpers.h"
 #include "memlog.h"
