@@ -50,7 +50,7 @@ elif 'linux-i586'==get_platform() or 'linux-i686'==get_platform():
     platform_extra_link_args=[]#['-ggdb']
 elif 'macosx-10.3-fat'==get_platform():
     platform__cc_defines=[('PCSCLITE', '1'),('__APPLE__','1')]
-    platform_swig_opts=['-DPCSCLITE']
+    platform_swig_opts=['-DPCSCLITE', '-D__APPLE__']
     platform_sources=[]
     platform_libraries=['pcsclite']
     platform_include_dirs=['PCSC']
