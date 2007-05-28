@@ -53,9 +53,19 @@ typedef enum
     SCARD_STATE_ATRMATCH,
     SCARD_STATE_EXCLUSIVE,
     SCARD_STATE_INUSE,
-    SCARD_STATE_MUTE,
-    SCARD_STATE_UNPOWERED
+    SCARD_STATE_MUTE
 } StateType ;
+
+#ifdef PCSCLITE
+    #ifdef __APPLE__
+        %constant unsigned long SCARD_STATE_UNPOWERED = 0x0400 ;
+    #else // __APPLE__
+        typedef enum
+        {
+            SCARD_STATE_UNPOWERED
+        } nonAppleStateType ;
+    #endif //!__APPLE_
+#endif //PCSCLITE
 
 // protocols
 #ifdef WIN32
@@ -77,21 +87,37 @@ typedef enum
 #endif
 
 #ifdef PCSCLITE
-typedef enum
-{
-    SCARD_PROTOCOL_UNSET,
-    SCARD_PROTOCOL_T0,
-    SCARD_PROTOCOL_T1,
-    SCARD_PROTOCOL_RAW,
-    SCARD_PROTOCOL_T15,
-    SCARD_PROTOCOL_ANY
-} ProtocolType ;
-// define winscard constants for pcsc lite
-%constant unsigned long SCARD_PROTOCOL_UNDEFINED = SCARD_PROTOCOL_UNSET ;
-%constant unsigned long SCARD_PROTOCOL_Tx = SCARD_PROTOCOL_ANY ;
-%constant unsigned long SCARD_PROTOCOL_DEFAULT = SCARD_PROTOCOL_ANY ;
-%constant unsigned long SCARD_PROTOCOL_OPTIMAL = SCARD_PROTOCOL_UNSET ;
-#endif
+    #ifdef __APPLE__
+        typedef enum
+        {
+            SCARD_PROTOCOL_T0,
+            SCARD_PROTOCOL_T1,
+            SCARD_PROTOCOL_RAW,
+            SCARD_PROTOCOL_ANY
+        } ProtocolType ;
+        %constant unsigned long SCARD_PROTOCOL_UNSET = SCARD_PROTOCOL_ANY ;
+        %constant unsigned long SCARD_PROTOCOL_T15 = 0x00000008 ;
+        %constant unsigned long SCARD_PROTOCOL_UNDEFINED = SCARD_PROTOCOL_ANY ;
+        %constant unsigned long SCARD_PROTOCOL_OPTIMAL = SCARD_PROTOCOL_ANY ;
+    #else //__APPLE__
+        typedef enum
+        {
+            SCARD_PROTOCOL_UNSET,
+            SCARD_PROTOCOL_T0,
+            SCARD_PROTOCOL_T1,
+            SCARD_PROTOCOL_RAW,
+            SCARD_PROTOCOL_T15,
+            SCARD_PROTOCOL_ANY
+        } ProtocolType ;
+        %constant unsigned long SCARD_PROTOCOL_UNDEFINED = SCARD_PROTOCOL_UNSET ;
+        %constant unsigned long SCARD_PROTOCOL_OPTIMAL = SCARD_PROTOCOL_UNSET ;
+    #endif //!__APPLE__
+    // define winscard constants for pcsc lite
+    %constant unsigned long SCARD_PROTOCOL_UNDEFINED = SCARD_PROTOCOL_UNSET ;
+    %constant unsigned long SCARD_PROTOCOL_Tx = SCARD_PROTOCOL_ANY ;
+    %constant unsigned long SCARD_PROTOCOL_DEFAULT = SCARD_PROTOCOL_ANY ;
+    %constant unsigned long SCARD_PROTOCOL_OPTIMAL = SCARD_PROTOCOL_UNSET ;
+#endif //PCSCLITE
 
 
 %constant unsigned long SCARD_PCI_T0 = 0x01 ;
