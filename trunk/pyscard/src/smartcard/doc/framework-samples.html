@@ -1,43 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 
-<SCRIPT>
-function exec (command) {
-  if (document.layers && navigator.javaEnabled()) {
-    window._command = command;
-    window.oldOnError = window.onerror;
-    window.onerror = function (err) {
-      if (err.indexOf ("User didn't grant") != -1) {
-        alert('Execution of ' + window._command +
-              ' not allowed by current browser settings.');
-        return true;
-      }
-      else return false;
-    }
-    netscape.security.PrivilegeManager.enablePrivilege
-('UniversalExecAccess');
-    java.lang.Runtime.getRuntime().exec(command);
-    window.onerror = window.oldOnError;
-  }
-  else if (document.all) {
-    window.oldOnError = window.onerror;
-    window._command = command;
-    window.onerror = function (err) {
-      if (err.indexOf('utomation') != -1) {
-        alert('Execution of ' + window._command +
-              ' not allowed by current browser settings.');
-        return true;
-      }
-      else return false;
-    };
-    var wsh = new ActiveXObject('WScript.Shell');
-    if (wsh)
-      wsh.Run(command);
-    window.onerror = window.oldOnError;
-  }
-}
-</SCRIPT>
-
 <head>
 <title>smartcard python framework samples</title>
 </head>
