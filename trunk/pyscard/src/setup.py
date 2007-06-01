@@ -52,10 +52,10 @@ elif 'macosx-10.3-fat'==get_platform():
     platform__cc_defines=[('PCSCLITE', '1'),('__APPLE__','1')]
     platform_swig_opts=['-DPCSCLITE', '-D__APPLE__']
     platform_sources=[]
-    platform_libraries=['pcsclite']
+    platform_libraries=[]
     platform_include_dirs=['PCSC']
-    platform_extra_compile_args=['-v','-framework', 'PCSC']#['-ggdb', '-O0']
-    platform_extra_link_args=[]#['-ggdb']
+    platform_extra_compile_args=['-v','-framework', 'PCSC']
+    platform_extra_link_args=[]
 else:
     platform_cc_defines=[]
     platform_sources=[]
@@ -67,7 +67,7 @@ else:
 
 
 kw = {'name':"pyscard",
-      'version':"1.6.1",
+      'version':"1.6.2",
       'description':"Smartcard module for Python.",
       'author':"Jean-Daniel Aussel",
       'author_email':"aussel.jean-daniel@gemalto.com",
@@ -112,7 +112,7 @@ kw = {'name':"pyscard",
 if hasattr(core, 'setup_keywords'):
     if 'classifiers' in core.setup_keywords:
         kw['classifiers'] = [
-          'Development Status :: 1.6.1 - Release',
+          'Development Status :: 1.6.2 - Release',
           'License :: GNU LESSER GENERAL PUBLIC LICENSE',
           'Intended Audience :: Developers',
           'Operating System :: Unix',
