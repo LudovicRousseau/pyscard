@@ -32,6 +32,7 @@ import glob, os, sys
 if sys.version[0:1] == '1':
     raise RuntimeError, ("pyscard requires Python 2.x to build.")
 
+print get_platform()
 if 'win32'==get_platform():
     platform__cc_defines=[('WIN32', '100')]
     platform_swig_opts=['-DWIN32']
@@ -48,7 +49,7 @@ elif 'linux-i586'==get_platform() or 'linux-i686'==get_platform():
     platform_include_dirs=['/usr/include/PCSC']
     platform_extra_compile_args=[]#['-ggdb', '-O0']
     platform_extra_link_args=[]#['-ggdb']
-elif 'macosx-10.3-fat'==get_platform():
+elif 'macosx-10.3-fat'==get_platform() or 'darwin-8.9.1-i386'==get_platform():
     platform__cc_defines=[('PCSCLITE', '1'),('__APPLE__','1')]
     platform_swig_opts=['-DPCSCLITE', '-D__APPLE__']
     platform_sources=[]
