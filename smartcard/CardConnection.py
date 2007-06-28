@@ -32,6 +32,7 @@ class CardConnection(Observable):
 
     Known subclasses: smartcard.pcsc.PCSCCardConnection
     """
+    DEFAULT_protocol=0x00
     T0_protocol=0x01
     T1_protocol=0x02
 
@@ -43,6 +44,7 @@ class CardConnection(Observable):
         Observable.__init__(self)
         self.reader = reader
         self.errorcheckingchain=None
+        self.defaultprotocol = CardConnection.T0_protocol
 
     def __del__( self ):
         """Connect to card."""
@@ -66,8 +68,9 @@ class CardConnection(Observable):
         """Remove a CardConnection observer."""
         Observable.deleteObserver( self, observer )
 
-    def connect( self, protocol=T0_protocol ):
-        """Connect to card."""
+    def connect( self, protocol=DEFAULT_protocol ):
+        """Connect to card.
+        protocol: a bit mask of the protocols to use."""
         Observable.setChanged( self )
         Observable.notifyObservers( self, CardConnectionEvent('connect') )
 
@@ -80,6 +83,11 @@ class CardConnection(Observable):
         """Return card ATR"""
         pass
 
+    def getProtocol( self ):
+        """Return bit mask for the protocol of connection, or None if no protocol set.
+        The return value is a bit mask of of CardConnection.T0_protocol for T0 and CardConnection.T1_protocol for T1"""
+        return self.defaultprotocol
+
     def getReader( self ):
         """Return card connection reader"""
         return self.reader
@@ -91,6 +99,13 @@ class CardConnection(Observable):
         with each received response APDU, and a smartcard.sw.SWException.SWException
         will be raised upon error."""
         self.errorcheckingchain=errorcheckingchain
+
+    def setProtocol( self, protocol ):
+        """Set protocol for card connection.
+        protocol: a bit mask of CardConnection.T0_protocol for T0 and CardConnection.T1_protocol for T1
+        e.g. setProtocol( CardConnection.T0_protocol) or setProtocol( CardConnection.T1_protocol | CardConnection.T0_protocol )
+        """
+        self.defaultprotocol = protocol
 
     def transmit( self, bytes, protocol=T0_protocol ):
         """Transmit an apdu. Internally calls doTransmit() class method and notify observers

@@ -53,16 +53,20 @@ class PCSCCardConnection( CardConnection ):
             raise CardConnectionException( 'Failed to release context: ' + SCardGetErrorMessage(hresult) )
         CardConnection.__del__( self )
 
-    def connect( self, protocol=CardConnection.T0_protocol ):
-        """Connect to the card."""
+    def connect( self, protocol=CardConnection.DEFAULT_protocol ):
+        """Connect to the card. If protocol is not specified, connect with the default connection protocol
+        set with CardConnection.setProtocol()."""
         CardConnection.connect( self, protocol )
-        pcscprotocol = 0
-        if CardConnection.T0_protocol & protocol:
-            pcscprotocol |= SCARD_PROTOCOL_T0
-        if CardConnection.T1_protocol & protocol:
-            pcscprotocol |= SCARD_PROTOCOL_T1
-        if 0==pcscprotocol:
-            pcscprotocol = SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1
+        if CardConnection.DEFAULT_protocol==protocol:
+            pcscprotocol = self.getProtocol()
+        else:
+            pcscprotocol = 0
+            if CardConnection.T0_protocol & protocol:
+                pcscprotocol |= SCARD_PROTOCOL_T0
+            if CardConnection.T1_protocol & protocol:
+                pcscprotocol |= SCARD_PROTOCOL_T1
+            if 0==pcscprotocol:
+                pcscprotocol = SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1
 
         hresult, self.hcard, dwActiveProtocol = SCardConnect(
             self.hcontext, str(self.reader), SCARD_SHARE_SHARED, pcscprotocol )

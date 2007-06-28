@@ -48,9 +48,9 @@ class CardConnectionDecorator( CardConnection ):
         """call inner component deleteObserver"""
         self.component.deleteObserver( observer )
 
-    def connect( self ):
+    def connect( self, protocol=CardConnection.T0_protocol ):
         """call inner component connect"""
-        self.component.connect()
+        self.component.connect( protocol )
 
     def disconnect( self ):
         """call inner component disconnect"""
@@ -60,6 +60,10 @@ class CardConnectionDecorator( CardConnection ):
         """call inner component getATR"""
         return self.component.getATR()
 
+    def getProtocol( self ):
+        """call inner component getProtocol"""
+        return self.component.getProtocol()
+
     def getReader( self ):
         """call inner component getReader"""
         return self.component.getReader()
@@ -67,6 +71,10 @@ class CardConnectionDecorator( CardConnection ):
     def setErrorCheckingChain( self, errorcheckingchain ):
         """call inner component setErrorCheckingChain"""
         self.component.setErrorCheckingChain( errorcheckingchain )
+
+    def setProtocol( self, protocol ):
+        """call inner component setProtocol"""
+        return self.component.setProtocol( protocol )
 
     def transmit( self, bytes, protocol=CardConnection.T0_protocol ):
         """call inner component transmit"""

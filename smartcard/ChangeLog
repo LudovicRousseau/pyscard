@@ -3,6 +3,8 @@
         * started support for Mac OS X Darwin; not yet operational
         * fixed issue with "'NoneType' object is not callable" exception on some
         clean-up routines executed from __del__ methods (CardMonitoring, ReaderMonitoring, CardConnection)
+        * added default protocol, protocol argument to CardConnection.connect(), and get/setProtocol methods
+        to CardConnection, PCSCCardConnection and CardConnectionDecorator
 
 1.6.1
 =====
