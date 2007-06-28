@@ -161,8 +161,11 @@ class CardMonitoringThread:
                         self.observable.setChanged()
                         self.observable.notifyObservers( (addedcards, removedcards) )
 
-                finally:
-                    sleep(1)
+                except TypeError:
+                    pass
+
+                #finally:
+                #    sleep(1)
 
         # stop the thread by signaling stopEvent
         def stop(self):

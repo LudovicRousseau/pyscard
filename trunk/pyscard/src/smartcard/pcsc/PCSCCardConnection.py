@@ -47,13 +47,11 @@ class PCSCCardConnection( CardConnection ):
         """Destructor. Clean PCSC connection resources."""
         # race condition: module CardConnection
         # can disappear before __del__ is called
-        try:
-            CardConnection.__del__( self )
-            self.disconnect()
-        except AttributeError: pass
+        self.disconnect()
         hresult = SCardReleaseContext( self.hcontext )
         if hresult!=0:
             raise CardConnectionException( 'Failed to release context: ' + SCardGetErrorMessage(hresult) )
+        CardConnection.__del__( self )
 
     def connect( self ):
         """Connect to the card."""
@@ -66,7 +64,15 @@ class PCSCCardConnection( CardConnection ):
 
     def disconnect( self ):
         """Disconnect from the card."""
-        CardConnection.disconnect( self )
+
+        # when __del__() is invoked in response to a module being deleted,
+        # e.g., when execution of the program is done, other globals referenced
+        # by the __del__() method may already have been deleted.
+        # this causes CardConnection.disconnect to except with a TypeError
+        try:
+            CardConnection.disconnect( self )
+        except TypeError:
+            pass
         if None!=self.hcard:
             hresult = SCardDisconnect( self.hcard, SCARD_UNPOWER_CARD )
             if hresult!=0:

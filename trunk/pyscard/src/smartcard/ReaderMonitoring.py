@@ -168,6 +168,13 @@ class ReaderMonitoringThread:
                         self.observable.setChanged()
                         self.observable.notifyObservers( (addedreaders, removedreaders) )
 
+                # when ReaderMonitoringThread.__del__() is invoked in response to shutdown,
+                # e.g., when execution of the program is done, other globals referenced
+                # by the __del__() method may already have been deleted.
+                # this causes ReaderMonitoringThread.run() to except with a TypeError
+                except TypeError:
+                    pass
+
                 except:
                     import sys
                     print sys.exc_info()[1]
