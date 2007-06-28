@@ -40,6 +40,8 @@ from smartcard.Observer import Observable
 from smartcard.CardType import AnyCardType
 from smartcard.CardRequest import CardRequest
 
+_START_ON_DEMAND_=False
+
 # CardObserver interface
 class CardObserver(Observer):
     """
@@ -77,31 +79,37 @@ class CardMonitor:
         A single instance of this class is created
         by the public CardMonitor class.
         """
-        def __init__(self):
+        def __init__( self ):
             Observable.__init__(self)
-            self.rmthread=None
+            if _START_ON_DEMAND_:
+                self.rmthread=None
+            else:
+                self.rmthread = CardMonitoringThread( self )
 
-        def addObserver(self, observer):
+        def addObserver( self, observer ):
             """Add an observer.
 
             We only start the card monitoring thread when
             there are observers.
             """
             Observable.addObserver( self, observer )
-            if self.countObservers()>0 and self.rmthread==None:
-                self.rmthread = CardMonitoringThread( self )
-            observer.update( self, (self.rmthread.cards, [] ) )
+            if _START_ON_DEMAND_:
+                if self.countObservers()>0 and self.rmthread==None:
+                    self.rmthread = CardMonitoringThread( self )
+            else:
+                observer.update( self, (self.rmthread.cards, [] ) )
 
-        def deleteObserver(self, observer):
+        def deleteObserver( self, observer ):
             """Remove an observer.
 
             We delete the CardMonitoringThread reference when there
             are no more observers.
             """
             Observable.deleteObserver( self, observer )
-            if self.countObservers()==0:
-                if self.rmthread!=None:
-                    self.rmthread=None
+            if _START_ON_DEMAND_:
+                if self.countObservers()==0:
+                    if self.rmthread!=None:
+                        self.rmthread=None
 
         def __str__( self ):
             return 'CardMonitor'
@@ -113,8 +121,8 @@ class CardMonitor:
         if not CardMonitor.instance:
             CardMonitor.instance = CardMonitor.__CardMonitorSingleton()
 
-    def __getattr__(self, name):
-        return getattr(self.instance, name)
+    def __getattr__( self, name ):
+        return getattr( self.instance, name )
 
 
 class CardMonitoringThread:
@@ -142,8 +150,8 @@ class CardMonitoringThread:
             observers of all card insertion/removal.
             """
             while self.stopEvent.isSet()!=1:
-                self.cardrequest = CardRequest( timeout=1 )
                 try:
+                    self.cardrequest = CardRequest( timeout=1 )
                     currentcards = self.cardrequest.waitforcardevent()
 
                     addedcards=[]
@@ -161,11 +169,17 @@ class CardMonitoringThread:
                         self.observable.setChanged()
                         self.observable.notifyObservers( (addedcards, removedcards) )
 
-                except TypeError:
-                    pass
+                # when CardMonitoringThread.__del__() is invoked in response to shutdown,
+                # e.g., when execution of the program is done, other globals referenced
+                # by the __del__() method may already have been deleted.
+                # this causes ReaderMonitoringThread.run() to except with a TypeError
+                except TypeError: pass
 
-                #finally:
-                #    sleep(1)
+                except:
+                    import sys
+                    print sys.exc_info()[1]
+                    print sys.exc_info()[2]
+                    print sys.exc_info()[0]
 
         # stop the thread by signaling stopEvent
         def stop(self):
@@ -180,8 +194,9 @@ class CardMonitoringThread:
             CardMonitoringThread.instance.start()
 
 
-    def __getattr__(self, name):
-        return getattr(self.instance, name)
+    def __getattr__( self, name ):
+        if self.instance:
+            return getattr( self.instance, name )
 
     def __del__(self):
         if CardMonitoringThread.instance!=None:
