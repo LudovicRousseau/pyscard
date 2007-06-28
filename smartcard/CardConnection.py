@@ -32,8 +32,8 @@ class CardConnection(Observable):
 
     Known subclasses: smartcard.pcsc.PCSCCardConnection
     """
-    T0_protocol=0
-    T1_protocol=1
+    T0_protocol=0x01
+    T1_protocol=0x02
 
     def __init__( self, reader ):
         """Construct a new card connection.
@@ -66,7 +66,7 @@ class CardConnection(Observable):
         """Remove a CardConnection observer."""
         Observable.deleteObserver( self, observer )
 
-    def connect( self ):
+    def connect( self, protocol=T0_protocol ):
         """Connect to card."""
         Observable.setChanged( self )
         Observable.notifyObservers( self, CardConnectionEvent('connect') )
