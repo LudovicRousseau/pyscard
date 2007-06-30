@@ -74,7 +74,7 @@ class testcase_CardRequest(unittest.TestCase):
             atr=expectedATRinReader[reader]
             if []!=atr:
                 ct = AnyCardType()
-                cr=CardRequest( timeout=10, readers=[reader], cardType=ct )
+                cr=CardRequest( timeout=10.6, readers=[reader], cardType=ct )
                 cs = cr.waitforcard()
                 cs.connection.connect()
                 self.assertEquals( atr, cs.connection.getATR() )
@@ -95,7 +95,7 @@ class testcase_CardRequest(unittest.TestCase):
         readers = smartcard.System.readers()
         atr=expectedATRs[0][:-1]
         ct = ATRCardType( atr )
-        cr=CardRequest( timeout=1, readers=readers, cardType=ct )
+        cr=CardRequest( timeout=1.5, readers=readers, cardType=ct )
         self.assertRaises( CardRequestTimeoutException, cr.waitforcard )
 
 
@@ -107,7 +107,7 @@ class testcase_CardRequest(unittest.TestCase):
             if []!=atr:
                 ct = AnyCardType()
                 cardservice = smartcard.PassThruCardService.PassThruCardService
-                cr=CardRequest( timeout=10, readers=[reader], cardType=ct, cardServiceClass=cardservice )
+                cr=CardRequest( timeout=10.6, readers=[reader], cardType=ct, cardServiceClass=cardservice )
                 cs = cr.waitforcard()
                 cs.connection.connect()
                 self.assertEquals( cs.__class__, smartcard.PassThruCardService.PassThruCardService )

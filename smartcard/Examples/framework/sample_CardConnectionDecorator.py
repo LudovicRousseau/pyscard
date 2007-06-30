@@ -53,7 +53,7 @@ class SecureChannelConnection( CardConnectionDecorator ):
         """Cypher/uncypher APDUs before transmission"""
         cypheredbytes = self.cypher( bytes )
         data, sw1, sw2 = CardConnectionDecorator.transmit( self, cypheredbytes, protocol )
-        if []!=data: 
+        if []!=data:
             data = self.uncypher( data )
         return data, sw1, sw2
 
@@ -77,7 +77,7 @@ DF_TELECOM = [0x7F, 0x10]
 
 # request any card type
 cardtype = AnyCardType()
-cardrequest = CardRequest( timeout=1, cardType=cardtype )
+cardrequest = CardRequest( timeout=1.5, cardType=cardtype )
 cardservice = cardrequest.waitforcard()
 
 # attach the console tracer
