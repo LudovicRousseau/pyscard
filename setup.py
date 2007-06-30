@@ -41,7 +41,7 @@ if 'win32'==get_platform():
     platform_include_dirs=[]
     platform_extra_compile_args=[]
     platform_extra_link_args=[]
-elif 'linux-i586'==get_platform() or 'linux-i686'==get_platform():
+elif get_platform() in ('linux-i586', 'linux-i686', 'linux-x86_64'):
     platform__cc_defines=[('PCSCLITE', '1')]
     platform_swig_opts=['-DPCSCLITE']
     platform_sources=[]
@@ -58,13 +58,7 @@ elif 'macosx-10.3-fat'==get_platform() or 'darwin-8.9.1-i386'==get_platform():
     platform_extra_compile_args=['-v','-framework', 'PCSC']
     platform_extra_link_args=[]
 else:
-    platform_cc_defines=[]
-    platform_sources=[]
-    platform_swig_opts=[]
-    platform_libraries=[]
-    platform_include_dirs=[]
-    platform_extra_compile_args=[]
-    platform_extra_link_args=[]
+    sys.exit("unsupported platform: " + get_platform() )
 
 
 kw = {'name':"pyscard",
