@@ -269,7 +269,65 @@
     partially solved by having a custom CardType that matches several ATRs, though.</li>
 </ul>
 <p><a href="#top">to the top</a></p>
-<h3></h3>
+<h3><a name="protocol"></a>Selecting the card communication protocol</h3>
+<p>By defaults, the connect() method of the CardConnection object.will try to 
+  connect using either the T=0 or T=1 protocol. To force a connection protocol, 
+  you can pass the required protocol to the connect() method.</p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt; 
+  from smartcard.CardType import AnyCardType<br>
+  &gt;&gt;&gt; from smartcard.CardConnection import CardConnection<br>
+  &gt;&gt;&gt; from smartcard.CardRequest import CardRequest<br>
+  &gt;&gt;&gt; from smartcard.util import toHexString<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; cardtype = AnyCardType()<br>
+  &gt;&gt;&gt; cardrequest = CardRequest( timeout=1, cardType=cardtype )<br>
+  &gt;&gt;&gt; cardservice = cardrequest.waitforcard()<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; cardservice.connection.connect( CardConnection.T1_protocol )<br>
+  &gt;&gt;&gt; print toHexString( cardservice.connection.getATR() )<br>
+  3B 16 94 20 02 01 00 00 0D<br>
+  &gt;&gt;&gt; print cardservice.connection.getReader()<br>
+  SchlumbergerSema Reflex USB v.2 0</font></p>
+<p><a href="#top"></a>Alternatively, you can specify the required protocol in 
+  the CardConnection transmit() method:</p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt; 
+  from smartcard.CardType import AnyCardType<br>
+  &gt;&gt;&gt; from smartcard.CardConnection import CardConnection<br>
+  &gt;&gt;&gt; from smartcard.CardRequest import CardRequest<br>
+  &gt;&gt;&gt; from smartcard.util import toHexString, toBytes<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; cardtype = AnyCardType()<br>
+  &gt;&gt;&gt; cardrequest = CardRequest( timeout=1, cardType=cardtype )<br>
+  &gt;&gt;&gt; cardservice = cardrequest.waitforcard()<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; cardservice.connection.connect()<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]<br>
+  &gt;&gt;&gt; DF_TELECOM = [0x7F, 0x10]<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; apdu = SELECT+DF_TELECOM<br>
+  &gt;&gt;&gt; print 'sending ' + toHexString(apdu)<br>
+  sending A0 A4 00 00 02 7F 10<br>
+  &gt;&gt;&gt; response, sw1, sw2 = cardservice.connection.transmit( apdu, CardConnection.T1_protocol 
+  )<br>
+  &gt;&gt;&gt; print 'response: ', response, ' status words: ', &quot;%x %x&quot; 
+  % (sw1, sw2)<br>
+  response: [] status words: 9f 1a<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; if sw1 == 0x9F:<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;GET_RESPONSE = [0XA0, 0XC0, 00, 00 ]<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;apdu = GET_RESPONSE + [sw2]<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;print 'sending ' + toHexString(apdu)<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;response, sw1, sw2 = cardservice.connection.transmit( 
+  apdu )<br>
+  ... &nbsp;&nbsp;&nbsp;&nbsp;print 'response: ', toHexString(response), ' status 
+  words: ', &quot;%x %x&quot; % (sw1, sw2)<br>
+  ...<br>
+  sending A0 C0 00 00 1A<br>
+  response: 00 00 00 00 7F 10 02 00 00 00 00 00 0D 13 00 0A 04 00 83 8A 83 8A 
+  00 01 00 00 status words: 90 0<br>
+  &gt;&gt;&gt;</font></p>
+<p></p>
 <h3><a name="objectcentric"></a>The object-centric approach</h3>
 <p>In the object-centric approach, we associate a high-level object with a set 
   of smart cards supported by the object. For example we associate a javacard 
