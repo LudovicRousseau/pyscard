@@ -4,6 +4,8 @@
           (issue reported by Adam Laurie for T=1 cards, and request from Yong David Huang for
           Omnikey CM5321 RFID that failed with T0|T1 mask).
         * added handling of linux 64-bit platform and graceful exit for unsupported platform, thanks to Henryk Plötz
+        * added support for float value timeout in CardRequest, thanks to Henryk Plötz; updated test cases and a
+          couple of samples with float timeouts.
 
 1.6.2
 =====

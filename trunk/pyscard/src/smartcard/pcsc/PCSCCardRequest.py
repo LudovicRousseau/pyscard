@@ -64,7 +64,7 @@ class PCSCCardRequest(AbstractCardRequest):
             self.timeout=INFINITE
         # otherwise, from seconds to milliseconds
         else:
-            self.timeout=1000*self.timeout
+            self.timeout=int(1000*self.timeout)
 
 
 

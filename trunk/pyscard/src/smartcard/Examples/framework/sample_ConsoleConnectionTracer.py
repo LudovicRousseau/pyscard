@@ -33,7 +33,7 @@ DF_TELECOM = [0x7F, 0x10]
 
 # request any card type
 cardtype = AnyCardType()
-cardrequest = CardRequest( timeout=1, cardType=cardtype )
+cardrequest = CardRequest( timeout=1.5, cardType=cardtype )
 cardservice = cardrequest.waitforcard()
 
 
