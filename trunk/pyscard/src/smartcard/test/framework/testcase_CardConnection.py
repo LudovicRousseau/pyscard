@@ -45,13 +45,14 @@ except:
 
 from smartcard.Exceptions import CardConnectionException, NoCardException
 from smartcard.System import readers
+from smartcard.CardConnection import CardConnection
 
 
 class testcase_CardConnection(unittest.TestCase):
     """Test case for CardConnection."""
 
     def testcase_CardConnection(self):
-        """Test that the response to SELECT DF_TELECOM has two bytes."""
+        """Test with default protocols that the response to SELECT DF_TELECOM has two bytes."""
         SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
         DF_TELECOM = [0x7F, 0x10]
 
@@ -65,6 +66,101 @@ class testcase_CardConnection(unittest.TestCase):
                 self.assert_( expectedSWs.has_key( "%x %x" % (sw1, sw2 ) ) )
             else:
                 self.assertRaises( NoCardException, cc.connect )
+        cc.disconnect()
+
+    def testcase_CardConnectionT0(self):
+        """Test with T0 that the response to SELECT DF_TELECOM has two bytes."""
+        SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
+        DF_TELECOM = [0x7F, 0x10]
+
+        for reader in readers():
+            cc = reader.createConnection()
+            if []!=expectedATRinReader[str(reader)]:
+                cc.connect( CardConnection.T0_protocol )
+                response, sw1, sw2 = cc.transmit( SELECT + DF_TELECOM )
+                expectedSWs={ "9f 1a":1, "6e 0":2 }
+                self.assertEquals( [], response )
+                self.assert_( expectedSWs.has_key( "%x %x" % (sw1, sw2 ) ) )
+            else:
+                self.assertRaises( NoCardException, cc.connect )
+        cc.disconnect()
+
+    def testcase_CardConnectionT1inConnect(self):
+        """Test that connecting with T1 on a T0 card fails."""
+
+        for reader in readers():
+            cc = reader.createConnection()
+            if []!=expectedATRinReader[str(reader)]:
+                # should fail since the test card does not support T1
+                self.assertRaises( CardConnectionException, cc.connect, CardConnection.T1_protocol )
+            else:
+                self.assertRaises( NoCardException, cc.connect )
+        cc.disconnect()
+
+
+    def testcase_CardConnectionT1inTransmit(self):
+        """Test that T1 in transmit for a T0 card fails."""
+        SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
+        DF_TELECOM = [0x7F, 0x10]
+
+        for reader in readers():
+            cc = reader.createConnection()
+            if []!=expectedATRinReader[str(reader)]:
+                cc.connect()
+                self.assertRaises( CardConnectionException, cc.transmit, SELECT + DF_TELECOM, CardConnection.T1_protocol )
+            else:
+                self.assertRaises( NoCardException, cc.connect )
+        cc.disconnect()
+
+    def testcase_CardConnectionT0T1(self):
+        """Test test with T0 | T1 that the response to SELECT DF_TELECOM has two bytes."""
+        SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
+        DF_TELECOM = [0x7F, 0x10]
+
+        for reader in readers():
+            cc = reader.createConnection()
+            if []!=expectedATRinReader[str(reader)]:
+                cc.connect( CardConnection.T0_protocol | CardConnection.T1_protocol )
+                response, sw1, sw2 = cc.transmit( SELECT + DF_TELECOM )
+                expectedSWs={ "9f 1a":1, "6e 0":2 }
+                self.assertEquals( [], response )
+                self.assert_( expectedSWs.has_key( "%x %x" % (sw1, sw2 ) ) )
+            else:
+                self.assertRaises( NoCardException, cc.connect )
+        cc.disconnect()
+
+
+    def testcase_CardConnectionT0inTransmit(self):
+        """Test with T0 in transmit that the response to SELECT DF_TELECOM has two bytes."""
+        SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
+        DF_TELECOM = [0x7F, 0x10]
+
+        for reader in readers():
+            cc = reader.createConnection()
+            if []!=expectedATRinReader[str(reader)]:
+                cc.connect( CardConnection.T0_protocol )
+                response, sw1, sw2 = cc.transmit( SELECT + DF_TELECOM, CardConnection.T0_protocol )
+                expectedSWs={ "9f 1a":1, "6e 0":2 }
+                self.assertEquals( [], response )
+                self.assert_( expectedSWs.has_key( "%x %x" % (sw1, sw2 ) ) )
+            else:
+                self.assertRaises( NoCardException, cc.connect )
+        cc.disconnect()
+
+
+    def testcase_CardConnectionT0T1inTransmitMustFail(self):
+        """Test with bad parameter in transmit that the response to SELECT DF_TELECOM has two bytes."""
+        SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
+        DF_TELECOM = [0x7F, 0x10]
+
+        for reader in readers():
+            cc = reader.createConnection()
+            if []!=expectedATRinReader[str(reader)]:
+                cc.connect( CardConnection.T0_protocol | CardConnection.T1_protocol )
+                self.assertRaises( CardConnectionException, cc.transmit, SELECT + DF_TELECOM, CardConnection.T0_protocol | CardConnection.T1_protocol )
+            else:
+                self.assertRaises( NoCardException, cc.connect )
+        cc.disconnect()
 
 
 def suite():
