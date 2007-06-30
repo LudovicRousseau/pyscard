@@ -32,9 +32,11 @@ class CardConnection(Observable):
 
     Known subclasses: smartcard.pcsc.PCSCCardConnection
     """
-    DEFAULT_protocol=0x00
-    T0_protocol=0x01
-    T1_protocol=0x02
+    T0_protocol         = 0x00000001
+    T1_protocol         = 0x00000002
+    RAW_protocol        = 0x00010000
+    T15_protocol        = 0x00000008
+
 
     def __init__( self, reader ):
         """Construct a new card connection.
@@ -44,7 +46,7 @@ class CardConnection(Observable):
         Observable.__init__(self)
         self.reader = reader
         self.errorcheckingchain=None
-        self.defaultprotocol = CardConnection.T0_protocol
+        self.defaultprotocol = CardConnection.T0_protocol | CardConnection.T1_protocol
 
     def __del__( self ):
         """Connect to card."""
@@ -68,9 +70,11 @@ class CardConnection(Observable):
         """Remove a CardConnection observer."""
         Observable.deleteObserver( self, observer )
 
-    def connect( self, protocol=DEFAULT_protocol ):
+    def connect( self, protocol=None ):
         """Connect to card.
-        protocol: a bit mask of the protocols to use."""
+        protocol: a bit mask of the protocols to use, from CardConnection.T0_protocol, CardConnection.T1_protocol,
+        CardConnection.RAW_protocol, CardConnection.T15_protocol
+        """
         Observable.setChanged( self )
         Observable.notifyObservers( self, CardConnectionEvent('connect') )
 
@@ -85,7 +89,9 @@ class CardConnection(Observable):
 
     def getProtocol( self ):
         """Return bit mask for the protocol of connection, or None if no protocol set.
-        The return value is a bit mask of of CardConnection.T0_protocol for T0 and CardConnection.T1_protocol for T1"""
+        The return value is a bit mask of CardConnection.T0_protocol, CardConnection.T1_protocol,
+        CardConnection.RAW_protocol, CardConnection.T15_protocol
+        """
         return self.defaultprotocol
 
     def getReader( self ):
@@ -102,18 +108,21 @@ class CardConnection(Observable):
 
     def setProtocol( self, protocol ):
         """Set protocol for card connection.
-        protocol: a bit mask of CardConnection.T0_protocol for T0 and CardConnection.T1_protocol for T1
-        e.g. setProtocol( CardConnection.T0_protocol) or setProtocol( CardConnection.T1_protocol | CardConnection.T0_protocol )
+        protocol: a bit mask of CardConnection.T0_protocol, CardConnection.T1_protocol,
+        CardConnection.RAW_protocol, CardConnection.T15_protocol
+        e.g. setProtocol( CardConnection.T1_protocol | CardConnection.T0_protocol )
         """
         self.defaultprotocol = protocol
 
-    def transmit( self, bytes, protocol=T0_protocol ):
+    def transmit( self, bytes, protocol=None ):
         """Transmit an apdu. Internally calls doTransmit() class method and notify observers
         upon command/response APDU events.
         Subclasses must override the doTransmit() class method.
 
         bytes:      list of bytes to transmit
-        protocol:   T0_protocol for T=0 protocol (default); T1_protocol for T=1 protocol
+
+        protocol:   the transmission protocol, from CardConnection.T0_protocol, CardConnection.T1_protocol,
+                    or CardConnection.RAW_protocol
         """
         Observable.setChanged( self )
         Observable.notifyObservers( self, CardConnectionEvent('command', [bytes, protocol] ) )

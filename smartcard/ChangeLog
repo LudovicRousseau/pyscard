@@ -1,3 +1,9 @@
+1.6.3
+=====
+        * better handling of protocol selection with associated test cases and added getATR_T1 example
+          (issue reported by Adam Laurie for T=1 cards, and request from Yong David Huang for
+          Omnikey CM5321 RFID that failed with T0|T1 mask).
+
 1.6.2
 =====
         * started support for Mac OS X Darwin; not yet operational

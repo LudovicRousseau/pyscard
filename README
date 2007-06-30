@@ -23,7 +23,7 @@ with pyscard; if not, write to the Free Software Foundation, Inc., 51
 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 -------------------------------------------------------------------------------
-Last update : pyscard 1.6.2 (June 28, 2007)
+Last update : pyscard 1.6.3 (June 30, 2007)
 -------------------------------------------------------------------------------
 
 pyscard is a python module adding smart cards support to python.
@@ -60,7 +60,7 @@ Installing on windows from the binary distribution
 
 The binary msi installer and self-executable installer are packaged for a
 specific version of python, and have name similar to
-pyscard-1.6.2.win32-py2.5.msi and pyscard-1.6.2.win32-py2.5.exe for
+pyscard-1.6.3.win32-py2.5.msi and pyscard-1.6.3.win32-py2.5.exe for
 python 2.5.
 
 
@@ -76,8 +76,8 @@ file that detects the compiler.
 
 2. download the source distribution
 
-The source distribution is available as pyscard-1.6.2.zip for windows,
-and pyscard-1.6.2.tar.gz for linux.
+The source distribution is available as pyscard-1.6.3.zip for windows,
+and pyscard-1.6.3.tar.gz for linux.
 
 3. unzip the source distribution, open a console and type the following:
 
@@ -98,8 +98,8 @@ Installing on linux from the binary distribution:
 1. download the binary distribution
 
 The binary distribution is either an archive file or a rpm file, with
-names similar to pyscard-1.6.2-1.i386.rpm for the rpm distribution,
-or pyscard-1.6.2.linux-i686.tar.gz for the archive distribution.
+names similar to pyscard-1.6.3-1.i386.rpm for the rpm distribution,
+or pyscard-1.6.3.linux-i686.tar.gz for the archive distribution.
 
 2. untar the binary distribution
 
@@ -114,8 +114,8 @@ Installing on linux from the source distribution
 
 2. download the source distribution
 
-The source distribution is available as pyscard-1.6.2.zip or
-pyscard-1.6.2.tar.gz.
+The source distribution is available as pyscard-1.6.3.zip or
+pyscard-1.6.3.tar.gz.
 
 3. untar the source distribution
 
@@ -154,9 +154,9 @@ setup.py build_ext bdist_msi
 setup.py build_ext bdist_wininst
 
 This will build the msi installer and self-executable installer in the dist
-directory, with names similar to pyscard-1.6.2.win32-py2.5.msi and
-pyscard-1.6.2.win32-py2.5.exe for python 2.5, and
-pyscard-1.6.2.win32-py2.4.msi and pyscard-1.6.2.win32-py2.4.exe for
+directory, with names similar to pyscard-1.6.3.win32-py2.5.msi and
+pyscard-1.6.3.win32-py2.5.exe for python 2.5, and
+pyscard-1.6.3.win32-py2.4.msi and pyscard-1.6.3.win32-py2.4.exe for
 python 2.4.
 
 Building a binary distribution for linux
@@ -171,7 +171,7 @@ command in a terminal:
 
 /usr/bin/python setup.py build_ext bdist
 
-This will build a package similar to pyscard-1.6.2.linux-i686.tar.gz
+This will build a package similar to pyscard-1.6.3.linux-i686.tar.gz
 containing a tree
 
 Building a rpm distribution for linux
@@ -193,7 +193,7 @@ e.g.:
 echo "%_unpackaged_files_terminate_build        0" >> /etc/rpm/macros
 
 This will build in the dist directory a binary distribution with a name
-similar to pyscard-1.6.2-1.i386.rpm.
+similar to pyscard-1.6.3-1.i386.rpm.
 
 
 -------------------------------------------------------------------------------

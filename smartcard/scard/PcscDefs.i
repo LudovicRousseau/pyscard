@@ -262,7 +262,7 @@ typedef enum
         SCARD_ATTR_DEVICE_SYSTEM_NAME_W     ,
         SCARD_ATTR_SUPRESS_T1_IFS_REQUEST
     } AttributeType ;
-    
+
     %constant unsigned long SCARD_ATTR_DEVICE_FRIENDLY_NAME = SCARD_ATTR_DEVICE_FRIENDLY_NAME_A ;
     %constant unsigned long SCARD_ATTR_DEVICE_SYSTEM_NAME = SCARD_ATTR_DEVICE_SYSTEM_NAME_A ;
     #endif //!__APPLE__
