@@ -3,6 +3,7 @@
         * better handling of protocol selection with associated test cases and added getATR_T1 example
           (issue reported by Adam Laurie for T=1 cards, and request from Yong David Huang for
           Omnikey CM5321 RFID that failed with T0|T1 mask).
+        * added handling of linux 64-bit platform and graceful exit for unsupported platform, thanks to Henryk Plötz
 
 1.6.2
 =====
