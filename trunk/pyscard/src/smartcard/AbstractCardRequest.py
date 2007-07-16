@@ -49,15 +49,10 @@ class AbstractCardRequest:
                             default is to wait one second; to wait forever, set timeout to None
         """
         self.newcardonly = newcardonly
-        self.readers = readers
+        self.readersAsked = readers
         self.cardType = cardType
         self.cardServiceClass = cardServiceClass
         self.timeout = timeout
-
-
-        # if readers not given, use all readers
-        if None==self.readers:
-            self.readers=smartcard.System.readers()
 
         # if no CardType requeted, use AnyCardType
         if None==self.cardType:
@@ -66,6 +61,14 @@ class AbstractCardRequest:
         # if no card service requested, use pass-thru card service
         if None==self.cardServiceClass:
             self.cardServiceClass=PassThruCardService
+
+    def getReaders( self ):
+        """Returns the list or readers on which to wait for cards."""
+        # if readers not given, use all readers
+        if None==self.readersAsked:
+            return smartcard.System.readers()
+        else:
+            return self.readersAsked
 
     def waitforcard( self ):
         """Wait for card insertion and returns a card service."""

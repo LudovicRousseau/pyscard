@@ -52,6 +52,10 @@ class CardRequest:
         """
         self.pcsccardrequest=PCSCCardRequest( newcardonly, readers, cardType, cardServiceClass, timeout )
 
+    def getReaders( self ):
+        """Returns the list or readers on which to wait for cards."""
+        return self.pcsccardrequest.getReaders()
+
     def waitforcard( self ):
         """Wait for card insertion and returns a card service."""
         return self.pcsccardrequest.waitforcard()

@@ -151,7 +151,7 @@ class CardMonitoringThread:
             """
             while self.stopEvent.isSet()!=1:
                 try:
-                    self.cardrequest = CardRequest( timeout=1 )
+                    self.cardrequest = CardRequest( timeout=0.1 )
                     currentcards = self.cardrequest.waitforcardevent()
 
                     addedcards=[]
