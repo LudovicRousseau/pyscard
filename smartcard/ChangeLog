@@ -1,3 +1,8 @@
+1.6.4
+=====
+        * handled issue reported by Michael Roehner concerning waitforcard() not detecting card in reader/card USB stick;
+          changed the waitforcard() and waitforcardevent() to poll every 100ms for new readers and cards in these readers
+
 1.6.3
 =====
         * better handling of protocol selection with associated test cases and added getATR_T1 example
