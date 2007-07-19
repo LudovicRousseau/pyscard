@@ -22,7 +22,7 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-import threading
+import threading, time
 
 from smartcard.AbstractCardRequest import AbstractCardRequest
 from smartcard.Exceptions import CardRequestTimeoutException, CardRequestException
@@ -100,7 +100,11 @@ class PCSCCardRequest(AbstractCardRequest):
         for oldreader in readerstates.keys():
             if oldreader not in readernames:
                 del readerstates[oldreader]
-        hresult, newstates = SCardGetStatusChange( hcontext, 0, readerstates.values() )
+        if {}!=readerstates:
+            hresult, newstates = SCardGetStatusChange( hcontext, 0, readerstates.values() )
+        else:
+            hresult=0
+            newstates=[]
         if hresult!=0:
             raise CardRequestException( 'Failed to SCardGetStatusChange ' + SCardGetErrorMessage(hresult) )
 
@@ -142,7 +146,12 @@ class PCSCCardRequest(AbstractCardRequest):
                     del newstatedict[oldreader]
 
             # if a new card insertion is requested, wait for card insertion
-            hresult, newstates = SCardGetStatusChange( hcontext, 100, newstatedict.values() )
+            if {}!=newstatedict:
+                hresult, newstates = SCardGetStatusChange( hcontext, 100, newstatedict.values() )
+            else:
+                hresult = SCARD_E_TIMEOUT
+                newstates=[]
+                time.sleep(0.1)
 
             # real time-out, e.g. the timer has been set
             if SCARD_E_TIMEOUT==hresult and evt.isSet():
