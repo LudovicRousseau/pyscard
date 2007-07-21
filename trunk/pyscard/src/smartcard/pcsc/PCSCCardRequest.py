@@ -31,8 +31,9 @@ from smartcard import Card
 
 from smartcard.scard import *
 
-def signalEvent( evt ):
-    evt.set()
+def signalEvent( evt, isInfinite ):
+    if not isInfinite:
+        evt.set()
 
 class PCSCCardRequest(AbstractCardRequest):
     """PCSC CardRequest class."""
@@ -66,48 +67,68 @@ class PCSCCardRequest(AbstractCardRequest):
         else:
             self.timeout=int( self.timeout )
 
+        hresult, self.hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
+        if hresult!=0:
+            raise CardRequestException( 'Failed to establish context: ' + SCardGetErrorMessage(hresult) )
+
+        self.readerstates = {}
+
+    def __del__( self ):
+        hresult = SCardReleaseContext( self.hcontext )
+        if hresult!=0:
+            raise CardRequestException( 'Failed to release context: ' + SCardGetErrorMessage(hresult) )
+
+
     def getReaderNames( self ):
-        """Returns the list of PCSC reader names as strings."""
-        # PCSC GetStatusChange is expecting a list of strings
-        readernames=[]
-        for reader in self.getReaders():
-            readernames.append( str(reader) )
-        return readernames
+        """Returns the list or PCSC readers on which to wait for cards."""
+        # if no readers asked, use all readers
+        readers=[]
+        if None!=self.readersAsked:
+            readers=self.readersAsked
+        else:
+            hresult, readers = SCardListReaders( self.hcontext, [] )
+            if 0!=hresult and SCARD_E_NO_READERS_AVAILABLE!=hresult:
+                raise ListReadersException( hresult )
+        return readers
+
 
     def waitforcard( self ):
         """Wait for card insertion and returns a card service."""
         AbstractCardRequest.waitforcard( self )
-        hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
-        if hresult!=0:
-            raise CardRequestException( 'Failed to establish context: ' + SCardGetErrorMessage(hresult) )
-
         cardfound=False
-        readerstates = {}
 
+
+        # for non infinite timeout, a timer will signal the end of the time-out by setting the evt event
         evt = threading.Event()
-        # for non infinite timeout, a timer will signal the end of the time-out
-        if self.timeout!=INFINITE:
-            timer = threading.Timer( self.timeout, signalEvent, [evt] )
+        if INFINITE==self.timeout: timertimeout=1
+        else: timertimeout=self.timeout
+        timer = threading.Timer( timertimeout, signalEvent, [evt, INFINITE==self.timeout] )
 
-
-        # initialize reader states and locate current cards in readers
+        # create a dictionary entry for new readers
         readernames = self.getReaderNames()
-        for i in xrange( len(readernames) ):
-            # create a dictionary entry for new readers
-            if not readerstates.has_key( str(readernames[i] ) ):
-                readerstates[ str(readernames[i]) ] = ( str(readernames[i]), SCARD_STATE_UNAWARE )
+        for reader in readernames:
+            if not self.readerstates.has_key( reader ):
+                self.readerstates[ reader ] = ( reader, SCARD_STATE_UNAWARE )
+
         # remove dictionary entry for readers that disappeared
-        for oldreader in readerstates.keys():
+        for oldreader in self.readerstates.keys():
             if oldreader not in readernames:
-                del readerstates[oldreader]
-        if {}!=readerstates:
-            hresult, newstates = SCardGetStatusChange( hcontext, 0, readerstates.values() )
+                del self.readerstates[oldreader]
+
+        # call SCardGetStatusChange only if we have some readers
+        if {}!=self.readerstates:
+            hresult, newstates = SCardGetStatusChange( self.hcontext, 0, self.readerstates.values() )
         else:
             hresult=0
             newstates=[]
-        if hresult!=0:
-            raise CardRequestException( 'Failed to SCardGetStatusChange ' + SCardGetErrorMessage(hresult) )
+        if 0!=hresult and SCARD_E_TIMEOUT!=hresult:
+                raise CardRequestException( 'Failed to SCardGetStatusChange ' + SCardGetErrorMessage(hresult) )
 
+
+        # update readerstate
+        for state in newstates:
+            readername, eventstate, atr = state
+            self.readerstates[readername] = ( readername, eventstate )
 
         # if a new card is not requested, just return the first available
         if not self.newcardonly:
@@ -118,47 +139,39 @@ class PCSCCardRequest(AbstractCardRequest):
                     if self.cardType.matches( atr, reader ):
                         if self.cardServiceClass.supports( 'dummy' ):
                             cardfound=True
-                            timer.cancel()
                             return self.cardServiceClass( reader.createConnection() )
 
 
-        # initialize state dictionary
-        newstatedict={}
-
         # start timer
         timer.start()
+
         while not evt.isSet() and not cardfound:
 
-            # update state dictionary
-            for state in newstates:
-                readername, eventstate, atr = state
-                newstatedict[readername] = state
-
-            # update list of current readers
+            # create a dictionary entry for new readers
             readernames = self.getReaderNames()
-            for i in xrange( len(readernames) ):
-                # create a dictionary entry for new readers
-                if not newstatedict.has_key( str(readernames[i] ) ):
-                    newstatedict[ str(readernames[i]) ] = ( str(readernames[i]), SCARD_STATE_UNAWARE )
-            # remove dictionary entry for readers that disappeared
-            for oldreader in newstatedict.keys():
-                if oldreader not in readernames:
-                    del newstatedict[oldreader]
+            for reader in readernames:
+                if not self.readerstates.has_key( reader ):
+                    self.readerstates[ reader ] = ( reader, SCARD_STATE_UNAWARE )
 
-            # if a new card insertion is requested, wait for card insertion
-            if {}!=newstatedict:
-                hresult, newstates = SCardGetStatusChange( hcontext, 100, newstatedict.values() )
+            # remove dictionary entry for readers that disappeared
+            for oldreader in self.readerstates.keys():
+                if oldreader not in readernames:
+                    del self.readerstates[oldreader]
+
+            # wait for card insertion for 500ms
+            if {}!=self.readerstates:
+                hresult, newstates = SCardGetStatusChange( self.hcontext, 500, self.readerstates.values() )
             else:
                 hresult = SCARD_E_TIMEOUT
                 newstates=[]
-                time.sleep(0.1)
+                time.sleep(0.5)
 
-            # real time-out, e.g. the timer has been set
+            # real time-out, e.g. the timer has set the time-out event
             if SCARD_E_TIMEOUT==hresult and evt.isSet():
                 timedout=True
                 raise CardRequestTimeoutException()
 
-            # this is a polling time-out of 100ms, make a new iteration
+            # this is a polling time-out of 500ms, make a new iteration
             elif SCARD_E_TIMEOUT==hresult:
                 timedout=True
 
@@ -171,7 +184,7 @@ class PCSCCardRequest(AbstractCardRequest):
             else:
                 for state in newstates:
                     readername, eventstate, atr = state
-                    if eventstate & SCARD_STATE_PRESENT and eventstate & SCARD_STATE_CHANGED:
+                    if (self.newcardonly and eventstate & SCARD_STATE_PRESENT and eventstate & SCARD_STATE_CHANGED) or (not self.newcardonly and eventstate & SCARD_STATE_PRESENT):
                         reader=PCSCReader(readername)
                         if self.cardType.matches( atr, reader ):
                             if self.cardServiceClass.supports( 'dummy' ):
@@ -179,75 +192,62 @@ class PCSCCardRequest(AbstractCardRequest):
                                 timer.cancel()
                                 return self.cardServiceClass( reader.createConnection() )
 
-        try:
-            pass
-        finally:
-            hresult = SCardReleaseContext( hcontext )
-            if hresult!=0:
-                raise CardRequestException( 'Failed to release context: ' + SCardGetErrorMessage(hresult) )
+            # update state dictionary
+            for state in newstates:
+                self.readerstates[readername] = ( readername, eventstate )
 
 
     def waitforcardevent( self ):
         """Wait for card insertion or removal."""
         AbstractCardRequest.waitforcard( self )
         presentcards = []
-        hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
-        if hresult!=0:
-            raise CardRequestException( 'Failed to establish context: ' + SCardGetErrorMessage(hresult) )
+        evt = threading.Event()
 
-        try:
+        # for non infinite timeout, a timer will signal the end of the time-out
+        if INFINITE==self.timeout: timertimeout=1
+        else: timertimeout=self.timeout
+        timer = threading.Timer( timertimeout, signalEvent, [evt, INFINITE==self.timeout] )
 
-            evt = threading.Event()
-            # for non infinite timeout, a timer will signal the end of the time-out
-            if self.timeout!=INFINITE:
-                timer = threading.Timer( self.timeout, signalEvent, [evt] )
+        # get status change until time-out, e.g. evt is set
+        readerstates = {}
+        timer.start()
 
-            # get status change until time-out, e.g. evt is set
-            readerstates = {}
-            while not evt.isSet():
+        while not evt.isSet():
 
-                timer.start()
+            # reinitialize at each iteration just in case a new reader appeared
+            readernames = self.getReaderNames()
+            for i in xrange( len(readernames) ):
+                # create a dictionary entry for new readers
+                if not readerstates.has_key( str(readernames[i] ) ):
+                    readerstates[ str(readernames[i]) ] = ( str(readernames[i]), SCARD_STATE_UNAWARE )
+            # remove dictionary entry for readers that disappeared
+            for oldreader in readerstates.keys():
+                if oldreader not in readernames:
+                    del readerstates[oldreader]
 
-                # reinitialize at each iteration just in case a new reader appeared
-                readernames = self.getReaderNames()
-                for i in xrange( len(readernames) ):
-                    # create a dictionary entry for new readers
-                    if not readerstates.has_key( str(readernames[i] ) ):
-                        readerstates[ str(readernames[i]) ] = ( str(readernames[i]), SCARD_STATE_UNAWARE )
-                # remove dictionary entry for readers that disappeared
-                for oldreader in readerstates.keys():
-                    if oldreader not in readernames:
-                        del readerstates[oldreader]
+            # get status change every 100ms
+            hresult, newstates = SCardGetStatusChange( self.hcontext, 100, readerstates.values() )
 
-                # get status change every 100ms
-                hresult, newstates = SCardGetStatusChange( hcontext, 100, readerstates.values() )
+            # this is a real time-out, e.g. the event has been set
+            if SCARD_E_TIMEOUT==hresult and evt.isSet():
+                raise CardRequestTimeoutException()
 
-                # this is a real time-out, e.g. the event has been set
-                if SCARD_E_TIMEOUT==hresult and evt.isSet():
-                    raise CardRequestTimeoutException()
+            # this is a polling time-out of 100ms, make a new iteration
+            elif SCARD_E_TIMEOUT==hresult:
+                pass
 
-                # this is a polling time-out of 100ms, make a new iteration
-                elif SCARD_E_TIMEOUT==hresult:
-                    pass
+            # some real error happened
+            elif 0!=hresult:
+                timer.cancel()
+                raise CardRequestException( 'Failed to get status change ' + SCardGetErrorMessage(hresult) )
 
-                # some real error happened
-                elif 0!=hresult:
-                    timer.cancel()
-                    raise CardRequestException( 'Failed to get status change ' + SCardGetErrorMessage(hresult) )
-
-                # something changed!
-                else:
-                    for state in newstates:
-                        readername, eventstate, atr = state
-                        if eventstate & SCARD_STATE_PRESENT and eventstate & SCARD_STATE_CHANGED:
-                            presentcards.append( Card.Card( readername, atr ) )
-                    timer.cancel()
-
-        finally:
-            hresult = SCardReleaseContext( hcontext )
-            if hresult!=0:
-                raise CardRequestException( 'Failed to release context: ' + SCardGetErrorMessage(hresult) )
-            return presentcards
+            # something changed!
+            else:
+                timer.cancel()
+                for state in newstates:
+                    readername, eventstate, atr = state
+                    if eventstate & SCARD_STATE_PRESENT and eventstate & SCARD_STATE_CHANGED:
+                        presentcards.append( Card.Card( readername, atr ) )
 
 
 if __name__ == '__main__':
