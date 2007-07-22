@@ -195,7 +195,7 @@ class PCSCCardRequest(AbstractCardRequest):
 
     def waitforcardevent( self ):
         """Wait for card insertion or removal."""
-        AbstractCardRequest.waitforcard( self )
+        AbstractCardRequest.waitforcardevent( self )
         presentcards = []
         evt = threading.Event()
 
@@ -206,16 +206,20 @@ class PCSCCardRequest(AbstractCardRequest):
 
         # get status change until time-out, e.g. evt is set
         readerstates = {}
-        timer.start()
+        timerstarted=False
 
         while not evt.isSet():
 
+            if not timerstarted:
+                timerstarted=True
+                timer.start()
+
             # reinitialize at each iteration just in case a new reader appeared
             readernames = self.getReaderNames()
-            for i in xrange( len(readernames) ):
+            for reader in readernames:
                 # create a dictionary entry for new readers
-                if not readerstates.has_key( str(readernames[i] ) ):
-                    readerstates[ str(readernames[i]) ] = ( str(readernames[i]), SCARD_STATE_UNAWARE )
+                if not readerstates.has_key( reader ):
+                    readerstates[reader] = ( reader, SCARD_STATE_UNAWARE )
             # remove dictionary entry for readers that disappeared
             for oldreader in readerstates.keys():
                 if oldreader not in readernames:
@@ -244,6 +248,7 @@ class PCSCCardRequest(AbstractCardRequest):
                     readername, eventstate, atr = state
                     if eventstate & SCARD_STATE_PRESENT and eventstate & SCARD_STATE_CHANGED:
                         presentcards.append( Card.Card( readername, atr ) )
+                return presentcards
 
 
 if __name__ == '__main__':
