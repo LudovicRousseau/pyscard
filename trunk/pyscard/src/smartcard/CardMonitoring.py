@@ -198,10 +198,12 @@ class CardMonitoringThread:
         if self.instance:
             return getattr( self.instance, name )
 
-    def __del__(self):
-        if CardMonitoringThread.instance!=None:
-            CardMonitoringThread.instance.stop()
-            CardMonitoringThread.instance = None
+    # commented to avoid bad clean-up sequence of python where __del__ is called when
+    # some objects it uses are already gargabe collected
+    #def __del__(self):
+    #    if CardMonitoringThread.instance!=None:
+    #        CardMonitoringThread.instance.stop()
+    #        CardMonitoringThread.instance = None
 
 
 if __name__ == "__main__":
