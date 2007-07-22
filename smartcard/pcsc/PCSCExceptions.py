@@ -54,6 +54,11 @@ class ListReadersException(BaseSCardException):
     def __str__(self):
         return repr( 'Failure to list readers: ' + smartcard.scard.SCardGetErrorMessage(self.hresult) )
 
+class EstablishContextException(BaseSCardException):
+    """Raised when scard failed to establish a PCSC context."""
+    def __str__(self):
+        return repr( 'Failure to establish context: ' + smartcard.scard.SCardGetErrorMessage(self.hresult) )
+
 class ReleaseContextException(BaseSCardException):
     """Raised when scard failed to release PCSC context."""
     def __str__(self):
