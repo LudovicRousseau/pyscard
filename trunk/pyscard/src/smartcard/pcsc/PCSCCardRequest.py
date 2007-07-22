@@ -27,6 +27,7 @@ import threading, time
 from smartcard.AbstractCardRequest import AbstractCardRequest
 from smartcard.Exceptions import CardRequestTimeoutException, CardRequestException
 from smartcard.pcsc.PCSCReader import PCSCReader
+from smartcard.pcsc.PCSCContext import PCSCContext
 from smartcard import Card
 
 from smartcard.scard import *
@@ -67,17 +68,9 @@ class PCSCCardRequest(AbstractCardRequest):
         else:
             self.timeout=int( self.timeout )
 
-        hresult, self.hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
-        if hresult!=0:
-            raise CardRequestException( 'Failed to establish context: ' + SCardGetErrorMessage(hresult) )
+        self.hcontext = PCSCContext().getContext()
 
         self.readerstates = {}
-
-    def __del__( self ):
-        hresult = SCardReleaseContext( self.hcontext )
-        if hresult!=0:
-            raise CardRequestException( 'Failed to release context: ' + SCardGetErrorMessage(hresult) )
-
 
     def getReaderNames( self ):
         """Returns the list or PCSC readers on which to wait for cards."""
@@ -260,11 +253,4 @@ if __name__ == '__main__':
     cs.connection.connect()
     print cs.connection.getReader(), toHexString(cs.connection.getATR())
     cs.connection.disconnect()
-
-
-
-
-
-
-
 
