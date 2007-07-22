@@ -176,10 +176,13 @@ class CardMonitoringThread:
                 except TypeError: pass
 
                 except:
-                    import sys
-                    print sys.exc_info()[1]
-                    print sys.exc_info()[2]
-                    print sys.exc_info()[0]
+                    try:
+                        import sys
+                        print sys.exc_info()[1]
+                        print sys.exc_info()[2]
+                        print sys.exc_info()[0]
+                    except:
+                        pass
 
         # stop the thread by signaling stopEvent
         def stop(self):
