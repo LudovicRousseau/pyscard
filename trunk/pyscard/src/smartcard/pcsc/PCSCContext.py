@@ -22,6 +22,8 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
+from threading import RLock
+
 from smartcard.scard import *
 from smartcard.pcsc.PCSCExceptions import EstablishContextException
 
@@ -32,20 +34,28 @@ class PCSCContext:
         """The actual pcsc context class as a singleton."""
         def __init__( self ):
             hresult, self.hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
+            print '__PCSCContextSingleton.init'
             if hresult!=0:
+                print "establishcontext failed: %.8x" % hresult
                 raise EstablishContextException( 'Failed to establish context: ' + SCardGetErrorMessage(hresult) )
 
         def getContext( self ):
             return self.hcontext
 
     # the singleton
+    mutex = RLock()
     instance = None
 
     def __init__( self ):
-        if not PCSCContext.instance:
-            PCSCContext.instance = PCSCContext.__PCSCContextSingleton()
+        PCSCContext.mutex.acquire();
+        try:
+            if not PCSCContext.instance:
+                PCSCContext.instance = PCSCContext.__PCSCContextSingleton()
+        finally:
+            PCSCContext.mutex.release();
 
     def __getattr__( self, name ):
         if self.instance:
             return getattr( self.instance, name )
+
 
