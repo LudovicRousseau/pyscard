@@ -61,6 +61,9 @@ class PCSCCardRequest(AbstractCardRequest):
         """
         AbstractCardRequest.__init__( self, newcardonly, readers, cardType, cardServiceClass, timeout )
 
+        # polling interval in ms for SCardGetStatusChange
+        self.pollinginterval=300
+
         # if timeout is None, translate to scard.INFINITE
         if None==self.timeout:
             self.timeout=INFINITE
@@ -150,9 +153,9 @@ class PCSCCardRequest(AbstractCardRequest):
                 if oldreader not in readernames:
                     del readerstates[oldreader]
 
-            # wait for card insertion for 300ms
+            # wait for card insertion for self.pollinginterval
             if {}!=readerstates:
-                hresult, newstates = SCardGetStatusChange( self.hcontext, 300, readerstates.values() )
+                hresult, newstates = SCardGetStatusChange( self.hcontext, self.pollinginterval, readerstates.values() )
             else:
                 hresult = SCARD_E_TIMEOUT
                 newstates=[]
@@ -163,7 +166,7 @@ class PCSCCardRequest(AbstractCardRequest):
                 timedout=True
                 raise CardRequestTimeoutException()
 
-            # this is a polling time-out of 300ms, make a new iteration
+            # this is a polling time-out of self.pollinginterval, make a new iteration
             elif SCARD_E_TIMEOUT==hresult:
                 timedout=True
 
@@ -218,14 +221,14 @@ class PCSCCardRequest(AbstractCardRequest):
                 if oldreader not in readernames:
                     del readerstates[oldreader]
 
-            # get status change every 300ms
-            hresult, newstates = SCardGetStatusChange( self.hcontext, 300, readerstates.values() )
+            # get status change every self.pollinginterval
+            hresult, newstates = SCardGetStatusChange( self.hcontext, self.pollinginterval, readerstates.values() )
 
             # this is a real time-out, e.g. the event has been set
             if SCARD_E_TIMEOUT==hresult and evt.isSet():
                 raise CardRequestTimeoutException()
 
-            # this is a polling time-out of 100ms, make a new iteration
+            # this is a polling time-out of self.pollinginterval, make a new iteration
             elif SCARD_E_TIMEOUT==hresult:
                 pass
 
