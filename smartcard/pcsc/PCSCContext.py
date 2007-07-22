@@ -1,0 +1,51 @@
+"""PCSC context singleton.
+
+__author__ = "http://www.gemalto.com"
+
+Copyright 2001-2007 gemalto
+Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
+
+This file is part of pyscard.
+
+pyscard is free software; you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation; either version 2.1 of the License, or
+(at your option) any later version.
+
+pyscard is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with pyscard; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+"""
+
+from smartcard.scard import *
+from smartcard.pcsc.PCSCExceptions import EstablishContextException
+
+class PCSCContext:
+    """Manage a singleton pcsc context handle."""
+
+    class __PCSCContextSingleton:
+        """The actual pcsc context class as a singleton."""
+        def __init__( self ):
+            hresult, self.hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
+            if hresult!=0:
+                raise EstablishContextException( 'Failed to establish context: ' + SCardGetErrorMessage(hresult) )
+
+        def getContext( self ):
+            return self.hcontext
+
+    # the singleton
+    instance = None
+
+    def __init__( self ):
+        if not PCSCContext.instance:
+            PCSCContext.instance = PCSCContext.__PCSCContextSingleton()
+
+    def __getattr__( self, name ):
+        if self.instance:
+            return getattr( self.instance, name )
+
