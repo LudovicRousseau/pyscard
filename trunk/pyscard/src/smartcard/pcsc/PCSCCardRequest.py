@@ -78,7 +78,7 @@ class PCSCCardRequest(AbstractCardRequest):
         # if no readers asked, use all readers
         readers=[]
         if None!=self.readersAsked:
-            readers=self.readersAsked
+            readers=[str(reader) for reader in self.readersAsked]
         else:
             hresult, readers = SCardListReaders( self.hcontext, [] )
             if 0!=hresult and SCARD_E_NO_READERS_AVAILABLE!=hresult:
