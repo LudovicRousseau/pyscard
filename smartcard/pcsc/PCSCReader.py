@@ -25,10 +25,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 from smartcard.CardConnectionDecorator import CardConnectionDecorator
 from smartcard.reader.ReaderFactory import ReaderFactory
 from smartcard.reader.Reader import Reader
+from smartcard.pcsc.PCSCContext import PCSCContext
 from smartcard.pcsc.PCSCCardConnection import PCSCCardConnection
 from smartcard.Exceptions import *
 from smartcard.pcsc.PCSCExceptions import *
 from smartcard.scard import *
+
+hcontext = PCSCContext().getContext()
 
 def __PCSCreaders__( groups=[] ):
     """Returns the list of PCSC smartcard readers in PCSC group.
@@ -38,21 +41,12 @@ def __PCSCreaders__( groups=[] ):
 
     # in case we have a string instead of a list
     if isinstance( groups, type("")): groups=[groups]
-    try:
-        hresult, hcontext=SCardEstablishContext( SCARD_SCOPE_USER )
-        if hresult!=0:
-            raise EstablishContextException( hresult )
-        hresult, readers = SCardListReaders( hcontext, groups )
-        if hresult!=0:
-            if hresult==SCARD_E_NO_READERS_AVAILABLE:
-                readers=[]
-            else:
-                raise ListReadersException( hresult )
-    finally:
-        if 0!=hcontext:
-            hresult = SCardReleaseContext( hcontext )
-            if hresult!=0:
-                raise ReleaseContextException( hresult )
+    hresult, readers = SCardListReaders( hcontext, groups )
+    if hresult!=0:
+        if hresult==SCARD_E_NO_READERS_AVAILABLE:
+            readers=[]
+        else:
+            raise ListReadersException( hresult )
 
     return readers
 
