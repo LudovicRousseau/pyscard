@@ -164,8 +164,13 @@ class PCSCCardRequest(AbstractCardRequest):
                 hresult = SCARD_E_TIMEOUT
                 newstates=[]
 
+            # time-out
+            if SCARD_E_TIMEOUT==hresult:
+                if evt.isSet():
+                    raise CardRequestTimeoutException()
+
             # some error happened
-            if 0!=hresult:
+            elif 0!=hresult:
                 timer.cancel()
                 raise CardRequestException( 'Failed to get status change ' + SCardGetErrorMessage(hresult) )
 
@@ -225,10 +230,20 @@ class PCSCCardRequest(AbstractCardRequest):
                     del readerstates[oldreader]
 
             # get status change
-            hresult, newstates = SCardGetStatusChange( self.hcontext, 0, readerstates.values() )
+            if {}!=readerstates:
+                hresult, newstates = SCardGetStatusChange( self.hcontext, 0, readerstates.values() )
+            else:
+                hresult = 0 #SCARD_E_TIMEOUT
+                newstates=[]
+
+
+            # time-out
+            if SCARD_E_TIMEOUT==hresult:
+                if evt.isSet():
+                    raise CardRequestTimeoutException()
 
             # some error happened
-            if 0!=hresult:
+            elif 0!=hresult:
                 timer.cancel()
                 raise CardRequestException( 'Failed to get status change ' + SCardGetErrorMessage(hresult) )
 
