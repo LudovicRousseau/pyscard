@@ -62,20 +62,18 @@ class testcase_manualCardRequest( unittest.TestCase, CardObserver ):
 
 
     def setUp( self ):
-        pass
-
-    def tearDown( self ):
-        pass
-
-    def testcase_CardRequestNewCardAnyCardTypeInfiniteTimeOut( self ):
-        """Test smartcard.CardRequest for new card without time-out."""
-
         print 'please remove all inserted smart cards'
         cardrequest = CardRequest()
         while True:
             cards=cardrequest.waitforcardevent()
             if 0==len( cards ): break
         print 'ok'
+
+    def tearDown( self ):
+        pass
+
+    def testcase_CardRequestNewCardAnyCardTypeInfiniteTimeOut( self ):
+        """Test smartcard.CardRequest for new card without time-out."""
 
         cardtype = AnyCardType()
         cardrequest = CardRequest( timeout=None, cardType=cardtype, newcardonly=True )
@@ -96,13 +94,6 @@ class testcase_manualCardRequest( unittest.TestCase, CardObserver ):
 
     def testcase_CardRequestNewCardATRCardTypeInfiniteTimeOut( self ):
         """Test smartcard.CardRequest for new card without time-out."""
-
-        print 'please remove all inserted smart cards'
-        cardrequest = CardRequest()
-        while True:
-            cards=cardrequest.waitforcardevent()
-            if 0==len( cards ): break
-        print 'ok'
 
         count=0
         for i in range(0,6):
@@ -125,13 +116,6 @@ class testcase_manualCardRequest( unittest.TestCase, CardObserver ):
 
     def testcase_CardRequestNewCardAnyCardTypeFiniteTimeOut( self ):
         """Test smartcard.CardRequest for new card with time-out."""
-
-        print 'please remove all inserted smart cards'
-        cardrequest = CardRequest()
-        while True:
-            cards=cardrequest.waitforcardevent()
-            if 0==len( cards ): break
-        print 'ok'
 
         # make sure we have 6 time-outs
         cardtype = AnyCardType()
