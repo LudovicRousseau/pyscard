@@ -45,36 +45,42 @@ try:
 
         if len(readers)<1:
             raise error, 'No smart card readers'
-        print 'Trying to select DF_TELECOM of card in ', readers[0]
 
-        hresult, hcard, dwActiveProtocol = SCardConnect(
-            hcontext, readers[0], SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 )
-        if hresult!=0:
-            raise error, 'Unable to connect: ' + SCardGetErrorMessage(hresult)
-        print 'Connected with active protocol ', dwActiveProtocol
+        for zreader in readers:
 
-        try:
-            hresult, response = SCardTransmit( hcard, SCARD_PCI_T0, SELECT + DF_TELECOM )
-            if hresult!=0:
-                raise error, 'Failed to transmit: ' + SCardGetErrorMessage(hresult)
-            print 'Selected DF_TELECOM: ',
-            for i in xrange(len(response)):
-                print "0x%.2X" % response[i],
-            print ""
-            hresult, response = SCardTransmit( hcard, SCARD_PCI_T0, GET_RESPONSE + [response[1]] )
-            if hresult!=0:
-                raise error, 'Failed to transmit: ' + SCardGetErrorMessage(hresult)
-            print 'GET_RESPONSE after SELECT DF_TELECOM: ',
-            for i in xrange(len(response)):
-                print "0x%.2X" % response[i],
-            print ""
+            print 'Trying to select DF_TELECOM of card in ', zreader
 
+            try:
+                hresult, hcard, dwActiveProtocol = SCardConnect(
+                    hcontext, zreader, SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 )
+                if hresult!=0:
+                    raise error, 'Unable to connect: ' + SCardGetErrorMessage(hresult)
+                print 'Connected with active protocol ', dwActiveProtocol
 
-        finally:
-            hresult = SCardDisconnect( hcard, SCARD_UNPOWER_CARD )
-            if hresult!=0:
-                raise error, 'Failed to disconnect: ' + SCardGetErrorMessage(hresult)
-            print 'Disconnected'
+                try:
+                    hresult, response = SCardTransmit( hcard, SCARD_PCI_T0, SELECT + DF_TELECOM )
+                    if hresult!=0:
+                        raise error, 'Failed to transmit: ' + SCardGetErrorMessage(hresult)
+                    print 'Selected DF_TELECOM: ',
+                    for i in xrange(len(response)):
+                        print "0x%.2X" % response[i],
+                    print ""
+                    hresult, response = SCardTransmit( hcard, SCARD_PCI_T0, GET_RESPONSE + [response[1]] )
+                    if hresult!=0:
+                        raise error, 'Failed to transmit: ' + SCardGetErrorMessage(hresult)
+                    print 'GET_RESPONSE after SELECT DF_TELECOM: ',
+                    for i in xrange(len(response)):
+                        print "0x%.2X" % response[i],
+                    print ""
+                finally:
+                    hresult = SCardDisconnect( hcard, SCARD_UNPOWER_CARD )
+                    if hresult!=0:
+                        raise error, 'Failed to disconnect: ' + SCardGetErrorMessage(hresult)
+                    print 'Disconnected'
+
+            except error:
+                print error, SCardGetErrorMessage(hresult)
+
 
     finally:
         hresult = SCardReleaseContext( hcontext )
