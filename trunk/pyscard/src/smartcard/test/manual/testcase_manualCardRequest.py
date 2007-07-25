@@ -73,7 +73,7 @@ class testcase_manualCardRequest( unittest.TestCase, CardObserver ):
         pass
 
     def testcase_CardRequestNewCardAnyCardTypeInfiniteTimeOut( self ):
-        """Test smartcard.CardRequest for new card without time-out."""
+        """Test smartcard.CardRequest for any new card without time-out."""
 
         cardtype = AnyCardType()
         cardrequest = CardRequest( timeout=None, cardType=cardtype, newcardonly=True )
@@ -93,7 +93,7 @@ class testcase_manualCardRequest( unittest.TestCase, CardObserver ):
 
 
     def testcase_CardRequestNewCardATRCardTypeInfiniteTimeOut( self ):
-        """Test smartcard.CardRequest for new card without time-out."""
+        """Test smartcard.CardRequest for new card with given ATR without time-out."""
 
         count=0
         for i in range(0,6):
@@ -114,8 +114,8 @@ class testcase_manualCardRequest( unittest.TestCase, CardObserver ):
         self.assertEquals( 6, count )
 
 
-    def testcase_CardRequestNewCardAnyCardTypeFiniteTimeOut( self ):
-        """Test smartcard.CardRequest for new card with time-out."""
+    def testcase_CardRequestNewCardAnyCardTypeFiniteTimeOutNoInsertion( self ):
+        """Test smartcard.CardRequest for new card with time-out and no insertion before time-out."""
 
         # make sure we have 6 time-outs
         cardtype = AnyCardType()
@@ -130,6 +130,27 @@ class testcase_manualCardRequest( unittest.TestCase, CardObserver ):
                 print '.',
                 self.assert_( elapsed>=10 and elapsed<=11. )
                 count += 1
+        print '\n'
+        self.assertEquals( 6, count )
+
+
+    def testcase_CardRequestNewCardAnyCardTypeFiniteTimeOutInsertion( self ):
+        """Test smartcard.CardRequest for new card with time-out and insertion before time-out."""
+
+        # make sure we have 6 time-outs
+        cardtype = AnyCardType()
+        cardrequest = CardRequest( timeout=5, cardType=cardtype, newcardonly=True )
+        count=0
+        for i in range( 0, 6 ):
+            try:
+                print 're-insert any card within the next 5 seconds'
+                before=time.time()
+                cardservice = cardrequest.waitforcard()
+                count += 1
+                elapsed=int( 10*(time.time()-before ))
+                self.assert_( elapsed<=55. )
+            except CardRequestTimeoutException,e:
+                print 'too slow... Test will show a failure'
         print '\n'
         self.assertEquals( 6, count )
 
