@@ -139,9 +139,14 @@ class testcase_manualCardRequest( unittest.TestCase, CardObserver ):
         count=0
         for i in range( 0, 6 ):
             try:
+                before=time.time()
                 cardservice = cardrequest.waitforcard()
             except CardRequestTimeoutException,e:
+                elapsed=int( 10*(time.time()-before ))
+                print '.',
+                self.assert_( elapsed>=10 and elapsed<=11. )
                 count += 1
+        print '\n'
         self.assertEquals( 6, count )
 
 
