@@ -33,13 +33,13 @@ from smartcard.CardConnection import CardConnection
 from smartcard.CardMonitoring import CardMonitor, CardObserver
 from smartcard.CardRequest import CardRequest
 from smartcard.CardType import AnyCardType, ATRCardType
-from smartcard.Exceptions import CardRequestTimeoutException
+from smartcard.Exceptions import CardConnectionException, CardRequestTimeoutException
 from smartcard.util import toHexString
 from smartcard.System import readers
 
-# 
+#
 # setup test first: detect current readers and cards
-# 
+#
 print 'insert two smartcard readers'
 while True:
     readerz=readers()
@@ -55,8 +55,8 @@ for card in cardz: print '\t', toHexString(card.atr)
 
 
 #
-# 
-# 
+#
+#
 class testcase_manualCardRequest( unittest.TestCase, CardObserver ):
     """Test case for CardRequest."""
 
@@ -83,8 +83,8 @@ class testcase_manualCardRequest( unittest.TestCase, CardObserver ):
         count=0
         for i in range( 0, 6 ):
             cardservice = cardrequest.waitforcard()
-            cardservice.connection.connect()
             try:
+                cardservice.connection.connect()
                 print toHexString(cardservice.connection.getATR()), 'in', cardservice.connection.getReader()
             except CardConnectionException:
                 # card was removed too fast
@@ -112,8 +112,8 @@ class testcase_manualCardRequest( unittest.TestCase, CardObserver ):
             print 're-insert card',  toHexString( card.atr ), 'into', card.reader
             cardservice = cardrequest.waitforcard()
             print 'ok'
-            cardservice.connection.connect()
             try:
+                cardservice.connection.connect()
                 self.assertEquals( cardservice.connection.getATR(), card.atr )
             except CardConnectionException:
                 # card was removed too fast

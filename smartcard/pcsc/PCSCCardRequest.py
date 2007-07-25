@@ -164,17 +164,8 @@ class PCSCCardRequest(AbstractCardRequest):
                 hresult = SCARD_E_TIMEOUT
                 newstates=[]
 
-            # real time-out, e.g. the timer has set the time-out event
-            if SCARD_E_TIMEOUT==hresult and evt.isSet():
-                timedout=True
-                raise CardRequestTimeoutException()
-
-            # this is a polling time-out, make a new iteration
-            elif SCARD_E_TIMEOUT==hresult:
-                timedout=True
-
             # some error happened
-            elif 0!=hresult:
+            if 0!=hresult:
                 timer.cancel()
                 raise CardRequestException( 'Failed to get status change ' + SCardGetErrorMessage(hresult) )
 
@@ -194,6 +185,8 @@ class PCSCCardRequest(AbstractCardRequest):
                                 cardfound=True
                                 timer.cancel()
                                 return self.cardServiceClass( reader.createConnection() )
+
+            if evt.isSet(): raise CardRequestTimeoutException()
 
 
 
@@ -234,16 +227,8 @@ class PCSCCardRequest(AbstractCardRequest):
             # get status change
             hresult, newstates = SCardGetStatusChange( self.hcontext, 0, readerstates.values() )
 
-            # this is a real time-out, e.g. the event has been set
-            if SCARD_E_TIMEOUT==hresult and evt.isSet():
-                raise CardRequestTimeoutException()
-
-            # this is a polling time-out, make a new iteration
-            elif SCARD_E_TIMEOUT==hresult:
-                pass
-
-            # some real error happened
-            elif 0!=hresult:
+            # some error happened
+            if 0!=hresult:
                 timer.cancel()
                 raise CardRequestException( 'Failed to get status change ' + SCardGetErrorMessage(hresult) )
 
@@ -256,6 +241,7 @@ class PCSCCardRequest(AbstractCardRequest):
                         presentcards.append( Card.Card( readername, atr ) )
                 return presentcards
 
+        if evt.isSet(): raise CardRequestTimeoutException()
 
 if __name__ == '__main__':
     """Small sample illustrating the use of PCSCCardRequest.py."""
