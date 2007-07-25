@@ -44,6 +44,7 @@ print 'insert two smartcard readers'
 while True:
     readerz=readers()
     if 2<=len( readerz ): break
+    time.sleep(.3)
 for reader in readerz: print '\t', reader
 
 print 'insert two cards in the readers'
@@ -51,6 +52,7 @@ cardrequest = CardRequest()
 while True:
     cardz=cardrequest.waitforcardevent()
     if 2<=len( cardz ): break
+    time.sleep(.3)
 for card in cardz: print '\t', toHexString(card.atr)
 
 
@@ -67,6 +69,7 @@ class testcase_manualCardRequest( unittest.TestCase, CardObserver ):
         while True:
             cards=cardrequest.waitforcardevent()
             if 0==len( cards ): break
+            time.sleep(.3)
         print 'ok'
 
     def tearDown( self ):
@@ -153,6 +156,24 @@ class testcase_manualCardRequest( unittest.TestCase, CardObserver ):
                 print 'too slow... Test will show a failure'
         print '\n'
         self.assertEquals( 6, count )
+
+    def testcase_CardRequestNewCardAnyCardTypeSpecificReaderNotPresentInfiniteTimeOut( self ):
+        """Test smartcard.CardRequest for any new card in a specific reader not present without time-out."""
+
+        print 'please remove all smart cards readers'
+        while True:
+            readerz=readers()
+            if 0==len( readerz ): break
+            time.sleep(.3)
+
+        cardtype = AnyCardType()
+        cardrequest = CardRequest( timeout=None, readers=[ `cardz[0].reader` ], cardType=cardtype, newcardonly=True )
+        print 'Insert reader', `cardz[0].reader`, 'with card', `cardz[0].atr`, 'inside'
+        cardservice = cardrequest.waitforcard()
+        cardservice.connection.connect()
+        print toHexString(cardservice.connection.getATR()), 'in', cardservice.connection.getReader()
+        cardservice.connection.disconnect()
+
 
 
 def suite():
