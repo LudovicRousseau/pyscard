@@ -61,8 +61,8 @@ class PCSCCardRequest(AbstractCardRequest):
         """
         AbstractCardRequest.__init__( self, newcardonly, readers, cardType, cardServiceClass, timeout )
 
-        # polling interval in ms for SCardGetStatusChange
-        self.pollinginterval=300
+        # polling interval in s for SCardGetStatusChange
+        self.pollinginterval=0.1
 
         # if timeout is None, translate to scard.INFINITE
         if None==self.timeout:
@@ -137,10 +137,14 @@ class PCSCCardRequest(AbstractCardRequest):
                             return self.cardServiceClass( reader.createConnection() )
 
 
-        # start timer
-        timer.start()
-
+        timerstarted=False
         while not evt.isSet() and not cardfound:
+
+            if not timerstarted:
+                timerstarted=True
+                timer.start()
+
+            time.sleep( self.pollinginterval )
 
             # create a dictionary entry for new readers
             readernames = self.getReaderNames()
@@ -153,20 +157,19 @@ class PCSCCardRequest(AbstractCardRequest):
                 if oldreader not in readernames:
                     del readerstates[oldreader]
 
-            # wait for card insertion for self.pollinginterval
+            # wait for card insertion
             if {}!=readerstates:
-                hresult, newstates = SCardGetStatusChange( self.hcontext, self.pollinginterval, readerstates.values() )
+                hresult, newstates = SCardGetStatusChange( self.hcontext, 0, readerstates.values() )
             else:
                 hresult = SCARD_E_TIMEOUT
                 newstates=[]
-                time.sleep(0.1)
 
             # real time-out, e.g. the timer has set the time-out event
             if SCARD_E_TIMEOUT==hresult and evt.isSet():
                 timedout=True
                 raise CardRequestTimeoutException()
 
-            # this is a polling time-out of self.pollinginterval, make a new iteration
+            # this is a polling time-out, make a new iteration
             elif SCARD_E_TIMEOUT==hresult:
                 timedout=True
 
@@ -193,6 +196,7 @@ class PCSCCardRequest(AbstractCardRequest):
                                 return self.cardServiceClass( reader.createConnection() )
 
 
+
     def waitforcardevent( self ):
         """Wait for card insertion or removal."""
         AbstractCardRequest.waitforcardevent( self )
@@ -214,6 +218,8 @@ class PCSCCardRequest(AbstractCardRequest):
                 timerstarted=True
                 timer.start()
 
+            time.sleep( self.pollinginterval )
+
             # reinitialize at each iteration just in case a new reader appeared
             readernames = self.getReaderNames()
             for reader in readernames:
@@ -225,14 +231,14 @@ class PCSCCardRequest(AbstractCardRequest):
                 if oldreader not in readernames:
                     del readerstates[oldreader]
 
-            # get status change every self.pollinginterval
-            hresult, newstates = SCardGetStatusChange( self.hcontext, self.pollinginterval, readerstates.values() )
+            # get status change
+            hresult, newstates = SCardGetStatusChange( self.hcontext, 0, readerstates.values() )
 
             # this is a real time-out, e.g. the event has been set
             if SCARD_E_TIMEOUT==hresult and evt.isSet():
                 raise CardRequestTimeoutException()
 
-            # this is a polling time-out of self.pollinginterval, make a new iteration
+            # this is a polling time-out, make a new iteration
             elif SCARD_E_TIMEOUT==hresult:
                 pass
 
