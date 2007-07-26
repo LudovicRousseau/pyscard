@@ -431,7 +431,6 @@ long _GetStatusChange(
     READERSTATELIST* prsl )
 {
     long hresult;
-    ERRORSTRING* _GetErrorMessage( long lErrCode );
     winscard_init();
     hresult = (mySCardGetStatusChangeA)( hContext, dwTimeout, prsl->ars, prsl->cRStates );
     if( SCARD_E_UNKNOWN_READER==hresult ) 
@@ -440,10 +439,7 @@ long _GetStatusChange(
         unsigned int i;
         for( i=0; i<prsl->cRStates; i++ )
         {
-            if( SCARD_STATE_UNKNOWN & prsl->ars[i].dwEventState ) 
-            {
-                prsl->ars[i].cbAtr=0;
-            }
+            prsl->ars[i].cbAtr=0;
         }
     }
     return hresult;
