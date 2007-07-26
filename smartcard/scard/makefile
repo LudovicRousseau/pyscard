@@ -27,19 +27,26 @@
 # the pythondev must contain the debug libraries (e.g. python25_d.lib)
 pythondir=c:\projects\pyscard\factory\python
 pythondebugdir=c:\projects\pyscard\factory\pythondev
+pythonpackagedir=$(pythondir)\Lib\site-packages\smartcard\scard
 swigdir=c:\projects\pyscard\factory\swig
 
 # common compiler and linker flags
 linker_flags = /DLL /nologo /INCREMENTAL:no /LIBPATH:$(pythondir)\libs /LIBPATH:$(pythondebugdir)\libs
 
 # final target
-all: obj\scard.pyd objd\scard_d.pyd
+all: $(pythonpackagedir)\_scard.pyd $(pythonpackagedir)\_scard_d.pyd
 
 # depedencies
-obj\scard.pyd : obj\scard_wrap.obj obj\helpers.obj obj\winscarddll.obj obj\scard.res
+$(pythonpackagedir)\_scard.pyd : obj\_scard.pyd 
+	if exist obj\_scard.pyd copy obj\_scard.pyd $(pythonpackagedir)\_scard.pyd
+
+$(pythonpackagedir)\_scard_d.pyd  : objd\_scard_d.pyd
+	if exist objd\_scard_d.pyd copy objd\_scard_d.pyd $(pythonpackagedir)\_scard_d.pyd
+
+obj\_scard.pyd : obj\scard_wrap.obj obj\helpers.obj obj\winscarddll.obj obj\scard.res
 	link.exe $(linker_flags) /EXPORT:init_scard $** /OUT:$@ /IMPLIB:$*.lib
 
-objd\scard_d.pyd : objd\scard_wrap.obj objd\helpers.obj objd\winscarddll.obj objd\scard.res
+objd\_scard_d.pyd : objd\scard_wrap.obj objd\helpers.obj objd\winscarddll.obj objd\scard.res
 	link.exe $(linker_flags) /DEBUG winscard.lib /EXPORT:init_scard $** /OUT:$@ /IMPLIB:$*.lib
 
 obj\scard_wrap.obj : obj\scard_wrap.c
@@ -89,9 +96,9 @@ objd\scard_wrap.c: scard.i pcscdefs.i pcsctypemaps.i
 
 # clean-up generated files
 clean:
-	@del obj\scard.pyd obj\scard.exp obj\scard.lib
+	@del obj\_scard.pyd obj\_scard.exp obj\_scard.lib
 	@del obj\scard_wrap.obj obj\helpers.obj obj\winscarddll.obj 
 	@del obj\scard.res obj\scard.py obj\scard_wrap.c
-	@del objd\scard_d.pyd objd\scard_d.exp objd\scard_d.lib 
-	@del objd\scard_d.pdb objd\scard_wrap.obj objd\helpers.obj objd\winscarddll.obj 
+	@del objd\_scard_d.pyd objd\_scard_d.exp objd\_scard_d.lib 
+	@del objd\_scard_d.pdb objd\scard_wrap.obj objd\helpers.obj objd\winscarddll.obj 
 	@del objd\scard.res objd\scard.py objd\scard_wrap.c
