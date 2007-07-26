@@ -75,14 +75,24 @@ class PCSCCardRequest(AbstractCardRequest):
 
     def getReaderNames( self ):
         """Returns the list or PCSC readers on which to wait for cards."""
-        # if no readers asked, use all readers
+
+        # get inserted readers
+        hresult, pcscreaders = SCardListReaders( self.hcontext, [] )
+        if 0!=hresult and SCARD_E_NO_READERS_AVAILABLE!=hresult:
+            raise ListReadersException( hresult )
+
         readers=[]
-        if None!=self.readersAsked:
-            readers=[str(reader) for reader in self.readersAsked]
+
+        # if no readers asked, use all inserted readers
+        if None==self.readersAsked:
+            readers = pcscreaders
+
+        # otherwise use only the asked readers that are inserted
         else:
-            hresult, readers = SCardListReaders( self.hcontext, [] )
-            if 0!=hresult and SCARD_E_NO_READERS_AVAILABLE!=hresult:
-                raise ListReadersException( hresult )
+            for reader in self.readersAsked:
+                if str(reader) in pcscreaders:
+                    readers = readers + [ str(reader) ]
+
         return readers
 
 
@@ -116,7 +126,10 @@ class PCSCCardRequest(AbstractCardRequest):
         else:
             hresult=0
             newstates=[]
-        if 0!=hresult and SCARD_E_TIMEOUT!=hresult:
+
+        # we can expect normally time-outs or reader disappearing just before the call
+        # otherwise, raise execption on error
+        if 0!=hresult and SCARD_E_TIMEOUT!=hresult and SCARD_E_UNKNOWN_READER!=hresult:
                 raise CardRequestException( 'Failed to SCardGetStatusChange ' + SCardGetErrorMessage(hresult) )
 
 
@@ -169,6 +182,10 @@ class PCSCCardRequest(AbstractCardRequest):
                 if evt.isSet():
                     raise CardRequestTimeoutException()
 
+            # reader vanished before or during the call
+            elif SCARD_E_UNKNOWN_READER==hresult:
+                pass
+
             # some error happened
             elif 0!=hresult:
                 timer.cancel()
@@ -178,6 +195,7 @@ class PCSCCardRequest(AbstractCardRequest):
             else:
                 # update state dictionary
                 for state in newstates:
+                    readername, eventstate, atr = state
                     readerstates[readername] = ( readername, eventstate )
 
                 # check if we have to return a match
@@ -241,6 +259,10 @@ class PCSCCardRequest(AbstractCardRequest):
             if SCARD_E_TIMEOUT==hresult:
                 if evt.isSet():
                     raise CardRequestTimeoutException()
+
+            # the reader was unplugged during the loop
+            elif SCARD_E_UNKNOWN_READER==hresult:
+                pass
 
             # some error happened
             elif 0!=hresult:
