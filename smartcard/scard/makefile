@@ -42,6 +42,7 @@ $(pythonpackagedir)\_scard.pyd : obj\_scard.pyd
 
 $(pythonpackagedir)\_scard_d.pyd  : objd\_scard_d.pyd
 	if exist objd\_scard_d.pyd copy objd\_scard_d.pyd $(pythonpackagedir)\_scard_d.pyd
+	if exist objd\_scard_d.pdb copy objd\_scard_d.pyd $(pythonpackagedir)\_scard_d.pdb
 
 obj\_scard.pyd : obj\scard_wrap.obj obj\helpers.obj obj\winscarddll.obj obj\scard.res
 	link.exe $(linker_flags) /EXPORT:init_scard $** /OUT:$@ /IMPLIB:$*.lib
