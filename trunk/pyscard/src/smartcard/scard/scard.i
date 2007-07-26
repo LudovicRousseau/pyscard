@@ -430,20 +430,24 @@ long _GetStatusChange(
     unsigned long dwTimeout,
     READERSTATELIST* prsl )
 {
-    long hresult=SCARD_E_NO_READERS_AVAILABLE;
+    long hresult;
+    ERRORSTRING* _GetErrorMessage( long lErrCode );
     winscard_init();
-
-    __try
+    hresult = (mySCardGetStatusChangeA)( hContext, dwTimeout, prsl->ars, prsl->cRStates );
+    if( SCARD_E_UNKNOWN_READER==hresult ) 
     {
-        hresult=(mySCardGetStatusChangeA)( hContext, dwTimeout, prsl->ars, prsl->cRStates );
+        // for each state, leave reader and state untouched, but nuke ATR
+        unsigned int i;
+        for( i=0; i<prsl->cRStates; i++ )
+        {
+            if( SCARD_STATE_UNKNOWN & prsl->ars[i].dwEventState ) 
+            {
+                prsl->ars[i].cbAtr=0;
+            }
+        }
     }
-    __except( EXCEPTION_EXECUTE_HANDLER )
-    {
-        hresult=SCARD_E_NO_READERS_AVAILABLE;
-        prsl=NULL;
-    }
-    //return (mySCardGetStatusChangeA)( hContext, dwTimeout, prsl->ars, prsl->cRStates );
     return hresult;
+    //return (mySCardGetStatusChangeA)( hContext, dwTimeout, prsl->ars, prsl->cRStates );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
