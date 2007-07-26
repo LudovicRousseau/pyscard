@@ -167,8 +167,8 @@ class testcase_manualCardRequest( unittest.TestCase, CardObserver ):
             time.sleep(.3)
 
         cardtype = AnyCardType()
-        cardrequest = CardRequest( timeout=None, readers=[ `cardz[0].reader` ], cardType=cardtype, newcardonly=True )
-        print 'Insert reader', `cardz[0].reader`, 'with card', `cardz[0].atr`, 'inside'
+        cardrequest = CardRequest( timeout=None, readers=[ str(cardz[0].reader) ], cardType=cardtype, newcardonly=True )
+        print 'Insert reader', str( cardz[0].reader ), 'with card', `cardz[0].atr`, 'inside'
         cardservice = cardrequest.waitforcard()
         cardservice.connection.connect()
         print toHexString(cardservice.connection.getATR()), 'in', cardservice.connection.getReader()
