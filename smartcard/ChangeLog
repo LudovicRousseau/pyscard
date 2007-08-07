@@ -3,6 +3,8 @@
         * handled several issues reported by Michael Roehner concerning waitforcard() not detecting card in reader/card
           USB stick; changed the waitforcard() and waitforcardevent() to poll every 100ms for new readers and cards in
           these readers
+        * following issue reported by Jarle Bauck Hamar, added samples on how to perform exclusive card connection or
+          protect transmit() from being interupted by another thread or process
 
 1.6.3
 =====
