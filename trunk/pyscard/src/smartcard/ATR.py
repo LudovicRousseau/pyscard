@@ -221,6 +221,16 @@ class ATR:
             protocols['T=0']=True
         return protocols
 
+    def isT0Supported( self ):
+        """Return True if T=0 is supported."""
+        protocols=self.getSupportedProtocols()
+        return protocols.has_key( 'T=0' )
+
+    def isT1Supported( self ):
+        """Return True if T=1 is supported."""
+        protocols=self.getSupportedProtocols()
+        return protocols.has_key( 'T=1' )
+
     def dump( self ):
         """Dump the details of an ATR."""
 
@@ -231,6 +241,9 @@ class ATR:
             if self.TD[i]!=None: print "TD%d: %x" % (i+1,self.TD[i])
 
         print 'supported protocols', self.getSupportedProtocols()
+        print 'T=0 supported', self.isT0Supported()
+        print 'T=1 supported', self.isT1Supported()
+
         print 'checksum:', self.getChecksum()
 
         print '\tclock rate conversion factor:', self.getClockRateConversion()
