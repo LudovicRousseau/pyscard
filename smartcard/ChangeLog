@@ -5,6 +5,7 @@
           these readers
         * following issue reported by Jarle Bauck Hamar, added samples on how to perform exclusive card connection or
           protect transmit() from being interupted by another thread or process
+        * fixed ATR parsing error for optional interface bytes reported by Jarle Bauck Hamar
 
 1.6.3
 =====
