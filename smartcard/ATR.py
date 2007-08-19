@@ -118,6 +118,7 @@ class ATR:
         else:
             self.TCK = None
 
+
         # clock-rate conversion factor
         if self.hasTA[0]:
             self.FI = self.TA[0]>>4 & 0x0f
@@ -230,6 +231,11 @@ class ATR:
         """Return True if T=1 is supported."""
         protocols=self.getSupportedProtocols()
         return protocols.has_key( 'T=1' )
+
+    def isT15Supported( self ):
+        """Return True if T=15 is supported."""
+        protocols=self.getSupportedProtocols()
+        return protocols.has_key( 'T=15' )
 
     def dump( self ):
         """Dump the details of an ATR."""
