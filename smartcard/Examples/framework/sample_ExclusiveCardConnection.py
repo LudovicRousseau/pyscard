@@ -27,8 +27,8 @@ from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver
 from smartcard.CardConnection import CardConnection
 from smartcard.util import toHexString
 
-from ExclusiveConnectCardConnection import ExclusiveConnectCardConnection
-from ExclusiveTransmitCardConnection import ExclusiveTransmitCardConnection
+from smartcard.ExclusiveConnectCardConnection import ExclusiveConnectCardConnection
+from smartcard.ExclusiveTransmitCardConnection import ExclusiveTransmitCardConnection
 
 
 # define the apdus used in this script
