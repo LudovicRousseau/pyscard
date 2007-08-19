@@ -63,7 +63,7 @@ static int _IsAReaderState( PyObject* o)
         return 0;
     }
     o2 = PyTuple_GetItem(o, 1);
-    if(!PyInt_Check(o2))
+    if(!PyInt_Check(o2) && !PyLong_Check(o2) )
     {
         PyErr_SetString( PyExc_TypeError, "Expected an Int as second tuple item." );
         return 0;
