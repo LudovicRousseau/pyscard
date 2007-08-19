@@ -61,7 +61,6 @@ class testcase_ATR(unittest.TestCase):
                 count+=1
         self.assert_( count>1 )
 
-
 def suite():
     suite1 = unittest.makeSuite(testcase_ATR)
     return unittest.TestSuite((suite1))
