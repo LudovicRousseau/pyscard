@@ -90,7 +90,7 @@ class PCSCCardRequest(AbstractCardRequest):
         # otherwise use only the asked readers that are inserted
         else:
             for reader in self.readersAsked:
-                if not isinstance( reader, type("")): 
+                if not isinstance( reader, type("")):
                     reader=str(reader)
                 if reader in pcscreaders:
                     readers = readers + [ reader ]
@@ -151,7 +151,6 @@ class PCSCCardRequest(AbstractCardRequest):
                             cardfound=True
                             return self.cardServiceClass( reader.createConnection() )
 
-
         timerstarted=False
         while not evt.isSet() and not cardfound:
 
@@ -195,21 +194,34 @@ class PCSCCardRequest(AbstractCardRequest):
 
             # something changed!
             else:
-                # update state dictionary
-                for state in newstates:
-                    readername, eventstate, atr = state
-                    readerstates[readername] = ( readername, eventstate )
 
-                # check if we have to return a match
+                # check if we have to return a match, i.e.
+                # if no new card in inserted and there is a card found
+                # or if a new card is requested, and there is a change+present
                 for state in newstates:
                     readername, eventstate, atr = state
-                    if (self.newcardonly and eventstate & SCARD_STATE_PRESENT and eventstate & SCARD_STATE_CHANGED) or (not self.newcardonly and eventstate & SCARD_STATE_PRESENT):
+                    r, oldstate = readerstates[readername]
+
+
+                    # the status can change on a card already inserted, e.g.
+                    # unpowered, in use, ...
+                    # if a new card is requested, clear the state changed bit if
+                    # the card was already inserted and is still inserted
+                    if self.newcardonly:
+                        if oldstate & SCARD_STATE_PRESENT and eventstate & ( SCARD_STATE_CHANGED | SCARD_STATE_PRESENT ):
+                            eventstate = eventstate & (0xFFFFFFFF ^ SCARD_STATE_CHANGED)
+
+                    if (self.newcardonly and eventstate & SCARD_STATE_PRESENT and eventstate & SCARD_STATE_CHANGED) or \
+                        (not self.newcardonly and eventstate & SCARD_STATE_PRESENT):
                         reader=PCSCReader(readername)
                         if self.cardType.matches( atr, reader ):
                             if self.cardServiceClass.supports( 'dummy' ):
                                 cardfound=True
                                 timer.cancel()
                                 return self.cardServiceClass( reader.createConnection() )
+
+                    # update state dictionary
+                    readerstates[readername] = ( readername, eventstate )
 
             if evt.isSet(): raise CardRequestTimeoutException()
 
@@ -253,7 +265,7 @@ class PCSCCardRequest(AbstractCardRequest):
             if {}!=readerstates:
                 hresult, newstates = SCardGetStatusChange( self.hcontext, 0, readerstates.values() )
             else:
-                hresult = 0 #SCARD_E_TIMEOUT
+                hresult = 0
                 newstates=[]
 
 
@@ -276,6 +288,14 @@ class PCSCCardRequest(AbstractCardRequest):
                 timer.cancel()
                 for state in newstates:
                     readername, eventstate, atr = state
+                    r, oldstate = readerstates[readername]
+
+                    # the status can change on a card already inserted, e.g.
+                    # unpowered, in use, ... Clear the state changed bit if
+                    # the card was already inserted and is still inserted
+                    if oldstate & SCARD_STATE_PRESENT and eventstate & ( SCARD_STATE_CHANGED | SCARD_STATE_PRESENT ):
+                        eventstate = eventstate & (0xFFFFFFFF ^ SCARD_STATE_CHANGED)
+
                     if eventstate & SCARD_STATE_PRESENT and eventstate & SCARD_STATE_CHANGED:
                         presentcards.append( Card.Card( readername, atr ) )
                 return presentcards
