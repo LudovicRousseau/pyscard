@@ -32,7 +32,6 @@ import string
 # gemalto jython
 from smartcard.ATR import ATR
 
-
 class testcase_CAtr(unittest.TestCase):
     """Test APDU class and utilities"""
 
@@ -42,7 +41,11 @@ class testcase_CAtr(unittest.TestCase):
                   0xBE, 0x21, 0x13, 0x67, 0x29, 0x02, 0x01, 0x01, 0x81, 0xCD, 0xB9 ] )
         historicalbytes = [ 0x80, 0x31, 0xA0, 0x73, 0xBE, 0x21, 0x13, 0x67, 0x29, 0x02, 0x01, 0x01, 0x81, 0xCD]
         self.assertEquals( a.getHistoricalBytes(), historicalbytes )
-        self.assertEquals( a.getChecksum(), 0 )
+        self.assertEquals( a.getChecksum(), 0xB9 )
+        self.assert_( a.checksumOK )
+        self.assert_( a.isT0Supported() )
+        self.assert_( not a.isT1Supported() )
+        self.assert_( a.isT15Supported() )
 
     def testcase_ATR2(self):
         """Palmera Protect V2."""
@@ -50,6 +53,9 @@ class testcase_CAtr(unittest.TestCase):
         historicalbytes = [ 0x9C, 0x02, 0x02, 0x01, 0x02 ]
         self.assertEquals( a.getHistoricalBytes(), historicalbytes )
         self.assertEquals( a.getChecksum(), None )
+        self.assert_( a.isT0Supported() )
+        self.assert_( not a.isT1Supported() )
+        self.assert_( not a.isT15Supported() )
 
     def testcase_ATR3(self):
         """Simera 3.13."""
@@ -57,6 +63,9 @@ class testcase_CAtr(unittest.TestCase):
         historicalbytes = [ 0x20, 0x02, 0x01, 0x00, 0x80, 0x0D ]
         self.assertEquals( a.getHistoricalBytes(), historicalbytes )
         self.assertEquals( a.getChecksum(), None )
+        self.assert_( a.isT0Supported() )
+        self.assert_( not a.isT1Supported() )
+        self.assert_( not a.isT15Supported() )
 
     def testcase_ATR4(self):
         """SIMRock'n Tree"""
@@ -64,6 +73,9 @@ class testcase_CAtr(unittest.TestCase):
         historicalbytes = [ 0x82, 0x30, 0x00, 0x13, 0x6C, 0x9F, 0x22]
         self.assertEquals( a.getHistoricalBytes(), historicalbytes )
         self.assertEquals( a.getChecksum(), None )
+        self.assert_( a.isT0Supported() )
+        self.assert_( not a.isT1Supported() )
+        self.assert_( not a.isT15Supported() )
 
     def testcase_ATR5(self):
         """Demo Vitale online IGEA340"""
@@ -71,6 +83,9 @@ class testcase_CAtr(unittest.TestCase):
         historicalbytes = [ 0x52, 0x09, 0x6A, 0x90, 0x00]
         self.assertEquals( a.getHistoricalBytes(), historicalbytes )
         self.assertEquals( a.getChecksum(), None )
+        self.assert_( a.isT0Supported() )
+        self.assert_( not a.isT1Supported() )
+        self.assert_( not a.isT15Supported() )
 
     def testcase_ATR6(self):
         """Simagine 2002"""
@@ -78,6 +93,23 @@ class testcase_CAtr(unittest.TestCase):
         historicalbytes = [ 0x20, 0x02, 0x01, 0x00, 0x00, 0x0D ]
         self.assertEquals( a.getHistoricalBytes(), historicalbytes )
         self.assertEquals( a.getChecksum(), None )
+
+
+    def testcase_ATR7(self):
+        """Protect V3 T=1"""
+        a = ATR( [ 0x3B, 0xE5, 0x00, 0x00, 0x81, 0x21, 0x45, 0x9C, 0x10, 0x01, 0x00, 0x80, 0x0D ] )
+        historicalbytes = [ 0x9C, 0x10, 0x01, 0x00, 0x80 ]
+        self.assertEquals( a.getHistoricalBytes(), historicalbytes )
+        self.assertEquals( a.getChecksum(), 0x0D )
+        self.assert_( not a.isT0Supported() )
+        self.assert_( a.isT1Supported() )
+        self.assert_( not a.isT15Supported() )
+        self.assert_( a.checksumOK )
+        self.assert_( a.getTB1()==0x00 )
+        self.assert_( a.getTC1()==0x00 )
+        self.assert_( a.getTD1()==0x81 )
+        self.assert_( a.TD[2-1]==0x21 ) # TD2
+        self.assert_( a.TB[3-1]==0x45 ) # TB3
 
 
 def suite():
