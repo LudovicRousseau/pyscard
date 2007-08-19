@@ -44,14 +44,14 @@ pyscard library.
 
 Introduction
 
-The smartcard.scard module is a Python wrapper around PCSC smart card base 
-services.  On Windows, the wrapper is performed around the smart card base 
-components winscard library.  On linux, the wrapper is performed around 
-PCSC-lite library.  
+The smartcard.scard module is a Python wrapper around PCSC smart card base
+services.  On Windows, the wrapper is performed around the smart card base
+components winscard library.  On linux, the wrapper is performed around
+PCSC-lite library.
 
 
-On Windows using the smart card base components, the smartcard.scard 
-module provides mapping for the following API functions: 
+On Windows using the smart card base components, the smartcard.scard
+module provides mapping for the following API functions:
 
 SCardAddReaderToGroup
 SCardBeginTransaction
@@ -115,19 +115,19 @@ Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
 
 This file is part of pyscard.
 
-pyscard is free software; you can redistribute it and/or modify it 
-under the terms of the GNU Lesser General Public License as published by 
-the Free Software Foundation; either version 2.1 of the License, or (at 
-your option) any later version.  
+pyscard is free software; you can redistribute it and/or modify it
+under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation; either version 2.1 of the License, or (at
+your option) any later version.
 
-pyscard is distributed in the hope that it will be useful, but 
-WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
-or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public 
-License for more details.  
+pyscard is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+License for more details.
 
-You should have received a copy of the GNU Lesser General Public License 
-along with pyscard; if not, write to the Free Software Foundation, 
-Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA 
+You should have received a copy of the GNU Lesser General Public License
+along with pyscard; if not, write to the Free Software Foundation,
+Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 "
 %enddef
@@ -431,19 +431,53 @@ long _GetStatusChange(
     READERSTATELIST* prsl )
 {
     long hresult;
+    unsigned long ulResult;
+    unsigned int i;
+
     winscard_init();
-    hresult = (mySCardGetStatusChangeA)( hContext, dwTimeout, prsl->ars, prsl->cRStates );
-    if( SCARD_E_UNKNOWN_READER==hresult ) 
+
+    // bad reader state list
+    if( NULL==prsl )
     {
-        // for each state, leave reader and state untouched, but nuke ATR
-        unsigned int i;
+        return SCARD_E_INVALID_PARAMETER;
+    }
+
+
+    // remove changed bit
+    for( i=0; i<prsl->cRStates; i++ )
+    {
+        // remove changed bit
+        prsl->ars[i].dwCurrentState = prsl->ars[i].dwCurrentState & (0xFFFFFFFF ^ SCARD_STATE_CHANGED);
+    }
+
+    ulResult = (mySCardGetStatusChangeA)( hContext, dwTimeout, prsl->ars, prsl->cRStates );
+
+    //printf( "\n%.8lx ", ulResult );
+    //for( i=0; i<prsl->cRStates; i++ )
+    //{
+    //    printf( "%.8lx %.8lx ", prsl->ars[i].dwCurrentState, prsl->ars[i].dwEventState );
+    //}
+
+    // there was a time-out or we asked for an unexisting reader
+    // in this case, the output values of the READERSTATELIST are meaningless
+    if( SCARD_E_TIMEOUT==ulResult || SCARD_E_UNKNOWN_READER==ulResult)
+    {
+        // for each state, output event state is input event state, and nuke ATR if no card present
         for( i=0; i<prsl->cRStates; i++ )
         {
+            // remove changed bit
+            prsl->ars[i].dwEventState = prsl->ars[i].dwCurrentState;
+
+            // ATR not valid on output
             prsl->ars[i].cbAtr=0;
+
         }
     }
+
+    // internally, we use unsigned long to compare easily scarderr.h values from the debugger
+    // for python, we return a long
+    hresult=ulResult;
     return hresult;
-    //return (mySCardGetStatusChangeA)( hContext, dwTimeout, prsl->ars, prsl->cRStates );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -972,10 +1006,10 @@ long _IntroduceReaderGroup( unsigned long hcontext, char* szGroupName );
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_ISVALIDCONTEXT
 "
-This function determines whether a smart card context handle is still 
-valid.  After a smart card context handle has been set by 
-SCardEstablishContext(), it may become not valid if the resource manager 
-service has been shut down.  
+This function determines whether a smart card context handle is still
+valid.  After a smart card context handle has been set by
+SCardEstablishContext(), it may become not valid if the resource manager
+service has been shut down.
 
 Windows only, not supported by PCSC lite wrapper.
 
@@ -994,9 +1028,9 @@ long _IsValidContext( unsigned long hContext );
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_LISTINTERFACES
 "
-Provides a list of interfaces supplied by a given card.  The caller 
-supplies the name of a smart card previously introduced to the subsystem, 
-and receives the list of interfaces supported by the card 
+Provides a list of interfaces supplied by a given card.  The caller
+supplies the name of a smart card previously introduced to the subsystem,
+and receives the list of interfaces supported by the card
 
 Windows only, not supported by PCSC lite wrapper.
 
@@ -1015,11 +1049,11 @@ long _ListInterfaces( unsigned long hContext, char* szCard, GUIDLIST* OUTPUT );
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_LISTCARDS
 "
-Searches the smart card database and provides a list of named cards 
-previously introduced to the system by the user.  The caller specifies an 
-ATR string, a set of interface identifiers (GUIDs), or both.  If both an 
-ATR string and an identifier array are supplied, the cards returned will 
-match the ATR string supplied and support the interfaces specified.  
+Searches the smart card database and provides a list of named cards
+previously introduced to the system by the user.  The caller specifies an
+ATR string, a set of interface identifiers (GUIDs), or both.  If both an
+ATR string and an identifier array are supplied, the cards returned will
+match the ATR string supplied and support the interfaces specified.
 
 Windows only, not supported by PCSC lite wrapper.
 
@@ -1053,9 +1087,9 @@ long _ListCards(
 %apply STRINGLIST *INPUT {STRINGLIST *psl};
 %define DOCSTRING_LOCATECARDS
 "
-Searches the readers listed in the rgReaderStates parameter for a card 
-with an ATR string that matches one of the card names specified in 
-mszCards, returning immediately with the result.  
+Searches the readers listed in the rgReaderStates parameter for a card
+with an ATR string that matches one of the card names specified in
+mszCards, returning immediately with the result.
 
 Windows only, not supported by PCSC lite wrapper.
 
@@ -1096,8 +1130,8 @@ long _LocateCards(
 %define DOCSTRING_REMOVEREADERFROMGROUP
 "
 
-Removes a reader from an existing reader group.  This function has no 
-affect on the reader.  
+Removes a reader from an existing reader group.  This function has no
+affect on the reader.
 
 Windows only, not supported by PCSC lite wrapper.
 
@@ -1124,12 +1158,12 @@ long _RemoveReaderFromGroup(
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_BEGINTRANSACTION
 "
-This function establishes a temporary exclusive access mode for doing a 
-series of commands or transaction.  You might want to use this when you 
-are selecting a few files and then writing a large file so you can make 
-sure that another application will not change the current file.  If 
-another application has a lock on this reader or this application is in 
-SCARD_SHARE_EXCLUSIVE there will be no action taken.  
+This function establishes a temporary exclusive access mode for doing a
+series of commands or transaction.  You might want to use this when you
+are selecting a few files and then writing a large file so you can make
+sure that another application will not change the current file.  If
+another application has a lock on this reader or this application is in
+SCARD_SHARE_EXCLUSIVE there will be no action taken.
 
 from smartcard.scard import *
 ... establish context ...
@@ -1150,22 +1184,22 @@ long _BeginTransaction( unsigned long hCard );
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_CONNECT
 "
-This function establishes a connection to the friendly name of the reader 
-specified in szReader.  The first connection will power up and perform a 
-reset on the card.  
+This function establishes a connection to the friendly name of the reader
+specified in szReader.  The first connection will power up and perform a
+reset on the card.
 
-Value of dwShareMode 	Meaning
-SCARD_SHARE_SHARED 	    This application will allow others to share the reader
-SCARD_SHARE_EXCLUSIVE 	This application will NOT allow others to share the reader
-SCARD_SHARE_DIRECT 	    Direct control of the reader, even without a card
+Value of dwShareMode    Meaning
+SCARD_SHARE_SHARED      This application will allow others to share the reader
+SCARD_SHARE_EXCLUSIVE   This application will NOT allow others to share the reader
+SCARD_SHARE_DIRECT      Direct control of the reader, even without a card
 
-SCARD_SHARE_DIRECT can be used before using SCardControl() to send control 
-commands to the reader even if a card is not present in the reader.  
+SCARD_SHARE_DIRECT can be used before using SCardControl() to send control
+commands to the reader even if a card is not present in the reader.
 
-Value of dwPreferredProtocols 	Meaning
-SCARD_PROTOCOL_T0 	            Use the T=0 protocol
-SCARD_PROTOCOL_T1 	            Use the T=1 protocol
-SCARD_PROTOCOL_RAW 	            Use with memory type cards
+Value of dwPreferredProtocols   Meaning
+SCARD_PROTOCOL_T0               Use the T=0 protocol
+SCARD_PROTOCOL_T1               Use the T=1 protocol
+SCARD_PROTOCOL_RAW              Use with memory type cards
 
 from smartcard.scard import *
 ... establish context ...
@@ -1200,14 +1234,14 @@ long _Connect(
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_DISCONNECT
 "
-This function terminates a connection to the connection made through 
-SCardConnect.  disposition can have the following values: 
+This function terminates a connection to the connection made through
+SCardConnect.  disposition can have the following values:
 
-Value of disposition 	Meaning
-SCARD_LEAVE_CARD 	    Do nothing
-SCARD_RESET_CARD 	    Reset the card (warm reset)
-SCARD_UNPOWER_CARD 	    Unpower the card (cold reset)
-SCARD_EJECT_CARD 	    Eject the card
+Value of disposition    Meaning
+SCARD_LEAVE_CARD        Do nothing
+SCARD_RESET_CARD        Reset the card (warm reset)
+SCARD_UNPOWER_CARD      Unpower the card (cold reset)
+SCARD_EJECT_CARD        Eject the card
 
 from smartcard.scard import *
 ... establish context and connect to card ...
@@ -1225,16 +1259,16 @@ long _Disconnect( unsigned long hCard, unsigned long dwDisposition );
 %define DOCSTRING_ENDTRANSACTION
 "
 
-This function ends a previously begun transaction.  The calling 
-application must be the owner of the previously begun transaction or an 
-error will occur.  disposition can have the following values: The 
-disposition action is not currently used in this release.  
+This function ends a previously begun transaction.  The calling
+application must be the owner of the previously begun transaction or an
+error will occur.  disposition can have the following values: The
+disposition action is not currently used in this release.
 
-Value of disposition 	Meaning
-SCARD_LEAVE_CARD 	    Do nothing
-SCARD_RESET_CARD 	    Reset the card
-SCARD_UNPOWER_CARD 	    Unpower the card
-SCARD_EJECT_CARD 	    Eject the card
+Value of disposition    Meaning
+SCARD_LEAVE_CARD        Do nothing
+SCARD_RESET_CARD        Reset the card
+SCARD_UNPOWER_CARD      Unpower the card
+SCARD_EJECT_CARD        Eject the card
 
 from smartcard.scard import *
 ... establish context, connect to card, begin transaction ...
@@ -1250,14 +1284,14 @@ long _EndTransaction( unsigned long hCard, unsigned long dwDisposition );
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_ESTABLISHCONTEXT
 "
-This function creates a communication context to the PC/SC Resource 
-Manager.  This must be the first function called in a PC/SC application.  
+This function creates a communication context to the PC/SC Resource
+Manager.  This must be the first function called in a PC/SC application.
 
-Value of dwScope 	    Meaning
-SCARD_SCOPE_USER 	    Not used
-SCARD_SCOPE_TERMINAL 	Not used
-SCARD_SCOPE_GLOBAL 	    Not used
-SCARD_SCOPE_SYSTEM 	    Services on the local machine
+Value of dwScope        Meaning
+SCARD_SCOPE_USER        Not used
+SCARD_SCOPE_TERMINAL    Not used
+SCARD_SCOPE_GLOBAL      Not used
+SCARD_SCOPE_SYSTEM      Services on the local machine
 
 
 from smartcard.scard import *
@@ -1367,9 +1401,9 @@ For Windows Resource Manager, the list of possible attributes is:
     * SCARD_ATTR_DEVICE_FRIENDLY_NAME_W
     * SCARD_ATTR_DEVICE_SYSTEM_NAME_W
     * SCARD_ATTR_SUPRESS_T1_IFS_REQUEST
-     
-Not all the dwAttrId values listed above may be implemented in the IFD 
-Handler you are using.  And some dwAttrId values not listed here may be 
+
+Not all the dwAttrId values listed above may be implemented in the IFD
+Handler you are using.  And some dwAttrId values not listed here may be
 implemented.
 
 
@@ -1390,26 +1424,26 @@ long _GetAttrib( unsigned long hcard, unsigned long dwAttrId, BYTELIST* OUTPUT )
 %define DOCSTRING_GETSTATUSCHANGE
 "
 
-This function receives a structure or list of tuples containing reader 
+This function receives a structure or list of tuples containing reader
 states. A READERSTATE hast three fields ( readername, state, atr ).
-It then blocks for a change in state to occur on any of the OR'd 
-values contained in the current state for a maximum blocking time of 
-dwTimeout or forever if INFINITE is used.  The new event state will be 
-contained in state.  A status change might be a card insertion or 
-removal event, a change in ATR, etc.  
+It then blocks for a change in state to occur on any of the OR'd
+values contained in the current state for a maximum blocking time of
+dwTimeout or forever if INFINITE is used.  The new event state will be
+contained in state.  A status change might be a card insertion or
+removal event, a change in ATR, etc.
 
 Value of state              Meaning
-SCARD_STATE_UNAWARE 	    The application is unaware of the current state, and would like to know. The use of this value results in an immediate return from state transition monitoring services. This is represented by all bits set to zero
-SCARD_STATE_IGNORE 	        This reader should be ignored
-SCARD_STATE_CHANGED 	    There is a difference between the state believed by the application, and the state known by the resource manager. When this bit is set, the application may assume a significant state change has occurred on this reader
-SCARD_STATE_UNKNOWN 	    The given reader name is not recognized by the resource manager. If this bit is set, then SCARD_STATE_CHANGED and SCARD_STATE_IGNORE will also be set
-SCARD_STATE_UNAVAILABLE 	The actual state of this reader is not available. If this bit is set, then all the following bits are clear
-SCARD_STATE_EMPTY 	        There is no card in the reader. If this bit is set, all the following bits will be clear
-SCARD_STATE_PRESENT 	    There is a card in the reader
-SCARD_STATE_ATRMATCH 	    There is a card in the reader with an ATR matching one of the target cards. If this bit is set, SCARD_STATE_PRESENT will also be set. This bit is only returned on the SCardLocateCards function
-SCARD_STATE_EXCLUSIVE 	    The card in the reader is allocated for exclusive use by another application. If this bit is set, SCARD_STATE_PRESENT will also be set
-SCARD_STATE_INUSE 	        The card in the reader is in use by one or more other applications, but may be connected to in shared mode. If this bit is set, SCARD_STATE_PRESENT will also be set
-SCARD_STATE_MUTE 	        There is an unresponsive card in the reader
+SCARD_STATE_UNAWARE         The application is unaware of the current state, and would like to know. The use of this value results in an immediate return from state transition monitoring services. This is represented by all bits set to zero
+SCARD_STATE_IGNORE          This reader should be ignored
+SCARD_STATE_CHANGED         There is a difference between the state believed by the application, and the state known by the resource manager. When this bit is set, the application may assume a significant state change has occurred on this reader
+SCARD_STATE_UNKNOWN         The given reader name is not recognized by the resource manager. If this bit is set, then SCARD_STATE_CHANGED and SCARD_STATE_IGNORE will also be set
+SCARD_STATE_UNAVAILABLE     The actual state of this reader is not available. If this bit is set, then all the following bits are clear
+SCARD_STATE_EMPTY           There is no card in the reader. If this bit is set, all the following bits will be clear
+SCARD_STATE_PRESENT         There is a card in the reader
+SCARD_STATE_ATRMATCH        There is a card in the reader with an ATR matching one of the target cards. If this bit is set, SCARD_STATE_PRESENT will also be set. This bit is only returned on the SCardLocateCards function
+SCARD_STATE_EXCLUSIVE       The card in the reader is allocated for exclusive use by another application. If this bit is set, SCARD_STATE_PRESENT will also be set
+SCARD_STATE_INUSE           The card in the reader is in use by one or more other applications, but may be connected to in shared mode. If this bit is set, SCARD_STATE_PRESENT will also be set
+SCARD_STATE_MUTE            There is an unresponsive card in the reader
 
 
 from smartcard.scard import *
@@ -1469,7 +1503,7 @@ long _ListReaders(
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_LISTREADERGROUPS
 "
-This function returns a list of currently available reader groups on the system. 
+This function returns a list of currently available reader groups on the system.
 
 from smartcard.scard import *
 hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
@@ -1487,30 +1521,30 @@ long _ListReaderGroups( unsigned long hContext, STRINGLIST *OUTPUT );
 %define DOCSTRING_RECONNECT
 "
 
-This function reestablishes a connection to a reader that was previously 
-connected to using SCardConnect().  In a multi application environment it 
-is possible for an application to reset the card in shared mode.  When 
-this occurs any other application trying to access certain commands will 
-be returned the value SCARD_W_RESET_CARD.  When this occurs 
-SCardReconnect() must be called in order to acknowledge that the card was 
-reset and allow it to change it's state accordingly.  
+This function reestablishes a connection to a reader that was previously
+connected to using SCardConnect().  In a multi application environment it
+is possible for an application to reset the card in shared mode.  When
+this occurs any other application trying to access certain commands will
+be returned the value SCARD_W_RESET_CARD.  When this occurs
+SCardReconnect() must be called in order to acknowledge that the card was
+reset and allow it to change it's state accordingly.
 
-Value of dwShareMode 	Meaning
-SCARD_SHARE_SHARED 	    This application will allow others to share the reader
-SCARD_SHARE_EXCLUSIVE 	This application will NOT allow others to share the reader
+Value of dwShareMode    Meaning
+SCARD_SHARE_SHARED      This application will allow others to share the reader
+SCARD_SHARE_EXCLUSIVE   This application will NOT allow others to share the reader
 
-Value of dwPreferredProtocols 	Meaning
-SCARD_PROTOCOL_T0 	            Use the T=0 protocol
-SCARD_PROTOCOL_T1 	            Use the T=1 protocol
-SCARD_PROTOCOL_RAW 	            Use with memory type cards
+Value of dwPreferredProtocols   Meaning
+SCARD_PROTOCOL_T0               Use the T=0 protocol
+SCARD_PROTOCOL_T1               Use the T=1 protocol
+SCARD_PROTOCOL_RAW              Use with memory type cards
 
 dwPreferredProtocols is a bit mask of acceptable protocols for the connection. You can use (SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1) if you do not have a preferred protocol.
 
-Value of dwInitialization 	Meaning
-SCARD_LEAVE_CARD 	        Do nothing
-SCARD_RESET_CARD 	        Reset the card (warm reset)
-SCARD_UNPOWER_CARD 	        Unpower the card (cold reset)
-SCARD_EJECT_CARD 	        Eject the card
+Value of dwInitialization   Meaning
+SCARD_LEAVE_CARD            Do nothing
+SCARD_RESET_CARD            Reset the card (warm reset)
+SCARD_UNPOWER_CARD          Unpower the card (cold reset)
+SCARD_EJECT_CARD            Eject the card
 
 
 from smartcard.scard import *
@@ -1552,22 +1586,22 @@ long _ReleaseContext( unsigned long hContext );
 %typemap(doc, name="atr", type="bytelist") (BYTELIST* OUTPUT) "atr: in output, the card atr";
 %define DOCSTRING_STATUS
 "
-This function returns the current status of the reader connected to by 
-hCard.  The reader friendly name is returned, as well as the state, 
-protocol and ATR.  The state is a DWORD possibly OR'd with the following 
-values: 
+This function returns the current status of the reader connected to by
+hCard.  The reader friendly name is returned, as well as the state,
+protocol and ATR.  The state is a DWORD possibly OR'd with the following
+values:
 
-Value of pdwState 	Meaning
-SCARD_ABSENT 	    There is no card in the reader
-SCARD_PRESENT 	    There is a card in the reader, but it has not been moved into position for use
-SCARD_SWALLOWED 	There is a card in the reader in position for use. The card is not powered
-SCARD_POWERED 	    Power is being provided to the card, but the reader driver is unaware of the mode of the card
-SCARD_NEGOTIABLE 	The card has been reset and is awaiting PTS negotiation
-SCARD_SPECIFIC 	    The card has been reset and specific communication protocols have been established
+Value of pdwState   Meaning
+SCARD_ABSENT        There is no card in the reader
+SCARD_PRESENT       There is a card in the reader, but it has not been moved into position for use
+SCARD_SWALLOWED     There is a card in the reader in position for use. The card is not powered
+SCARD_POWERED       Power is being provided to the card, but the reader driver is unaware of the mode of the card
+SCARD_NEGOTIABLE    The card has been reset and is awaiting PTS negotiation
+SCARD_SPECIFIC      The card has been reset and specific communication protocols have been established
 
-Value of pdwProtocol 	Meaning
-SCARD_PROTOCOL_T0 	    Use the T=0 protocol
-SCARD_PROTOCOL_T1 	    Use the T=1 protocol
+Value of pdwProtocol    Meaning
+SCARD_PROTOCOL_T0       Use the T=0 protocol
+SCARD_PROTOCOL_T1       Use the T=1 protocol
 
 
 from smartcard.scard import *
@@ -1608,12 +1642,12 @@ long _Status(
 %typemap(doc, name="ApduResponse", type="list") (BYTELIST* OUTPUT) "ApduResponse: bytelist";
 %define DOCSTRING_TRANSMIT
 "
-This function sends an APDU to the smart card contained in the reader connected to by SCardConnect(). 
+This function sends an APDU to the smart card contained in the reader connected to by SCardConnect().
 It returns a result and the card APDU response.
 
-Value of pioSendPci 	Meaning
-SCARD_PCI_T0 	        Pre-defined T=0 PCI structure
-SCARD_PCI_T1 	        Pre-defined T=1 PCI structure
+Value of pioSendPci     Meaning
+SCARD_PCI_T0            Pre-defined T=0 PCI structure
+SCARD_PCI_T1            Pre-defined T=1 PCI structure
 
 
 from smartcard.scard import *
