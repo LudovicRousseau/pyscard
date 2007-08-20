@@ -54,8 +54,29 @@
     <li><a href="#readergroups">Organizing smartcard readers into groups</a> 
     <li><a href="#readermonitoring">Monitoring readers</a> 
   </ul>
-  <li> <a href="smartcard.html"> Smartcard reference</a> 
-  <li><a href="#License">License</a>
+  <li><a href="#smartcards">Smart cards</a> 
+    <ul>
+      <li><a href="#monitoringsmartcards">Monitoring smart cards</a></li>
+      <li><a href="#sendingapdutocards">Sending APDUs to a smart card obtained 
+        from card monitoring</a></li>
+    </ul>
+  <li><a href="#connections">Connections</a> 
+    <ul>
+      <li><a href="#cardrequestconnection">Creating a connection from a CardRequest</a></li>
+      <li><a href="#cardmonitoringconnection">Creating a connection from CardMonitoring</a></li>
+      <li><a href="#cardconnectiondecorators">Card connection decorators</a>
+        <ul>
+          <li><a href="#exclusiveconnectiondecorator">Exclusive card connection 
+            decorator</a></li>
+          <li><a href="#exclusivetransmitdecorator">Exclusive transmit card connection 
+            decorator</a></li>
+          <li><a href="#securechanneldecorator">Secure channel decorator</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="smartcard.html"> Smartcard reference</a> 
+  <li><a href="#License">License</a> </li>
 </ul>
 <hr>
 <a name="copyright"></a>
@@ -840,35 +861,35 @@
 <p></p>
 <p>To detect APDU response errors during transmission, simply set the error checking
   chain of the connection used for transmission:</p>
-<p><font face="Courier New, Courier, mono" size="2" color="#0033ff">from smartcard.CardType
+<p><font face="Courier New, Courier, mono" size="3" color="#0033ff">from smartcard.CardType
   import AnyCardType<br>
   from smartcard.CardRequest import CardRequest<br>
   from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver</font></p>
-<p><font color="#0033ff" face="Courier New, Courier, mono" size="2">from smartcard.sw.ErrorCheckingChain
+<p><font color="#0033ff" face="Courier New, Courier, mono" size="3">from smartcard.sw.ErrorCheckingChain
   import ErrorCheckingChain<br>
   from smartcard.sw.ISO7816_4ErrorChecker import ISO7816_4ErrorChecker<br>
   from smartcard.sw.ISO7816_8ErrorChecker import ISO7816_8ErrorChecker<br>
   from smartcard.sw.SWExceptions import SWException, WarningProcessingException</font></p>
-<p><font color="#0033ff" face="Courier New, Courier, mono" size="2"># request
+<p><font color="#0033ff" face="Courier New, Courier, mono" size="3"># request
   any card<br>
   cardtype = AnyCardType()<br>
   cardrequest = CardRequest( timeout=10, cardType=cardtype )<br>
   cardservice = cardrequest.waitforcard()</font></p>
-<p><font color="#0033ff" face="Courier New, Courier, mono" size="2"># our error
+<p><font color="#0033ff" face="Courier New, Courier, mono" size="3"># our error
   checking chain<br>
   errorchain=[]<br>
   errorchain=[ ErrorCheckingChain( errorchain, ISO7816_8ErrorChecker() ),<br>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ErrorCheckingChain(
   errorchain, ISO7816_4ErrorChecker() ) ]<br>
   cardservice.connection.setErrorCheckingChain( errorchain )</font></p>
-<p><font color="#0033ff" face="Courier New, Courier, mono" size="2"># a console
+<p><font color="#0033ff" face="Courier New, Courier, mono" size="3"># a console
   tracer<br>
   observer=ConsoleCardConnectionObserver()<br>
   cardservice.connection.addObserver( observer )</font></p>
-<p><font color="#0033ff" face="Courier New, Courier, mono" size="2"># send a few
+<p><font color="#0033ff" face="Courier New, Courier, mono" size="3"># send a few
   apdus; exceptions will occur upon errors<br>
   cardservice.connection.connect()</font></p>
-<p><font color="#0033ff" face="Courier New, Courier, mono" size="2">try:<br>
+<p><font color="#0033ff" face="Courier New, Courier, mono" size="3">try:<br>
   &nbsp;&nbsp;&nbsp;&nbsp;SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]<br>
   &nbsp;&nbsp;&nbsp;&nbsp;DF_TELECOM = [0x7F, 0x10]<br>
   &nbsp;&nbsp;&nbsp;&nbsp;apdu = SELECT+DF_TELECOM<br>
@@ -884,7 +905,7 @@
   &nbsp;&nbsp;&nbsp;&nbsp;print str(e)</font></p>
 <p><br>
   Executing the previous script on a SIM card will cause an output similar to:</p>
-<p><font color="#0033ff" face="Courier New, Courier, mono" size="2">connecting
+<p><font color="#0033ff" face="Courier New, Courier, mono" size="3">connecting
   to SchlumbergerSema Reflex USB v.2 0<br>
   &gt; A0 A4 00 00 02 7F 10<br>
   &lt; [] 9F 1A<br>
@@ -894,7 +915,7 @@
   disconnecting from SchlumbergerSema Reflex USB v.2 0<br>
   disconnecting from SchlumbergerSema Reflex USB v.2 0</font></p>
 <p>whereas executing the script on a non-SIM card will result in:</p>
-<p><font color="#0033ff" face="Courier New, Courier, mono" size="2">connecting
+<p><font color="#0033ff" face="Courier New, Courier, mono" size="3">connecting
   to Utimaco CardManUSB 0<br>
   &gt; A0 A4 00 00 02 7F 10<br>
   &lt; [] 6E 0<br>
@@ -911,10 +932,10 @@
 <p>Implementing a custom error checker requires implementing a sub-class of <a href="epydoc/smartcard.sw.op21_ErrorChecker.op21_ErrorChecker-class.html">ErrorChecker</a>, 
   and overriding the __call__ method. The following error checker raises a <a href="epydoc/smartcard.sw.SWExceptions.SecurityRelatedException-class.html">SecurityRelatedException</a> 
   exception when sw1=0x66 and sw2=0x00:</p>
-<p><font color="#0033ff" face="Courier New, Courier, mono" size="2">from smartcard.sw.ErrorChecker
+<p><font color="#0033ff" face="Courier New, Courier, mono" size="3">from smartcard.sw.ErrorChecker
   import ErrorChecker<br>
   from smartcard.sw.SWExceptions import SecurityRelatedException</font></p>
-<p><font color="#0033ff" face="Courier New, Courier, mono" size="2">class MyErrorChecker(
+<p><font color="#0033ff" face="Courier New, Courier, mono" size="3">class MyErrorChecker(
   ErrorChecker ):<br>
   &nbsp;&nbsp;&nbsp;&nbsp;def __call__( self, data, sw1, sw2 ):<br>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if 0x66==sw1 and 0x00==sw2:<br>
@@ -922,33 +943,33 @@
   SecurityRelatedException( data, sw1, sw2 )</font></p>
 <p>Custom checkers can be used standalone, as in the following sample, or chained
   to other error checkers:</p>
-<p><font color="#0044ff" face="Courier New, Courier, mono" size="2">from smartcard.CardType
+<p><font color="#0044ff" face="Courier New, Courier, mono" size="3">from smartcard.CardType
   import AnyCardType<br>
   from smartcard.CardRequest import CardRequest</font></p>
-<p><font color="#0044ff" face="Courier New, Courier, mono" size="2">from smartcard.sw.ErrorCheckingChain
+<p><font color="#0044ff" face="Courier New, Courier, mono" size="3">from smartcard.sw.ErrorCheckingChain
   import ErrorCheckingChain<br>
   from smartcard.sw.ErrorChecker import ErrorChecker<br>
   from smartcard.sw.SWExceptions import SecurityRelatedException</font></p>
-<p><font color="#0044ff" face="Courier New, Courier, mono" size="2">class MyErrorChecker(
+<p><font color="#0044ff" face="Courier New, Courier, mono" size="3">class MyErrorChecker(
   ErrorChecker ):<br>
   &nbsp;&nbsp;&nbsp;&nbsp;def __call__( self, data, sw1, sw2 ):<br>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if 0x66==sw1 and 0x00==sw2:<br>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raise
   SecurityRelatedException( data, sw1, sw2 )</font></p>
-<p><font color="#0044ff" face="Courier New, Courier, mono" size="2"># request
+<p><font color="#0044ff" face="Courier New, Courier, mono" size="3"># request
   any card<br>
   cardtype = AnyCardType()<br>
   cardrequest = CardRequest( timeout=10, cardType=cardtype )<br>
   cardservice = cardrequest.waitforcard()</font></p>
-<p><font color="#0044ff" face="Courier New, Courier, mono" size="2"># our error
+<p><font color="#0044ff" face="Courier New, Courier, mono" size="3"># our error
   checking chain<br>
   errorchain=[]<br>
   errorchain=[ ErrorCheckingChain( [], MyErrorChecker() ) ]<br>
   cardservice.connection.setErrorCheckingChain( errorchain )</font></p>
-<p><font color="#0044ff" face="Courier New, Courier, mono" size="2"># send a few
+<p><font color="#0044ff" face="Courier New, Courier, mono" size="3"># send a few
   apdus; exceptions will occur upon errors<br>
   cardservice.connection.connect()</font></p>
-<p><font color="#0044ff" face="Courier New, Courier, mono" size="2">SELECT = [0xA0,
+<p><font color="#0044ff" face="Courier New, Courier, mono" size="3">SELECT = [0xA0,
   0xA4, 0x00, 0x00, 0x02]<br>
   DF_TELECOM = [0x7F, 0x10]<br>
   apdu = SELECT+DF_TELECOM<br>
@@ -959,14 +980,14 @@
   &nbsp;&nbsp;&nbsp;&nbsp;response, sw1, sw2 = cardservice.connection.transmit(
   apdu )</font></p>
 <p></p>
-<p><font color="#0033ff" face="Courier New, Courier, mono" size="2"><br>
+<p><font color="#0033ff" face="Courier New, Courier, mono" size="3"><br>
   </font></p>
 <hr>
 <h2><a name="readers">Smartcard readers</a></h2>
 <h3><a name="listingreaders"></a>Listing Smartcard Readers</h3>
 <p>The easiest way to retrieve the list of smartcard readers is the smartcard.System.readers()
   function:
-<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+<p><font face="Courier New, Courier, mono" size="3" color="#0033FF">&gt;&gt;&gt;
   import smartcard.System<br>
   &gt;&gt;&gt; print smartcard.System.readers()<br>
   ['Schlumberger e-gate 0', 'SchlumbergerSema Reflex USB v.2 0', 'Utimaco CardManUSB
@@ -979,14 +1000,14 @@
   not currently supports reader groups management.
 <p>Readers can be organized in reader groups. To retrieve the smartcard reader 
   groups, use readergroups(): 
-<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+<p><font face="Courier New, Courier, mono" size="3" color="#0033FF">&gt;&gt;&gt;
   import smartcard.System<br>
   &gt;&gt;&gt; print smartcard.System.readergroups()<br>
   ['SCard$DefaultReaders']<br>
   &gt;&gt;&gt;</font></p>
 <p>The readergroups() object has all the list attributes. To add a reader group,
   simply use the + operator, e.g.:
-<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+<p><font face="Courier New, Courier, mono" size="3" color="#0033FF">&gt;&gt;&gt;
   from smartcard.System import readergroups<br>
   &gt;&gt;&gt; g=readergroups()<br>
   &gt;&gt;&gt; print g<br>
@@ -997,7 +1018,7 @@
   &gt;&gt;&gt;</font></p>
 <p>You can also use the append and insert methods, as well as the + operator,
   e.g.:
-<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+<p><font face="Courier New, Courier, mono" size="3" color="#0033FF">&gt;&gt;&gt;
   from smartcard.System import readergroups<br>
   &gt;&gt;&gt; g=readergroups()<br>
   &gt;&gt;&gt; print g<br>
@@ -1007,7 +1028,7 @@
   ['SCard$DefaultReaders', 'Biometric$Readers', 'Pinpad$Readers']<br>
   &gt;&gt;&gt;</font></p>
 <p>or
-<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+<p><font face="Courier New, Courier, mono" size="3" color="#0033FF">&gt;&gt;&gt;
   from smartcard.System import readergroups<br>
   &gt;&gt;&gt; g=readergroups()<br>
   &gt;&gt;&gt; print g<br>
@@ -1019,7 +1040,7 @@
   &gt;&gt;&gt;</font></p>
 <p>Smartcard reader groups are not persistent until a reader as been added to
   the group. To add a reader to a reader group, use addreadertogroups():
-<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+<p><font face="Courier New, Courier, mono" size="3" color="#0033FF">&gt;&gt;&gt;
   from smartcard.System import readergroups, addreadertogroups, readers<br>
   &gt;&gt;&gt; g=readergroups()<br>
   &gt;&gt;&gt; g+='USB$Readers'<br>
@@ -1029,7 +1050,7 @@
   &gt;&gt;&gt;</font></p>
 <p>To remove a reader group, all list operators are available to manage reader
   groups, including pop() or remove():
-<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+<p><font face="Courier New, Courier, mono" size="3" color="#0033FF">&gt;&gt;&gt;
   from smartcard.System import readergroups, addreadertogroups, readers<br>
   &gt;&gt;&gt; g=readergroups()<br>
   &gt;&gt;&gt; g+='USB$Readers'<br>
@@ -1041,7 +1062,7 @@
   ['SCard$DefaultReaders']<br>
   &gt;&gt;&gt; </font></p>
 <p>or</p>
-<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
+<p><font face="Courier New, Courier, mono" size="3" color="#0033FF">&gt;&gt;&gt;
   from smartcard.System import readergroups, addreadertogroups, readers<br>
   &gt;&gt;&gt; g=readergroups()<br>
   &gt;&gt;&gt; g+='USB$Readers'<br>
@@ -1060,7 +1081,7 @@
   object that implements an update() method that will be called upon reader/insertion 
   removal. The following sample code implements a ReaderObserver that simply prints 
   the inserted/removed readers on the standard output: 
-<pre><font face="Courier New, Courier, mono" size="2" color="#0033FF">from smartcard.ReaderMonitoring import ReaderObserver
+<pre><font face="Courier New, Courier, mono" size="3" color="#0033FF">from smartcard.ReaderMonitoring import ReaderObserver
 
 class printobserver( ReaderObserver ):
     """A simple reader observer that is notified
@@ -1072,7 +1093,7 @@ class printobserver( ReaderObserver ):
         print "Removed readers", removedreaders</font><font face="Courier New, Courier, mono" size="2">
 </font>  </pre>
 <p>To monitor reader insertion/removal, simply add the observer to the <a href="epydoc/smartcard.ReaderMonitoring.ReaderMonitor-class.html">ReaderMonitor</a>: 
-<pre><font face="Courier New, Courier, mono" size="2" color="#0033FF">from sys import stdin, exc_info
+<pre><font face="Courier New, Courier, mono" size="3" color="#0033FF">from sys import stdin, exc_info
 from time import sleep
 
 from smartcard.ReaderMonitoring import ReaderMonitor, ReaderObserver
@@ -1097,9 +1118,298 @@ try:
 except error:
     print exc_info()[0], ': ', exc_info()[1]
 </font></pre>
-<p><a href="#top">to the top</a>
-<h3></h3>
-<h3><a name="License"></a>License</h3>
+<p><a href="#top">to the top</a> 
+<h2><a name="smartcards"></a>Smart Cards</h2>
+<h3><a name="monitoringsmartcards"></a>Monitoring Smart Cards</h3>
+<p>You can monitor the insertion or removal of cards using the <a href="epydoc/smartcard.CardMonitoring.CardObserver-class.html">CardObserver</a> 
+  interface. 
+<p>To monitor card insertion and removal, create a <a href="epydoc/smartcard.CardMonitoring.CardObserver-class.html">CardObserver</a> 
+  object that implements an update() method that will be called upon card insertion/removal. 
+  The following sample code implements a CardObserver that simply prints the inserted/removed 
+  cards on the standard output, named printobserver. To monitor card insertion/removal, 
+  simply add the card observer to the <a href="epydoc/smartcard.CardMonitoring.CardMonitor-class.html">CardMonitor</a>: 
+  : 
+<pre><font face="Courier New, Courier, mono" size="3" color="#0033FF">
+from smartcard.CardMonitoring import CardMonitor, CardObserver
+from smartcard.util import *
+
+# a simple card observer that prints inserted/removed cards
+class printobserver( CardObserver ):
+    """A simple card observer that is notified
+    when cards are inserted/removed from the system and
+    prints the list of cards
+    """
+    def update( self, observable, (addedcards, removedcards) ):
+        for card in addedcards:
+            print "+Inserted: ", toHexString( card.atr )
+        for card in removedcards:
+            print "-Removed: ", toHexString( card.atr )
+
+try:
+    print "Insert or remove a smartcard in the system."
+    print "This program will exit in 10 seconds"
+    print ""
+    cardmonitor = CardMonitor()
+    cardobserver = printobserver()
+    cardmonitor.addObserver( cardobserver )
+
+</font></pre>
+<p><a href="#top">to the top</a> 
+<h3><a name="sendingapdutocards"></a>Sending APDUs to a Smart Card Obtained from 
+  Card Monitoring</h3>
+<p>The update method of the CardObserver receives two lists of Cards objects, 
+  the recently added cards and the recently removed cards. A connection can be 
+  created to each Card object of the added card list for sending APDUS.
+<p>The following sample code implements a CardObserver class named transmitobserver, 
+  that connects to inserted cards and transmit an APDU, in our case SELECT DF_TELECOM:
+<p>&nbsp;
+<pre><font face="Courier New, Courier, mono" size="3" color="#0033FF">
+# a card observer that connects to new cards and performs a transaction, e.g. SELECT DF_TELECOM
+class transmitobserver( CardObserver ):
+    """A card observer that is notified when cards are inserted/removed from the system,
+    connects to cards and SELECT DF_TELECOM
+    """
+    def __init__( self ):
+        self.cards=[]
+
+    def update( self, observable, (addedcards, removedcards) ):
+        for card in addedcards:
+            if card not in self.cards:
+                self.cards+=[card]
+                print "+Inserted: ", toHexString( card.atr )
+                card.connection = card.createConnection()
+                card.connection.connect()
+                response, sw1, sw2 = card.connection.transmit( SELECT_DF_TELECOM )
+                print "%.2x %.2x" % (sw1, sw2)
+
+        for card in removedcards:
+            print "-Removed: ", toHexString( card.atr )
+            if card in self.cards:
+                self.cards.remove( card )
+
+</font></pre>
+<p>To monitor card insertion, connect to inserted cards and send the APDU, create 
+  an instance of transmitobserver and add it to the <a href="epydoc/smartcard.CardMonitoring.CardMonitor-class.html">CardMonitor</a>: 
+  : 
+<pre><font face="Courier New, Courier, mono" size="3" color="#0033FF">
+from time import sleep
+print "Insert or remove a smartcard in the system."
+print "This program will exit in 100 seconds"
+print ""
+cardmonitor = CardMonitor()
+cardobserver = transmitobserver()
+cardmonitor.addObserver( cardobserver )
+
+sleep(100)
+</font></pre>
+
+<p><a href="#top">to the top</a> 
+<h2><a name="connections"></a> Connections</h2>
+<p>Connecting to a card and sending APDUs is done thru a CardConnection object. 
+  CardConnection objects are created using a CardRequest, or by the CardMonitoring.</p>
+<h3><a name="cardrequestconnections"></a>Creating a Connection from a CardRequest</h3>
+<p>A successful CardRequest returns a CardService matching the requested card 
+  service for the card, or a PassThruCardService if no specific card service was 
+  required:</p>
+<p><font face="Courier New, Courier, mono" size="3" color="#0033FF">&gt;&gt;&gt; 
+  from smartcard.CardType import AnyCardType<br>
+  &gt;&gt;&gt; from smartcard.CardRequest import CardRequest<br>
+  &gt;&gt;&gt; from smartcard.util import toHexString<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; cardtype = AnyCardType()<br>
+  &gt;&gt;&gt; cardrequest = CardRequest( timeout=1, cardType=cardtype )<br>
+  &gt;&gt;&gt; cardservice = cardrequest.waitforcard()<br>
+  &gt;&gt;&gt;<br>
+  &gt;&gt;&gt; cardservice.connection.connect()<br>
+  &gt;&gt;&gt; print toHexString( cardservice.connection.getATR() )<br>
+  3B 16 94 20 02 01 00 00 0D<br>
+  &gt;&gt;&gt; print cardservice.connection.getReader()<br>
+  SchlumbergerSema Reflex USB v.2 0</font></p>
+<p>Each CardService has a connection attribute, which is a CardConnection for 
+  the card.</p>
+<p><a href="#top">to the top</a> </p>
+<h3><a name="cardmonitoringconnections"></a>Creating Connection from CardMonitoring</h3>
+<p>The <a href="#monitoringsmartcards">update</a> method of a CardObserver receives 
+  a tuple with a list of connected cards and a list of removed cards. To create 
+  a CardConnection from a card object, use the createConnection() method of the 
+  desired card:</p>
+<p>&nbsp; </p>
+<pre><font face="Courier New, Courier, mono" size="3" color="#0033FF">
+class myobserver( CardObserver ):
+    def update( self, observable, (addedcards, removedcards) ):
+        for card in addedcards:
+                print "+Inserted: ", toHexString( card.atr )
+                card.connection = card.createConnection()
+                card.connection.connect()
+                response, sw1, sw2 = card.connection.transmit( SELECT_DF_TELECOM )
+                print "%.2x %.2x" % (sw1, sw2)
+
+</font></pre>
+<p>
+<p><a href="#top">to the top</a> </p>
+<h3><a name="cardconnectiondecorators"></a>Card Connection Decorators</h3>
+<p>A CardConnectionDecorator modifies the behaviour of a CardConnection object. 
+  For example, the following CardConnectionDecorator overwrites the CardConnection 
+  getATR() method:</p>
+<pre><font face="Courier New, Courier, mono" size="3" color="#0033FF">
+class FakeATRConnection( CardConnectionDecorator ):
+    '''This decorator changes the fist byte of the ATR.'''
+    def __init__( self, cardconnection ):
+        CardConnectionDecorator.__init__( self, cardconnection )
+
+    def getATR( self ):
+        """Replace first BYTE of ATR by 3F"""
+        atr = CardConnectionDecorator.getATR( self )
+        return [ 0x3f ] + atr [1:]
+
+</font></pre>
+<p>
+<p>To apply the decorator, just construct the decorator around the CardConnection 
+  instance to wrap and use the decorator in place of the card connection object:</p>
+<pre><font face="Courier New, Courier, mono" size="3" color="#0033FF">
+# request any card type
+cardtype = AnyCardType()
+cardrequest = CardRequest( timeout=1.5, cardType=cardtype )
+cardservice = cardrequest.waitforcard()
+
+# attach the console tracer
+observer=ConsoleCardConnectionObserver()
+cardservice.connection.addObserver( observer )
+
+# attach our decorator
+cardservice.connection = FakeATRConnection( cardservice.connection )
+
+# connect to the card and perform a few transmits
+cardservice.connection.connect()
+
+print 'ATR', toHexString( cardservice.connection.getATR() )
+
+</font></pre>
+<p>Decorators can be nested. For example to nest a FakeATRConnection with a SecureChannelConnection, 
+  use the following construction:</p>
+<pre><font face="Courier New, Courier, mono" size="3" color="#0033FF">
+# attach our decorator
+FakeATRConnection( SecureChannelConnection( cardservice.connection ) )
+
+# connect to the card and perform a few transmits
+cardservice.connection.connect()
+
+print 'ATR', toHexString( cardservice.connection.getATR() )
+
+</font></pre>
+<h4><a name="exclusiveconnectiondecorator"></a>Exclusive Card Connection Decorator</h4>
+<p>The ExclusiveConnectCardConnection object performs an exclusive connection 
+  to the card, i.e. no other thread or process will be able to connect to the 
+  card. With PCSC readers, this is done by performing a SCardConnect with the 
+  SCARD_SHARE_EXCLUSIVE attribute.</p>
+<pre><font face="Courier New, Courier, mono" size="3" color="#0033FF">
+from smartcard.CardType import AnyCardType
+from smartcard.CardRequest import CardRequest
+from smartcard.CardConnection import CardConnection
+from smartcard.util import toHexString
+
+from smartcard.ExclusiveConnectCardConnection import ExclusiveConnectCardConnection
+
+# request any card type
+cardtype = AnyCardType()
+cardrequest = CardRequest( timeout=5, cardType=cardtype )
+cardservice = cardrequest.waitforcard()
+
+# attach our decorator
+cardservice.connection = ExclusiveConnectCardConnection( cardservice.connection )
+
+# connect to the card and perform a few transmits
+cardservice.connection.connect()
+
+print 'ATR', toHexString( cardservice.connection.getATR() )
+</font></pre>
+<p><a href="#top">to the top</a> </p>
+<h4><a name="exclusivetransmitdecorator"></a>Exclusive Transmit Card Connection 
+  Decorator</h4>
+<p>The ExclusiveTransmitCardConnection performs an exclusive transaction to the 
+  card, i.e. a series of transmit that cannot be interupted by other threads' 
+  transmits. To do so, include the desired transmits between an lock() and unlock() 
+  method call on the ExclusiveTransmitCardConnection:</p>
+<pre><font face="Courier New, Courier, mono" size="3" color="#0033FF">
+from smartcard.CardType import AnyCardType
+from smartcard.CardRequest import CardRequest
+from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver
+from smartcard.CardConnection import CardConnection
+from smartcard.util import toHexString
+
+from smartcard.ExclusiveTransmitCardConnection import ExclusiveTransmitCardConnection
+
+
+# define the apdus used in this script
+GET_RESPONSE = [0XA0, 0XC0, 00, 00 ]
+SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
+DF_TELECOM = [0x7F, 0x10]
+
+# request any card type
+cardtype = AnyCardType()
+cardrequest = CardRequest( timeout=5, cardType=cardtype )
+cardservice = cardrequest.waitforcard()
+
+# attach the console tracer
+observer=ConsoleCardConnectionObserver()
+cardservice.connection.addObserver( observer )
+
+# attach our decorator
+cardservice.connection = ExclusiveTransmitCardConnection( cardservice.connection )
+
+# connect to the card and perform a few transmits
+cardservice.connection.connect()
+
+print 'ATR', toHexString( cardservice.connection.getATR() )
+
+try:
+    # lock for initiating transaction
+    cardservice.connection.lock()
+
+    apdu = SELECT+DF_TELECOM
+    response, sw1, sw2 = cardservice.connection.transmit( apdu )
+
+    if sw1 == 0x9F:
+        apdu = GET_RESPONSE + [sw2]
+        response, sw1, sw2 = cardservice.connection.transmit( apdu )
+finally:
+    # unlock connection at the end of the transaction
+    cardservice.connection.unlock()
+
+</font></pre>
+<p><a href="#top">to the top</a> </p>
+<h4><a name="securechanneldecorator"></a>Secure Channel Card Connection Decorator</h4>
+<p>Another sample of application of CardConnection decorators is to implement 
+  secure channel. The following sample is a template CardConnection decorator 
+  for secure channel, where each command APDU is cyphered and each response APDU 
+  is uncyphered:</p>
+<pre><font face="Courier New, Courier, mono" size="3" color="#0033FF">
+class SecureChannelConnection( CardConnectionDecorator ):
+    '''This decorator is a mockup of secure channel connection.
+    It merely pretends to cypher/uncypher upon apdu transmission.'''
+    def __init__( self, cardconnection ):
+        CardConnectionDecorator.__init__( self, cardconnection )
+
+    def cypher( self, bytes ):
+        '''Cypher mock-up; you would include the secure channel logics here.'''
+        print 'cyphering', toHexString( bytes )
+        return bytes
+
+    def uncypher( self, data ):
+        '''Uncypher mock-up; you would include the secure channel logics here.'''
+        print 'uncyphering', toHexString( data )
+        return data
+
+    def transmit( self, bytes, protocol=CardConnection.T0_protocol ):
+        """Cypher/uncypher APDUs before transmission"""
+        cypheredbytes = self.cypher( bytes )
+        data, sw1, sw2 = CardConnectionDecorator.transmit( self, cypheredbytes, protocol )
+        if []!=data:
+            data = self.uncypher( data )
+        return data, sw1, sw2
+</font></pre>
+<p><a href="#top">to the top</a> </p>
+<h2><a name="License"></a>License</h2>
 <h3>GNU LESSER GENERAL PUBLIC LICENSE</h3>
 <p>Version 2.1, February 1999</p>
 <p>Copyright (C) 1991, 1999 Free Software Foundation, Inc.<br>
