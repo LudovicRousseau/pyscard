@@ -74,9 +74,5 @@ class ExclusiveTransmitCardConnection( CardConnectionDecorator ):
     def transmit( self, bytes, protocol=CardConnection.T0_protocol ):
         '''Gain exclusive access to card during APDU transmission for if this
         decorator decorates a PCSCCardConnection.'''
-        self.lock()
-        try:
-            data, sw1, sw2 = CardConnectionDecorator.transmit( self, bytes, protocol )
-        finally:
-            self.unlock()
+        data, sw1, sw2 = CardConnectionDecorator.transmit( self, bytes, protocol )
         return data, sw1, sw2
