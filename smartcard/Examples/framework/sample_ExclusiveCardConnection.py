@@ -55,13 +55,17 @@ cardservice.connection.connect()
 
 print 'ATR', toHexString( cardservice.connection.getATR() )
 
-apdu = SELECT+DF_TELECOM
-response, sw1, sw2 = cardservice.connection.transmit( apdu )
+try:
+    cardservice.connection.lock()
 
-if sw1 == 0x9F:
-    apdu = GET_RESPONSE + [sw2]
+    apdu = SELECT+DF_TELECOM
     response, sw1, sw2 = cardservice.connection.transmit( apdu )
 
+    if sw1 == 0x9F:
+        apdu = GET_RESPONSE + [sw2]
+        response, sw1, sw2 = cardservice.connection.transmit( apdu )
+finally:
+    cardservice.connection.unlock()
 
 import sys
 if 'win32'==sys.platform:
