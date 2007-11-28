@@ -66,7 +66,7 @@ binary-arch: build install
 	dh_installchangelogs 
 	dh_installdocs
 	dh_installexamples
-	-find debian/python-pyscard/usr/share/doc/pyscard/examples -name .svn -exec rm -rf {} \;
+	-find debian/python-pyscard -name .svn -exec rm -rf {} \;
 #	dh_install
 	dh_installman
 	dh_link
