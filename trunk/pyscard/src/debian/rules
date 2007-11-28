@@ -53,7 +53,7 @@ install: build
 
 	# Add here commands to install the package into debian/tmp
 	#$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp
-	python setup.py install --root=debian/pyscard
+	python setup.py install --root=debian/python-pyscard
 
 # Build architecture-independent files here.
 binary-indep: build install
@@ -66,7 +66,7 @@ binary-arch: build install
 	dh_installchangelogs 
 	dh_installdocs
 	dh_installexamples
-	-find debian/pyscard/usr/share/doc/pyscard/examples -name .svn -exec rm -rf {} \;
+	-find debian/python-pyscard/usr/share/doc/pyscard/examples -name .svn -exec rm -rf {} \;
 #	dh_install
 	dh_installman
 	dh_link

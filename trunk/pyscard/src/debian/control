@@ -7,7 +7,7 @@ Section: libs
 XS-Python-Version: all
 Homepage: http://pyscard.sourceforge.net/
 
-Package: pyscard
+Package: python-pyscard
 Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}
