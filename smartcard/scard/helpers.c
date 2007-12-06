@@ -18,7 +18,6 @@ You should have received a copy of the GNU Lesser General Public License
 along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 ==============================================================================*/
-#include <assert.h>
 #ifdef WIN32
     #include <windows.h>
 #endif
@@ -30,6 +29,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #endif
 
 #include <Python.h>
+#include <assert.h>
 
 #include "helpers.h"
 #include "memlog.h"
