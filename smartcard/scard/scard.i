@@ -57,6 +57,7 @@ SCardAddReaderToGroup
 SCardBeginTransaction
 SCardCancel
 SCardConnect
+SCardControl
 SCardDisconnect
 SCardEndTransaction
 SCardEstablishContext
@@ -87,6 +88,7 @@ On linux with PCSC lite, the smartcard.scard module provides mapping for the fol
 SCardBeginTransaction
 SCardCancel
 SCardConnect
+SCardControl
 SCardDisconnect
 SCardEndTransaction
 SCardEstablishContext
@@ -103,7 +105,6 @@ SCardTransmit
 The following PCSC smart card functions are not wrapped by the scard module on any platform:
 
 GetOpenCardName
-SCardControl
 SCardFreeMemory
 SCardGetProviderId
 SCardSetCartTypeProviderName
@@ -702,6 +703,29 @@ long _Transmit(
                 pblSendBuffer->cBytes,
                 NULL,
                 pblRecvBuffer->ab,
+                &pblRecvBuffer->cBytes );
+}
+
+///////////////////////////////////////////////////////////////////////////////
+long _Control(
+  unsigned long hCard,
+  unsigned long controlCode,
+  BYTELIST* pblSendBuffer,
+  BYTELIST* pblRecvBuffer
+)
+{
+    winscard_init();
+
+    pblRecvBuffer->ab = (unsigned char*)mem_Malloc(1024*sizeof(unsigned char));
+    pblRecvBuffer->cBytes=1024;
+
+    return (mySCardControl)(
+                hCard,
+                controlCode,
+                pblSendBuffer->ab,
+                pblSendBuffer->cBytes,
+                pblRecvBuffer->ab,
+                pblRecvBuffer->cBytes,
                 &pblRecvBuffer->cBytes );
 }
 
@@ -1669,6 +1693,39 @@ if hresult!=SCARD_S_SUCCESS:
 long _Transmit(
   unsigned long hCard,
   unsigned long pioSendPci,
+  BYTELIST* INPUT,
+  BYTELIST* OUTPUT
+);
+
+///////////////////////////////////////////////////////////////////////////////
+%typemap(doc, name="ControlCommand", type="list") (BYTELIST* INPUT) "ControlCommand: bytelist";
+%typemap(doc, name="ControlResponse", type="list") (BYTELIST* OUTPUT) "ControlResponse: bytelist";
+%define DOCSTRING_CONTROL
+"
+This function sends a control command to the reader connected to by SCardConnect().
+It returns a result and the control response.
+
+
+from smartcard.scard import *
+hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
+hresult, hcard, dwActiveProtocol = SCardConnect(
+     hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 )
+CMD = [0x12, 0x34]
+hresult, response = SCardControl( hcard, 42, CMD )
+if hresult!=SCARD_S_SUCCESS:
+    raise error, 'Failed to control: ' + SCardGetErrorMessage(hresult)
+"
+%enddef
+%feature("docstring") DOCSTRING_CONTROL;
+%rename(SCardControl) _Control(
+  unsigned long hCard,
+  unsigned long controlCode,
+  BYTELIST* INPUT,
+  BYTELIST* OUTPUT
+);
+long _Control(
+  unsigned long hCard,
+  unsigned long controlCode,
   BYTELIST* INPUT,
   BYTELIST* OUTPUT
 );
