@@ -59,10 +59,6 @@ typedef WINSCARDAPI LONG
     IN LPCTSTR szGroupName);
 
 typedef WINSCARDAPI LONG
-(WINAPI *SCARDCANCEL)(
-    IN      SCARDCONTEXT hContext);
-
-typedef WINSCARDAPI LONG
 (WINAPI *SCARDFORGETCARDTYPEA)(
     IN SCARDCONTEXT hContext,
     IN LPCSTR szCardName);
@@ -115,10 +111,6 @@ typedef WINSCARDAPI LONG
     IN LPCSTR szGroupName);
 
 typedef WINSCARDAPI LONG
-(WINAPI *SCARDISVALIDCONTEXT)(
-    IN      SCARDCONTEXT hContext);
-
-typedef WINSCARDAPI LONG
 (WINAPI *SCARDLISTCARDSA)(
     IN      SCARDCONTEXT hContext,
     IN      LPCBYTE pbAtr,
@@ -169,6 +161,9 @@ typedef WINSCARDAPI LONG
 (WINAPI *SCARDBEGINTRANSACTION)(
     IN      SCARDHANDLE hCard);
 
+typedef WINSCARDAPI LONG
+(WINAPI *SCARDCANCEL)(
+    IN      SCARDCONTEXT hContext);
 
 typedef WINSCARDAPI LONG
 (WINAPI *SCARDCANCELTRANSACTION)(
@@ -229,6 +224,10 @@ typedef WINSCARDAPI LONG
     IN      DWORD dwTimeout,
     IN OUT  LPSCARD_READERSTATEA rgReaderStates,
     IN      DWORD cReaders);
+
+typedef WINSCARDAPI LONG
+(WINAPI *SCARDISVALIDCONTEXT)(
+    IN      SCARDCONTEXT hContext);
 
 typedef WINSCARDAPI LONG
 (WINAPI *SCARDLISTREADERSA)(
@@ -296,8 +295,6 @@ typedef WINSCARDAPI LONG
 #ifdef WIN32
 extern SCARDACCESSSTARTEDEVENT         mySCardAccessStartedEvent;
 extern SCARDADDREADERTOGROUPA          mySCardAddReaderToGroupA;
-extern SCARDCANCEL                     mySCardCancel;
-extern SCARDCONTROL                    mySCardControl;
 extern SCARDFORGETCARDTYPEA            mySCardForgetCardTypeA;
 extern SCARDFORGETREADERA              mySCardForgetReaderA;
 extern SCARDFORGETREADERGROUPA         mySCardForgetReaderGroupA;
@@ -306,7 +303,6 @@ extern SCARDGETPROVIDERIDA             mySCardGetProviderIdA;
 extern SCARDINTRODUCECARDTYPEA         mySCardIntroduceCardTypeA;
 extern SCARDINTRODUCEREADERA           mySCardIntroduceReaderA;
 extern SCARDINTRODUCEREADERGROUPA      mySCardIntroduceReaderGroupA;
-extern SCARDISVALIDCONTEXT             mySCardIsValidContext;
 extern SCARDLISTCARDSA                 mySCardListCardsA;
 extern SCARDLISTINTERFACESA            mySCardListInterfacesA;
 extern SCARDLOCATECARDSA               mySCardLocateCardsA;
@@ -318,14 +314,17 @@ extern SCARDSTATE                      mySCardState;
 #endif // WIN32
 
 extern SCARDBEGINTRANSACTION           mySCardBeginTransaction;
+extern SCARDCANCEL                     mySCardCancel;
 extern SCARDCANCELTRANSACTION          mySCardCancelTransaction;
 extern SCARDCONNECTA                   mySCardConnectA;
+extern SCARDCONTROL                    mySCardControl;
 extern SCARDDISCONNECT                 mySCardDisconnect;
 extern SCARDENDTRANSACTION             mySCardEndTransaction;
 extern SCARDESTABLISHCONTEXT           mySCardEstablishContext;
 extern SCARDFREEMEMORY                 mySCardFreeMemory;
 extern SCARDGETATTRIB                  mySCardGetAttrib;
 extern SCARDGETSTATUSCHANGEA           mySCardGetStatusChangeA;
+extern SCARDISVALIDCONTEXT             mySCardIsValidContext;
 extern SCARDLISTREADERSA               mySCardListReadersA;
 extern SCARDLISTREADERGROUPSA          mySCardListReaderGroupsA;
 extern SCARDRECONNECT                  mySCardReconnect;
