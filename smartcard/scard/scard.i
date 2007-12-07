@@ -85,12 +85,14 @@ SCardTransmit
 On linux with PCSC lite, the smartcard.scard module provides mapping for the following API functions:
 
 SCardBeginTransaction
+SCardCancel
 SCardConnect
 SCardDisconnect
 SCardEndTransaction
 SCardEstablishContext
 SCardGetAttrib
 SCardGetStatusChange
+SCardIsValidContext
 SCardListReaders
 SCardListReaderGroups
 SCardReconnect
@@ -182,13 +184,6 @@ long _AddReaderToGroup(
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-long _Cancel( unsigned long hContext )
-{
-    winscard_init();
-    return (mySCardCancel)( hContext );
-}
-
-///////////////////////////////////////////////////////////////////////////////
 long _ForgetCardType( unsigned long hContext, char* pszCardName )
 {
     winscard_init();
@@ -265,13 +260,6 @@ long _IntroduceReaderGroup( unsigned long hcontext, char* szGroupName )
 {
     winscard_init();
     return (mySCardIntroduceReaderGroupA)( hcontext, szGroupName );
-}
-
-///////////////////////////////////////////////////////////////////////////////
-long _IsValidContext( unsigned long hContext )
-{
-    winscard_init();
-    return (mySCardIsValidContext)( hContext );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -356,6 +344,13 @@ long _BeginTransaction( unsigned long hCard )
 {
     winscard_init();
     return (mySCardBeginTransaction)( hCard );
+}
+
+///////////////////////////////////////////////////////////////////////////////
+long _Cancel( unsigned long hContext )
+{
+    winscard_init();
+    return (mySCardCancel)( hContext );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -478,6 +473,13 @@ long _GetStatusChange(
     // for python, we return a long
     hresult=ulResult;
     return hresult;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+long _IsValidContext( unsigned long hContext )
+{
+    winscard_init();
+    return (mySCardIsValidContext)( hContext );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -797,24 +799,6 @@ long _AddReaderToGroup(
   char* szGroupName );
 
 ///////////////////////////////////////////////////////////////////////////////
-%define DOCSTRING_CANCEL
-"
-This function cancels all pending blocking requests on the ScardGetStatusChange() function.
-
-Windows only, not supported by PCSC lite wrapper.
-
-from smartcard.scard import *
-... establish context ...
-hresult = SCardCancel( hcard )
-if hresult!=SCARD_S_SUCCESS:
-    raise error, 'failed to cancel pending actions: ' + SCardGetErrorMessage(hresult)
-..."
-%enddef
-%feature("docstring") DOCSTRING_CANCEL;
-%rename(SCardCancel) _Cancel( unsigned long hContext );
-long _Cancel( unsigned long hContext );
-
-///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_FORGETCARDTYPE
 "
 removes an introduced smart card from the smart card subsystem.
@@ -1004,28 +988,6 @@ if hresult!=SCARD_S_SUCCESS:
 long _IntroduceReaderGroup( unsigned long hcontext, char* szGroupName );
 
 ///////////////////////////////////////////////////////////////////////////////
-%define DOCSTRING_ISVALIDCONTEXT
-"
-This function determines whether a smart card context handle is still
-valid.  After a smart card context handle has been set by
-SCardEstablishContext(), it may become not valid if the resource manager
-service has been shut down.
-
-Windows only, not supported by PCSC lite wrapper.
-
-from smartcard.scard import *
-hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
-hresult = SCardIsValidContext( hcontext )
-if hresult!=SCARD_S_SUCCESS:
-    raise error, 'Invalid context: ' + SCardGetErrorMessage(hresult)
-...
-"
-%enddef
-%feature("docstring") DOCSTRING_ISVALIDCONTEXT;
-%rename(SCardIsValidContext) _IsValidContext( unsigned long hContext );
-long _IsValidContext( unsigned long hContext );
-
-///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_LISTINTERFACES
 "
 Provides a list of interfaces supplied by a given card.  The caller
@@ -1180,6 +1142,42 @@ if hresult!=SCARD_S_SUCCESS:
 %feature("docstring") DOCSTRING_BEGINTRANSACTION;
 %rename(SCardBeginTransaction) _BeginTransaction( unsigned long hCard );
 long _BeginTransaction( unsigned long hCard );
+
+///////////////////////////////////////////////////////////////////////////////
+%define DOCSTRING_CANCEL
+"
+This function cancels all pending blocking requests on the ScardGetStatusChange() function.
+
+from smartcard.scard import *
+... establish context ...
+hresult = SCardCancel( hcard )
+if hresult!=SCARD_S_SUCCESS:
+    raise error, 'failed to cancel pending actions: ' + SCardGetErrorMessage(hresult)
+..."
+%enddef
+%feature("docstring") DOCSTRING_CANCEL;
+%rename(SCardCancel) _Cancel( unsigned long hContext );
+long _Cancel( unsigned long hContext );
+
+///////////////////////////////////////////////////////////////////////////////
+%define DOCSTRING_ISVALIDCONTEXT
+"
+This function determines whether a smart card context handle is still
+valid.  After a smart card context handle has been set by
+SCardEstablishContext(), it may become not valid if the resource manager
+service has been shut down.
+
+from smartcard.scard import *
+hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
+hresult = SCardIsValidContext( hcontext )
+if hresult!=SCARD_S_SUCCESS:
+    raise error, 'Invalid context: ' + SCardGetErrorMessage(hresult)
+...
+"
+%enddef
+%feature("docstring") DOCSTRING_ISVALIDCONTEXT;
+%rename(SCardIsValidContext) _IsValidContext( unsigned long hContext );
+long _IsValidContext( unsigned long hContext );
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_CONNECT

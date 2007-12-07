@@ -48,13 +48,6 @@ WINAPI _defaultSCARDADDREADERTOGROUPA(
 }
 
 WINSCARDAPI LONG
-WINAPI _defaultSCARDCANCEL(
-    IN      SCARDCONTEXT hContext)
-{
-    return SCARD_E_NO_SERVICE;
-}
-
-WINSCARDAPI LONG
 WINAPI _defaultSCARDCONTROL(
     IN      SCARDHANDLE hCard,
     IN      DWORD dwControlCode,
@@ -139,13 +132,6 @@ WINSCARDAPI LONG
 WINAPI _defaultSCARDINTRODUCEREADERGROUPA(
     IN SCARDCONTEXT hContext,
     IN LPCSTR szGroupName)
-{
-    return SCARD_E_NO_SERVICE;
-}
-
-WINSCARDAPI LONG
-WINAPI _defaultSCARDISVALIDCONTEXT(
-    IN      SCARDCONTEXT hContext)
 {
     return SCARD_E_NO_SERVICE;
 }
@@ -239,6 +225,13 @@ WINAPI _defaultSCARDBEGINTRANSACTION(
 }
 
 WINSCARDAPI LONG
+WINAPI _defaultSCARDCANCEL(
+    IN      SCARDCONTEXT hContext)
+{
+    return SCARD_E_NO_SERVICE;
+}
+
+WINSCARDAPI LONG
 WINAPI _defaultSCARDCANCELTRANSACTION(
     IN      SCARDHANDLE hCard)
 {
@@ -307,6 +300,13 @@ WINAPI _defaultSCARDGETSTATUSCHANGEA(
     IN      DWORD dwTimeout,
     IN OUT  LPSCARD_READERSTATEA rgReaderStates,
     IN      DWORD cReaders)
+{
+    return SCARD_E_NO_SERVICE;
+}
+
+WINSCARDAPI LONG
+WINAPI _defaultSCARDISVALIDCONTEXT(
+    IN      SCARDCONTEXT hContext)
 {
     return SCARD_E_NO_SERVICE;
 }
@@ -387,7 +387,6 @@ WINAPI _defaultSCARDTRANSMIT(
 #ifdef WIN32
 SCARDACCESSSTARTEDEVENT         mySCardAccessStartedEvent           = _defaultSCARDACCESSSTARTEDEVENT;
 SCARDADDREADERTOGROUPA          mySCardAddReaderToGroupA            = _defaultSCARDADDREADERTOGROUPA;
-SCARDCANCEL                     mySCardCancel                       = _defaultSCARDCANCEL;
 SCARDCONTROL                    mySCardControl                      = _defaultSCARDCONTROL;
 SCARDFORGETCARDTYPEA            mySCardForgetCardTypeA              = _defaultSCARDFORGETCARDTYPEA;
 SCARDFORGETREADERA              mySCardForgetReaderA                = _defaultSCARDFORGETREADERA;
@@ -397,7 +396,6 @@ SCARDGETCARDTYPEPROVIDERNAMEA   mySCardGetCardTypeProviderNameA     = _defaultSC
 SCARDINTRODUCECARDTYPEA         mySCardIntroduceCardTypeA           = _defaultSCARDINTRODUCECARDTYPEA;
 SCARDINTRODUCEREADERA           mySCardIntroduceReaderA             = _defaultSCARDINTRODUCEREADERA;
 SCARDINTRODUCEREADERGROUPA      mySCardIntroduceReaderGroupA        = _defaultSCARDINTRODUCEREADERGROUPA;
-SCARDISVALIDCONTEXT             mySCardIsValidContext               = _defaultSCARDISVALIDCONTEXT;
 SCARDLISTCARDSA                 mySCardListCardsA                   = _defaultSCARDLISTCARDSA;
 SCARDLISTINTERFACESA            mySCardListInterfacesA              = _defaultSCARDLISTINTERFACESA;
 SCARDLOCATECARDSA               mySCardLocateCardsA                 = _defaultSCARDLOCATECARDSA;
@@ -409,6 +407,7 @@ SCARDSTATE                      mySCardState                        = _defaultSC
 #endif // WIN32
 
 SCARDBEGINTRANSACTION           mySCardBeginTransaction             = _defaultSCARDBEGINTRANSACTION;
+SCARDCANCEL                     mySCardCancel                       = _defaultSCARDCANCEL;
 SCARDCANCELTRANSACTION          mySCardCancelTransaction            = _defaultSCARDCANCELTRANSACTION;
 SCARDCONNECTA                   mySCardConnectA                     = _defaultSCARDCONNECTA;
 SCARDDISCONNECT                 mySCardDisconnect                   = _defaultSCARDDISCONNECT;
@@ -417,6 +416,7 @@ SCARDESTABLISHCONTEXT           mySCardEstablishContext             = _defaultSC
 SCARDFREEMEMORY                 mySCardFreeMemory                   = _defaultSCARDFREEMEMORY;
 SCARDGETATTRIB                  mySCardGetAttrib                    = _defaultSCARDGETATTRIB;
 SCARDGETSTATUSCHANGEA           mySCardGetStatusChangeA             = _defaultSCARDGETSTATUSCHANGEA;
+SCARDISVALIDCONTEXT             mySCardIsValidContext               = _defaultSCARDISVALIDCONTEXT;
 SCARDLISTREADERSA               mySCardListReadersA                 = _defaultSCARDLISTREADERSA;
 SCARDLISTREADERGROUPSA          mySCardListReaderGroupsA            = _defaultSCARDLISTREADERGROUPSA;
 SCARDRECONNECT                  mySCardReconnect                    = _defaultSCARDRECONNECT;
@@ -512,6 +512,7 @@ long winscard_init(void)
             {
                 lRetCode=SCARD_S_SUCCESS;
                 GETPROCADDRESS( SCARDBEGINTRANSACTION  , SCardBeginTransaction  , SCardBeginTransaction  );
+                GETPROCADDRESS( SCARDCANCEL            , SCardCancel            , SCardCancel );
                 GETPROCADDRESS( SCARDCANCELTRANSACTION , SCardCancelTransaction , SCardCancelTransaction );
                 GETPROCADDRESS( SCARDCONNECTA          , SCardConnectA          , SCardConnect           );
                 GETPROCADDRESS( SCARDDISCONNECT        , SCardDisconnect        , SCardDisconnect        );
@@ -526,8 +527,9 @@ long winscard_init(void)
                 GETPROCADDRESS( SCARDSETATTRIB         , SCardSetAttrib         , SCardSetAttrib         );
                 GETPROCADDRESS( SCARDSTATUSA           , SCardStatusA           , SCardStatus            );
                 GETPROCADDRESS( SCARDTRANSMIT          , SCardTransmit          , SCardTransmit          );
+                GETPROCADDRESS( SCARDISVALIDCONTEXT    , SCardIsValidContext    , SCardIsValidContext );
 
-                
+
                 myg_prgSCardT0Pci   = (unsigned long)dlsym( handle, "g_rgSCardT0Pci"  );
                 myg_prgSCardT1Pci   = (unsigned long)dlsym( handle, "g_rgSCardT1Pci"  );
                 myg_prgSCardRawPci  = (unsigned long)dlsym( handle, "g_rgSCardRawPci" );
