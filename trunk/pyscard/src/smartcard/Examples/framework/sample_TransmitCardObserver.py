@@ -66,7 +66,7 @@ try:
     sleep(100)
 
 except:
-    print exc_info()[0], ': ', exc_info()[1]
+    print exc_info()[0], ':', exc_info()[1]
 
 
 

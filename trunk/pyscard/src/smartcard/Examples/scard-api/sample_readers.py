@@ -36,12 +36,12 @@ try:
         hresult, readers = SCardListReaders( hcontext, [] )
         if hresult!=0:
             raise error, 'Failed to list readers: ' + SCardGetErrorMessage(hresult)
-        print 'PCSC Readers: ', readers
+        print 'PCSC Readers:', readers
 
         hresult, readerGroups = SCardListReaderGroups( hcontext )
         if hresult!=0:
             raise error, 'Unable to list reader groups: ' + SCardGetErrorMessage(hresult)
-        print 'PCSC Reader groups: ', readerGroups
+        print 'PCSC Reader groups:', readerGroups
 
     finally:
         hresult = SCardReleaseContext( hcontext )
@@ -56,7 +56,7 @@ try:
 
 except error:
     import sys
-    print sys.exc_info()[0], ': ', sys.exc_info()[1]
+    print sys.exc_info()[0], ':', sys.exc_info()[1]
 
 
 

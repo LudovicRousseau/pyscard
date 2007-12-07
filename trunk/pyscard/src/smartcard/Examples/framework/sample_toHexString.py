@@ -30,25 +30,25 @@ from smartcard.util import *
 print 40*'-'
 bytes = [ 59, 101, 0, 0, 156, 17, 1, 1, 3]
 print 'bytes = [59, 101, 0, 0, 156, 17, 1, 1, 3]'
-print 'toHexString( bytes ) = ', toHexString( bytes )
-print 'toHexString( bytes, COMMA ) = ', toHexString( bytes, COMMA )
-print 'toHexString( bytes, PACK ) = ', toHexString( bytes, PACK )
-print 'toHexString( bytes, HEX ) = ', toHexString( bytes, HEX )
-print 'toHexString( bytes, HEX | COMMA ) = ', toHexString( bytes, HEX | COMMA )
-print 'toHexString( bytes, HEX | UPPERCASE ) = ', toHexString( bytes, HEX | UPPERCASE )
-print 'toHexString( bytes, HEX | UPPERCASE | COMMA) = ', toHexString( bytes, HEX | UPPERCASE | COMMA )
+print 'toHexString( bytes ) =', toHexString( bytes )
+print 'toHexString( bytes, COMMA ) =', toHexString( bytes, COMMA )
+print 'toHexString( bytes, PACK ) =', toHexString( bytes, PACK )
+print 'toHexString( bytes, HEX ) =', toHexString( bytes, HEX )
+print 'toHexString( bytes, HEX | COMMA ) =', toHexString( bytes, HEX | COMMA )
+print 'toHexString( bytes, HEX | UPPERCASE ) =', toHexString( bytes, HEX | UPPERCASE )
+print 'toHexString( bytes, HEX | UPPERCASE | COMMA) =', toHexString( bytes, HEX | UPPERCASE | COMMA )
 
 
 print 40*'-'
 bytes = [ 0x3B, 0x65, 0x00, 0x00, 0x9C, 0x11, 0x01, 0x01, 0x03 ]
 print 'bytes = [ 0x3B, 0x65, 0x00, 0x00, 0x9C, 0x11, 0x01, 0x01, 0x03 ]'
-print 'toHexString( bytes, COMMA ) = ', toHexString( bytes, COMMA )
-print 'toHexString( bytes ) = ', toHexString( bytes )
-print 'toHexString( bytes, PACK ) = ', toHexString( bytes, PACK )
-print 'toHexString( bytes, HEX ) = ', toHexString( bytes, HEX )
-print 'toHexString( bytes, HEX | COMMA ) = ', toHexString( bytes, HEX | COMMA )
-print 'toHexString( bytes, HEX | UPPERCASE ) = ', toHexString( bytes, HEX | UPPERCASE )
-print 'toHexString( bytes, HEX | UPPERCASE | COMMA) = ', toHexString( bytes, HEX | UPPERCASE | COMMA )
+print 'toHexString( bytes, COMMA ) =', toHexString( bytes, COMMA )
+print 'toHexString( bytes ) =', toHexString( bytes )
+print 'toHexString( bytes, PACK ) =', toHexString( bytes, PACK )
+print 'toHexString( bytes, HEX ) =', toHexString( bytes, HEX )
+print 'toHexString( bytes, HEX | COMMA ) =', toHexString( bytes, HEX | COMMA )
+print 'toHexString( bytes, HEX | UPPERCASE ) =', toHexString( bytes, HEX | UPPERCASE )
+print 'toHexString( bytes, HEX | UPPERCASE | COMMA) =', toHexString( bytes, HEX | UPPERCASE | COMMA )
 
 
 import sys

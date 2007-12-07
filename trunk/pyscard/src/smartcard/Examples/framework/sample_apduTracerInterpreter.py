@@ -46,13 +46,13 @@ class TracerAndSELECTInterpreter( CardConnectionObserver ):
             str=toHexString(ccevent.args[0])
             str = replace( str , "A0 A4 00 00 02", "SELECT" )
             str = replace( str , "A0 C0 00 00", "GET RESPONSE" )
-            print '> ', str
+            print '>', str
 
         elif 'response'==ccevent.type:
             if []==ccevent.args[0]:
-                print '<  [] ', "%-2X %-2X" % tuple(ccevent.args[-2:])
+                print '<  []', "%-2X %-2X" % tuple(ccevent.args[-2:])
             else:
-                print '< ', toHexString(ccevent.args[0]), "%-2X %-2X" % tuple(ccevent.args[-2:])
+                print '<', toHexString(ccevent.args[0]), "%-2X %-2X" % tuple(ccevent.args[-2:])
 
 
 # define the apdus used in this script

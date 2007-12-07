@@ -42,7 +42,7 @@ if 'winscard'==resourceManager:
             hresult, readers = SCardListReaders( hcontext, [] )
             if hresult!=0:
                 raise scard.error, 'Failed to list readers: ' + SCardGetErrorMessage(hresult)
-            print 'PCSC Readers: ', readers
+            print 'PCSC Readers:', readers
 
             # introduce a card (forget first in case it is already present)
             hresult = SCardForgetCardType( hcontext, znewcardName )
@@ -58,7 +58,7 @@ if 'winscard'==resourceManager:
             hresult, cards = SCardListCards( hcontext, [], [] )
             if hresult!=0:
                 raise error, 'Failure to list cards'
-            print 'Cards: ', cards
+            print 'Cards:', cards
 
 
             readerstates = []
@@ -108,7 +108,7 @@ if 'winscard'==resourceManager:
 
     except error:
         import sys
-        print sys.exc_info()[0], ': ', sys.exc_info()[1]
+        print sys.exc_info()[0], ':', sys.exc_info()[1]
 
 elif 'pcsclite'==resourceManager:
     print 'SCardLocateCards not supported by pcsc lite'

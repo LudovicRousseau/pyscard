@@ -48,7 +48,7 @@ if 'winscard'==resourceManager:
             hresult, interfaces = SCardListInterfaces( hcontext, 'Schlumberger Cryptoflex 8k v2' )
             if hresult!=0:
                 raise scard.error, 'Failed to list interfaces: ' + SCardGetErrorMessage(hresult)
-            print 'Interfaces for Schlumberger Cryptoflex 8k v2: ', interfaces
+            print 'Interfaces for Schlumberger Cryptoflex 8k v2:', interfaces
 
             # introduce a card (forget first in case it is already present)
             hresult = SCardForgetCardType( hcontext, znewcardName )
@@ -64,7 +64,7 @@ if 'winscard'==resourceManager:
             if hresult!=0:
                 raise error, 'Failed to list interfaces: ' + SCardGetErrorMessage(hresult)
             for i in interfaces:
-                print 'Interface for ' + znewcardName + ' : ', smartcard.guid.GUIDToStr(i)
+                print 'Interface for ' + znewcardName + ' :', smartcard.guid.GUIDToStr(i)
 
             print 'Forgeting card ' + znewcardName
             hresult = SCardForgetCardType( hcontext, znewcardName )
@@ -79,7 +79,7 @@ if 'winscard'==resourceManager:
 
     except error:
         import sys
-        print sys.exc_info()[0], ': ', sys.exc_info()[1]
+        print sys.exc_info()[0], ':', sys.exc_info()[1]
 
 elif 'pcsclite'==resourceManager:
     print 'SCardListInterfaces not supported by pcsc lite'

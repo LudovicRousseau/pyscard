@@ -39,22 +39,22 @@ if 'winscard'==resourceManager:
             hresult, card = SCardListCards( hcontext, slbCryptoFlex8kv2ATR, [] )
             if hresult!=0:
                 raise error, 'Failure to locate Schlumberger Cryptoflex 8k v2 card: ' + SCardGetErrorMessage(hresult)
-            print 'Located by ATR: ', card
+            print 'Located by ATR:', card
 
             hresult, cards = SCardListCards( hcontext, [], [] )
             if hresult!=0:
                 raise error, 'Failure to list cards: ' + SCardGetErrorMessage(hresult)
-            print 'Cards: ', cards
+            print 'Cards:', cards
 
             for i in cards:
                 hresult, providerguid = SCardGetCardTypeProviderName(
                                             hcontext,   i, SCARD_PROVIDER_PRIMARY )
                 if hresult==0:
-                    print i, 'Primary provider: ', providername
+                    print i, 'Primary provider:', providername
                 hresult, providername = SCardGetCardTypeProviderName(
                                             hcontext,   i, SCARD_PROVIDER_CSP )
                 if hresult==0:
-                    print i, 'CSP Provider: ', providername
+                    print i, 'CSP Provider:', providername
 
 
 
@@ -66,7 +66,7 @@ if 'winscard'==resourceManager:
 
     except error:
         import sys
-        print sys.exc_info()[0], ': ', sys.exc_info()[1]
+        print sys.exc_info()[0], ':', sys.exc_info()[1]
 
 elif 'pcsclite'==resourceManager:
     print 'SCardListCards not supported by pcsc lite'
