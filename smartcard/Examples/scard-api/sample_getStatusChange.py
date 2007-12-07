@@ -69,7 +69,7 @@ try:
         hresult, readers = SCardListReaders( hcontext, [] )
         if hresult!=0:
             raise error, 'Failed to list readers: ' + SCardGetErrorMessage(hresult)
-        print 'PCSC Readers: ', readers
+        print 'PCSC Readers:', readers
 
         readerstates = []
         for i in xrange(len(readers)):
@@ -101,7 +101,7 @@ try:
 
 except error:
     import sys
-    print sys.exc_info()[0], ': ', sys.exc_info()[1]
+    print sys.exc_info()[0], ':', sys.exc_info()[1]
 
 
 

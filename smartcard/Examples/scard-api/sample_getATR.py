@@ -38,10 +38,10 @@ try:
             raise  'Failed to list readers: ' + SCardGetErrorMessage(hresult)
         if len(readers)<1:
             raise  'No smart card readers'
-        print 'PCSC Readers: ', readers
+        print 'PCSC Readers:', readers
 
         for reader in readers:
-            print 'Trying to retreive ATR of card in ', reader
+            print 'Trying to retreive ATR of card in', reader
 
             hresult, hcard, dwActiveProtocol = SCardConnect(
                 hcontext, reader, SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1 )
@@ -49,16 +49,16 @@ try:
                 print 'Unable to connect: ' + SCardGetErrorMessage(hresult)
             else:
 
-                print 'Connected with active protocol ', dwActiveProtocol
+                print 'Connected with active protocol', dwActiveProtocol
 
                 try:
                     hresult, reader, state, protocol, atr = SCardStatus( hcard )
                     if hresult!=0:
                         print 'failed to get status: ' + SCardGetErrorMessage(hresult)
-                    print 'Reader: ', reader
-                    print 'State: ', state
-                    print 'Protocol: ', protocol
-                    print 'ATR: ',
+                    print 'Reader:', reader
+                    print 'State:', state
+                    print 'Protocol:', protocol
+                    print 'ATR:',
                     for i in xrange(len(atr)):
                         print "0x%.2X" % atr[i],
                     print ""
@@ -78,7 +78,7 @@ try:
 
 except:
     import sys
-    print sys.exc_info()[0], ': ', sys.exc_info()[1]
+    print sys.exc_info()[0], ':', sys.exc_info()[1]
 
 import sys
 if 'win32'==sys.platform:

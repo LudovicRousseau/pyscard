@@ -41,34 +41,34 @@ try:
         hresult, readers = SCardListReaders( hcontext, [] )
         if hresult!=0:
             raise error, 'Failed to list readers: ' + SCardGetErrorMessage(hresult)
-        print 'PCSC Readers: ', readers
+        print 'PCSC Readers:', readers
 
         if len(readers)<1:
             raise error, 'No smart card readers'
 
         for zreader in readers:
 
-            print 'Trying to select DF_TELECOM of card in ', zreader
+            print 'Trying to select DF_TELECOM of card in', zreader
 
             try:
                 hresult, hcard, dwActiveProtocol = SCardConnect(
                     hcontext, zreader, SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 )
                 if hresult!=0:
                     raise error, 'Unable to connect: ' + SCardGetErrorMessage(hresult)
-                print 'Connected with active protocol ', dwActiveProtocol
+                print 'Connected with active protocol', dwActiveProtocol
 
                 try:
                     hresult, response = SCardTransmit( hcard, SCARD_PCI_T0, SELECT + DF_TELECOM )
                     if hresult!=0:
                         raise error, 'Failed to transmit: ' + SCardGetErrorMessage(hresult)
-                    print 'Selected DF_TELECOM: ',
+                    print 'Selected DF_TELECOM:',
                     for i in xrange(len(response)):
                         print "0x%.2X" % response[i],
                     print ""
                     hresult, response = SCardTransmit( hcard, SCARD_PCI_T0, GET_RESPONSE + [response[1]] )
                     if hresult!=0:
                         raise error, 'Failed to transmit: ' + SCardGetErrorMessage(hresult)
-                    print 'GET_RESPONSE after SELECT DF_TELECOM: ',
+                    print 'GET_RESPONSE after SELECT DF_TELECOM:',
                     for i in xrange(len(response)):
                         print "0x%.2X" % response[i],
                     print ""
@@ -90,7 +90,7 @@ try:
 
 except error:
     import sys
-    print sys.exc_info()[0], ': ', sys.exc_info()[1]
+    print sys.exc_info()[0], ':', sys.exc_info()[1]
 
 import sys
 if 'win32'==sys.platform:
