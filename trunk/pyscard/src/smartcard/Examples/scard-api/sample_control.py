@@ -56,7 +56,7 @@ try:
                     # get firmware on Gemplus readers
                     hresult, response = SCardControl( hcard, 0x42000001, [ 0x02])
                     if hresult!=SCARD_S_SUCCESS:
-                        raise  error, 'SCardControl failed: ' + SCardGetErrorMessage(hresult)
+                        raise error, 'SCardControl failed: ' + SCardGetErrorMessage(hresult)
                     r = ""
                     for i in xrange(len(response)):
                         r += "%c" % response[i]
@@ -67,9 +67,8 @@ try:
                         raise error, 'Failed to disconnect: ' + SCardGetErrorMessage(hresult)
                     print 'Disconnected'
 
-            except error:
-                print error, SCardGetErrorMessage(hresult)
-
+            except error, (message):
+                print error, message
 
     finally:
         hresult = SCardReleaseContext( hcontext )
