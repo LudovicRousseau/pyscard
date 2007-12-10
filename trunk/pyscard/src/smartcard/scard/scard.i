@@ -729,6 +729,11 @@ long _Control(
                 &pblRecvBuffer->cBytes );
 }
 
+long _SCARD_CTL_CODE( long code )
+{
+    return SCARD_CTL_CODE(code);
+}
+
 ERRORSTRING* _GetErrorMessage( long lErrCode )
 {
     #ifdef WIN32
@@ -1729,6 +1734,21 @@ long _Control(
   BYTELIST* INPUT,
   BYTELIST* OUTPUT
 );
+
+///////////////////////////////////////////////////////////////////////////////
+%define DOCSTRING_SCARD_CTL_CODE
+"
+This function returns the value of a control code
+
+from smartcard.scard import *
+...
+CM_IOCTL_GET_FEATURE_REQUEST = SCARD_CTL_CODE(3400)
+...
+"
+%enddef
+%feature("docstring") DOCSTRING_SCARD_CTL_CODE;
+%rename(SCARD_CTL_CODE) _SCARD_CTL_CODE( long code );
+long _SCARD_CTL_CODE( long code );
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_GETERRORMESSAGE
