@@ -76,8 +76,8 @@ try:
                     if hresult!=0:
                         raise error, 'failed to disconnect: ' + SCardGetErrorMessage(hresult)
                     print 'Disconnected'
-            except error:
-                print error, SCardGetErrorMessage(hresult)
+            except error, (message):
+                print error, message
 
     finally:
         hresult = SCardReleaseContext( hcontext )
