@@ -54,7 +54,7 @@ try:
 
                 try:
                     # get firmware on Gemplus readers
-                    hresult, response = SCardControl( hcard, 0x42000001, [ 0x02])
+                    hresult, response = SCardControl( hcard, SCARD_CTL_CODE(1), [ 0x02])
                     if hresult!=SCARD_S_SUCCESS:
                         raise error, 'SCardControl failed: ' + SCardGetErrorMessage(hresult)
                     r = ""
