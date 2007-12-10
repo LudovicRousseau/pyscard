@@ -185,8 +185,3 @@ if 'win32'==sys.platform:
     print 'press Enter to continue'
     sys.stdin.read(1)
 
-
-
-
-
-
