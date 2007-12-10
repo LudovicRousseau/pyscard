@@ -39,6 +39,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 %typemap(in,numinputs=0) BYTELIST *OUTPUT(BYTELIST temp)
 {
     $1 = &temp;
+    $1->ab = NULL;
     $1->bAllocated=FALSE;
 }
 
