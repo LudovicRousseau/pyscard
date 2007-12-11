@@ -388,7 +388,7 @@ long _EndTransaction( unsigned long hCard, unsigned long dwDisposition )
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-long _EstablishContext( unsigned long dwScope, unsigned long* phContext )
+long _EstablishContext( unsigned long dwScope, long* phContext )
 {
     winscard_init();
     return (mySCardEstablishContext)( dwScope, NULL, NULL, phContext );
@@ -1329,7 +1329,7 @@ if hresult!=SCARD_S_SUCCESS:
 %enddef
 %feature("docstring") DOCSTRING_ESTABLISHCONTEXT;
 %rename(SCardEstablishContext) _EstablishContext( unsigned long dwScope, unsigned long *OUTPUT );
-long _EstablishContext( unsigned long dwScope, unsigned long *OUTPUT );
+long _EstablishContext( unsigned long dwScope, long *OUTPUT );
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_GETATTRIB
