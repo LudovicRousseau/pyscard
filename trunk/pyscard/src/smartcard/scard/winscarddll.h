@@ -204,7 +204,7 @@ typedef WINSCARDAPI LONG
     IN  DWORD dwScope,
     IN  LPCVOID pvReserved1,
     IN  LPCVOID pvReserved2,
-    OUT unsigned long* phContext);
+    OUT LPSCARDCONTEXT phContext);
 
 typedef WINSCARDAPI LONG
 (WINAPI *SCARDFREEMEMORY)(
