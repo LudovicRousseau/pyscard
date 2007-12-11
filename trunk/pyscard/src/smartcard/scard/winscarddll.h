@@ -68,7 +68,6 @@ typedef WINSCARDAPI LONG
     IN SCARDCONTEXT hContext,
     IN LPCSTR szReaderName);
 
-
 typedef WINSCARDAPI LONG
 (WINAPI *SCARDFORGETREADERGROUPA)(
     IN SCARDCONTEXT hContext,
@@ -188,7 +187,6 @@ typedef WINSCARDAPI LONG
     IN      DWORD nOutBufferSize,
     OUT     LPDWORD lpBytesReturned);
 
-
 typedef WINSCARDAPI LONG
 (WINAPI *SCARDDISCONNECT)(
     IN      SCARDHANDLE hCard,
@@ -280,7 +278,6 @@ typedef WINSCARDAPI LONG
     OUT LPBYTE pbAtr,
     IN OUT LPDWORD pcbAtrLen);
 
-
 typedef WINSCARDAPI LONG
 (WINAPI *SCARDTRANSMIT)(
     IN SCARDHANDLE hCard,
@@ -332,7 +329,6 @@ extern SCARDRELEASECONTEXT             mySCardReleaseContext;
 extern SCARDSETATTRIB                  mySCardSetAttrib;
 extern SCARDSTATUSA                    mySCardStatusA;
 extern SCARDTRANSMIT                   mySCardTransmit;
-
 
 extern unsigned long myg_prgSCardT0Pci;
 extern unsigned long myg_prgSCardT1Pci;
