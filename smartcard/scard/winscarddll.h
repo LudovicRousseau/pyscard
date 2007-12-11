@@ -175,7 +175,7 @@ typedef WINSCARDAPI LONG
     IN      LPCTSTR szReader,
     IN      DWORD dwShareMode,
     IN      DWORD dwPreferredProtocols,
-    OUT     unsigned long* phCard,
+    OUT     LPSCARDHANDLE phCard,
     OUT     LPDWORD pdwActiveProtocol);
 
 typedef WINSCARDAPI LONG
