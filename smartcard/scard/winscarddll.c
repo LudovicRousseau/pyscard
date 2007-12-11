@@ -241,9 +241,9 @@ WINSCARDAPI LONG
 WINAPI _defaultSCARDCONTROL(
     IN      SCARDHANDLE hCard,
     IN      DWORD dwControlCode,
-    IN      LPCBYTE lpInBuffer,
+    IN      LPCVOID lpInBuffer,
     IN      DWORD nInBufferSize,
-    OUT     LPBYTE lpOutBuffer,
+    OUT     LPVOID lpOutBuffer,
     IN      DWORD nOutBufferSize,
     OUT     LPDWORD lpBytesReturned)
 {
