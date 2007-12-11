@@ -113,10 +113,8 @@ typedef enum
         %constant unsigned long SCARD_PROTOCOL_OPTIMAL = SCARD_PROTOCOL_UNSET ;
     #endif //!__APPLE__
     // define winscard constants for pcsc lite
-    %constant unsigned long SCARD_PROTOCOL_UNDEFINED = SCARD_PROTOCOL_UNSET ;
     %constant unsigned long SCARD_PROTOCOL_Tx = SCARD_PROTOCOL_ANY ;
     %constant unsigned long SCARD_PROTOCOL_DEFAULT = SCARD_PROTOCOL_ANY ;
-    %constant unsigned long SCARD_PROTOCOL_OPTIMAL = SCARD_PROTOCOL_UNSET ;
 #endif //PCSCLITE
 
 
