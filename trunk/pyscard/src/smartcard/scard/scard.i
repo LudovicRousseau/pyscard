@@ -360,7 +360,7 @@ long _Connect(
   char* szReader,
   unsigned long dwShareMode,
   unsigned long dwPreferredProtocols,
-  unsigned long* phCard,
+  long* phCard,
   unsigned long* pdwActiveProtocol )
 {
     winscard_init();
@@ -1246,7 +1246,7 @@ if hresult!=SCARD_S_SUCCESS:
   char* szReader,
   unsigned long dwShareMode,
   unsigned long dwPreferredProtocols,
-  unsigned long* OUTPUT,
+  long* OUTPUT,
   unsigned long* OUTPUT
 );
 long _Connect(
@@ -1254,7 +1254,7 @@ long _Connect(
   char* szReader,
   unsigned long dwShareMode,
   unsigned long dwPreferredProtocols,
-  unsigned long* OUTPUT,
+  long* OUTPUT,
   unsigned long* OUTPUT
 );
 
