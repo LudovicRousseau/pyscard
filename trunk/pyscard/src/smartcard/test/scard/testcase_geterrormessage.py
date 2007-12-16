@@ -45,7 +45,7 @@ class testcase_geterrormessage(unittest.TestCase):
         hresult, readers = SCardListReaders( self.hcontext, [] )
         self.assertEquals(hresult, 0)
 
-        hresult = SCardReleaseContext( 123 )
+        hresult = SCardReleaseContext( 123L )
         self.assertEquals( (SCARD_E_INVALID_HANDLE==hresult or ERROR_INVALID_HANDLE==hresult), True )
         self.assertEquals( ( SCardGetErrorMessage(hresult).rstrip()=='Invalid handle.'.rstrip() or
                              SCardGetErrorMessage(hresult).rstrip()=='The handle is invalid.'.rstrip() ), True )
