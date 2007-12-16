@@ -30,6 +30,49 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 /*==============================================================================
 //
+// support for SCARDCONTEXT
+//
+==============================================================================*/
+%typemap(in,numinputs=0) SCARDCONTEXT *OUTPUT(SCARDCONTEXT temp)
+{
+    $1 = &temp;
+}
+
+%typemap(in) SCARDCONTEXT INPUT(SCARDCONTEXT)
+{
+    $1 =  SCardHelper_PyScardContextToSCARDCONTEXT( $input );
+}
+
+%typemap(argout) SCARDCONTEXT *OUTPUT
+{
+    SCardHelper_AppendSCardContextToPyObject( *$1, &$result );
+}
+
+
+/*==============================================================================
+//
+// support for SCARDHANDLE
+//
+==============================================================================*/
+%typemap(in,numinputs=0) SCARDHANDLE *OUTPUT(SCARDHANDLE temp)
+{
+    $1 = &temp;
+}
+
+%typemap(in) SCARDHANDLE INPUT(SCARDHANDLE)
+{
+    $1 =  SCardHelper_PyScardHandleToSCARDHANDLE( $input );
+}
+
+%typemap(argout) SCARDHANDLE *OUTPUT
+{
+    SCardHelper_AppendSCardHandleToPyObject( *$1, &$result );
+}
+
+
+
+/*==============================================================================
+//
 // support for list of BYTEs, aka BYTELIST
 //
 ==============================================================================*/

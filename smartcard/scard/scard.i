@@ -173,7 +173,7 @@ Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #ifdef WIN32
 ///////////////////////////////////////////////////////////////////////////////
 long _AddReaderToGroup(
-  unsigned long hContext,
+  SCARDCONTEXT hContext,
   char* szReaderName,
   char* szGroupName )
 {
@@ -185,21 +185,21 @@ long _AddReaderToGroup(
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-long _ForgetCardType( unsigned long hContext, char* pszCardName )
+long _ForgetCardType( SCARDCONTEXT hContext, char* pszCardName )
 {
     winscard_init();
     return (mySCardForgetCardTypeA)( hContext, pszCardName );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-long _ForgetReader( unsigned long hContext, char* szReaderName )
+long _ForgetReader( SCARDCONTEXT hContext, char* szReaderName )
 {
     winscard_init();
     return (mySCardForgetReaderA)( hContext, szReaderName );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-long _ForgetReaderGroup( unsigned long hContext, char* szGroupName )
+long _ForgetReaderGroup( SCARDCONTEXT hContext, char* szGroupName )
 {
     winscard_init();
     return (mySCardForgetReaderGroupA)( hContext, szGroupName );
@@ -207,7 +207,7 @@ long _ForgetReaderGroup( unsigned long hContext, char* szGroupName )
 
 ///////////////////////////////////////////////////////////////////////////////
 long _GetCardTypeProviderName(
-    unsigned long hContext,
+    SCARDCONTEXT hContext,
     char* pszCardName,
     unsigned long dwProviderId,
     STRING* psl )
@@ -229,7 +229,7 @@ long _GetCardTypeProviderName(
 
 ///////////////////////////////////////////////////////////////////////////////
 long _IntroduceCardType(
-  unsigned long hContext,
+  SCARDCONTEXT hContext,
   char* pszCardName,
   GUIDLIST* pguidPrimaryProvider,
   GUIDLIST* rgguidInterfaces,
@@ -250,21 +250,21 @@ long _IntroduceCardType(
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-long _IntroduceReader( unsigned long hcontext, char* szReaderName, char* szDeviceName )
+long _IntroduceReader( SCARDCONTEXT hContext, char* szReaderName, char* szDeviceName )
 {
     winscard_init();
-    return (mySCardIntroduceReaderA)( hcontext, szReaderName, szDeviceName );
+    return (mySCardIntroduceReaderA)( hContext, szReaderName, szDeviceName );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-long _IntroduceReaderGroup( unsigned long hcontext, char* szGroupName )
+long _IntroduceReaderGroup( SCARDCONTEXT hContext, char* szGroupName )
 {
     winscard_init();
-    return (mySCardIntroduceReaderGroupA)( hcontext, szGroupName );
+    return (mySCardIntroduceReaderGroupA)( hContext, szGroupName );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-long _ListCards( unsigned long hContext, BYTELIST* pbl, GUIDLIST* guidlist, STRINGLIST* pmszCards )
+long _ListCards( SCARDCONTEXT hContext, BYTELIST* pbl, GUIDLIST* guidlist, STRINGLIST* pmszCards )
 {
     // autoallocate memory; will be freed on output typemap
     unsigned long cchCards=SCARD_AUTOALLOCATE;
@@ -286,7 +286,7 @@ long _ListCards( unsigned long hContext, BYTELIST* pbl, GUIDLIST* guidlist, STRI
 
 ///////////////////////////////////////////////////////////////////////////////
 long _ListInterfaces(
-    unsigned long hContext,
+    SCARDCONTEXT hContext,
     char* pszCard,
     GUIDLIST* pgl
 )
@@ -309,7 +309,7 @@ long _ListInterfaces(
 
 ///////////////////////////////////////////////////////////////////////////////
 long _LocateCards(
-  unsigned long hContext,
+  SCARDCONTEXT hContext,
   STRINGLIST* mszCards,
   READERSTATELIST* prl
 )
@@ -327,7 +327,7 @@ long _LocateCards(
 
 ///////////////////////////////////////////////////////////////////////////////
 long _RemoveReaderFromGroup(
-  unsigned long hContext,
+  SCARDCONTEXT hContext,
   char* szReaderName,
   char* szGroupName )
 {
@@ -341,14 +341,14 @@ long _RemoveReaderFromGroup(
 #endif // WIN32
 
 ///////////////////////////////////////////////////////////////////////////////
-long _BeginTransaction( unsigned long hCard )
+long _BeginTransaction( SCARDHANDLE hCard )
 {
     winscard_init();
     return (mySCardBeginTransaction)( hCard );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-long _Cancel( unsigned long hContext )
+long _Cancel( SCARDCONTEXT hContext )
 {
     winscard_init();
     return (mySCardCancel)( hContext );
@@ -356,11 +356,11 @@ long _Cancel( unsigned long hContext )
 
 ///////////////////////////////////////////////////////////////////////////////
 long _Connect(
-  unsigned long hContext,
+  SCARDCONTEXT hContext,
   char* szReader,
   unsigned long dwShareMode,
   unsigned long dwPreferredProtocols,
-  long* phCard,
+  LPSCARDHANDLE phCard,
   unsigned long* pdwActiveProtocol )
 {
     winscard_init();
@@ -374,24 +374,26 @@ long _Connect(
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-long _Disconnect( unsigned long hCard, unsigned long dwDisposition )
+long _Disconnect( SCARDHANDLE hCard, unsigned long dwDisposition )
 {
     winscard_init();
     return (mySCardDisconnect)( hCard, dwDisposition );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-long _EndTransaction( unsigned long hCard, unsigned long dwDisposition )
+long _EndTransaction( SCARDHANDLE hCard, unsigned long dwDisposition )
 {
     winscard_init();
     return (mySCardEndTransaction)( hCard, dwDisposition );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-long _EstablishContext( unsigned long dwScope, long* phContext )
+long _EstablishContext( unsigned long dwScope, SCARDCONTEXT* phContext )
 {
+    long lRet;
     winscard_init();
-    return (mySCardEstablishContext)( dwScope, NULL, NULL, phContext );
+    lRet = (mySCardEstablishContext)( dwScope, NULL, NULL, phContext );
+    return lRet;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -422,7 +424,7 @@ long _GetAttrib( unsigned long hcard, unsigned long dwAttrId, BYTELIST* pbl )
 
 ///////////////////////////////////////////////////////////////////////////////
 long _GetStatusChange(
-    unsigned long hContext,
+    SCARDCONTEXT hContext,
     unsigned long dwTimeout,
     READERSTATELIST* prsl )
 {
@@ -477,7 +479,7 @@ long _GetStatusChange(
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-long _IsValidContext( unsigned long hContext )
+long _IsValidContext( SCARDCONTEXT hContext )
 {
     winscard_init();
     return (mySCardIsValidContext)( hContext );
@@ -485,7 +487,7 @@ long _IsValidContext( unsigned long hContext )
 
 ///////////////////////////////////////////////////////////////////////////////
 long _ListReaders(
-    unsigned long hContext,
+    SCARDCONTEXT hContext,
     STRINGLIST* pmszGroups,
     STRINGLIST* pmszReaders )
 {
@@ -545,7 +547,7 @@ long _ListReaders(
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-long _ListReaderGroups( unsigned long hContext, STRINGLIST* pmszReaderGroups )
+long _ListReaderGroups( SCARDCONTEXT hContext, STRINGLIST* pmszReaderGroups )
 {
     DWORD cchReaderGroups;
     LONG lRetCode;
@@ -593,7 +595,7 @@ long _ListReaderGroups( unsigned long hContext, STRINGLIST* pmszReaderGroups )
 
 ///////////////////////////////////////////////////////////////////////////////
 long _Reconnect(
-    unsigned long hCard,
+    SCARDHANDLE hCard,
     unsigned long dwShareMode,
     unsigned long dwPreferredProtocols,
     unsigned long dwInitialization,
@@ -611,7 +613,7 @@ long _Reconnect(
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-long _ReleaseContext( unsigned long hContext )
+long _ReleaseContext( SCARDCONTEXT hContext )
 {
     winscard_init();
     return (mySCardReleaseContext)( hContext );
@@ -619,7 +621,7 @@ long _ReleaseContext( unsigned long hContext )
 
 ///////////////////////////////////////////////////////////////////////////////
 long _Status(
-  unsigned long hCard,
+  SCARDHANDLE hCard,
   STRINGLIST*  pszReaderName,
   unsigned long* pdwState,
   unsigned long* pdwProtocol,
@@ -663,7 +665,7 @@ long _Status(
 
 ///////////////////////////////////////////////////////////////////////////////
 long _Transmit(
-  unsigned long hCard,
+  SCARDHANDLE hCard,
   unsigned long pioSendPci,
   BYTELIST* pblSendBuffer,
   BYTELIST* pblRecvBuffer
@@ -708,7 +710,7 @@ long _Transmit(
 
 ///////////////////////////////////////////////////////////////////////////////
 long _Control(
-  unsigned long hCard,
+  SCARDHANDLE hCard,
   unsigned long controlCode,
   BYTELIST* pblSendBuffer,
   BYTELIST* pblRecvBuffer
@@ -776,8 +778,8 @@ ERRORSTRING* _GetErrorMessage( long lErrCode )
 //
 // a few documentation typemaps
 //
-%typemap(doc, name="hCard", type="unsigned long") (unsigned long hCard) "hCard: card handle return from SCardConnect()";
-%typemap(doc, name="hContext", type="unsigned long") (unsigned long hContext) "hContext: context handle return from SCardEstablishContext()";
+%typemap(doc, name="hCard", type="unsigned long") (SCARDHANDLE hCard) "hCard: card handle return from SCardConnect()";
+%typemap(doc, name="hContext", type="unsigned long") (SCARDCONTEXT hContext) "hContext: context handle return from SCardEstablishContext()";
 %typemap(doc, name="groupname", type="string") (char* szGroupName) "groupname: card reader group name";
 %typemap(doc, name="readername", type="string") (char* szReaderName) "readername: card reader name";
 %typemap(doc, name="cardname", type="string") (char* szCardName) "cardname: friendly name of a card";
@@ -819,11 +821,11 @@ from smartcard.scard import *
 %enddef
 %feature("docstring") DOCSTRING_ADDREADERTOGROUP;
 %rename(SCardAddReaderToGroup) _AddReaderToGroup(
-  unsigned long hContext,
+  SCARDCONTEXT INPUT,
   char* szReaderName,
   char* szGroupName );
 long _AddReaderToGroup(
-  unsigned long hContext,
+  SCARDCONTEXT INPUT,
   char* szReaderName,
   char* szGroupName );
 
@@ -844,8 +846,8 @@ if hresult!=SCARD_S_SUCCESS:
 "
 %enddef
 %feature("docstring") DOCSTRING_FORGETCARDTYPE;
-%rename(SCardForgetCardType) _ForgetCardType( unsigned long hContext, char* pszCardName );
-long _ForgetCardType( unsigned long hContext, char* pszCardName );
+%rename(SCardForgetCardType) _ForgetCardType( SCARDCONTEXT INPUT, char* pszCardName );
+long _ForgetCardType( SCARDCONTEXT INPUT, char* pszCardName );
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_FORGETREADER
@@ -865,8 +867,8 @@ if hresult!=0:
 "
 %enddef
 %feature("docstring") DOCSTRING_FORGETREADER;
-%rename(SCardForgetReader) _ForgetReader( unsigned long hContext, char* szReaderName );
-long _ForgetReader( unsigned long hContext, char* szReaderName );
+%rename(SCardForgetReader) _ForgetReader( SCARDCONTEXT INPUT, char* szReaderName );
+long _ForgetReader( SCARDCONTEXT INPUT, char* szReaderName );
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_FORGETREADERGROUP
@@ -888,8 +890,8 @@ if hresult!=0:
 "
 %enddef
 %feature("docstring") DOCSTRING_FORGETREADERGROUP;
-%rename(SCardForgetReaderGroup) _ForgetReaderGroup( unsigned long hContext, char* szGroupName );
-long _ForgetReaderGroup( unsigned long hContext, char* szGroupName );
+%rename(SCardForgetReaderGroup) _ForgetReaderGroup( SCARDCONTEXT INPUT, char* szGroupName );
+long _ForgetReaderGroup( SCARDCONTEXT INPUT, char* szGroupName );
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_GETCARDTYPEPROVIDERNAME
@@ -918,13 +920,13 @@ for i in cards:
 %enddef
 %feature("docstring") DOCSTRING_GETCARDTYPEPROVIDERNAME;
 %rename(SCardGetCardTypeProviderName) _GetCardTypeProviderName(
-  unsigned long hContext,
+  SCARDCONTEXT INPUT,
   char* szCardName,
   unsigned long dwProviderId,
   STRING* OUTPUT
 );
 long _GetCardTypeProviderName(
-  unsigned long hContext,
+  SCARDCONTEXT INPUT,
   char* szCardName,
   unsigned long dwProviderId,
   STRING* OUTPUT
@@ -957,7 +959,7 @@ if hresult!=SCARD_S_SUCCESS:
 %enddef
 %feature("docstring") DOCSTRING_INTRODUCECARDTYPE;
 %rename(SCardIntroduceCardType) _IntroduceCardType(
-  unsigned long hContext,
+  SCARDCONTEXT INPUT,
   char* pszCardName,
   GUIDLIST* INPUT,
   GUIDLIST* INPUT,
@@ -965,7 +967,7 @@ if hresult!=SCARD_S_SUCCESS:
   BYTELIST* INPUT
 );
 long _IntroduceCardType(
-  unsigned long hContext,
+  SCARDCONTEXT INPUT,
   char* pszCardName,
   GUIDLIST* INPUT,
   GUIDLIST* INPUT,
@@ -990,8 +992,8 @@ if hresult!=0:
 "
 %enddef
 %feature("docstring") DOCSTRING_INTRODUCEREADER;
-%rename(SCardIntroduceReader) _IntroduceReader( unsigned long hcontext, char* szReaderName, char* szDeviceName );
-long _IntroduceReader( unsigned long hcontext, char* szReaderName, char* szDeviceName );
+%rename(SCardIntroduceReader) _IntroduceReader( SCARDCONTEXT INPUT, char* szReaderName, char* szDeviceName );
+long _IntroduceReader( SCARDCONTEXT INPUT, char* szReaderName, char* szDeviceName );
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_INTRODUCEREADERGROUP
@@ -1013,8 +1015,8 @@ if hresult!=SCARD_S_SUCCESS:
 "
 %enddef
 %feature("docstring") DOCSTRING_INTRODUCEREADERGROUP;
-%rename(SCardIntroduceReaderGroup) _IntroduceReaderGroup( unsigned long hcontext, char* szGroupName );
-long _IntroduceReaderGroup( unsigned long hcontext, char* szGroupName );
+%rename(SCardIntroduceReaderGroup) _IntroduceReaderGroup( SCARDCONTEXT INPUT, char* szGroupName );
+long _IntroduceReaderGroup( SCARDCONTEXT INPUT, char* szGroupName );
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_LISTINTERFACES
@@ -1034,8 +1036,8 @@ if hresult!=SCARD_S_SUCCESS:
 "
 %enddef
 %feature("docstring") DOCSTRING_LISTINTERFACES;
-%rename(SCardListInterfaces) _ListInterfaces( unsigned long hContext, char* szCard, GUIDLIST* OUTPUT );
-long _ListInterfaces( unsigned long hContext, char* szCard, GUIDLIST* OUTPUT );
+%rename(SCardListInterfaces) _ListInterfaces( SCARDCONTEXT INPUT, char* szCard, GUIDLIST* OUTPUT );
+long _ListInterfaces( SCARDCONTEXT INPUT, char* szCard, GUIDLIST* OUTPUT );
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_LISTCARDS
@@ -1063,12 +1065,12 @@ print 'Cards: ', cards
 %enddef
 %feature("docstring") DOCSTRING_LISTCARDS;
 %rename (SCardListCards) _ListCards(
-    unsigned long hContext,
+    SCARDCONTEXT INPUT,
     BYTELIST* INPUT,
     GUIDLIST* INPUT,
     STRINGLIST* OUTPUT );
 long _ListCards(
-    unsigned long hContext,
+    SCARDCONTEXT INPUT,
     BYTELIST* INPUT,
     GUIDLIST* INPUT,
     STRINGLIST* OUTPUT );
@@ -1109,11 +1111,11 @@ for i in newstates:
 %enddef
 %feature("docstring") DOCSTRING_LOCATECARDS;
 %rename(SCardLocateCards) _LocateCards(
-    unsigned long hContext,
+    SCARDCONTEXT INPUT,
     STRINGLIST *INPUT,
     READERSTATELIST *prsl );
 long _LocateCards(
-    unsigned long hContext,
+    SCARDCONTEXT INPUT,
     STRINGLIST *INPUT,
     READERSTATELIST *prsl );
 
@@ -1136,11 +1138,11 @@ if hresult!=SCARD_S_SUCCESS:
 %enddef
 %feature("docstring") DOCSTRING_REMOVEREADERFROMGROUP;
 %rename(SCardRemoveReaderFromGroup) _RemoveReaderFromGroup(
-  unsigned long hContext,
+  SCARDCONTEXT INPUT,
   char* szReaderName,
   char* szGroupName );
 long _RemoveReaderFromGroup(
-  unsigned long hContext,
+  SCARDCONTEXT INPUT,
   char* szReaderName,
   char* szGroupName );
 
@@ -1169,8 +1171,8 @@ if hresult!=SCARD_S_SUCCESS:
 "
 %enddef
 %feature("docstring") DOCSTRING_BEGINTRANSACTION;
-%rename(SCardBeginTransaction) _BeginTransaction( unsigned long hCard );
-long _BeginTransaction( unsigned long hCard );
+%rename(SCardBeginTransaction) _BeginTransaction( SCARDHANDLE INPUT );
+long _BeginTransaction( SCARDHANDLE INPUT );
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_CANCEL
@@ -1185,8 +1187,8 @@ if hresult!=SCARD_S_SUCCESS:
 ..."
 %enddef
 %feature("docstring") DOCSTRING_CANCEL;
-%rename(SCardCancel) _Cancel( unsigned long hContext );
-long _Cancel( unsigned long hContext );
+%rename(SCardCancel) _Cancel( SCARDCONTEXT INPUT );
+long _Cancel( SCARDCONTEXT INPUT );
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_ISVALIDCONTEXT
@@ -1205,8 +1207,8 @@ if hresult!=SCARD_S_SUCCESS:
 "
 %enddef
 %feature("docstring") DOCSTRING_ISVALIDCONTEXT;
-%rename(SCardIsValidContext) _IsValidContext( unsigned long hContext );
-long _IsValidContext( unsigned long hContext );
+%rename(SCardIsValidContext) _IsValidContext( SCARDCONTEXT INPUT );
+long _IsValidContext( SCARDCONTEXT INPUT );
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_CONNECT
@@ -1242,19 +1244,19 @@ if hresult!=SCARD_S_SUCCESS:
 %enddef
 %feature("docstring") DOCSTRING_CONNECT;
 %rename(SCardConnect) _Connect(
-  unsigned long hContext,
+  SCARDCONTEXT INPUT,
   char* szReader,
   unsigned long dwShareMode,
   unsigned long dwPreferredProtocols,
-  long* OUTPUT,
+  SCARDHANDLE *OUTPUT,
   unsigned long* OUTPUT
 );
 long _Connect(
-  unsigned long hContext,
+  SCARDCONTEXT INPUT,
   char* szReader,
   unsigned long dwShareMode,
   unsigned long dwPreferredProtocols,
-  long* OUTPUT,
+  SCARDHANDLE *OUTPUT,
   unsigned long* OUTPUT
 );
 
@@ -1279,8 +1281,8 @@ if hresult!=SCARD_S_SUCCESS:
 "
 %enddef
 %feature("docstring") DOCSTRING_DISCONNECT;
-%rename(SCardDisconnect) _Disconnect( unsigned long hCard, unsigned long dwDisposition );
-long _Disconnect( unsigned long hCard, unsigned long dwDisposition );
+%rename(SCardDisconnect) _Disconnect( SCARDHANDLE INPUT, unsigned long dwDisposition );
+long _Disconnect( SCARDHANDLE INPUT, unsigned long dwDisposition );
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_ENDTRANSACTION
@@ -1305,8 +1307,8 @@ if hresult!=SCARD_S_SUCCESS:
 "
 %enddef
 %feature("docstring") DOCSTRING_ENDTRANSACTION;
-%rename(SCardEndTransaction) _EndTransaction( unsigned long hCard, unsigned long dwDisposition );
-long _EndTransaction( unsigned long hCard, unsigned long dwDisposition );
+%rename(SCardEndTransaction) _EndTransaction( SCARDHANDLE INPUT, unsigned long dwDisposition );
+long _EndTransaction( SCARDHANDLE INPUT, unsigned long dwDisposition );
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_ESTABLISHCONTEXT
@@ -1328,8 +1330,9 @@ if hresult!=SCARD_S_SUCCESS:
 "
 %enddef
 %feature("docstring") DOCSTRING_ESTABLISHCONTEXT;
-%rename(SCardEstablishContext) _EstablishContext( unsigned long dwScope, unsigned long *OUTPUT );
-long _EstablishContext( unsigned long dwScope, long *OUTPUT );
+%rename(SCardEstablishContext) _EstablishContext( unsigned long dwScope, SCARDCONTEXT *OUTPUT );
+long _EstablishContext( unsigned long dwScope, SCARDCONTEXT *OUTPUT );
+
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_GETATTRIB
@@ -1493,11 +1496,11 @@ for i in newstates
 %enddef
 %feature("docstring") DOCSTRING_GETSTATUSCHANGE;
 %rename(SCardGetStatusChange) _GetStatusChange(
-    unsigned long hContext,
+    SCARDCONTEXT INPUT,
     unsigned long dwTimeout,
     READERSTATELIST *BOTH);
 long _GetStatusChange(
-    unsigned long hContext,
+    SCARDCONTEXT INPUT,
     unsigned long dwTimeout,
     READERSTATELIST *BOTH);
 
@@ -1519,13 +1522,14 @@ hresult, readers = SCardListReaders( hcontext, ['SCard$T1ProtocolReaders', 'SCar
 %enddef
 %feature("docstring") DOCSTRING_LISTREADERS;
 %rename(SCardListReaders) _ListReaders(
-    unsigned long hContext,
+    SCARDCONTEXT INPUT,
     STRINGLIST *INPUT,
     STRINGLIST *OUTPUT );
 long _ListReaders(
-    unsigned long hContext,
+    SCARDCONTEXT INPUT,
     STRINGLIST *INPUT,
     STRINGLIST *OUTPUT );
+
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_LISTREADERGROUPS
@@ -1541,8 +1545,8 @@ print 'PCSC Reader groups: ', readerGroups
 "
 %enddef
 %feature("docstring") DOCSTRING_LISTREADERGROUPS;
-%rename(SCardListReaderGroups) _ListReaderGroups( unsigned long hContext, STRINGLIST *OUTPUT );
-long _ListReaderGroups( unsigned long hContext, STRINGLIST *OUTPUT );
+%rename(SCardListReaderGroups) _ListReaderGroups( SCARDCONTEXT INPUT, STRINGLIST *OUTPUT );
+long _ListReaderGroups( SCARDCONTEXT INPUT, STRINGLIST *OUTPUT );
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_RECONNECT
@@ -1585,14 +1589,14 @@ hresult, activeProtocol = SCardReconnect( hcard, SCARD_SHARE_EXCLUSIVE,
 %enddef
 %feature("docstring") DOCSTRING_RECONNECT;
 %rename(SCardReconnect) _Reconnect(
-  unsigned long hCard,
+  SCARDHANDLE INPUT,
   unsigned long dwShareMode,
   unsigned long dwPreferredProtocols,
   unsigned long dwInitialization,
   unsigned long* pdwActiveProtocol
 );
 long _Reconnect(
-  unsigned long hCard,
+  SCARDHANDLE INPUT,
   unsigned long dwShareMode,
   unsigned long dwPreferredProtocols,
   unsigned long dwInitialization,
@@ -1605,8 +1609,8 @@ long _Reconnect(
 "
 %enddef
 %feature("docstring") DOCSTRING_RELEASECONTEXT;
-%rename(SCardReleaseContext) _ReleaseContext( unsigned long hContext );
-long _ReleaseContext( unsigned long hContext );
+%rename(SCardReleaseContext) _ReleaseContext( SCARDCONTEXT INPUT );
+long _ReleaseContext( SCARDCONTEXT INPUT );
 
 ///////////////////////////////////////////////////////////////////////////////
 %typemap(doc, name="readername", type="string") (STRINGLIST*  OUTPUT) "readername: in output, the friendly reader name";
@@ -1650,14 +1654,14 @@ print ""
 %enddef
 %feature("docstring") DOCSTRING_STATUS;
 %rename(SCardStatus) _Status(
-  unsigned long hCard,
+  SCARDHANDLE INPUT,
   STRINGLIST*  OUTPUT,
   unsigned long* OUTPUT,
   unsigned long* OUTPUT,
   BYTELIST* OUTPUT
 );
 long _Status(
-  unsigned long hCard,
+  SCARDHANDLE INPUT,
   STRINGLIST*  OUTPUT,
   unsigned long* OUTPUT,
   unsigned long* OUTPUT,
@@ -1690,13 +1694,13 @@ if hresult!=SCARD_S_SUCCESS:
 %enddef
 %feature("docstring") DOCSTRING_TRANSMIT;
 %rename(SCardTransmit) _Transmit(
-  unsigned long hCard,
+  SCARDHANDLE INPUT,
   unsigned long pioSendPci,
   BYTELIST* INPUT,
   BYTELIST* OUTPUT
 );
 long _Transmit(
-  unsigned long hCard,
+  SCARDHANDLE INPUT,
   unsigned long pioSendPci,
   BYTELIST* INPUT,
   BYTELIST* OUTPUT
@@ -1723,13 +1727,13 @@ if hresult!=SCARD_S_SUCCESS:
 %enddef
 %feature("docstring") DOCSTRING_CONTROL;
 %rename(SCardControl) _Control(
-  unsigned long hCard,
+  SCARDHANDLE INPUT,
   unsigned long controlCode,
   BYTELIST* INPUT,
   BYTELIST* OUTPUT
 );
 long _Control(
-  unsigned long hCard,
+  SCARDHANDLE INPUT,
   unsigned long controlCode,
   BYTELIST* INPUT,
   BYTELIST* OUTPUT

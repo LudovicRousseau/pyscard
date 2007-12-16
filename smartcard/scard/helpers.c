@@ -690,6 +690,146 @@ dump a reader state list
 }
 
 /**=============================================================================
+                            SCARDCONTEXT Helpers
+==============================================================================*/
+
+/**==========================================================================**/
+void SCardHelper_AppendSCardContextToPyObject(
+    SCARDCONTEXT source, PyObject** ptarget )
+/*==============================================================================
+builds a Python SCARDCONTEXT from a C SCARDCONTEXT
+==============================================================================*/
+{
+    PyObject* oScardContext;
+
+    // create SCARDCONTEXT
+    #ifdef PCSCLITE
+        oScardContext = PyLong_FromLong( (long)source );
+    #else // !PCSCLITE
+        oScardContext = PyLong_FromUnsignedLong( (unsigned long)source );
+    #endif // PCSCLITE
+
+    // append list to target
+    if( !*ptarget )
+    {
+        *ptarget = oScardContext;
+    }
+    else if( *ptarget == Py_None )
+    {
+        Py_DECREF(Py_None);
+        *ptarget = oScardContext;
+    }
+    else
+    {
+        if( !PyList_Check(*ptarget) )
+        {
+            PyObject* o2 = *ptarget;
+            *ptarget = PyList_New(0);
+            PyList_Append(*ptarget,o2);
+            Py_XDECREF(o2);
+        }
+        PyList_Append(*ptarget,oScardContext);
+        Py_XDECREF(oScardContext);
+    }
+}
+
+/**==========================================================================**/
+SCARDCONTEXT SCardHelper_PyScardContextToSCARDCONTEXT(PyObject* source)
+/*==============================================================================
+build a SCARDCONTEXT from a python SCARDCONTEXT
+==============================================================================*/
+{
+    SCARDCONTEXT scRet=0;
+
+    // sanity check
+    // do we have a python long?
+    if (!PyLong_Check(source))
+    {
+        PyErr_SetString( PyExc_TypeError, "Expected a python long." );
+        return 0;
+    }
+
+    #ifdef PCSCLITE
+        scRet = PyLong_AsLong( source );
+    #else // !PCSCLITE
+        scRet = PyLong_AsUnsignedLong( source );
+    #endif // PCSCLITE
+
+    return scRet;
+}
+
+
+/**=============================================================================
+                            SCARDHANDLE Helpers
+==============================================================================*/
+
+/**==========================================================================**/
+void SCardHelper_AppendSCardHandleToPyObject(
+    SCARDHANDLE source, PyObject** ptarget )
+/*==============================================================================
+builds a Python SCARDHANDLE from a C SCARDHANDLE
+==============================================================================*/
+{
+    PyObject* oScardHandle;
+
+    // create SCARDHANDLE
+    #ifdef PCSCLITE
+        oScardHandle = PyLong_FromLong( (long)source );
+    #else // !PCSCLITE
+        oScardHandle = PyLong_FromUnsignedLong( (unsigned long)source );
+    #endif // PCSCLITE
+
+    // append list to target
+    if( !*ptarget )
+    {
+        *ptarget = oScardHandle;
+    }
+    else if( *ptarget == Py_None )
+    {
+        Py_DECREF(Py_None);
+        *ptarget = oScardHandle;
+    }
+    else
+    {
+        if( !PyList_Check(*ptarget) )
+        {
+            PyObject* o2 = *ptarget;
+            *ptarget = PyList_New(0);
+            PyList_Append(*ptarget,o2);
+            Py_XDECREF(o2);
+        }
+        PyList_Append(*ptarget,oScardHandle);
+        Py_XDECREF(oScardHandle);
+    }
+}
+
+/**==========================================================================**/
+SCARDCONTEXT SCardHelper_PyScardHandleToSCARDHANDLE(PyObject* source)
+/*==============================================================================
+build a SCARDHANDLE from a python SCARDHANDLE
+==============================================================================*/
+{
+    SCARDHANDLE scRet=0;
+
+    // sanity check
+    // do we have a python long?
+    if (!PyLong_Check(source))
+    {
+        PyErr_SetString( PyExc_TypeError, "Expected a python long." );
+        return 0;
+    }
+
+    #ifdef PCSCLITE
+        scRet = PyLong_AsLong( source );
+    #else // !PCSCLITE
+        scRet = PyLong_AsUnsignedLong( source );
+    #endif // PCSCLITE
+
+    return scRet;
+}
+
+
+/**=============================================================================
                             STRING Helpers
 ==============================================================================*/
 

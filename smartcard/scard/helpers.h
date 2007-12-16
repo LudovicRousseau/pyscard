@@ -91,6 +91,14 @@ void SCardHelper_AppendReaderStateListToPyObject( READERSTATELIST* source, PyObj
 READERSTATELIST* SCardHelper_PyReaderStateListToREADERSTATELIST(PyObject* source);
 void SCardHelper_PrintReaderStateList( READERSTATELIST* apsz );
 
+// SCARDCONTEXT helpers
+void SCardHelper_AppendSCardContextToPyObject( SCARDCONTEXT source, PyObject** ptarget );
+SCARDCONTEXT SCardHelper_PyScardContextToSCARDCONTEXT( PyObject* source );
+
+// SCARDHANDLE helpers
+void SCardHelper_AppendSCardHandleToPyObject( SCARDHANDLE source, PyObject** ptarget );
+SCARDHANDLE SCardHelper_PyScardHandleToSCARDHANDLE( PyObject* source );
+
 // STRING helpers
 void SCardHelper_AppendStringToPyObject( STRING* source, PyObject** ptarget );
 STRING* SCardHelper_PyStringToString( PyObject* source );
