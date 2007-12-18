@@ -634,8 +634,8 @@ dump a reader state list
         printf("%s userdata: %p current: %lx event: %lx \n",
             prl->ars[i].szReader,
             prl->ars[i].pvUserData,
-            prl->ars[i].dwCurrentState,
-            prl->ars[i].dwEventState );
+            (long)prl->ars[i].dwCurrentState,
+            (long)prl->ars[i].dwEventState );
         for(j=0; j<prl->ars[i].cbAtr; j++ )
         {
             printf("0x%.2X ", prl->ars[i].rgbAtr[j] );
