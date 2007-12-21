@@ -49,7 +49,7 @@ elif get_platform() in ('linux-i586', 'linux-i686', 'linux-x86_64'):
     platform_include_dirs=['/usr/include/PCSC']
     platform_extra_compile_args=[]#['-ggdb', '-O0']
     platform_extra_link_args=[]#['-ggdb']
-elif 'macosx-10.3-fat'==get_platform() or 'darwin-8.9.1-i386'==get_platform():
+elif get_platform() in ('macosx-10.3-fat', 'darwin-8.9.1-i386', 'macosx-10.5-i386'):
     platform__cc_defines=[('PCSCLITE', '1'),('__APPLE__','1')]
     platform_swig_opts=['-DPCSCLITE', '-D__APPLE__']
     platform_sources=[]
