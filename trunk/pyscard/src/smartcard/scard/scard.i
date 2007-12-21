@@ -153,6 +153,9 @@ Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #ifdef PCSCLITE
     #ifdef __APPLE__
         //#include <PCSC/reader.h>
+        #ifndef SCARD_CTL_CODE
+        #define SCARD_CTL_CODE(x) (x)
+        #endif
     #else
         #include <reader.h>
     #endif
@@ -361,7 +364,12 @@ long _Connect(
   unsigned long dwShareMode,
   unsigned long dwPreferredProtocols,
   LPSCARDHANDLE phCard,
-  unsigned long* pdwActiveProtocol )
+#ifdef __APPLE__
+  uint32_t* pdwActiveProtocol
+#else
+  unsigned long* pdwActiveProtocol
+#endif
+  )
 {
     winscard_init();
     return (mySCardConnectA)(
@@ -599,7 +607,11 @@ long _Reconnect(
     unsigned long dwShareMode,
     unsigned long dwPreferredProtocols,
     unsigned long dwInitialization,
+#ifdef __APPLE__
+    uint32_t* pdwActiveProtocol
+#else
     unsigned long* pdwActiveProtocol
+#endif
 )
 {
     winscard_init();
@@ -631,6 +643,9 @@ long _Status(
     long lRetCode;
     DWORD dwReaderLen=256;
     DWORD dwAtrLen=32;
+#ifdef __APPLE__
+    uint32_t tmp_pdwState, tmp_pdwProtocol, tmp_atrlen;
+#endif
 
     winscard_init();
     for(;;)
@@ -649,6 +664,20 @@ long _Status(
             break;
         }
         pszReaderName->hcontext = 0;
+#ifdef __APPLE__
+        tmp_atrlen = pbl->cBytes;
+        lRetCode = (mySCardStatusA)(
+            hCard,
+            (LPTSTR)pszReaderName->ac,
+            &dwReaderLen,
+            &tmp_pdwState,
+            &tmp_pdwProtocol,
+            pbl->ab,
+            &tmp_atrlen );
+        *pdwState = tmp_pdwState;
+        *pdwProtocol = tmp_pdwProtocol;
+        pbl->cBytes = tmp_atrlen;
+#else
         lRetCode = (mySCardStatusA)(
             hCard,
             (LPTSTR)pszReaderName->ac,
@@ -657,6 +686,7 @@ long _Status(
             pdwProtocol,
             pbl->ab,
             &pbl->cBytes );
+#endif
         break;
     }
 
@@ -672,6 +702,10 @@ long _Transmit(
 )
 {
     PSCARD_IO_REQUEST piorequest=NULL;
+    long ret;
+#ifdef __APPLE__
+    uint32_t tmp_buflen;
+#endif
 
     winscard_init();
 
@@ -697,7 +731,10 @@ long _Transmit(
             return SCARD_E_INVALID_PARAMETER;
 
     }
-    return (mySCardTransmit)(
+#ifdef __APPLE__
+    tmp_buflen = pblRecvBuffer->cBytes;
+#endif
+    ret = (mySCardTransmit)(
                 hCard,
                 (PSCARD_IO_REQUEST)piorequest,
                 //SCARD_PCI_T0,
@@ -705,7 +742,13 @@ long _Transmit(
                 pblSendBuffer->cBytes,
                 NULL,
                 pblRecvBuffer->ab,
+#ifdef __APPLE__
+                &tmp_buflen );
+                pblRecvBuffer->cBytes = tmp_buflen;
+#else
                 &pblRecvBuffer->cBytes );
+#endif
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -769,7 +812,11 @@ ERRORSTRING* _GetErrorMessage( long lErrCode )
         return ppszError;
     #endif // WIN32
     #ifdef PCSCLITE
+    #ifdef __APPLE__
+        return (ERRORSTRING*)"Error\n";
+    #endif
         return (ERRORSTRING*)pcsc_stringify_error( lErrCode );
+    #else
     #endif // PCSCLITE
 }
 
@@ -1249,7 +1296,11 @@ if hresult!=SCARD_S_SUCCESS:
   unsigned long dwShareMode,
   unsigned long dwPreferredProtocols,
   SCARDHANDLE *OUTPUT,
+#ifdef __APPLE__
+  uint32_t* OUTPUT
+#else
   unsigned long* OUTPUT
+#endif
 );
 long _Connect(
   SCARDCONTEXT INPUT,
@@ -1257,7 +1308,11 @@ long _Connect(
   unsigned long dwShareMode,
   unsigned long dwPreferredProtocols,
   SCARDHANDLE *OUTPUT,
+#ifdef __APPLE__
+  uint32_t* OUTPUT
+#else
   unsigned long* OUTPUT
+#endif
 );
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1593,14 +1648,22 @@ hresult, activeProtocol = SCardReconnect( hcard, SCARD_SHARE_EXCLUSIVE,
   unsigned long dwShareMode,
   unsigned long dwPreferredProtocols,
   unsigned long dwInitialization,
+#ifdef __APPLE__
+  uint32_t* pdwActiveProtocol
+#else
   unsigned long* pdwActiveProtocol
+#endif
 );
 long _Reconnect(
   SCARDHANDLE INPUT,
   unsigned long dwShareMode,
   unsigned long dwPreferredProtocols,
   unsigned long dwInitialization,
+#ifdef __APPLE__
+  uint32_t* pdwActiveProtocol
+#else
   unsigned long* pdwActiveProtocol
+#endif
 );
 
 ///////////////////////////////////////////////////////////////////////////////

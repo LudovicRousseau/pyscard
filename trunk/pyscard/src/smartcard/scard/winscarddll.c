@@ -268,7 +268,11 @@ WINAPI _defaultSCARDENDTRANSACTION(
 
 WINSCARDAPI LONG
 WINAPI _defaultSCARDESTABLISHCONTEXT(
+#ifdef __APPLE__
+    IN  uint32_t dwScope,
+#else
     IN  DWORD dwScope,
+#endif
     IN  LPCVOID pvReserved1,
     IN  LPCVOID pvReserved2,
     OUT LPSCARDCONTEXT phContext)
@@ -502,12 +506,18 @@ long winscard_init(void)
                                                          }
         void* handle=NULL;
         char* dlsym_error;
+		char *lib = NULL;
+#ifdef __APPLE__
+		lib = "/System/Library/Frameworks/PCSC.framework/PCSC";
+#else
+		lib = "libpcsclite.so";
+#endif
 
         if( bFirstCall )
         {
             bFirstCall=FALSE;
             dlerror();
-            handle = dlopen( "libpcsclite.so", RTLD_NOW );
+            handle = dlopen( lib, RTLD_NOW );
             if( NULL!=handle )
             {
                 lRetCode=SCARD_S_SUCCESS;
@@ -539,7 +549,7 @@ long winscard_init(void)
                 dlsym_error = dlerror();
                 if( NULL!= dlsym_error )
                 {
-                    printf( "Failed to load symbol address from libpcsclite.so: %s!", (char*)dlsym_error ); 
+                    printf( "Failed to load symbol address from %s: %s!", lib, (char*)dlsym_error ); 
                 }
             }
             else
@@ -547,14 +557,11 @@ long winscard_init(void)
                 dlsym_error = dlerror();
                 if( NULL!= dlsym_error )
                 {
-                    printf( "Failed to dlopen libpcsclite.so: %s!", (dlsym_error==NULL) ? "" : (char*)dlsym_error ); 
+                    printf( "Failed to dlopen %s: %s!", lib, (dlsym_error==NULL) ? "" : (char*)dlsym_error ); 
                 }
             }
          }
     #endif // PCSCLITE
     return lRetCode;
 };
-
-
-
 

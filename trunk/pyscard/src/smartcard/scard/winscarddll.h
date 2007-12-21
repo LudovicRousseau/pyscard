@@ -199,7 +199,11 @@ typedef WINSCARDAPI LONG
 
 typedef WINSCARDAPI LONG
 (WINAPI *SCARDESTABLISHCONTEXT)(
+#ifdef __APPLE__
+    IN  uint32_t dwScope,
+#else
     IN  DWORD dwScope,
+#endif
     IN  LPCVOID pvReserved1,
     IN  LPCVOID pvReserved2,
     OUT LPSCARDCONTEXT phContext);
