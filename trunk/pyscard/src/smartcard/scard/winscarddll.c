@@ -528,18 +528,20 @@ long winscard_init(void)
                 GETPROCADDRESS( SCARDDISCONNECT        , SCardDisconnect        , SCardDisconnect        );
                 GETPROCADDRESS( SCARDENDTRANSACTION    , SCardEndTransaction    , SCardEndTransaction    );
                 GETPROCADDRESS( SCARDESTABLISHCONTEXT  , SCardEstablishContext  , SCardEstablishContext  );
-                GETPROCADDRESS( SCARDGETATTRIB         , SCardGetAttrib         , SCardGetAttrib         );
                 GETPROCADDRESS( SCARDGETSTATUSCHANGEA  , SCardGetStatusChangeA  , SCardGetStatusChange   );
                 GETPROCADDRESS( SCARDLISTREADERSA      , SCardListReadersA      , SCardListReaders       );
                 GETPROCADDRESS( SCARDLISTREADERGROUPSA , SCardListReaderGroupsA , SCardListReaderGroups  );
                 GETPROCADDRESS( SCARDRECONNECT         , SCardReconnect         , SCardReconnect         );
                 GETPROCADDRESS( SCARDRELEASECONTEXT    , SCardReleaseContext    , SCardReleaseContext    );
-                GETPROCADDRESS( SCARDSETATTRIB         , SCardSetAttrib         , SCardSetAttrib         );
                 GETPROCADDRESS( SCARDSTATUSA           , SCardStatusA           , SCardStatus            );
                 GETPROCADDRESS( SCARDTRANSMIT          , SCardTransmit          , SCardTransmit          );
-                GETPROCADDRESS( SCARDISVALIDCONTEXT    , SCardIsValidContext    , SCardIsValidContext );
                 GETPROCADDRESS( SCARDCONTROL           , SCardControl           , SCardControl );
 
+                #ifndef __APPLE__
+                GETPROCADDRESS( SCARDGETATTRIB         , SCardGetAttrib         , SCardGetAttrib         );                
+                GETPROCADDRESS( SCARDSETATTRIB         , SCardSetAttrib         , SCardSetAttrib         );
+                GETPROCADDRESS( SCARDISVALIDCONTEXT    , SCardIsValidContext    , SCardIsValidContext );
+                #endif
 
                 myg_prgSCardT0Pci   = (unsigned long)dlsym( handle, "g_rgSCardT0Pci"  );
                 myg_prgSCardT1Pci   = (unsigned long)dlsym( handle, "g_rgSCardT1Pci"  );
