@@ -23,7 +23,7 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-from distutils import core
+from distutils import core, dir_util, file_util
 from distutils.core import Extension
 from distutils.util import get_platform
 from distutils.command.build_ext import build_ext
@@ -62,12 +62,12 @@ else:
 
 
 class _pyscardBuildExt(build_ext):
-    '''Specialization of build_ext to enable swig_opts'''
+    '''Specialization of build_ext to enable swig_opts for python 2.3 distutils'''
 if sys.version_info < (2,4):
 
     # This copy of swig_sources is from Python 2.3.
-    # This is to add support of swig_opts for Python 2.3
-    # (in particular for MacOS X darwin that comes with Python 2.4)
+    # This is to add support of swig_opts for Python 2.3 distutils
+    # (in particular for MacOS X darwin that comes with Python 2.3)
 
     def swig_sources (self, sources):
 
@@ -178,10 +178,26 @@ if hasattr(core, 'setup_keywords'):
                               '%s-%s.zip' % (kw['name'], kw['version']) )
 
 
-core.setup(**kw)
+pyscard_dist=core.setup(**kw)
 
 
-
+# Python 2.3 distutils does not support package_data
+# copy manually package_data
+if sys.version_info < (2,4):
+    from distutils.util import convert_path
+    from glob import glob 
+    if "install" in sys.argv:
+        targetdir = pyscard_dist.command_obj['install'].install_purelib
+        package_data=kw['package_data']
+        files=[]
+        for directory in package_data:
+            for pattern in package_data[directory]:
+                filelist = glob( os.path.join( directory, convert_path(pattern) ) )
+                files.extend( [fn for fn in filelist if fn not in files] )
+        for file in files:
+            newdir = os.path.dirname( file )
+            dir_util.mkpath( os.path.join( targetdir, newdir ) ) 
+            file_util.copy_file( file, os.path.join( targetdir, file ) )
 
 
 
