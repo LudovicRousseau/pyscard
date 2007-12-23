@@ -247,7 +247,7 @@ dump a byte list
 ==============================================================================*/
 
 /**==========================================================================**/
-void SCardHelper_AppendSCARDDwordArgToPyObject(
+void SCardHelper_AppendSCardDwordArgToPyObject(
     SCARDDWORDARG source, PyObject** ptarget )
 /*==============================================================================
 builds a Python SCARDDWORDARG from a C SCARDDWORDARG
