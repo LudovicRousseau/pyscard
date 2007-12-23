@@ -96,7 +96,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 %typemap(argout) SCARDDWORDARG *OUTPUT
 {
-    SCardHelper_AppendSCARDDwordArgToPyObject( *$1, &$result );
+    SCardHelper_AppendSCardDwordArgToPyObject( *$1, &$result );
 }
 
 
