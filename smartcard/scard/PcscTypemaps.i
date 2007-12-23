@@ -48,6 +48,15 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     SCardHelper_AppendSCardContextToPyObject( *$1, &$result );
 }
 
+/*==============================================================================
+//
+// support for SCARDRETCODE
+//
+==============================================================================*/
+%typemap(out) SCARDRETCODE
+{
+    $result = PyLong_FromLong((long)$1);
+}
 
 /*==============================================================================
 //
@@ -67,6 +76,27 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 %typemap(argout) SCARDHANDLE *OUTPUT
 {
     SCardHelper_AppendSCardHandleToPyObject( *$1, &$result );
+}
+
+
+/*==============================================================================
+//
+// support for SCARDDWORDARG
+//
+==============================================================================*/
+%typemap(in,numinputs=0) SCARDDWORDARG *OUTPUT(SCARDDWORDARG temp)
+{
+    $1 = &temp;
+}
+
+%typemap(in) SCARDDWORDARG INPUT(SCARDDWORDARG)
+{
+    $1 =  SCardHelper_PySCardDwordArgToSCARDDWORDARG( $input );
+}
+
+%typemap(argout) SCARDDWORDARG *OUTPUT
+{
+    SCardHelper_AppendSCARDDwordArgToPyObject( *$1, &$result );
 }
 
 

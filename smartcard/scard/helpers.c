@@ -243,6 +243,76 @@ dump a byte list
 
 
 /**=============================================================================
+                            SCARDDWORDARG Helpers
+==============================================================================*/
+
+/**==========================================================================**/
+void SCardHelper_AppendSCARDDwordArgToPyObject(
+    SCARDDWORDARG source, PyObject** ptarget )
+/*==============================================================================
+builds a Python SCARDDWORDARG from a C SCARDDWORDARG
+==============================================================================*/
+{
+    PyObject* oScardContext;
+
+    // create SCARDCONTEXT
+    #ifdef PCSCLITE
+        oScardContext = PyLong_FromLong( (long)source );
+    #else // !PCSCLITE
+        oScardContext = PyLong_FromUnsignedLong( (unsigned long)source );
+    #endif // PCSCLITE
+
+    // append list to target
+    if( !*ptarget )
+    {
+        *ptarget = oScardContext;
+    }
+    else if( *ptarget == Py_None )
+    {
+        Py_DECREF(Py_None);
+        *ptarget = oScardContext;
+    }
+    else
+    {
+        if( !PyList_Check(*ptarget) )
+        {
+            PyObject* o2 = *ptarget;
+            *ptarget = PyList_New(0);
+            PyList_Append(*ptarget,o2);
+            Py_XDECREF(o2);
+        }
+        PyList_Append(*ptarget,oScardContext);
+        Py_XDECREF(oScardContext);
+    }
+}
+
+/**==========================================================================**/
+SCARDDWORDARG SCardHelper_PySCARDDwordArgToSCARDDWORDARG(PyObject* source)
+/*==============================================================================
+build a SCARDDWORDARG from a python SCARDDWORDARG
+==============================================================================*/
+{
+    SCARDDWORDARG scRet=0;
+
+    // sanity check
+    // do we have a python long?
+    if (!PyLong_Check(source))
+    {
+        PyErr_SetString( PyExc_TypeError, "Expected a python long." );
+        return 0;
+    }
+
+    #ifdef PCSCLITE
+        scRet = PyLong_AsLong( source );
+    #else // !PCSCLITE
+        scRet = PyLong_AsUnsignedLong( source );
+    #endif // PCSCLITE
+
+    return scRet;
+}
+
+
+/**=============================================================================
                             ERRORSTRING Helpers
 ==============================================================================*/
 

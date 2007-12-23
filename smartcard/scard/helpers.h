@@ -70,6 +70,19 @@ typedef struct
 } STRINGLIST ;
 
 
+#ifdef PCSCLITE
+    #ifdef __APPLE__
+        typedef uint32_t SCARDDWORDARG;
+        typedef int32_t SCARDRETCODE;
+    #else
+        typedef unsigned long SCARDDWORDARG;
+        typedef unsigned long SCARDRETCODE;
+    #endif
+#else
+    typedef unsigned long SCARDDWORDARG;
+    typedef long SCARDRETCODE;
+#endif
+
 /**=============================================================================
           F U N C T I O N   P R O T O T Y P E S
 ==============================================================================*/
@@ -98,6 +111,10 @@ SCARDCONTEXT SCardHelper_PyScardContextToSCARDCONTEXT( PyObject* source );
 // SCARDHANDLE helpers
 void SCardHelper_AppendSCardHandleToPyObject( SCARDHANDLE source, PyObject** ptarget );
 SCARDHANDLE SCardHelper_PyScardHandleToSCARDHANDLE( PyObject* source );
+
+// SCARDDWORDARG helpers
+void SCardHelper_AppendSCardDwordArgToPyObject( SCARDDWORDARG source, PyObject** ptarget );
+SCARDDWORDARG SCardHelper_PySCardDwordArgToSCARDDWORDARG( PyObject* source );
 
 // STRING helpers
 void SCardHelper_AppendStringToPyObject( STRING* source, PyObject** ptarget );
