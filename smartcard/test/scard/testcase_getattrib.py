@@ -69,9 +69,10 @@ class testcase_getAttrib(unittest.TestCase):
                 self.assertEquals( reader, [expectedReaders[r]] )
                 self.assertEquals( atr, expectedATRs[r] )
 
-                hresult, attrib = SCardGetAttrib( hcard, SCARD_ATTR_ATR_STRING )
-                self.assertEquals(hresult, 0)
-                self.assertEquals( expectedATRs[r], attrib )
+                if scard.__dict__.has_key( 'SCARD_ATTR_ATR_STRING' ):
+                    hresult, attrib = SCardGetAttrib( hcard, SCARD_ATTR_ATR_STRING )
+                    self.assertEquals(hresult, 0)
+                    self.assertEquals( expectedATRs[r], attrib )
 
                 if 'winscard'==resourceManager:
                     hresult, attrib = SCardGetAttrib( hcard, SCARD_ATTR_DEVICE_SYSTEM_NAME_A )
