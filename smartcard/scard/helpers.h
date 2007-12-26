@@ -20,11 +20,24 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 ================================================================================
 ==============================================================================*/
 
+#ifdef PCSCLITE
+    #ifdef __APPLE__
+        typedef uint32_t SCARDDWORDARG;
+        typedef int32_t SCARDRETCODE;
+    #else //!__APPLE__
+        typedef unsigned long SCARDDWORDARG;
+        typedef long SCARDRETCODE;
+    #endif
+#else // !PCSCLITE
+    typedef unsigned long SCARDDWORDARG;
+    typedef long SCARDRETCODE;
+#endif
+
 typedef struct
 {
     int bAllocated;
     unsigned char* ab;
-    unsigned long cBytes;
+    SCARDDWORDARG cBytes;
 } BYTELIST ;
 
 typedef char* ERRORSTRING;
@@ -49,7 +62,6 @@ typedef struct
 
 typedef struct
 {
-    //int bAllocated;
     SCARD_READERSTATE* ars;
     char** aszReaderNames;
     unsigned long cRStates;
@@ -69,19 +81,6 @@ typedef struct
     char* ac;
 } STRINGLIST ;
 
-
-#ifdef PCSCLITE
-    #ifdef __APPLE__
-        typedef uint32_t SCARDDWORDARG;
-        typedef int32_t SCARDRETCODE;
-    #else
-        typedef unsigned long SCARDDWORDARG;
-        typedef unsigned long SCARDRETCODE;
-    #endif
-#else
-    typedef unsigned long SCARDDWORDARG;
-    typedef long SCARDRETCODE;
-#endif
 
 /**=============================================================================
           F U N C T I O N   P R O T O T Y P E S

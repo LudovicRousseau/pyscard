@@ -154,17 +154,21 @@ Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
     #ifdef __APPLE__
         //#include <PCSC/reader.h>
         #ifndef SCARD_CTL_CODE
-        #define SCARD_CTL_CODE(x) (x)
+            #define SCARD_CTL_CODE(x) (x)
         #endif
     #else
         #include <reader.h>
     #endif
+#else // !PCSCLITE
+// SCARD_CTL_CODE defined in WinSmCrd.h included by Win32 winscard.h
 #endif //PCSCLITE
 
 #include "helpers.h"
 #include "memlog.h"
 
 #include "winscarddll.h"
+
+typedef STRING PROVIDERNAME_t;
 
 %}
 
@@ -176,44 +180,44 @@ Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #ifdef WIN32
 ///////////////////////////////////////////////////////////////////////////////
 SCARDRETCODE _AddReaderToGroup(
-  SCARDCONTEXT hContext,
+  SCARDCONTEXT hcontext,
   char* szReaderName,
   char* szGroupName )
 {
     winscard_init();
     return (mySCardAddReaderToGroupA)(
-                         hContext,
+                         hcontext,
                          szReaderName,
                          szGroupName );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _ForgetCardType( SCARDCONTEXT hContext, char* pszCardName )
+SCARDRETCODE _ForgetCardType( SCARDCONTEXT hcontext, char* pszCardName )
 {
     winscard_init();
-    return (mySCardForgetCardTypeA)( hContext, pszCardName );
+    return (mySCardForgetCardTypeA)( hcontext, pszCardName );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _ForgetReader( SCARDCONTEXT hContext, char* szReaderName )
+SCARDRETCODE _ForgetReader( SCARDCONTEXT hcontext, char* szReaderName )
 {
     winscard_init();
-    return (mySCardForgetReaderA)( hContext, szReaderName );
+    return (mySCardForgetReaderA)( hcontext, szReaderName );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _ForgetReaderGroup( SCARDCONTEXT hContext, char* szGroupName )
+SCARDRETCODE _ForgetReaderGroup( SCARDCONTEXT hcontext, char* szGroupName )
 {
     winscard_init();
-    return (mySCardForgetReaderGroupA)( hContext, szGroupName );
+    return (mySCardForgetReaderGroupA)( hcontext, szGroupName );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 SCARDRETCODE _GetCardTypeProviderName(
-    SCARDCONTEXT hContext,
+    SCARDCONTEXT hcontext,
     char* pszCardName,
-    unsigned long dwProviderId,
-    STRING* psl )
+    SCARDDWORDARG dwProviderId,
+    PROVIDERNAME_t* psl )
 {
     long lRetCode;
     unsigned long cchProviderName=SCARD_AUTOALLOCATE;
@@ -221,18 +225,18 @@ SCARDRETCODE _GetCardTypeProviderName(
     winscard_init();
 
     // autoallocate memory; will be freed on output typemap
-    psl->hcontext=hContext;
+    psl->hcontext=hcontext;
     psl->sz=NULL;
 
     lRetCode=(mySCardGetCardTypeProviderNameA)(
-        hContext, pszCardName, dwProviderId, (LPTSTR)&psl->sz, &cchProviderName );
+        hcontext, pszCardName, dwProviderId, (LPTSTR)&psl->sz, &cchProviderName );
 
     return lRetCode;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 SCARDRETCODE _IntroduceCardType(
-  SCARDCONTEXT hContext,
+  SCARDCONTEXT hcontext,
   char* pszCardName,
   GUIDLIST* pguidPrimaryProvider,
   GUIDLIST* rgguidInterfaces,
@@ -242,7 +246,7 @@ SCARDRETCODE _IntroduceCardType(
 {
     winscard_init();
     return (mySCardIntroduceCardTypeA)(
-                hContext,
+                hcontext,
                 pszCardName,
                 pguidPrimaryProvider ? pguidPrimaryProvider->aguid : NULL,
                 rgguidInterfaces ? rgguidInterfaces->aguid : NULL,
@@ -253,32 +257,32 @@ SCARDRETCODE _IntroduceCardType(
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _IntroduceReader( SCARDCONTEXT hContext, char* szReaderName, char* szDeviceName )
+SCARDRETCODE _IntroduceReader( SCARDCONTEXT hcontext, char* szReaderName, char* szDeviceName )
 {
     winscard_init();
-    return (mySCardIntroduceReaderA)( hContext, szReaderName, szDeviceName );
+    return (mySCardIntroduceReaderA)( hcontext, szReaderName, szDeviceName );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _IntroduceReaderGroup( SCARDCONTEXT hContext, char* szGroupName )
+SCARDRETCODE _IntroduceReaderGroup( SCARDCONTEXT hcontext, char* szGroupName )
 {
     winscard_init();
-    return (mySCardIntroduceReaderGroupA)( hContext, szGroupName );
+    return (mySCardIntroduceReaderGroupA)( hcontext, szGroupName );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _ListCards( SCARDCONTEXT hContext, BYTELIST* pbl, GUIDLIST* guidlist, STRINGLIST* pmszCards )
+SCARDRETCODE _ListCards( SCARDCONTEXT hcontext, BYTELIST* pbl, GUIDLIST* guidlist, STRINGLIST* pmszCards )
 {
     // autoallocate memory; will be freed on output typemap
     unsigned long cchCards=SCARD_AUTOALLOCATE;
 
     winscard_init();
     pmszCards->ac=NULL;
-    pmszCards->hcontext=hContext;
+    pmszCards->hcontext=hcontext;
 
     //SCardHelper_PrintByteList( pbl );
     return (mySCardListCardsA)(
-        hContext,
+        hcontext,
         pbl->ab,
         (NULL==guidlist) ? NULL : guidlist->aguid,
         (NULL==guidlist) ? 0 : guidlist->cGuids,
@@ -289,7 +293,7 @@ SCARDRETCODE _ListCards( SCARDCONTEXT hContext, BYTELIST* pbl, GUIDLIST* guidlis
 
 ///////////////////////////////////////////////////////////////////////////////
 SCARDRETCODE _ListInterfaces(
-    SCARDCONTEXT hContext,
+    SCARDCONTEXT hcontext,
     char* pszCard,
     GUIDLIST* pgl
 )
@@ -299,10 +303,10 @@ SCARDRETCODE _ListInterfaces(
     winscard_init();
 
     pgl->cGuids = SCARD_AUTOALLOCATE;
-    pgl->hcontext = hContext;
+    pgl->hcontext = hcontext;
     pgl->aguid = NULL;
 
-    lRetCode = (mySCardListInterfacesA)( hContext, pszCard, (LPGUID)&pgl->aguid, &pgl->cGuids );
+    lRetCode = (mySCardListInterfacesA)( hcontext, pszCard, (LPGUID)&pgl->aguid, &pgl->cGuids );
     if( lRetCode!=SCARD_S_SUCCESS )
     {
         pgl->cGuids=0;
@@ -312,7 +316,7 @@ SCARDRETCODE _ListInterfaces(
 
 ///////////////////////////////////////////////////////////////////////////////
 SCARDRETCODE _LocateCards(
-  SCARDCONTEXT hContext,
+  SCARDCONTEXT hcontext,
   STRINGLIST* mszCards,
   READERSTATELIST* prl
 )
@@ -322,7 +326,7 @@ SCARDRETCODE _LocateCards(
     winscard_init();
 
     return (mySCardLocateCardsA)(
-                hContext,
+                hcontext,
                 pcstr,
                 prl->ars,
                 prl->cRStates );
@@ -330,13 +334,13 @@ SCARDRETCODE _LocateCards(
 
 ///////////////////////////////////////////////////////////////////////////////
 SCARDRETCODE _RemoveReaderFromGroup(
-  SCARDCONTEXT hContext,
+  SCARDCONTEXT hcontext,
   char* szReaderName,
   char* szGroupName )
 {
     winscard_init();
     return (mySCardRemoveReaderFromGroupA)(
-                         hContext,
+                         hcontext,
                          szReaderName,
                          szGroupName );
 }
@@ -344,22 +348,22 @@ SCARDRETCODE _RemoveReaderFromGroup(
 #endif // WIN32
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _BeginTransaction( SCARDHANDLE hCard )
+SCARDRETCODE _BeginTransaction( SCARDHANDLE hcard )
 {
     winscard_init();
-    return (mySCardBeginTransaction)( hCard );
+    return (mySCardBeginTransaction)( hcard );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _Cancel( SCARDCONTEXT hContext )
+SCARDRETCODE _Cancel( SCARDCONTEXT hcontext )
 {
     winscard_init();
-    return (mySCardCancel)( hContext );
+    return (mySCardCancel)( hcontext );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 SCARDRETCODE _Connect(
-  SCARDCONTEXT hContext,
+  SCARDCONTEXT hcontext,
   char* szReader,
   unsigned long dwShareMode,
   unsigned long dwPreferredProtocols,
@@ -370,7 +374,7 @@ SCARDRETCODE _Connect(
     SCARDRETCODE lRet;
     winscard_init();
     lRet = (mySCardConnectA)(
-            hContext,
+            hcontext,
             (LPCTSTR)szReader,
             dwShareMode,
             dwPreferredProtocols,
@@ -380,17 +384,17 @@ SCARDRETCODE _Connect(
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _Disconnect( SCARDHANDLE hCard, unsigned long dwDisposition )
+SCARDRETCODE _Disconnect( SCARDHANDLE hcard, unsigned long dwDisposition )
 {
     winscard_init();
-    return (mySCardDisconnect)( hCard, dwDisposition );
+    return (mySCardDisconnect)( hcard, dwDisposition );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _EndTransaction( SCARDHANDLE hCard, unsigned long dwDisposition )
+SCARDRETCODE _EndTransaction( SCARDHANDLE hcard, unsigned long dwDisposition )
 {
     winscard_init();
-    return (mySCardEndTransaction)( hCard, dwDisposition );
+    return (mySCardEndTransaction)( hcard, dwDisposition );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -430,7 +434,7 @@ SCARDRETCODE _GetAttrib( unsigned long hcard, unsigned long dwAttrId, BYTELIST* 
 
 ///////////////////////////////////////////////////////////////////////////////
 SCARDRETCODE _GetStatusChange(
-    SCARDCONTEXT hContext,
+    SCARDCONTEXT hcontext,
     unsigned long dwTimeout,
     READERSTATELIST* prsl )
 {
@@ -454,7 +458,7 @@ SCARDRETCODE _GetStatusChange(
         prsl->ars[i].dwCurrentState = prsl->ars[i].dwCurrentState & (0xFFFFFFFF ^ SCARD_STATE_CHANGED);
     }
 
-    ulResult = (mySCardGetStatusChangeA)( hContext, dwTimeout, prsl->ars, prsl->cRStates );
+    ulResult = (mySCardGetStatusChangeA)( hcontext, dwTimeout, prsl->ars, prsl->cRStates );
 
     //printf( "\n%.8lx ", ulResult );
     //for( i=0; i<prsl->cRStates; i++ )
@@ -485,15 +489,15 @@ SCARDRETCODE _GetStatusChange(
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _IsValidContext( SCARDCONTEXT hContext )
+SCARDRETCODE _IsValidContext( SCARDCONTEXT hcontext )
 {
     winscard_init();
-    return (mySCardIsValidContext)( hContext );
+    return (mySCardIsValidContext)( hcontext );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 SCARDRETCODE _ListReaders(
-    SCARDCONTEXT hContext,
+    SCARDCONTEXT hcontext,
     STRINGLIST* pmszGroups,
     STRINGLIST* pmszReaders )
 {
@@ -517,9 +521,9 @@ SCARDRETCODE _ListReaders(
         cchReaders=SCARD_AUTOALLOCATE;
 
         pmszReaders->ac=NULL;
-        pmszReaders->hcontext=hContext;
+        pmszReaders->hcontext=hcontext;
 
-        return (mySCardListReadersA)( hContext, mszGroups, (LPTSTR)&pmszReaders->ac, &cchReaders );
+        return (mySCardListReadersA)( hcontext, mszGroups, (LPTSTR)&pmszReaders->ac, &cchReaders );
     #endif //AUTOALLOCATE
 
     // no autoallocate on pcsc-lite; do a first call to get length
@@ -530,7 +534,7 @@ SCARDRETCODE _ListReaders(
         pmszReaders->hcontext=0;
         pmszReaders->ac=NULL;
         cchReaders=0;
-        lRetCode = (mySCardListReadersA)( hContext, mszGroups, NULL, &cchReaders );
+        lRetCode = (mySCardListReadersA)( hcontext, mszGroups, NULL, &cchReaders );
         if ( SCARD_S_SUCCESS!=lRetCode )
         {
             return lRetCode;
@@ -547,13 +551,13 @@ SCARDRETCODE _ListReaders(
             return SCARD_E_NO_MEMORY;
         }
 
-        return (mySCardListReadersA)( hContext, mszGroups, (LPTSTR)pmszReaders->ac, &cchReaders );
+        return (mySCardListReadersA)( hcontext, mszGroups, (LPTSTR)pmszReaders->ac, &cchReaders );
     #endif // !NOAUTOALLOCATE
 
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _ListReaderGroups( SCARDCONTEXT hContext, STRINGLIST* pmszReaderGroups )
+SCARDRETCODE _ListReaderGroups( SCARDCONTEXT hcontext, STRINGLIST* pmszReaderGroups )
 {
     DWORD cchReaderGroups;
     LONG lRetCode;
@@ -563,9 +567,9 @@ SCARDRETCODE _ListReaderGroups( SCARDCONTEXT hContext, STRINGLIST* pmszReaderGro
     #ifdef NOAUTOALLOCATE
         cchReaderGroups = SCARD_AUTOALLOCATE;
         pmszReaderGroups->ac=NULL;
-        pmszReaderGroups->hcontext=hContext;
+        pmszReaderGroups->hcontext=hcontext;
 
-        return (mySCardListReaderGroupsA)( hContext, (LPTSTR)&pmszReaderGroups->ac, &cchReaderGroups );
+        return (mySCardListReaderGroupsA)( hcontext, (LPTSTR)&pmszReaderGroups->ac, &cchReaderGroups );
     #endif // NOAUTOALLOCATE
 
     // no autoallocate on pcsc-lite; do a first call to get length
@@ -577,7 +581,7 @@ SCARDRETCODE _ListReaderGroups( SCARDCONTEXT hContext, STRINGLIST* pmszReaderGro
         pmszReaderGroups->hcontext=0;
         cchReaderGroups = 0;
         pmszReaderGroups->ac=NULL;
-        lRetCode = (mySCardListReaderGroupsA)( hContext, (LPTSTR)pmszReaderGroups->ac, &cchReaderGroups );
+        lRetCode = (mySCardListReaderGroupsA)( hcontext, (LPTSTR)pmszReaderGroups->ac, &cchReaderGroups );
         if ( SCARD_S_SUCCESS!=lRetCode )
         {
             return lRetCode;
@@ -594,28 +598,24 @@ SCARDRETCODE _ListReaderGroups( SCARDCONTEXT hContext, STRINGLIST* pmszReaderGro
             return SCARD_E_NO_MEMORY;
         }
 
-        return (mySCardListReaderGroupsA)( hContext, (LPTSTR)pmszReaderGroups->ac, &cchReaderGroups );
+        return (mySCardListReaderGroupsA)( hcontext, (LPTSTR)pmszReaderGroups->ac, &cchReaderGroups );
     #endif // !NOAUTOALLOCATE
 };
 
 
 ///////////////////////////////////////////////////////////////////////////////
 SCARDRETCODE _Reconnect(
-    SCARDHANDLE hCard,
-    unsigned long dwShareMode,
-    unsigned long dwPreferredProtocols,
-    unsigned long dwInitialization,
-#ifdef __APPLE__
-    uint32_t* pdwActiveProtocol
-#else
-    unsigned long* pdwActiveProtocol
-#endif
+    SCARDHANDLE hcard,
+    SCARDDWORDARG dwShareMode,
+    SCARDDWORDARG dwPreferredProtocols,
+    SCARDDWORDARG dwInitialization,
+    SCARDDWORDARG* pdwActiveProtocol
 )
 {
     winscard_init();
 
     return (mySCardReconnect)(
-                               hCard,
+                               hcard,
                                dwShareMode,
                                dwPreferredProtocols,
                                dwInitialization,
@@ -623,29 +623,26 @@ SCARDRETCODE _Reconnect(
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _ReleaseContext( SCARDCONTEXT hContext )
+SCARDRETCODE _ReleaseContext( SCARDCONTEXT hcontext )
 {
     SCARDRETCODE lRet;
     winscard_init();
-    lRet = (mySCardReleaseContext)( hContext );
+    lRet = (mySCardReleaseContext)( hcontext );
     return lRet;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 SCARDRETCODE _Status(
-  SCARDHANDLE hCard,
+  SCARDHANDLE hcard,
   STRINGLIST*  pszReaderName,
-  unsigned long* pdwState,
-  unsigned long* pdwProtocol,
+  SCARDDWORDARG* pdwState,
+  SCARDDWORDARG* pdwProtocol,
   BYTELIST* pbl
 )
 {
     long lRetCode;
     DWORD dwReaderLen=256;
     DWORD dwAtrLen=32;
-#ifdef __APPLE__
-    uint32_t tmp_pdwState, tmp_pdwProtocol, tmp_atrlen;
-#endif
 
     winscard_init();
     for(;;)
@@ -664,29 +661,14 @@ SCARDRETCODE _Status(
             break;
         }
         pszReaderName->hcontext = 0;
-#ifdef __APPLE__
-        tmp_atrlen = pbl->cBytes;
         lRetCode = (mySCardStatusA)(
-            hCard,
-            (LPTSTR)pszReaderName->ac,
-            &dwReaderLen,
-            &tmp_pdwState,
-            &tmp_pdwProtocol,
-            pbl->ab,
-            &tmp_atrlen );
-        *pdwState = tmp_pdwState;
-        *pdwProtocol = tmp_pdwProtocol;
-        pbl->cBytes = tmp_atrlen;
-#else
-        lRetCode = (mySCardStatusA)(
-            hCard,
+            hcard,
             (LPTSTR)pszReaderName->ac,
             &dwReaderLen,
             pdwState,
             pdwProtocol,
             pbl->ab,
             &pbl->cBytes );
-#endif
         break;
     }
 
@@ -695,7 +677,7 @@ SCARDRETCODE _Status(
 
 ///////////////////////////////////////////////////////////////////////////////
 SCARDRETCODE _Transmit(
-  SCARDHANDLE hCard,
+  SCARDHANDLE hcard,
   unsigned long pioSendPci,
   BYTELIST* pblSendBuffer,
   BYTELIST* pblRecvBuffer
@@ -703,9 +685,6 @@ SCARDRETCODE _Transmit(
 {
     PSCARD_IO_REQUEST piorequest=NULL;
     long ret;
-#ifdef __APPLE__
-    uint32_t tmp_buflen;
-#endif
 
     winscard_init();
 
@@ -731,29 +710,21 @@ SCARDRETCODE _Transmit(
             return SCARD_E_INVALID_PARAMETER;
 
     }
-#ifdef __APPLE__
-    tmp_buflen = pblRecvBuffer->cBytes;
-#endif
     ret = (mySCardTransmit)(
-                hCard,
+                hcard,
                 (PSCARD_IO_REQUEST)piorequest,
-                //SCARD_PCI_T0,
                 pblSendBuffer->ab,
                 pblSendBuffer->cBytes,
                 NULL,
                 pblRecvBuffer->ab,
-#ifdef __APPLE__
-                &tmp_buflen );
-                pblRecvBuffer->cBytes = tmp_buflen;
-#else
                 &pblRecvBuffer->cBytes );
-#endif
+
     return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 SCARDRETCODE _Control(
-  SCARDHANDLE hCard,
+  SCARDHANDLE hcard,
   unsigned long controlCode,
   BYTELIST* pblSendBuffer,
   BYTELIST* pblRecvBuffer
@@ -765,7 +736,7 @@ SCARDRETCODE _Control(
     pblRecvBuffer->cBytes=1024;
 
     return (mySCardControl)(
-                hCard,
+                hcard,
                 controlCode,
                 pblSendBuffer->ab,
                 pblSendBuffer->cBytes,
@@ -825,19 +796,54 @@ ERRORSTRING* _GetErrorMessage( long lErrCode )
 //
 // a few documentation typemaps
 //
-%typemap(doc, name="hCard", type="unsigned long") (SCARDHANDLE hCard) "hCard: card handle return from SCardConnect()";
-%typemap(doc, name="hContext", type="unsigned long") (SCARDCONTEXT hContext) "hContext: context handle return from SCardEstablishContext()";
-%typemap(doc, name="groupname", type="string") (char* szGroupName) "groupname: card reader group name";
-%typemap(doc, name="readername", type="string") (char* szReaderName) "readername: card reader name";
-%typemap(doc, name="cardname", type="string") (char* szCardName) "cardname: friendly name of a card";
-%typemap(doc, name="readerstate", type="tuple") (READERSTATELIST *BOTH) "readerstate: state tuple (readername, state, atr)";
-%typemap(doc, name="devicename", type="string") (char* szDeviceName) "devicename: card reader device name";
-%typemap(doc, name="guidlist", type="list") (GUIDLIST* OUTPUT) "guidlist: in output, a list of GUID";
-%typemap(doc, name="guidlist_in", type="list") (GUIDLIST* INPUT) "guidlist_in: in input, a list of GUID";
-%typemap(doc, name="disposition", type="unsigned long") (unsigned long dwDisposition) "disposition: a disposition flag";
-%typemap(doc, name="dwScope", type="unsigned long") (unsigned long dwScope) "dwScope: context scope";
-%typemap(doc, name="dwAttrId", type="unsigned long") (unsigned long dwAttrId) "dwAttrId: value of attribute to get";
-%typemap(doc, name="dwTimeout", type="unsigned long") (unsigned long dwTimeout) "dwTimeout: timeout value";
+%typemap(doc, name="hcard", type="") (SCARDHANDLE hcard) "hcard: card handle return from SCardConnect()";
+%typemap(doc, name="hcard", type="") (SCARDHANDLE* phcard) "hcard: on output, a card handle";
+
+%typemap(doc, name="hcontext", type="") (SCARDCONTEXT hcontext) "hcontext: context handle return from SCardEstablishContext()";
+%typemap(doc, name="hcontext", type="") (SCARDCONTEXT* phcontext) "hcontext: on output, a valid context handle if successful";
+
+%typemap(doc, name="readerstatelist", type="tuple[]") (READERSTATELIST *prsl) "readerstatelist: in input/output, a list of reader state tuple (readername, state, atr)";
+
+%typemap(doc, name="groupname", type="") (char* szGroupName) "groupname: card reader group name";
+%typemap(doc, name="readername", type="") (char* szReaderName) "readername: card reader name";
+%typemap(doc, name="cardname", type="") (char* szCardName) "cardname: friendly name of a card";
+%typemap(doc, name="devicename", type="") (char* szDeviceName) "devicename: card reader device name";
+
+%typemap(doc, name="providername", type="") (PROVIDERNAME_t* pszProviderName) "providername: on output, provider name";
+
+%typemap(doc, name="apducommand", type="byte[]") (BYTELIST* APDUCOMMAND) "apducommand: list of APDU bytes to transmit";
+%typemap(doc, name="apduresponse", type="byte[]") (BYTELIST* APDURESPONSE) "apduresponse: on output, the list of APDU response bytes";
+%typemap(doc, name="atr", type="byte[]") (BYTELIST* ATR) "atr: card ATR";
+%typemap(doc, name="atr", type="byte[]") (BYTELIST* ATROUT) "atr: on output, the card ATR";
+%typemap(doc, name="attributes", type="byte[]") (BYTELIST* ATTRIBUTES) "attributes: on output, a list of attributes";
+%typemap(doc, name="mask", type="byte[]") (BYTELIST* MASK) "mask: mask to apply to card ATR";
+%typemap(doc, name="inbuffer", type="byte[]") (BYTELIST* INBUFFER) "inbuffer: list of bytes to send with the control code";
+%typemap(doc, name="outbuffer", type="byte[]") (BYTELIST* OUTBUFFER) "outbuffer: on output, the bytes returned by execution of the control code";
+
+%typemap(doc, name="primaryprovider", type="GUID") (GUIDLIST* PRIMARYPROVIDER) "primaryprovidername: GUID of the smart card primary service provider";
+%typemap(doc, name="providerlist", type="GUID[]") (GUIDLIST* PROVIDERLIST) "providerlist: list of GUIDs of interfaces supported by smart card";
+%typemap(doc, name="interfaces", type="GUID[]") (GUIDLIST* GUIDINTERFACES) "interfaces: on output, a list of GUIDs of the interfaces supported by the smart card";
+
+%typemap(doc, name="cards", type="") (STRINGLIST* CARDSTOLOCATE) "cards: a list of cards to locate";
+%typemap(doc, name="matchingcards", type="[]") (STRINGLIST* MATCHINGCARDS) "matchingcards: on output, a list of matching cards";
+%typemap(doc, name="readergroups", type="[]") (STRINGLIST* READERGROUPSIN) "readergroups: a list of reader groups to search for readers";
+%typemap(doc, name="readergroups", type="[]") (STRINGLIST* READERGROUPSOUT) "readergroups: on output, the list of reader groups";
+%typemap(doc, name="readers", type="[]") (STRINGLIST* READERSFOUND) "matchingcards: on output, a list of readers found";
+%typemap(doc, name="readername", type="") (STRINGLIST* pszReaderName) "readername: on output, the name of the reader in which the card is inserted";
+
+%typemap(doc, name="dwActiveProtocol", type="") (SCARDDWORDARG* pdwActiveProtocol) "dwActiveProtocol: on output, active protocol of card connection";
+%typemap(doc, name="dwState", type="") (SCARDDWORDARG* pdwState) "dwState: on output, current state of the smart card";
+%typemap(doc, name="dwProtocol", type="") (SCARDDWORDARG* pdwProtocol) "dwProtocol: on output, the current protocol";
+
+%typemap(doc, name="dwScope", type="") (SCARDDWORDARG dwScope) "dwScope: context scope";
+%typemap(doc, name="dwProviderId", type="") (SCARDDWORDARG dwProviderId) "dwProviderId: provider type, SCARD_PROVIDER_PRIMARY or SCARD_PROVIDER_CSP";
+%typemap(doc, name="dwPreferredProtocols", type="") (SCARDDWORDARG dwPreferredProtocols) "dwPreferredProtocols: preferred protocols";
+%typemap(doc, name="dwShareMode", type="") (SCARDDWORDARG dwShareMode) "dwShareMode: share mode";
+%typemap(doc, name="dwDisposition", type="") (SCARDDWORDARG dwDisposition) "dwDisposition: card disposition on return";
+%typemap(doc, name="dwAttrId", type="") (SCARDDWORDARG dwAttrId) "dwAttrId: value of attribute to get";
+%typemap(doc, name="dwTimeout", type="") (SCARDDWORDARG dwTimeout) "dwTimeout: timeout value, INFINITE for infinite time-out";
+%typemap(doc, name="dwInitialization", type="") (SCARDDWORDARG dwInitialization) "dwInitialization: the type of initialization that should be performed on the card";
+%typemap(doc, name="dwControlCode", type="") (SCARDDWORDARG dwControlCode) "dwControlCode: the control code to send";
 
 
 #ifdef WIN32
@@ -868,11 +874,11 @@ from smartcard.scard import *
 %enddef
 %feature("docstring") DOCSTRING_ADDREADERTOGROUP;
 %rename(SCardAddReaderToGroup) _AddReaderToGroup(
-  SCARDCONTEXT INPUT,
+  SCARDCONTEXT hcontext,
   char* szReaderName,
   char* szGroupName );
 SCARDRETCODE _AddReaderToGroup(
-  SCARDCONTEXT INPUT,
+  SCARDCONTEXT hcontext,
   char* szReaderName,
   char* szGroupName );
 
@@ -893,8 +899,8 @@ if hresult!=SCARD_S_SUCCESS:
 "
 %enddef
 %feature("docstring") DOCSTRING_FORGETCARDTYPE;
-%rename(SCardForgetCardType) _ForgetCardType( SCARDCONTEXT INPUT, char* pszCardName );
-SCARDRETCODE _ForgetCardType( SCARDCONTEXT INPUT, char* pszCardName );
+%rename(SCardForgetCardType) _ForgetCardType( SCARDCONTEXT hcontext, char* szCardName );
+SCARDRETCODE _ForgetCardType( SCARDCONTEXT hcontext, char* szCardName );
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_FORGETREADER
@@ -914,8 +920,8 @@ if hresult!=0:
 "
 %enddef
 %feature("docstring") DOCSTRING_FORGETREADER;
-%rename(SCardForgetReader) _ForgetReader( SCARDCONTEXT INPUT, char* szReaderName );
-SCARDRETCODE _ForgetReader( SCARDCONTEXT INPUT, char* szReaderName );
+%rename(SCardForgetReader) _ForgetReader( SCARDCONTEXT hcontext, char* szReaderName );
+SCARDRETCODE _ForgetReader( SCARDCONTEXT hcontext, char* szReaderName );
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_FORGETREADERGROUP
@@ -937,8 +943,8 @@ if hresult!=0:
 "
 %enddef
 %feature("docstring") DOCSTRING_FORGETREADERGROUP;
-%rename(SCardForgetReaderGroup) _ForgetReaderGroup( SCARDCONTEXT INPUT, char* szGroupName );
-SCARDRETCODE _ForgetReaderGroup( SCARDCONTEXT INPUT, char* szGroupName );
+%rename(SCardForgetReaderGroup) _ForgetReaderGroup( SCARDCONTEXT hcontext, char* szGroupName );
+SCARDRETCODE _ForgetReaderGroup( SCARDCONTEXT hcontext, char* szGroupName );
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_GETCARDTYPEPROVIDERNAME
@@ -954,12 +960,10 @@ hresult, cards = SCardListCards( hcontext, [], [] )
 if hresult!=SCARD_S_SUCCESS:
     raise error, 'Failure to list cards: ' + SCardGetErrorMessage(hresult)
 for i in cards:
-    hresult, providername = SCardGetCardTypeProviderName(
-                                hcontext,   i, SCARD_PROVIDER_PRIMARY )
+    hresult, providername = SCardGetCardTypeProviderName( hcontext, i, SCARD_PROVIDER_PRIMARY )
     if hresult==0:
          print providername
-    hresult, providername = SCardGetCardTypeProviderName(
-                                hcontext,   i, SCARD_PROVIDER_CSP )
+    hresult, providername = SCardGetCardTypeProviderName( hcontext, i, SCARD_PROVIDER_CSP )
     if hresult==0:
          print providername
 ...
@@ -967,16 +971,16 @@ for i in cards:
 %enddef
 %feature("docstring") DOCSTRING_GETCARDTYPEPROVIDERNAME;
 %rename(SCardGetCardTypeProviderName) _GetCardTypeProviderName(
-  SCARDCONTEXT INPUT,
+  SCARDCONTEXT hcontext,
   char* szCardName,
-  unsigned long dwProviderId,
-  STRING* OUTPUT
+  SCARDDWORDARG dwProviderId,
+  PROVIDERNAME_t* pszProviderName
 );
 SCARDRETCODE _GetCardTypeProviderName(
-  SCARDCONTEXT INPUT,
+  SCARDCONTEXT hcontext,
   char* szCardName,
-  unsigned long dwProviderId,
-  STRING* OUTPUT
+  SCARDDWORDARG dwProviderId,
+  PROVIDERNAME_t* pszProviderName
 );
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1006,20 +1010,20 @@ if hresult!=SCARD_S_SUCCESS:
 %enddef
 %feature("docstring") DOCSTRING_INTRODUCECARDTYPE;
 %rename(SCardIntroduceCardType) _IntroduceCardType(
-  SCARDCONTEXT INPUT,
-  char* pszCardName,
-  GUIDLIST* INPUT,
-  GUIDLIST* INPUT,
-  BYTELIST* INPUT,
-  BYTELIST* INPUT
+  SCARDCONTEXT hcontext,
+  char* szCardName,
+  GUIDLIST* PRIMARYPROVIDER,
+  GUIDLIST* PROVIDERLIST,
+  BYTELIST* ATR,
+  BYTELIST* MASK
 );
 SCARDRETCODE _IntroduceCardType(
-  SCARDCONTEXT INPUT,
-  char* pszCardName,
-  GUIDLIST* INPUT,
-  GUIDLIST* INPUT,
-  BYTELIST* INPUT,
-  BYTELIST* INPUT
+  SCARDCONTEXT hcontext,
+  char* szCardName,
+  GUIDLIST* PRIMARYPROVIDER,
+  GUIDLIST* PROVIDERLIST,
+  BYTELIST* ATR,
+  BYTELIST* MASK
 );
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1039,8 +1043,8 @@ if hresult!=0:
 "
 %enddef
 %feature("docstring") DOCSTRING_INTRODUCEREADER;
-%rename(SCardIntroduceReader) _IntroduceReader( SCARDCONTEXT INPUT, char* szReaderName, char* szDeviceName );
-SCARDRETCODE _IntroduceReader( SCARDCONTEXT INPUT, char* szReaderName, char* szDeviceName );
+%rename(SCardIntroduceReader) _IntroduceReader( SCARDCONTEXT hcontext, char* szReaderName, char* szDeviceName );
+SCARDRETCODE _IntroduceReader( SCARDCONTEXT hcontext, char* szReaderName, char* szDeviceName );
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_INTRODUCEREADERGROUP
@@ -1062,8 +1066,8 @@ if hresult!=SCARD_S_SUCCESS:
 "
 %enddef
 %feature("docstring") DOCSTRING_INTRODUCEREADERGROUP;
-%rename(SCardIntroduceReaderGroup) _IntroduceReaderGroup( SCARDCONTEXT INPUT, char* szGroupName );
-SCARDRETCODE _IntroduceReaderGroup( SCARDCONTEXT INPUT, char* szGroupName );
+%rename(SCardIntroduceReaderGroup) _IntroduceReaderGroup( SCARDCONTEXT hcontext, char* szGroupName );
+SCARDRETCODE _IntroduceReaderGroup( SCARDCONTEXT hcontext, char* szGroupName );
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_LISTINTERFACES
@@ -1083,8 +1087,8 @@ if hresult!=SCARD_S_SUCCESS:
 "
 %enddef
 %feature("docstring") DOCSTRING_LISTINTERFACES;
-%rename(SCardListInterfaces) _ListInterfaces( SCARDCONTEXT INPUT, char* szCard, GUIDLIST* OUTPUT );
-SCARDRETCODE _ListInterfaces( SCARDCONTEXT INPUT, char* szCard, GUIDLIST* OUTPUT );
+%rename(SCardListInterfaces) _ListInterfaces( SCARDCONTEXT hcontext, char* szCardName, GUIDLIST* GUIDINTERFACES );
+SCARDRETCODE _ListInterfaces( SCARDCONTEXT hcontext, char* szCardName, GUIDLIST* GUIDINTERFACES );
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_LISTCARDS
@@ -1112,22 +1116,20 @@ print 'Cards: ', cards
 %enddef
 %feature("docstring") DOCSTRING_LISTCARDS;
 %rename (SCardListCards) _ListCards(
-    SCARDCONTEXT INPUT,
-    BYTELIST* INPUT,
-    GUIDLIST* INPUT,
-    STRINGLIST* OUTPUT );
+    SCARDCONTEXT hcontext,
+    BYTELIST* ATR,
+    GUIDLIST* PROVIDERLIST,
+    STRINGLIST* MATCHINGCARDS );
 SCARDRETCODE _ListCards(
-    SCARDCONTEXT INPUT,
-    BYTELIST* INPUT,
-    GUIDLIST* INPUT,
-    STRINGLIST* OUTPUT );
+    SCARDCONTEXT hcontext,
+    BYTELIST* ATR,
+    GUIDLIST* PROVIDERLIST,
+    STRINGLIST* MATCHINGCARDS );
 
 ///////////////////////////////////////////////////////////////////////////////
-%apply READERSTATELIST *BOTH {READERSTATELIST *prsl};
-%apply STRINGLIST *INPUT {STRINGLIST *psl};
 %define DOCSTRING_LOCATECARDS
 "
-Searches the readers listed in the rgReaderStates parameter for a card
+Searches the readers listed in the readerstate parameter for a card
 with an ATR string that matches one of the card names specified in
 mszCards, returning immediately with the result.
 
@@ -1158,12 +1160,12 @@ for i in newstates:
 %enddef
 %feature("docstring") DOCSTRING_LOCATECARDS;
 %rename(SCardLocateCards) _LocateCards(
-    SCARDCONTEXT INPUT,
-    STRINGLIST *INPUT,
+    SCARDCONTEXT hcontext,
+    STRINGLIST* CARDSTOLOCATE,
     READERSTATELIST *prsl );
 SCARDRETCODE _LocateCards(
-    SCARDCONTEXT INPUT,
-    STRINGLIST *INPUT,
+    SCARDCONTEXT hcontext,
+    STRINGLIST* CARDSTOLOCATE,
     READERSTATELIST *prsl );
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1185,11 +1187,11 @@ if hresult!=SCARD_S_SUCCESS:
 %enddef
 %feature("docstring") DOCSTRING_REMOVEREADERFROMGROUP;
 %rename(SCardRemoveReaderFromGroup) _RemoveReaderFromGroup(
-  SCARDCONTEXT INPUT,
+  SCARDCONTEXT hcontext,
   char* szReaderName,
   char* szGroupName );
 SCARDRETCODE _RemoveReaderFromGroup(
-  SCARDCONTEXT INPUT,
+  SCARDCONTEXT hcontext,
   char* szReaderName,
   char* szGroupName );
 
@@ -1218,8 +1220,8 @@ if hresult!=SCARD_S_SUCCESS:
 "
 %enddef
 %feature("docstring") DOCSTRING_BEGINTRANSACTION;
-%rename(SCardBeginTransaction) _BeginTransaction( SCARDHANDLE INPUT );
-SCARDRETCODE _BeginTransaction( SCARDHANDLE INPUT );
+%rename(SCardBeginTransaction) _BeginTransaction( SCARDHANDLE hcard );
+SCARDRETCODE _BeginTransaction( SCARDHANDLE hcard );
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_CANCEL
@@ -1234,8 +1236,8 @@ if hresult!=SCARD_S_SUCCESS:
 ..."
 %enddef
 %feature("docstring") DOCSTRING_CANCEL;
-%rename(SCardCancel) _Cancel( SCARDCONTEXT INPUT );
-SCARDRETCODE _Cancel( SCARDCONTEXT INPUT );
+%rename(SCardCancel) _Cancel( SCARDCONTEXT hcontext );
+SCARDRETCODE _Cancel( SCARDCONTEXT hcontext );
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_ISVALIDCONTEXT
@@ -1254,8 +1256,8 @@ if hresult!=SCARD_S_SUCCESS:
 "
 %enddef
 %feature("docstring") DOCSTRING_ISVALIDCONTEXT;
-%rename(SCardIsValidContext) _IsValidContext( SCARDCONTEXT INPUT );
-SCARDRETCODE _IsValidContext( SCARDCONTEXT INPUT );
+%rename(SCardIsValidContext) _IsValidContext( SCARDCONTEXT hcontext );
+SCARDRETCODE _IsValidContext( SCARDCONTEXT hcontext );
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_CONNECT
@@ -1291,20 +1293,20 @@ if hresult!=SCARD_S_SUCCESS:
 %enddef
 %feature("docstring") DOCSTRING_CONNECT;
 %rename(SCardConnect) _Connect(
-  SCARDCONTEXT INPUT,
-  char* szReader,
-  unsigned long dwShareMode,
-  unsigned long dwPreferredProtocols,
-  SCARDHANDLE *OUTPUT,
-  SCARDDWORDARG *OUTPUT
+  SCARDCONTEXT hcontext,
+  char* szReaderName,
+  SCARDDWORDARG dwShareMode,
+  SCARDDWORDARG dwPreferredProtocols,
+  SCARDHANDLE* phcard,
+  SCARDDWORDARG* pdwActiveProtocol
 );
 SCARDRETCODE _Connect(
-  SCARDCONTEXT INPUT,
-  char* szReader,
-  unsigned long dwShareMode,
-  unsigned long dwPreferredProtocols,
-  SCARDHANDLE *OUTPUT,
-  SCARDDWORDARG *OUTPUT
+  SCARDCONTEXT hcontext,
+  char* szReaderName,
+  SCARDDWORDARG dwShareMode,
+  SCARDDWORDARG dwPreferredProtocols,
+  SCARDHANDLE* phcard,
+  SCARDDWORDARG* pdwActiveProtocol
 );
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1328,8 +1330,8 @@ if hresult!=SCARD_S_SUCCESS:
 "
 %enddef
 %feature("docstring") DOCSTRING_DISCONNECT;
-%rename(SCardDisconnect) _Disconnect( SCARDHANDLE INPUT, unsigned long dwDisposition );
-SCARDRETCODE _Disconnect( SCARDHANDLE INPUT, unsigned long dwDisposition );
+%rename(SCardDisconnect) _Disconnect( SCARDHANDLE hcard, SCARDDWORDARG dwDisposition );
+SCARDRETCODE _Disconnect( SCARDHANDLE hcard, SCARDDWORDARG dwDisposition );
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_ENDTRANSACTION
@@ -1354,8 +1356,8 @@ if hresult!=SCARD_S_SUCCESS:
 "
 %enddef
 %feature("docstring") DOCSTRING_ENDTRANSACTION;
-%rename(SCardEndTransaction) _EndTransaction( SCARDHANDLE INPUT, unsigned long dwDisposition );
-SCARDRETCODE _EndTransaction( SCARDHANDLE INPUT, unsigned long dwDisposition );
+%rename(SCardEndTransaction) _EndTransaction( SCARDHANDLE hcard, SCARDDWORDARG dwDisposition );
+SCARDRETCODE _EndTransaction( SCARDHANDLE hcard, SCARDDWORDARG dwDisposition );
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_ESTABLISHCONTEXT
@@ -1364,10 +1366,10 @@ This function creates a communication context to the PC/SC Resource
 Manager.  This must be the first function called in a PC/SC application.
 
 Value of dwScope        Meaning
-SCARD_SCOPE_USER        Not used
+SCARD_SCOPE_USER        Operations performed within the scope of the User
 SCARD_SCOPE_TERMINAL    Not used
 SCARD_SCOPE_GLOBAL      Not used
-SCARD_SCOPE_SYSTEM      Services on the local machine
+SCARD_SCOPE_SYSTEM      Operations performed within the scope of the system
 
 
 from smartcard.scard import *
@@ -1377,8 +1379,8 @@ if hresult!=SCARD_S_SUCCESS:
 "
 %enddef
 %feature("docstring") DOCSTRING_ESTABLISHCONTEXT;
-%rename(SCardEstablishContext) _EstablishContext( unsigned long dwScope, SCARDCONTEXT *OUTPUT );
-SCARDRETCODE _EstablishContext( unsigned long dwScope, SCARDCONTEXT *OUTPUT );
+%rename(SCardEstablishContext) _EstablishContext( SCARDDWORDARG dwScope, SCARDCONTEXT* phcontext );
+SCARDRETCODE _EstablishContext( SCARDDWORDARG dwScope, SCARDCONTEXT* phcontext );
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1494,8 +1496,8 @@ if hresult==SCARD_S_SUCCESS:
 "
 %enddef
 %feature("docstring") DOCSTRING_GETATTRIB;
-%rename(SCardGetAttrib) _GetAttrib( unsigned long hcard, unsigned long dwAttrId, BYTELIST* OUTPUT );
-SCARDRETCODE _GetAttrib( unsigned long hcard, unsigned long dwAttrId, BYTELIST* OUTPUT );
+%rename(SCardGetAttrib) _GetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* ATTRIBUTES );
+SCARDRETCODE _GetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* ATTRIBUTES );
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_GETSTATUSCHANGE
@@ -1543,13 +1545,13 @@ for i in newstates
 %enddef
 %feature("docstring") DOCSTRING_GETSTATUSCHANGE;
 %rename(SCardGetStatusChange) _GetStatusChange(
-    SCARDCONTEXT INPUT,
-    unsigned long dwTimeout,
-    READERSTATELIST *BOTH);
+    SCARDCONTEXT hcontext,
+    SCARDDWORDARG dwTimeout,
+    READERSTATELIST* prsl);
 SCARDRETCODE _GetStatusChange(
-    SCARDCONTEXT INPUT,
-    unsigned long dwTimeout,
-    READERSTATELIST *BOTH);
+    SCARDCONTEXT hcontext,
+    SCARDDWORDARG dwTimeout,
+    READERSTATELIST* prsl);
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_LISTREADERS
@@ -1569,13 +1571,13 @@ hresult, readers = SCardListReaders( hcontext, ['SCard$T1ProtocolReaders', 'SCar
 %enddef
 %feature("docstring") DOCSTRING_LISTREADERS;
 %rename(SCardListReaders) _ListReaders(
-    SCARDCONTEXT INPUT,
-    STRINGLIST *INPUT,
-    STRINGLIST *OUTPUT );
+    SCARDCONTEXT hcontext,
+    STRINGLIST* READERGROUPSIN,
+    STRINGLIST* READERSFOUND );
 SCARDRETCODE _ListReaders(
-    SCARDCONTEXT INPUT,
-    STRINGLIST *INPUT,
-    STRINGLIST *OUTPUT );
+    SCARDCONTEXT hcontext,
+    STRINGLIST* READERGROUPSIN,
+    STRINGLIST* READERSFOUND );
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1592,8 +1594,8 @@ print 'PCSC Reader groups: ', readerGroups
 "
 %enddef
 %feature("docstring") DOCSTRING_LISTREADERGROUPS;
-%rename(SCardListReaderGroups) _ListReaderGroups( SCARDCONTEXT INPUT, STRINGLIST *OUTPUT );
-SCARDRETCODE _ListReaderGroups( SCARDCONTEXT INPUT, STRINGLIST *OUTPUT );
+%rename(SCardListReaderGroups) _ListReaderGroups( SCARDCONTEXT hcontext, STRINGLIST* READERGROUPSOUT );
+SCARDRETCODE _ListReaderGroups( SCARDCONTEXT hcontext, STRINGLIST* READERGROUPSOUT );
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_RECONNECT
@@ -1636,26 +1638,18 @@ hresult, activeProtocol = SCardReconnect( hcard, SCARD_SHARE_EXCLUSIVE,
 %enddef
 %feature("docstring") DOCSTRING_RECONNECT;
 %rename(SCardReconnect) _Reconnect(
-  SCARDHANDLE INPUT,
-  unsigned long dwShareMode,
-  unsigned long dwPreferredProtocols,
-  unsigned long dwInitialization,
-#ifdef __APPLE__
-  uint32_t* pdwActiveProtocol
-#else
-  unsigned long* pdwActiveProtocol
-#endif
+  SCARDHANDLE hcard,
+  SCARDDWORDARG dwShareMode,
+  SCARDDWORDARG dwPreferredProtocols,
+  SCARDDWORDARG dwInitialization,
+  SCARDDWORDARG* pdwActiveProtocol
 );
 SCARDRETCODE _Reconnect(
-  SCARDHANDLE INPUT,
-  unsigned long dwShareMode,
-  unsigned long dwPreferredProtocols,
-  unsigned long dwInitialization,
-#ifdef __APPLE__
-  uint32_t* pdwActiveProtocol
-#else
-  unsigned long* pdwActiveProtocol
-#endif
+  SCARDHANDLE hcard,
+  SCARDDWORDARG dwShareMode,
+  SCARDDWORDARG dwPreferredProtocols,
+  SCARDDWORDARG dwInitialization,
+  SCARDDWORDARG* pdwActiveProtocol
 );
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1664,16 +1658,14 @@ SCARDRETCODE _Reconnect(
 "
 %enddef
 %feature("docstring") DOCSTRING_RELEASECONTEXT;
-%rename(SCardReleaseContext) _ReleaseContext( SCARDCONTEXT INPUT );
-SCARDRETCODE _ReleaseContext( SCARDCONTEXT INPUT );
+%rename(SCardReleaseContext) _ReleaseContext( SCARDCONTEXT hcontext );
+SCARDRETCODE _ReleaseContext( SCARDCONTEXT hcontext );
 
 ///////////////////////////////////////////////////////////////////////////////
-%typemap(doc, name="readername", type="string") (STRINGLIST*  OUTPUT) "readername: in output, the friendly reader name";
-%typemap(doc, name="atr", type="bytelist") (BYTELIST* OUTPUT) "atr: in output, the card atr";
 %define DOCSTRING_STATUS
 "
 This function returns the current status of the reader connected to by
-hCard.  The reader friendly name is returned, as well as the state,
+hcard.  The reader friendly name is returned, as well as the state,
 protocol and ATR.  The state is a DWORD possibly OR'd with the following
 values:
 
@@ -1709,23 +1701,21 @@ print ""
 %enddef
 %feature("docstring") DOCSTRING_STATUS;
 %rename(SCardStatus) _Status(
-  SCARDHANDLE INPUT,
-  STRINGLIST*  OUTPUT,
-  unsigned long* OUTPUT,
-  unsigned long* OUTPUT,
-  BYTELIST* OUTPUT
+  SCARDHANDLE hcard,
+  STRINGLIST* pszReaderName,
+  SCARDDWORDARG* pdwState,
+  SCARDDWORDARG* pdwProtocol,
+  BYTELIST* ATROUT
 );
 SCARDRETCODE _Status(
-  SCARDHANDLE INPUT,
-  STRINGLIST*  OUTPUT,
-  unsigned long* OUTPUT,
-  unsigned long* OUTPUT,
-  BYTELIST* OUTPUT
+  SCARDHANDLE hcard,
+  STRINGLIST* pszReaderName,
+  SCARDDWORDARG* pdwState,
+  SCARDDWORDARG* pdwProtocol,
+  BYTELIST* ATROUT
 );
 
 ///////////////////////////////////////////////////////////////////////////////
-%typemap(doc, name="ApduCommand", type="list") (BYTELIST* INPUT) "ApduCommand: bytelist";
-%typemap(doc, name="ApduResponse", type="list") (BYTELIST* OUTPUT) "ApduResponse: bytelist";
 %define DOCSTRING_TRANSMIT
 "
 This function sends an APDU to the smart card contained in the reader connected to by SCardConnect().
@@ -1749,21 +1739,19 @@ if hresult!=SCARD_S_SUCCESS:
 %enddef
 %feature("docstring") DOCSTRING_TRANSMIT;
 %rename(SCardTransmit) _Transmit(
-  SCARDHANDLE INPUT,
+  SCARDHANDLE hcard,
   unsigned long pioSendPci,
-  BYTELIST* INPUT,
-  BYTELIST* OUTPUT
+  BYTELIST* APDUCOMMAND,
+  BYTELIST* APDURESPONSE
 );
 SCARDRETCODE _Transmit(
-  SCARDHANDLE INPUT,
+  SCARDHANDLE hcard,
   unsigned long pioSendPci,
-  BYTELIST* INPUT,
-  BYTELIST* OUTPUT
+  BYTELIST* APDUCOMMAND,
+  BYTELIST* APDURESPONSE
 );
 
 ///////////////////////////////////////////////////////////////////////////////
-%typemap(doc, name="ControlCommand", type="list") (BYTELIST* INPUT) "ControlCommand: bytelist";
-%typemap(doc, name="ControlResponse", type="list") (BYTELIST* OUTPUT) "ControlResponse: bytelist";
 %define DOCSTRING_CONTROL
 "
 This function sends a control command to the reader connected to by SCardConnect().
@@ -1782,16 +1770,16 @@ if hresult!=SCARD_S_SUCCESS:
 %enddef
 %feature("docstring") DOCSTRING_CONTROL;
 %rename(SCardControl) _Control(
-  SCARDHANDLE INPUT,
-  unsigned long controlCode,
-  BYTELIST* INPUT,
-  BYTELIST* OUTPUT
+  SCARDHANDLE hcard,
+  SCARDDWORDARG dwControlCode,
+  BYTELIST* INBUFFER,
+  BYTELIST* OUTBUFFER
 );
 SCARDRETCODE _Control(
-  SCARDHANDLE INPUT,
-  unsigned long controlCode,
-  BYTELIST* INPUT,
-  BYTELIST* OUTPUT
+  SCARDHANDLE hcard,
+  SCARDDWORDARG dwControlCode,
+  BYTELIST* INBUFFER,
+  BYTELIST* OUTBUFFER
 );
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1858,10 +1846,10 @@ ERRORSTRING* _GetErrorMessage( long lErrCode );
 #ifdef PCSCLITEyy
 %pythoncode %{
 
-def SCardListCards( hContext, atr, guidlist ):
+def SCardListCards( hcontext, atr, guidlist ):
     return ( SCARD_S_SUCCESS, [] )
 
-def SCardLocateCards( hContext, cardnames, readerstates ):
+def SCardLocateCards( hcontext, cardnames, readerstates ):
     newreaderstates=[]
     for state in readerstates:
         newreaderstates.append( (state[0], state[1], [] ) )

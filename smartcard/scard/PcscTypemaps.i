@@ -30,79 +30,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 /*==============================================================================
 //
-// support for SCARDCONTEXT
-//
-==============================================================================*/
-%typemap(in,numinputs=0) SCARDCONTEXT *OUTPUT(SCARDCONTEXT temp)
-{
-    $1 = &temp;
-}
-
-%typemap(in) SCARDCONTEXT INPUT(SCARDCONTEXT)
-{
-    $1 =  SCardHelper_PyScardContextToSCARDCONTEXT( $input );
-}
-
-%typemap(argout) SCARDCONTEXT *OUTPUT
-{
-    SCardHelper_AppendSCardContextToPyObject( *$1, &$result );
-}
-
-/*==============================================================================
-//
-// support for SCARDRETCODE
-//
-==============================================================================*/
-%typemap(out) SCARDRETCODE
-{
-    $result = PyLong_FromLong((long)$1);
-}
-
-/*==============================================================================
-//
-// support for SCARDHANDLE
-//
-==============================================================================*/
-%typemap(in,numinputs=0) SCARDHANDLE *OUTPUT(SCARDHANDLE temp)
-{
-    $1 = &temp;
-}
-
-%typemap(in) SCARDHANDLE INPUT(SCARDHANDLE)
-{
-    $1 =  SCardHelper_PyScardHandleToSCARDHANDLE( $input );
-}
-
-%typemap(argout) SCARDHANDLE *OUTPUT
-{
-    SCardHelper_AppendSCardHandleToPyObject( *$1, &$result );
-}
-
-
-/*==============================================================================
-//
-// support for SCARDDWORDARG
-//
-==============================================================================*/
-%typemap(in,numinputs=0) SCARDDWORDARG *OUTPUT(SCARDDWORDARG temp)
-{
-    $1 = &temp;
-}
-
-%typemap(in) SCARDDWORDARG INPUT(SCARDDWORDARG)
-{
-    $1 =  SCardHelper_PySCardDwordArgToSCARDDWORDARG( $input );
-}
-
-%typemap(argout) SCARDDWORDARG *OUTPUT
-{
-    SCardHelper_AppendSCardDwordArgToPyObject( *$1, &$result );
-}
-
-
-
-/*==============================================================================
-//
 // support for list of BYTEs, aka BYTELIST
 //
 ==============================================================================*/
@@ -145,6 +72,17 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     SCardHelper_AppendByteListToPyObject( $1, &$result );
 }
 
+// other names for BYTELIST as INPUT parameter
+%apply BYTELIST* INPUT { BYTELIST* ATR };
+%apply BYTELIST* INPUT { BYTELIST* MASK };
+%apply BYTELIST* INPUT { BYTELIST* APDUCOMMAND };
+%apply BYTELIST* INPUT { BYTELIST* INBUFFER };
+
+// other names for BYTELIST as OUTPUT parameter
+%apply BYTELIST* OUTPUT { BYTELIST* ATROUT };
+%apply BYTELIST* OUTPUT { BYTELIST* ATTRIBUTES };
+%apply BYTELIST* OUTPUT { BYTELIST* APDURESPONSE };
+%apply BYTELIST* OUTPUT { BYTELIST* OUTBUFFER };
 
 /*==============================================================================
 //
@@ -254,6 +192,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     SCardHelper_AppendGuidListToPyObject( $1, &$result );
 }
 
+// other names for GUIDLIST as INPUT parameter
+%apply GUIDLIST* INPUT { GUIDLIST* PRIMARYPROVIDER };
+%apply GUIDLIST* INPUT { GUIDLIST* PROVIDERLIST };
+
+// other names for GUIDLIST as OUTPUT parameter
+%apply GUIDLIST* OUTPUT { GUIDLIST* GUIDINTERFACES };
 
 
 /*==============================================================================
@@ -342,6 +286,103 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 %typemap(argout) READERSTATELIST *BOTH = READERSTATELIST *prsl;
 
 
+// other names for READERSTATELIST as inpu/output parameter
+%apply READERSTATELIST *BOTH {READERSTATELIST *prsl};
+
+
+/*==============================================================================
+//
+// support for SCARDCONTEXT
+//
+==============================================================================*/
+%typemap(in,numinputs=0) SCARDCONTEXT *OUTPUT(SCARDCONTEXT temp)
+{
+    $1 = &temp;
+}
+
+%typemap(in) SCARDCONTEXT hcontext(SCARDCONTEXT)
+{
+    $1 =  SCardHelper_PyScardContextToSCARDCONTEXT( $input );
+}
+
+%typemap(argout) SCARDCONTEXT *OUTPUT
+{
+    SCardHelper_AppendSCardContextToPyObject( *$1, &$result );
+}
+
+// different names for SCARDCONTEXT OUTPUT parameters
+%apply SCARDCONTEXT* OUTPUT { SCARDCONTEXT* phcontext };
+
+
+/*==============================================================================
+//
+// support for SCARDDWORDARG
+//
+==============================================================================*/
+%typemap(in,numinputs=0) SCARDDWORDARG *OUTPUT(SCARDDWORDARG temp)
+{
+    $1 = &temp;
+}
+
+%typemap(in) SCARDDWORDARG INPUT(SCARDDWORDARG)
+{
+    $1 =  SCardHelper_PySCardDwordArgToSCARDDWORDARG( $input );
+}
+
+%typemap(argout) SCARDDWORDARG* OUTPUT
+{
+    SCardHelper_AppendSCardDwordArgToPyObject( *$1, &$result );
+}
+
+// different names for SCARDWORDARG INPUT parameters
+%apply SCARDDWORDARG INPUT { SCARDDWORDARG dwProviderId };
+%apply SCARDDWORDARG INPUT { SCARDDWORDARG dwShareMode };
+%apply SCARDDWORDARG INPUT { SCARDDWORDARG dwPreferredProtocols };
+%apply SCARDDWORDARG INPUT { SCARDDWORDARG dwDisposition };
+%apply SCARDDWORDARG INPUT { SCARDDWORDARG dwScope };
+%apply SCARDDWORDARG INPUT { SCARDDWORDARG dwAttrId };
+%apply SCARDDWORDARG INPUT { SCARDDWORDARG dwTimeout };
+%apply SCARDDWORDARG INPUT { SCARDDWORDARG dwInitialization };
+%apply SCARDDWORDARG INPUT { SCARDDWORDARG dwControlCode };
+
+// different names for SCARDWORDARG OUTPUT parameters
+%apply SCARDDWORDARG* OUTPUT { SCARDDWORDARG* pdwActiveProtocol };
+%apply SCARDDWORDARG* OUTPUT { SCARDDWORDARG* pdwProtocol };
+%apply SCARDDWORDARG* OUTPUT { SCARDDWORDARG* pdwState };
+
+/*==============================================================================
+//
+// support for SCARDHANDLE
+//
+==============================================================================*/
+%typemap(in,numinputs=0) SCARDHANDLE *OUTPUT(SCARDHANDLE temp)
+{
+    $1 = &temp;
+}
+
+%typemap(in) SCARDHANDLE hcard(SCARDHANDLE)
+{
+    $1 =  SCardHelper_PyScardHandleToSCARDHANDLE( $input );
+}
+
+%typemap(argout) SCARDHANDLE* OUTPUT
+{
+    SCardHelper_AppendSCardHandleToPyObject( *$1, &$result );
+}
+
+// different names for SCARDHANDLE OUTPUT parameters
+%apply SCARDHANDLE* OUTPUT { SCARDHANDLE* phcard };
+
+
+/*==============================================================================
+//
+// support for SCARDRETCODE
+//
+==============================================================================*/
+%typemap(out) SCARDRETCODE
+{
+    $result = PyLong_FromLong((long)$1);
+}
 
 /*==============================================================================
 //
@@ -421,6 +462,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     SCardHelper_AppendStringToPyObject( $1, &$result );
 }
 
+// other names for STRING as output parameter
+%apply STRING* OUTPUT { PROVIDERNAME_t* pszProviderName };
 
 /*==============================================================================
 //
@@ -484,6 +527,16 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     SCardHelper_AppendStringListToPyObject( $1, &$result );
 }
 
+// other names for STRINGLIST as input parameter
+%apply STRINGLIST* INPUT { STRINGLIST* CARDSTOLOCATE };
+%apply STRINGLIST* INPUT { STRINGLIST* psl };
+%apply STRINGLIST* INPUT { STRINGLIST* READERGROUPSIN };
+
+// other names for STRINGLIST as output parameter
+%apply STRINGLIST* OUTPUT { STRINGLIST* MATCHINGCARDS };
+%apply STRINGLIST* OUTPUT { STRINGLIST* READERSFOUND };
+%apply STRINGLIST* OUTPUT { STRINGLIST* READERGROUPSOUT };
+%apply STRINGLIST* OUTPUT { STRINGLIST* pszReaderName };
+
+
 //#endif
-
-
