@@ -502,7 +502,7 @@ SCARDRETCODE _ListReaders(
     STRINGLIST* pmszReaders )
 {
     LPCTSTR mszGroups;
-    unsigned long cchReaders;
+    SCARDDWORDARG cchReaders;
     LONG lRetCode;
 
     winscard_init();
