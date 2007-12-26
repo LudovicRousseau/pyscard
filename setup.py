@@ -120,7 +120,7 @@ if sys.version_info < (2,4):
     build_ext.swig_sources = swig_sources
 
 kw = {'name':"pyscard",
-      'version':"1.6.4",
+      'version':"1.6.5",
       'description':"Smartcard module for Python.",
       'author':"Jean-Daniel Aussel",
       'author_email':"aussel.jean-daniel@gemalto.com",
@@ -166,7 +166,7 @@ kw = {'name':"pyscard",
 if hasattr(core, 'setup_keywords'):
     if 'classifiers' in core.setup_keywords:
         kw['classifiers'] = [
-          'Development Status :: 1.6.4 - Release',
+          'Development Status :: 1.6.5 - Release',
           'License :: GNU LESSER GENERAL PUBLIC LICENSE',
           'Intended Audience :: Developers',
           'Operating System :: Unix',
