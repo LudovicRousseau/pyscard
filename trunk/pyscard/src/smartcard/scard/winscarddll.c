@@ -19,7 +19,8 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 ==============================================================================*/
 #include <stdio.h>
-
+#include <stdint.h>
+#include "pcsctypes.h"
 #include "winscarddll.h"
 
 #ifdef PCSCLITE
@@ -243,10 +244,10 @@ WINAPI _defaultSCARDCONNECTA(
     WINSCARDAPI SCARDRETCODE
     WINAPI _defaultSCARDCONTROL(
         IN      SCARDHANDLE hCard,
-        IN      LPCVOID lpInBuffer,
+        IN      const unsigned char* lpInBuffer,
         IN      SCARDDWORDARG nInBufferSize,
-        OUT     LPVOID lpOutBuffer,
-        IN OUT  SCARDDWORDARG* lpBytesReturned);
+        OUT     unsigned char* lpOutBuffer,
+        IN OUT  SCARDDWORDARG* lpBytesReturned)
     {
         return SCARD_E_NO_SERVICE;
     }

@@ -163,6 +163,7 @@ Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 // SCARD_CTL_CODE defined in WinSmCrd.h included by Win32 winscard.h
 #endif //PCSCLITE
 
+#include "pcsctypes.h"
 #include "helpers.h"
 #include "memlog.h"
 
@@ -736,15 +737,23 @@ SCARDRETCODE _Control(
     pblRecvBuffer->ab = (unsigned char*)mem_Malloc(1024*sizeof(unsigned char));
     pblRecvBuffer->cBytes=1024;
 
-    lRet = (mySCardControl)(
-                hcard,
-                controlCode,
-                pblSendBuffer->ab,
-
-                pblSendBuffer->cBytes,
-                pblRecvBuffer->ab,
-                pblRecvBuffer->cBytes,
-                &pblRecvBuffer->cBytes );
+    #ifdef __APPLE__
+        lRet = (mySCardControl)(
+                    hcard,
+                    pblSendBuffer->ab,
+                    pblSendBuffer->cBytes,
+                    pblRecvBuffer->ab,
+                    &pblRecvBuffer->cBytes );
+    #else // !__APPLE__
+        lRet = (mySCardControl)(
+                    hcard,
+                    controlCode,
+                    pblSendBuffer->ab,
+                    pblSendBuffer->cBytes,
+                    pblRecvBuffer->ab,
+                    pblRecvBuffer->cBytes,
+                    &pblRecvBuffer->cBytes );
+    #endif // __APPLE__
     return lRet;
 }
 
@@ -873,8 +882,7 @@ char* _pcsc_stringify_error( SCARDRETCODE pcscError )
     		strncpy( strError, "Service was stopped.", sizeof( strError ) );
     		break;
     	default:
-    		snprintf(strError, sizeof(strError)-1, "Unkown error: 0x%08lx",
-    			pcscError);
+    		snprintf(strError, sizeof(strError)-1, "Unkown error: %d, 0x%08lx", pcscError, (long unsigned int)pcscError);
 	};
 
 	// zero terminates string
