@@ -63,7 +63,7 @@ try:
                         for i in xrange(len(response)):
                             r += "%c" % response[i]
                         print 'SCARD_ATTR_VENDOR_NAME:', r
-                    elif 'pcsclite'==resourceManager:
+                    elif 'pcsclite'==resourceManager and not 'pcsclite-darwin'==resourceManagerSubType:
                         # get firmware on Gemplus readers
                         hresult, response = SCardControl( hcard, SCARD_CTL_CODE(1), [ 0x02])
                         if hresult!=SCARD_S_SUCCESS:
