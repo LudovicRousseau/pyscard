@@ -32,7 +32,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     #define LPCTSTR char*
 #else //__APPLE__
 #include <winscard.h>
-#endif 
+#endif
 
 #ifdef PCSCLITE
     #define WINSCARDAPI PCSC_API
@@ -109,6 +109,10 @@ typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDINTRODUCEREADERGROUPA)(
     IN SCARDCONTEXT hContext,
     IN LPCSTR szGroupName);
+
+typedef WINSCARDAPI SCARDRETCODE
+(WINAPI *SCARDISVALIDCONTEXT)(
+    IN      SCARDCONTEXT hContext);
 
 typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDLISTCARDSA)(
@@ -237,10 +241,6 @@ typedef WINSCARDAPI SCARDRETCODE
     IN      SCARDDWORDARG cReaders);
 
 typedef WINSCARDAPI SCARDRETCODE
-(WINAPI *SCARDISVALIDCONTEXT)(
-    IN      SCARDCONTEXT hContext);
-
-typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDLISTREADERSA)(
     IN      SCARDCONTEXT hContext,
     IN      LPCTSTR mszGroups,
@@ -313,6 +313,7 @@ extern SCARDGETPROVIDERIDA             mySCardGetProviderIdA;
 extern SCARDINTRODUCECARDTYPEA         mySCardIntroduceCardTypeA;
 extern SCARDINTRODUCEREADERA           mySCardIntroduceReaderA;
 extern SCARDINTRODUCEREADERGROUPA      mySCardIntroduceReaderGroupA;
+extern SCARDISVALIDCONTEXT             mySCardIsValidContext;
 extern SCARDLISTCARDSA                 mySCardListCardsA;
 extern SCARDLISTINTERFACESA            mySCardListInterfacesA;
 extern SCARDLOCATECARDSA               mySCardLocateCardsA;
@@ -334,7 +335,6 @@ extern SCARDESTABLISHCONTEXT           mySCardEstablishContext;
 extern SCARDFREEMEMORY                 mySCardFreeMemory;
 extern SCARDGETATTRIB                  mySCardGetAttrib;
 extern SCARDGETSTATUSCHANGEA           mySCardGetStatusChangeA;
-extern SCARDISVALIDCONTEXT             mySCardIsValidContext;
 extern SCARDLISTREADERSA               mySCardListReadersA;
 extern SCARDLISTREADERGROUPSA          mySCardListReaderGroupsA;
 extern SCARDRECONNECT                  mySCardReconnect;
