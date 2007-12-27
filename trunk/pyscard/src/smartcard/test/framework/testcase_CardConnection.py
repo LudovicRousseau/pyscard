@@ -61,7 +61,7 @@ class testcase_CardConnection(unittest.TestCase):
             if []!=expectedATRinReader[str(reader)]:
                 cc.connect()
                 response, sw1, sw2 = cc.transmit( SELECT + DF_TELECOM )
-                expectedSWs={ "9f 1a":1, "6e 0":2, "9f 20":3 }
+                expectedSWs={ "9f 1a":1, "6e 0":2, "9f 20":3, "9f 22":4 }
                 self.assertEquals( [], response )
                 self.assert_( expectedSWs.has_key( "%x %x" % (sw1, sw2 ) ) )
             else:
@@ -78,7 +78,7 @@ class testcase_CardConnection(unittest.TestCase):
             if []!=expectedATRinReader[str(reader)]:
                 cc.connect( CardConnection.T0_protocol )
                 response, sw1, sw2 = cc.transmit( SELECT + DF_TELECOM )
-                expectedSWs={ "9f 1a":1, "6e 0":2, "9f 20":3 }
+                expectedSWs={ "9f 1a":1, "6e 0":2, "9f 20":3, "9f 22":4 }
                 self.assertEquals( [], response )
                 self.assert_( expectedSWs.has_key( "%x %x" % (sw1, sw2 ) ) )
             else:
@@ -122,7 +122,7 @@ class testcase_CardConnection(unittest.TestCase):
             if []!=expectedATRinReader[str(reader)]:
                 cc.connect( CardConnection.T0_protocol | CardConnection.T1_protocol )
                 response, sw1, sw2 = cc.transmit( SELECT + DF_TELECOM )
-                expectedSWs={ "9f 1a":1, "6e 0":2, "9f 20":3 }
+                expectedSWs={ "9f 1a":1, "6e 0":2, "9f 20":3, "9f 22":4 }
                 self.assertEquals( [], response )
                 self.assert_( expectedSWs.has_key( "%x %x" % (sw1, sw2 ) ) )
             else:
@@ -140,7 +140,7 @@ class testcase_CardConnection(unittest.TestCase):
             if []!=expectedATRinReader[str(reader)]:
                 cc.connect( CardConnection.T0_protocol )
                 response, sw1, sw2 = cc.transmit( SELECT + DF_TELECOM, CardConnection.T0_protocol )
-                expectedSWs={ "9f 1a":1, "6e 0":2, "9f 20":3 }
+                expectedSWs={ "9f 1a":1, "6e 0":2, "9f 20":3, "9f 22":4 }
                 self.assertEquals( [], response )
                 self.assert_( expectedSWs.has_key( "%x %x" % (sw1, sw2 ) ) )
             else:
