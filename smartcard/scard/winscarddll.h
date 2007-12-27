@@ -18,6 +18,8 @@ You should have received a copy of the GNU Lesser General Public License
 along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 ==============================================================================*/
+#include "pcsctypes.h"
+
 #ifdef WIN32
     #include <windows.h>
 #endif
@@ -52,245 +54,253 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 typedef WINSCARDAPI HANDLE
 (WINAPI *SCARDACCESSSTARTEDEVENT)(void);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDADDREADERTOGROUPA)(
     IN SCARDCONTEXT hContext,
     IN LPCTSTR szReaderName,
     IN LPCTSTR szGroupName);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDFORGETCARDTYPEA)(
     IN SCARDCONTEXT hContext,
     IN LPCSTR szCardName);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDFORGETREADERA)(
     IN SCARDCONTEXT hContext,
     IN LPCSTR szReaderName);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDFORGETREADERGROUPA)(
     IN SCARDCONTEXT hContext,
     IN LPCSTR szGroupName);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDGETCARDTYPEPROVIDERNAMEA)(
     IN SCARDCONTEXT hContext,
     IN LPCSTR szCardName,
-    IN DWORD dwProviderId,
+    IN SCARDDWORDARG dwProviderId,
     OUT LPTSTR szProvider,
-    IN OUT LPDWORD pcchProvider);
+    IN OUT SCARDDWORDARG* pcchProvider);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDGETPROVIDERIDA)(
     IN      SCARDCONTEXT hContext,
     IN      LPCSTR szCard,
     OUT     LPGUID pguidProviderId);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDINTRODUCECARDTYPEA)(
     IN SCARDCONTEXT hContext,
     IN LPCSTR szCardName,
     IN LPCGUID pguidPrimaryProvider,
     IN LPCGUID rgguidInterfaces,
-    IN DWORD dwInterfaceCount,
+    IN SCARDDWORDARG dwInterfaceCount,
     IN LPCBYTE pbAtr,
     IN LPCBYTE pbAtrMask,
-    IN DWORD cbAtrLen);
+    IN SCARDDWORDARG cbAtrLen);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDINTRODUCEREADERA)(
     IN SCARDCONTEXT hContext,
     IN LPCSTR szReaderName,
     IN LPCSTR szDeviceName);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDINTRODUCEREADERGROUPA)(
     IN SCARDCONTEXT hContext,
     IN LPCSTR szGroupName);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDLISTCARDSA)(
     IN      SCARDCONTEXT hContext,
     IN      LPCBYTE pbAtr,
     IN      LPCGUID rgquidInterfaces,
-    IN      DWORD cguidInterfaceCount,
+    IN      SCARDDWORDARG cguidInterfaceCount,
     OUT     LPTSTR mszCards,
-    IN OUT  LPDWORD pcchCards);
+    IN OUT  SCARDDWORDARG* pcchCards);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDLISTINTERFACESA)(
     IN      SCARDCONTEXT hContext,
     IN      LPCSTR szCard,
     OUT     LPGUID pguidInterfaces,
-    IN OUT  LPDWORD pcguidInterfaces);
+    IN OUT  SCARDDWORDARG* pcguidInterfaces);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDLOCATECARDSA)(
     IN      SCARDCONTEXT hContext,
     IN      LPCSTR mszCards,
     IN OUT  LPSCARD_READERSTATEA rgReaderStates,
-    IN      DWORD cReaders);
+    IN      SCARDDWORDARG cReaders);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDLOCATECARDSBYATRA)(
     IN      SCARDCONTEXT hContext,
     IN      LPSCARD_ATRMASK rgAtrMasks,
-    IN      DWORD cAtrs,
+    IN      SCARDDWORDARG cAtrs,
     IN OUT  LPSCARD_READERSTATEA rgReaderStates,
-    IN      DWORD cReaders);
+    IN      SCARDDWORDARG cReaders);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDSETCARDTYPEPROVIDERNAMEA)(
     IN SCARDCONTEXT hContext,
     IN LPCSTR szCardName,
-    IN DWORD dwProviderId,
+    IN SCARDDWORDARG dwProviderId,
     IN LPCSTR szProvider);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDSTATE)(
     IN SCARDHANDLE hCard,
-    OUT LPDWORD pdwState,
-    OUT LPDWORD pdwProtocol,
+    OUT SCARDDWORDARG* pdwState,
+    OUT SCARDDWORDARG* pdwProtocol,
     OUT LPBYTE pbAtr,
-    IN OUT LPDWORD pcbAtrLen);
+    IN OUT SCARDDWORDARG* pcbAtrLen);
 #endif // WIN32
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDBEGINTRANSACTION)(
     IN      SCARDHANDLE hCard);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDCANCEL)(
     IN      SCARDCONTEXT hContext);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDCANCELTRANSACTION)(
     IN      SCARDHANDLE hCard);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDCONNECTA)(
     IN      SCARDCONTEXT hContext,
     IN      LPCTSTR szReader,
-    IN      DWORD dwShareMode,
-    IN      DWORD dwPreferredProtocols,
+    IN      SCARDDWORDARG dwShareMode,
+    IN      SCARDDWORDARG dwPreferredProtocols,
     OUT     LPSCARDHANDLE phCard,
-    OUT     LPDWORD pdwActiveProtocol);
+    OUT     SCARDDWORDARG* pdwActiveProtocol);
 
-typedef WINSCARDAPI LONG
-(WINAPI *SCARDCONTROL)(
-    IN      SCARDHANDLE hCard,
-    IN      DWORD dwControlCode,
-    IN      LPCVOID lpInBuffer,
-    IN      DWORD nInBufferSize,
-    OUT     LPVOID lpOutBuffer,
-    IN      DWORD nOutBufferSize,
-    OUT     LPDWORD lpBytesReturned);
+// SCardControl does not have the same prototype
+// on pcsclite-apple-darwin
+#ifdef __APPLE__
+    typedef WINSCARDAPI SCARDRETCODE
+    (WINAPI *SCARDCONTROL)(
+        IN      SCARDHANDLE hCard,
+        IN      LPCVOID lpInBuffer,
+        IN      SCARDDWORDARG nInBufferSize,
+        OUT     LPVOID lpOutBuffer,
+        IN OUT  SCARDDWORDARG* lpBytesReturned);
+#else
+    typedef WINSCARDAPI SCARDRETCODE
+    (WINAPI *SCARDCONTROL)(
+        IN      SCARDHANDLE hCard,
+        IN      SCARDDWORDARG dwControlCode,
+        IN      LPCVOID lpInBuffer,
+        IN      SCARDDWORDARG nInBufferSize,
+        OUT     LPVOID lpOutBuffer,
+        IN      SCARDDWORDARG nOutBufferSize,
+        OUT     SCARDDWORDARG* lpBytesReturned);
+#endif
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDDISCONNECT)(
     IN      SCARDHANDLE hCard,
-    IN      DWORD dwDisposition);
+    IN      SCARDDWORDARG dwDisposition);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDENDTRANSACTION)(
     IN      SCARDHANDLE hCard,
-    IN      DWORD dwDisposition);
+    IN      SCARDDWORDARG dwDisposition);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDESTABLISHCONTEXT)(
-#ifdef __APPLE__
-    IN  uint32_t dwScope,
-#else
-    IN  DWORD dwScope,
-#endif
+    IN  SCARDDWORDARG dwScope,
     IN  LPCVOID pvReserved1,
     IN  LPCVOID pvReserved2,
     OUT LPSCARDCONTEXT phContext);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDFREEMEMORY)(
     IN SCARDCONTEXT hContext,
     IN LPCVOID pvMem);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDGETATTRIB)(
     IN SCARDHANDLE hCard,
-    IN DWORD dwAttrId,
+    IN SCARDDWORDARG dwAttrId,
     OUT LPBYTE pbAttr,
-    IN OUT LPDWORD pcbAttrLen);
+    IN OUT SCARDDWORDARG* pcbAttrLen);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDGETSTATUSCHANGEA)(
     IN      SCARDCONTEXT hContext,
-    IN      DWORD dwTimeout,
+    IN      SCARDDWORDARG dwTimeout,
     IN OUT  LPSCARD_READERSTATEA rgReaderStates,
-    IN      DWORD cReaders);
+    IN      SCARDDWORDARG cReaders);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDISVALIDCONTEXT)(
     IN      SCARDCONTEXT hContext);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDLISTREADERSA)(
     IN      SCARDCONTEXT hContext,
     IN      LPCTSTR mszGroups,
     OUT     LPTSTR mszReaders,
-    IN OUT  LPDWORD pcchReaders);
+    IN OUT  SCARDDWORDARG* pcchReaders);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDLISTREADERGROUPSA)(
     IN      SCARDCONTEXT hContext,
     OUT     LPTSTR mszGroups,
-    IN OUT  LPDWORD pcchGroups);
+    IN OUT  SCARDDWORDARG* pcchGroups);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDRECONNECT)(
     IN      SCARDHANDLE hCard,
-    IN      DWORD dwShareMode,
-    IN      DWORD dwPreferredProtocols,
-    IN      DWORD dwInitialization,
-    OUT     LPDWORD pdwActiveProtocol);
+    IN      SCARDDWORDARG dwShareMode,
+    IN      SCARDDWORDARG dwPreferredProtocols,
+    IN      SCARDDWORDARG dwInitialization,
+    OUT     SCARDDWORDARG* pdwActiveProtocol);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDRELEASECONTEXT)(
     IN      SCARDCONTEXT hContext);
 
 typedef WINSCARDAPI void
 (WINAPI *SCARDRELEASESTARTEDEVENT)(void);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDREMOVEREADERFROMGROUPA)(
     IN SCARDCONTEXT hContext,
     IN LPCTSTR szReaderName,
     IN LPCTSTR szGroupName);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDSETATTRIB)(
     IN SCARDHANDLE hCard,
-    IN DWORD dwAttrId,
+    IN SCARDDWORDARG dwAttrId,
     IN LPCBYTE pbAttr,
-    IN DWORD cbAttrLen);
+    IN SCARDDWORDARG cbAttrLen);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDSTATUSA)(
     IN SCARDHANDLE hCard,
     OUT LPTSTR szReaderName,
-    IN OUT LPDWORD pcchReaderLen,
-    OUT LPDWORD pdwState,
-    OUT LPDWORD pdwProtocol,
+    IN OUT SCARDDWORDARG* pcchReaderLen,
+    OUT SCARDDWORDARG* pdwState,
+    OUT SCARDDWORDARG* pdwProtocol,
     OUT LPBYTE pbAtr,
-    IN OUT LPDWORD pcbAtrLen);
+    IN OUT SCARDDWORDARG* pcbAtrLen);
 
-typedef WINSCARDAPI LONG
+typedef WINSCARDAPI SCARDRETCODE
 (WINAPI *SCARDTRANSMIT)(
     IN SCARDHANDLE hCard,
     IN LPCSCARD_IO_REQUEST pioSendPci,
     IN LPCBYTE pbSendBuffer,
-    IN DWORD cbSendLength,
+    IN SCARDDWORDARG cbSendLength,
     IN OUT LPSCARD_IO_REQUEST pioRecvPci,
     OUT LPBYTE pbRecvBuffer,
-    IN OUT LPDWORD pcbRecvLength);
+    IN OUT SCARDDWORDARG* pcbRecvLength);
 
 // these functions are not supported by pcsc-lite
 #ifdef WIN32
@@ -339,3 +349,4 @@ extern unsigned long myg_prgSCardT1Pci;
 extern unsigned long myg_prgSCardRawPci;
 
 long winscard_init(void);
+
