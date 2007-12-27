@@ -18,7 +18,6 @@ You should have received a copy of the GNU Lesser General Public License
 along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 ==============================================================================*/
-#include "pcsctypes.h"
 
 #ifdef WIN32
     #include <windows.h>
@@ -185,9 +184,9 @@ typedef WINSCARDAPI SCARDRETCODE
     typedef WINSCARDAPI SCARDRETCODE
     (WINAPI *SCARDCONTROL)(
         IN      SCARDHANDLE hCard,
-        IN      LPCVOID lpInBuffer,
+        IN      const unsigned char* lpInBuffer,
         IN      SCARDDWORDARG nInBufferSize,
-        OUT     LPVOID lpOutBuffer,
+        OUT     unsigned char* lpOutBuffer,
         IN OUT  SCARDDWORDARG* lpBytesReturned);
 #else
     typedef WINSCARDAPI SCARDRETCODE
