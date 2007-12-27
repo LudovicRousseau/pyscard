@@ -55,8 +55,8 @@ elif get_platform() in ('macosx-10.3-fat', 'darwin-8.9.1-i386', 'darwin-8.10.1-i
     platform_sources=[]
     platform_libraries=[]
     platform_include_dirs=['PCSC']
-    platform_extra_compile_args=['-v','-framework', 'PCSC']
-    platform_extra_link_args=[]
+    platform_extra_compile_args=['-v','-framework', 'PCSC', '-arch', 'i386', '-arch', 'ppc']
+    platform_extra_link_args=['-arch', 'i386', '-arch', 'ppc']
 else:
     sys.exit("unsupported platform: " + get_platform() )
 
