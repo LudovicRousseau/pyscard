@@ -38,7 +38,7 @@ WINAPI _defaultSCARDACCESSSTARTEDEVENT(void)
     return NULL;
 }
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDADDREADERTOGROUPA(
     IN SCARDCONTEXT hContext,
     IN LPCSTR szReaderName,
@@ -47,7 +47,7 @@ WINAPI _defaultSCARDADDREADERTOGROUPA(
     return SCARD_E_NO_SERVICE;
 }
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDFORGETCARDTYPEA(
     IN SCARDCONTEXT hContext,
     IN LPCSTR szCardName)
@@ -55,7 +55,7 @@ WINAPI _defaultSCARDFORGETCARDTYPEA(
     return SCARD_E_NO_SERVICE;
 }
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDFORGETREADERA(
     IN SCARDCONTEXT hContext,
     IN LPCSTR szReaderName)
@@ -63,7 +63,7 @@ WINAPI _defaultSCARDFORGETREADERA(
     return SCARD_E_NO_SERVICE;
 }
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDFORGETREADERGROUPA(
     IN SCARDCONTEXT hContext,
     IN LPCSTR szGroupName)
@@ -71,7 +71,7 @@ WINAPI _defaultSCARDFORGETREADERGROUPA(
     return SCARD_E_NO_SERVICE;
 }
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDGETPROVIDERIDA(
     IN      SCARDCONTEXT hContext,
     IN      LPCSTR szCard,
@@ -80,33 +80,33 @@ WINAPI _defaultSCARDGETPROVIDERIDA(
     return SCARD_E_NO_SERVICE;
 }
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDGETCARDTYPEPROVIDERNAMEA(
     IN SCARDCONTEXT hContext,
     IN LPCSTR szCardName,
-    IN DWORD dwProviderId,
+    IN SCARDDWORDARG dwProviderId,
     OUT LPTSTR szProvider,
-    IN OUT LPDWORD pcchProvider)
+    IN OUT SCARDDWORDARG* pcchProvider)
 {
     return SCARD_E_NO_SERVICE;
 }
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDINTRODUCECARDTYPEA(
     IN SCARDCONTEXT hContext,
     IN LPCSTR szCardName,
     IN LPCGUID pguidPrimaryProvider,
     IN LPCGUID rgguidInterfaces,
-    IN DWORD dwInterfaceCount,
+    IN SCARDDWORDARG dwInterfaceCount,
     IN LPCBYTE pbAtr,
     IN LPCBYTE pbAtrMask,
-    IN DWORD cbAtrLen)
+    IN SCARDDWORDARG cbAtrLen)
 {
     return SCARD_E_NO_SERVICE;
 }
 
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDINTRODUCEREADERA(
     IN SCARDCONTEXT hContext,
     IN LPCSTR szReaderName,
@@ -115,7 +115,7 @@ WINAPI _defaultSCARDINTRODUCEREADERA(
     return SCARD_E_NO_SERVICE;
 }
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDINTRODUCEREADERGROUPA(
     IN SCARDCONTEXT hContext,
     IN LPCSTR szGroupName)
@@ -123,45 +123,45 @@ WINAPI _defaultSCARDINTRODUCEREADERGROUPA(
     return SCARD_E_NO_SERVICE;
 }
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDLISTCARDSA(
     IN      SCARDCONTEXT hContext,
     IN      LPCBYTE pbAtr,
     IN      LPCGUID rgquidInterfaces,
-    IN      DWORD cguidInterfaceCount,
+    IN      SCARDDWORDARG cguidInterfaceCount,
     OUT     LPTSTR mszCards,
-    IN OUT  LPDWORD pcchCards)
+    IN OUT  SCARDDWORDARG* pcchCards)
 {
     return SCARD_E_NO_SERVICE;
 }
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDLISTINTERFACESA(
     IN      SCARDCONTEXT hContext,
     IN      LPCSTR szCard,
     OUT     LPGUID pguidInterfaces,
-    IN OUT  LPDWORD pcguidInterfaces)
+    IN OUT  SCARDDWORDARG* pcguidInterfaces)
 {
     return SCARD_E_NO_SERVICE;
 }
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDLOCATECARDSA(
     IN      SCARDCONTEXT hContext,
     IN      LPCSTR mszCards,
     IN OUT  LPSCARD_READERSTATEA rgReaderStates,
-    IN      DWORD cReaders)
+    IN      SCARDDWORDARG cReaders)
 {
     return SCARD_E_NO_SERVICE;
 }
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDLOCATECARDSBYATRA(
     IN      SCARDCONTEXT hContext,
     IN      LPSCARD_ATRMASK rgAtrMasks,
-    IN      DWORD cAtrs,
+    IN      SCARDDWORDARG cAtrs,
     IN OUT  LPSCARD_READERSTATEA rgReaderStates,
-    IN      DWORD cReaders)
+    IN      SCARDDWORDARG cReaders)
 {
     return SCARD_E_NO_SERVICE;
 }
@@ -172,7 +172,7 @@ WINAPI _defaultSCARDRELEASESTARTEDEVENT(void)
     return;
 }
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDREMOVEREADERFROMGROUPA(
     IN SCARDCONTEXT hContext,
     IN LPCSTR szReaderName,
@@ -181,98 +181,109 @@ WINAPI _defaultSCARDREMOVEREADERFROMGROUPA(
     return SCARD_E_NO_SERVICE;
 }
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDSETCARDTYPEPROVIDERNAMEA(
     IN SCARDCONTEXT hContext,
     IN LPCSTR szCardName,
-    IN DWORD dwProviderId,
+    IN SCARDDWORDARG dwProviderId,
     IN LPCSTR szProvider)
 {
     return SCARD_E_NO_SERVICE;
 }
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDSTATE(
     IN SCARDHANDLE hCard,
-    OUT LPDWORD pdwState,
-    OUT LPDWORD pdwProtocol,
+    OUT SCARDDWORDARG* pdwState,
+    OUT SCARDDWORDARG* pdwProtocol,
     OUT LPBYTE pbAtr,
-    IN OUT LPDWORD pcbAtrLen)
+    IN OUT SCARDDWORDARG* pcbAtrLen)
 {
     return SCARD_E_NO_SERVICE;
 }
 
 #endif // WIN32
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDBEGINTRANSACTION(
     IN      SCARDHANDLE hCard)
 {
     return SCARD_E_NO_SERVICE;
 }
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDCANCEL(
     IN      SCARDCONTEXT hContext)
 {
     return SCARD_E_NO_SERVICE;
 }
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDCANCELTRANSACTION(
     IN      SCARDHANDLE hCard)
 {
     return SCARD_E_NO_SERVICE;
 }
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDCONNECTA(
     IN      SCARDCONTEXT hContext,
     IN      LPCTSTR szReader,
-    IN      DWORD dwShareMode,
-    IN      DWORD dwPreferredProtocols,
+    IN      SCARDDWORDARG dwShareMode,
+    IN      SCARDDWORDARG dwPreferredProtocols,
     OUT     LPSCARDHANDLE phCard,
-    OUT     LPDWORD pdwActiveProtocol)
+    OUT     SCARDDWORDARG* pdwActiveProtocol)
 {
     return SCARD_E_NO_SERVICE;
 }
 
-WINSCARDAPI LONG
-WINAPI _defaultSCARDCONTROL(
-    IN      SCARDHANDLE hCard,
-    IN      DWORD dwControlCode,
-    IN      LPCVOID lpInBuffer,
-    IN      DWORD nInBufferSize,
-    OUT     LPVOID lpOutBuffer,
-    IN      DWORD nOutBufferSize,
-    OUT     LPDWORD lpBytesReturned)
-{
-    return SCARD_E_NO_SERVICE;
-}
+// SCardControl does not have the same prototype
+// on pcsclite-apple-darwin
+#ifdef __APPLE__
+    WINSCARDAPI SCARDRETCODE
+    WINAPI _defaultSCARDCONTROL(
+        IN      SCARDHANDLE hCard,
+        IN      LPCVOID lpInBuffer,
+        IN      SCARDDWORDARG nInBufferSize,
+        OUT     LPVOID lpOutBuffer,
+        IN OUT  SCARDDWORDARG* lpBytesReturned);
+    {
+        return SCARD_E_NO_SERVICE;
+    }
+#else //!__APPLE__
+    WINSCARDAPI SCARDRETCODE
+    WINAPI _defaultSCARDCONTROL(
+        IN      SCARDHANDLE hCard,
+        IN      SCARDDWORDARG dwControlCode,
+        IN      LPCVOID lpInBuffer,
+        IN      SCARDDWORDARG nInBufferSize,
+        OUT     LPVOID lpOutBuffer,
+        IN      SCARDDWORDARG nOutBufferSize,
+        OUT     SCARDDWORDARG* lpBytesReturned)
+    {
+        return SCARD_E_NO_SERVICE;
+    }
+#endif // __APPLE__
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDDISCONNECT(
     IN      SCARDHANDLE hCard,
-    IN      DWORD dwDisposition)
+    IN      SCARDDWORDARG dwDisposition)
 {
     return SCARD_E_NO_SERVICE;
 }
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDENDTRANSACTION(
     IN      SCARDHANDLE hCard,
-    IN      DWORD dwDisposition)
+    IN      SCARDDWORDARG dwDisposition)
 {
     return SCARD_E_NO_SERVICE;
 }
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDESTABLISHCONTEXT(
-#ifdef __APPLE__
-    IN  uint32_t dwScope,
-#else
-    IN  DWORD dwScope,
-#endif
+    IN  SCARDDWORDARG dwScope,
     IN  LPCVOID pvReserved1,
     IN  LPCVOID pvReserved2,
     OUT LPSCARDCONTEXT phContext)
@@ -280,7 +291,7 @@ WINAPI _defaultSCARDESTABLISHCONTEXT(
     return SCARD_E_NO_SERVICE;
 }
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDFREEMEMORY(
     IN SCARDCONTEXT hContext,
     IN LPCVOID pvMem)
@@ -288,102 +299,102 @@ WINAPI _defaultSCARDFREEMEMORY(
     return SCARD_E_NO_SERVICE;
 }
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDGETATTRIB(
     IN SCARDHANDLE hCard,
-    IN DWORD dwAttrId,
+    IN SCARDDWORDARG dwAttrId,
     OUT LPBYTE pbAttr,
-    IN OUT LPDWORD pcbAttrLen)
+    IN OUT SCARDDWORDARG* pcbAttrLen)
 {
     return SCARD_E_NO_SERVICE;
 }
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDGETSTATUSCHANGEA(
     IN      SCARDCONTEXT hContext,
-    IN      DWORD dwTimeout,
+    IN      SCARDDWORDARG dwTimeout,
     IN OUT  LPSCARD_READERSTATEA rgReaderStates,
-    IN      DWORD cReaders)
+    IN      SCARDDWORDARG cReaders)
 {
     return SCARD_E_NO_SERVICE;
 }
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDISVALIDCONTEXT(
     IN      SCARDCONTEXT hContext)
 {
     return SCARD_E_NO_SERVICE;
 }
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDLISTREADERSA(
     IN      SCARDCONTEXT hContext,
     IN      LPCTSTR mszGroups,
     OUT     LPTSTR mszReaders,
-    IN OUT  LPDWORD pcchReaders)
+    IN OUT  SCARDDWORDARG* pcchReaders)
 {
     return SCARD_E_NO_SERVICE;
 }
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDLISTREADERGROUPSA(
     IN      SCARDCONTEXT hContext,
     OUT     LPTSTR mszGroups,
-    IN OUT  LPDWORD pcchGroups)
+    IN OUT  SCARDDWORDARG* pcchGroups)
 {
     return SCARD_E_NO_SERVICE;
 }
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDRECONNECT(
     IN      SCARDHANDLE hCard,
-    IN      DWORD dwShareMode,
-    IN      DWORD dwPreferredProtocols,
-    IN      DWORD dwInitialization,
-    OUT     LPDWORD pdwActiveProtocol)
+    IN      SCARDDWORDARG dwShareMode,
+    IN      SCARDDWORDARG dwPreferredProtocols,
+    IN      SCARDDWORDARG dwInitialization,
+    OUT     SCARDDWORDARG* pdwActiveProtocol)
 {
     return SCARD_E_NO_SERVICE;
 }
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDRELEASECONTEXT(
     IN      SCARDCONTEXT hContext)
 {
     return SCARD_E_NO_SERVICE;
 }
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDSETATTRIB(
     IN SCARDHANDLE hCard,
-    IN DWORD dwAttrId,
+    IN SCARDDWORDARG dwAttrId,
     IN LPCBYTE pbAttr,
-    IN DWORD cbAttrLen)
+    IN SCARDDWORDARG cbAttrLen)
 {
     return SCARD_E_NO_SERVICE;
 }
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDSTATUSA(
     IN SCARDHANDLE hCard,
     OUT LPTSTR szReaderName,
-    IN OUT LPDWORD pcchReaderLen,
-    OUT LPDWORD pdwState,
-    OUT LPDWORD pdwProtocol,
+    IN OUT SCARDDWORDARG* pcchReaderLen,
+    OUT SCARDDWORDARG* pdwState,
+    OUT SCARDDWORDARG* pdwProtocol,
     OUT LPBYTE pbAtr,
-    IN OUT LPDWORD pcbAtrLen)
+    IN OUT SCARDDWORDARG* pcbAtrLen)
 {
     return SCARD_E_NO_SERVICE;
 }
 
-WINSCARDAPI LONG
+WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDTRANSMIT(
     IN SCARDHANDLE hCard,
     IN LPCSCARD_IO_REQUEST pioSendPci,
     IN LPCBYTE pbSendBuffer,
-    IN DWORD cbSendLength,
+    IN SCARDDWORDARG cbSendLength,
     IN OUT LPSCARD_IO_REQUEST pioRecvPci,
     OUT LPBYTE pbRecvBuffer,
-    IN OUT LPDWORD pcbRecvLength)
+    IN OUT SCARDDWORDARG* pcbRecvLength)
 {
     return SCARD_E_NO_SERVICE;
 }

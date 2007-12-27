@@ -730,19 +730,22 @@ SCARDRETCODE _Control(
   BYTELIST* pblRecvBuffer
 )
 {
+    SCARDRETCODE lRet;
     winscard_init();
 
     pblRecvBuffer->ab = (unsigned char*)mem_Malloc(1024*sizeof(unsigned char));
     pblRecvBuffer->cBytes=1024;
 
-    return (mySCardControl)(
+    lRet = (mySCardControl)(
                 hcard,
                 controlCode,
                 pblSendBuffer->ab,
+
                 pblSendBuffer->cBytes,
                 pblRecvBuffer->ab,
                 pblRecvBuffer->cBytes,
                 &pblRecvBuffer->cBytes );
+    return lRet;
 }
 
 long _SCARD_CTL_CODE( long code )

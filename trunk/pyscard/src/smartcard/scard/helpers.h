@@ -20,18 +20,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 ================================================================================
 ==============================================================================*/
 
-#ifdef PCSCLITE
-    #ifdef __APPLE__
-        typedef uint32_t SCARDDWORDARG;
-        typedef int32_t SCARDRETCODE;
-    #else //!__APPLE__
-        typedef unsigned long SCARDDWORDARG;
-        typedef long SCARDRETCODE;
-    #endif
-#else // !PCSCLITE
-    typedef unsigned long SCARDDWORDARG;
-    typedef long SCARDRETCODE;
-#endif
+#include "pcsctypes.h"
 
 typedef struct
 {
