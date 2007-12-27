@@ -94,7 +94,6 @@ SCardEndTransaction
 SCardEstablishContext
 SCardGetAttrib
 SCardGetStatusChange
-SCardIsValidContext
 SCardListReaders
 SCardListReaderGroups
 SCardReconnect
@@ -269,6 +268,13 @@ SCARDRETCODE _IntroduceReaderGroup( SCARDCONTEXT hcontext, char* szGroupName )
 {
     winscard_init();
     return (mySCardIntroduceReaderGroupA)( hcontext, szGroupName );
+}
+
+///////////////////////////////////////////////////////////////////////////////
+SCARDRETCODE _IsValidContext( SCARDCONTEXT hcontext )
+{
+    winscard_init();
+    return (mySCardIsValidContext)( hcontext );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -487,13 +493,6 @@ SCARDRETCODE _GetStatusChange(
     // for python, we return a long
     hresult=ulResult;
     return hresult;
-}
-
-///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _IsValidContext( SCARDCONTEXT hcontext )
-{
-    winscard_init();
-    return (mySCardIsValidContext)( hcontext );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -766,129 +765,129 @@ long _SCARD_CTL_CODE( long code )
 ///////////////////////////////////////////////////////////////////////////////
 // some pcsclite versions (e.g. on Max OS X darwint) don't have a pcsc stringify
 // this function was taken from pcsclite
-// 
+//
 char* _pcsc_stringify_error( SCARDRETCODE pcscError )
 {
-	static char strError[75];
+    static char strError[75];
 
-	switch(pcscError )
-	{
-    	case SCARD_S_SUCCESS:
-    		strncpy( strError, "Command successful.", sizeof( strError ) );
-    		break;
-    	case SCARD_E_CANCELLED:
-    		strncpy( strError, "Command cancelled.", sizeof( strError ) );
-    		break;
-    	case SCARD_E_CANT_DISPOSE:
-    		strncpy( strError, "Cannot dispose handle.", sizeof( strError ) );
-    		break;
-    	case SCARD_E_INSUFFICIENT_BUFFER:
-    		strncpy( strError, "Insufficient buffer.", sizeof( strError ) );
-    		break;
-    	case SCARD_E_INVALID_ATR:
-    		strncpy( strError, "Invalid ATR.", sizeof( strError ) );
-    		break;
-    	case SCARD_E_INVALID_HANDLE:
-    		strncpy( strError, "Invalid handle.", sizeof( strError ) );
-    		break;
-    	case SCARD_E_INVALID_PARAMETER:
-    		strncpy( strError, "Invalid parameter given.", sizeof( strError ) );
-    		break;
-    	case SCARD_E_INVALID_TARGET:
-    		strncpy( strError, "Invalid target given.", sizeof( strError ) );
-    		break;
-    	case SCARD_E_INVALID_VALUE:
-    		strncpy( strError, "Invalid value given.", sizeof( strError ) );
-    		break;
-    	case SCARD_E_NO_MEMORY:
-    		strncpy( strError, "Not enough memory.", sizeof( strError ) );
-    		break;
-    	case SCARD_F_COMM_ERROR:
-    		strncpy( strError, "RPC transport error.", sizeof( strError ) );
-    		break;
-    	case SCARD_F_INTERNAL_ERROR:
-    		strncpy( strError, "Internal error.", sizeof( strError ) );
-    		break;
-    	case SCARD_F_UNKNOWN_ERROR:
-    		strncpy( strError, "Unknown error.", sizeof( strError ) );
-    		break;
-    	case SCARD_F_WAITED_TOO_LONG:
-    		strncpy( strError, "Waited too long.", sizeof( strError ) );
-    		break;
-    	case SCARD_E_UNKNOWN_READER:
-    		strncpy( strError, "Unknown reader specified.", sizeof( strError ) );
-    		break;
-    	case SCARD_E_TIMEOUT:
-    		strncpy( strError, "Command timeout.", sizeof( strError ) );
-    		break;
-    	case SCARD_E_SHARING_VIOLATION:
-    		strncpy( strError, "Sharing violation.", sizeof( strError ) );
-    		break;
-    	case SCARD_E_NO_SMARTCARD:
-    		strncpy( strError, "No smart card inserted.", sizeof( strError ) );
-    		break;
-    	case SCARD_E_UNKNOWN_CARD:
-    		strncpy( strError, "Unknown card.", sizeof( strError ) );
-    		break;
-    	case SCARD_E_PROTO_MISMATCH:
-    		strncpy( strError, "Card protocol mismatch.", sizeof( strError ) );
-    		break;
-    	case SCARD_E_NOT_READY:
-    		strncpy( strError, "Subsystem not ready.", sizeof( strError ) );
-    		break;
-    	case SCARD_E_SYSTEM_CANCELLED:
-    		strncpy( strError, "System cancelled.", sizeof( strError ) );
-    		break;
-    	case SCARD_E_NOT_TRANSACTED:
-    		strncpy( strError, "Transaction failed.", sizeof( strError ) );
-    		break;
-    	case SCARD_E_READER_UNAVAILABLE:
-    		strncpy( strError, "Reader is unavailable.", sizeof( strError ) );
-    		break;
-    	case SCARD_W_UNSUPPORTED_CARD:
-    		strncpy( strError, "Card is not supported.", sizeof( strError ) );
-    		break;
-    	case SCARD_W_UNRESPONSIVE_CARD:
-    		strncpy( strError, "Card is unresponsive.", sizeof( strError ) );
-    		break;
-    	case SCARD_W_UNPOWERED_CARD:
-    		strncpy( strError, "Card is unpowered.", sizeof( strError ) );
-    		break;
-    	case SCARD_W_RESET_CARD:
-    		strncpy( strError, "Card was reset.", sizeof( strError ) );
-    		break;
-    	case SCARD_W_REMOVED_CARD:
-    		strncpy( strError, "Card was removed.", sizeof( strError ) );
-    		break;
-    	case SCARD_E_UNSUPPORTED_FEATURE:
-    		strncpy( strError, "Feature not supported.", sizeof( strError ) );
-    		break;
-    	case SCARD_E_PCI_TOO_SMALL:
-    		strncpy( strError, "PCI struct too small.", sizeof( strError ) );
-    		break;
-    	case SCARD_E_READER_UNSUPPORTED:
-    		strncpy( strError, "Reader is unsupported.", sizeof( strError ) );
-    		break;
-    	case SCARD_E_DUPLICATE_READER:
-    		strncpy( strError, "Reader already exists.", sizeof( strError ) );
-    		break;
-    	case SCARD_E_CARD_UNSUPPORTED:
-    		strncpy( strError, "Card is unsupported.", sizeof( strError ) );
-    		break;
-    	case SCARD_E_NO_SERVICE:
-    		strncpy( strError, "Service not available.", sizeof( strError ) );
-    		break;
-    	case SCARD_E_SERVICE_STOPPED:
-    		strncpy( strError, "Service was stopped.", sizeof( strError ) );
-    		break;
-    	default:
-    		snprintf(strError, sizeof(strError)-1, "Unkown error: %d, 0x%08lx", pcscError, (long unsigned int)pcscError);
-	};
+    switch(pcscError )
+    {
+        case SCARD_S_SUCCESS:
+            strncpy( strError, "Command successful.", sizeof( strError ) );
+            break;
+        case SCARD_E_CANCELLED:
+            strncpy( strError, "Command cancelled.", sizeof( strError ) );
+            break;
+        case SCARD_E_CANT_DISPOSE:
+            strncpy( strError, "Cannot dispose handle.", sizeof( strError ) );
+            break;
+        case SCARD_E_INSUFFICIENT_BUFFER:
+            strncpy( strError, "Insufficient buffer.", sizeof( strError ) );
+            break;
+        case SCARD_E_INVALID_ATR:
+            strncpy( strError, "Invalid ATR.", sizeof( strError ) );
+            break;
+        case SCARD_E_INVALID_HANDLE:
+            strncpy( strError, "Invalid handle.", sizeof( strError ) );
+            break;
+        case SCARD_E_INVALID_PARAMETER:
+            strncpy( strError, "Invalid parameter given.", sizeof( strError ) );
+            break;
+        case SCARD_E_INVALID_TARGET:
+            strncpy( strError, "Invalid target given.", sizeof( strError ) );
+            break;
+        case SCARD_E_INVALID_VALUE:
+            strncpy( strError, "Invalid value given.", sizeof( strError ) );
+            break;
+        case SCARD_E_NO_MEMORY:
+            strncpy( strError, "Not enough memory.", sizeof( strError ) );
+            break;
+        case SCARD_F_COMM_ERROR:
+            strncpy( strError, "RPC transport error.", sizeof( strError ) );
+            break;
+        case SCARD_F_INTERNAL_ERROR:
+            strncpy( strError, "Internal error.", sizeof( strError ) );
+            break;
+        case SCARD_F_UNKNOWN_ERROR:
+            strncpy( strError, "Unknown error.", sizeof( strError ) );
+            break;
+        case SCARD_F_WAITED_TOO_LONG:
+            strncpy( strError, "Waited too long.", sizeof( strError ) );
+            break;
+        case SCARD_E_UNKNOWN_READER:
+            strncpy( strError, "Unknown reader specified.", sizeof( strError ) );
+            break;
+        case SCARD_E_TIMEOUT:
+            strncpy( strError, "Command timeout.", sizeof( strError ) );
+            break;
+        case SCARD_E_SHARING_VIOLATION:
+            strncpy( strError, "Sharing violation.", sizeof( strError ) );
+            break;
+        case SCARD_E_NO_SMARTCARD:
+            strncpy( strError, "No smart card inserted.", sizeof( strError ) );
+            break;
+        case SCARD_E_UNKNOWN_CARD:
+            strncpy( strError, "Unknown card.", sizeof( strError ) );
+            break;
+        case SCARD_E_PROTO_MISMATCH:
+            strncpy( strError, "Card protocol mismatch.", sizeof( strError ) );
+            break;
+        case SCARD_E_NOT_READY:
+            strncpy( strError, "Subsystem not ready.", sizeof( strError ) );
+            break;
+        case SCARD_E_SYSTEM_CANCELLED:
+            strncpy( strError, "System cancelled.", sizeof( strError ) );
+            break;
+        case SCARD_E_NOT_TRANSACTED:
+            strncpy( strError, "Transaction failed.", sizeof( strError ) );
+            break;
+        case SCARD_E_READER_UNAVAILABLE:
+            strncpy( strError, "Reader is unavailable.", sizeof( strError ) );
+            break;
+        case SCARD_W_UNSUPPORTED_CARD:
+            strncpy( strError, "Card is not supported.", sizeof( strError ) );
+            break;
+        case SCARD_W_UNRESPONSIVE_CARD:
+            strncpy( strError, "Card is unresponsive.", sizeof( strError ) );
+            break;
+        case SCARD_W_UNPOWERED_CARD:
+            strncpy( strError, "Card is unpowered.", sizeof( strError ) );
+            break;
+        case SCARD_W_RESET_CARD:
+            strncpy( strError, "Card was reset.", sizeof( strError ) );
+            break;
+        case SCARD_W_REMOVED_CARD:
+            strncpy( strError, "Card was removed.", sizeof( strError ) );
+            break;
+        case SCARD_E_UNSUPPORTED_FEATURE:
+            strncpy( strError, "Feature not supported.", sizeof( strError ) );
+            break;
+        case SCARD_E_PCI_TOO_SMALL:
+            strncpy( strError, "PCI struct too small.", sizeof( strError ) );
+            break;
+        case SCARD_E_READER_UNSUPPORTED:
+            strncpy( strError, "Reader is unsupported.", sizeof( strError ) );
+            break;
+        case SCARD_E_DUPLICATE_READER:
+            strncpy( strError, "Reader already exists.", sizeof( strError ) );
+            break;
+        case SCARD_E_CARD_UNSUPPORTED:
+            strncpy( strError, "Card is unsupported.", sizeof( strError ) );
+            break;
+        case SCARD_E_NO_SERVICE:
+            strncpy( strError, "Service not available.", sizeof( strError ) );
+            break;
+        case SCARD_E_SERVICE_STOPPED:
+            strncpy( strError, "Service was stopped.", sizeof( strError ) );
+            break;
+        default:
+            snprintf(strError, sizeof(strError)-1, "Unkown error: %d, 0x%08lx", pcscError, (long unsigned int)pcscError);
+    };
 
-	// zero terminates string
-	strError[sizeof(strError)-1] = '\0';
+    // zero terminates string
+    strError[sizeof(strError)-1] = '\0';
 
-	return strError;
+    return strError;
 }
 
 ERRORSTRING* _GetErrorMessage( long lErrCode )
@@ -1211,6 +1210,26 @@ if hresult!=SCARD_S_SUCCESS:
 SCARDRETCODE _IntroduceReaderGroup( SCARDCONTEXT hcontext, char* szGroupName );
 
 ///////////////////////////////////////////////////////////////////////////////
+%define DOCSTRING_ISVALIDCONTEXT
+"
+This function determines whether a smart card context handle is still
+valid.  After a smart card context handle has been set by
+SCardEstablishContext(), it may become not valid if the resource manager
+service has been shut down.
+
+from smartcard.scard import *
+hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
+hresult = SCardIsValidContext( hcontext )
+if hresult!=SCARD_S_SUCCESS:
+    raise error, 'Invalid context: ' + SCardGetErrorMessage(hresult)
+...
+"
+%enddef
+%feature("docstring") DOCSTRING_ISVALIDCONTEXT;
+%rename(SCardIsValidContext) _IsValidContext( SCARDCONTEXT hcontext );
+SCARDRETCODE _IsValidContext( SCARDCONTEXT hcontext );
+
+///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_LISTINTERFACES
 "
 Provides a list of interfaces supplied by a given card.  The caller
@@ -1379,26 +1398,6 @@ if hresult!=SCARD_S_SUCCESS:
 %feature("docstring") DOCSTRING_CANCEL;
 %rename(SCardCancel) _Cancel( SCARDCONTEXT hcontext );
 SCARDRETCODE _Cancel( SCARDCONTEXT hcontext );
-
-///////////////////////////////////////////////////////////////////////////////
-%define DOCSTRING_ISVALIDCONTEXT
-"
-This function determines whether a smart card context handle is still
-valid.  After a smart card context handle has been set by
-SCardEstablishContext(), it may become not valid if the resource manager
-service has been shut down.
-
-from smartcard.scard import *
-hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
-hresult = SCardIsValidContext( hcontext )
-if hresult!=SCARD_S_SUCCESS:
-    raise error, 'Invalid context: ' + SCardGetErrorMessage(hresult)
-...
-"
-%enddef
-%feature("docstring") DOCSTRING_ISVALIDCONTEXT;
-%rename(SCardIsValidContext) _IsValidContext( SCARDCONTEXT hcontext );
-SCARDRETCODE _IsValidContext( SCARDCONTEXT hcontext );
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_CONNECT

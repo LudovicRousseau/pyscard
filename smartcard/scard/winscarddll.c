@@ -411,6 +411,7 @@ SCARDGETCARDTYPEPROVIDERNAMEA   mySCardGetCardTypeProviderNameA     = _defaultSC
 SCARDINTRODUCECARDTYPEA         mySCardIntroduceCardTypeA           = _defaultSCARDINTRODUCECARDTYPEA;
 SCARDINTRODUCEREADERA           mySCardIntroduceReaderA             = _defaultSCARDINTRODUCEREADERA;
 SCARDINTRODUCEREADERGROUPA      mySCardIntroduceReaderGroupA        = _defaultSCARDINTRODUCEREADERGROUPA;
+SCARDISVALIDCONTEXT             mySCardIsValidContext               = _defaultSCARDISVALIDCONTEXT;
 SCARDLISTCARDSA                 mySCardListCardsA                   = _defaultSCARDLISTCARDSA;
 SCARDLISTINTERFACESA            mySCardListInterfacesA              = _defaultSCARDLISTINTERFACESA;
 SCARDLOCATECARDSA               mySCardLocateCardsA                 = _defaultSCARDLOCATECARDSA;
@@ -432,7 +433,6 @@ SCARDESTABLISHCONTEXT           mySCardEstablishContext             = _defaultSC
 SCARDFREEMEMORY                 mySCardFreeMemory                   = _defaultSCARDFREEMEMORY;
 SCARDGETATTRIB                  mySCardGetAttrib                    = _defaultSCARDGETATTRIB;
 SCARDGETSTATUSCHANGEA           mySCardGetStatusChangeA             = _defaultSCARDGETSTATUSCHANGEA;
-SCARDISVALIDCONTEXT             mySCardIsValidContext               = _defaultSCARDISVALIDCONTEXT;
 SCARDLISTREADERSA               mySCardListReadersA                 = _defaultSCARDLISTREADERSA;
 SCARDLISTREADERGROUPSA          mySCardListReaderGroupsA            = _defaultSCARDLISTREADERGROUPSA;
 SCARDRECONNECT                  mySCardReconnect                    = _defaultSCARDRECONNECT;
@@ -455,7 +455,7 @@ long winscard_init(void)
     #ifdef WIN32
         #define  GETPROCADDRESS(type,name)       my##name=(type)GetProcAddress(hinstDLL, #name );
         HINSTANCE hinstDLL=NULL;
-    
+
         if( bFirstCall )
         {
             bFirstCall=FALSE;
@@ -500,12 +500,12 @@ long winscard_init(void)
                 GETPROCADDRESS( SCARDSTATE                      , SCardState );
                 GETPROCADDRESS( SCARDSTATUSA                    , SCardStatusA );
                 GETPROCADDRESS( SCARDTRANSMIT                   , SCardTransmit );
-    
-    
+
+
                 myg_prgSCardT0Pci   = (unsigned long)GetProcAddress( hinstDLL, "g_rgSCardT0Pci"  );
                 myg_prgSCardT1Pci   = (unsigned long)GetProcAddress( hinstDLL, "g_rgSCardT1Pci"  );
                 myg_prgSCardRawPci  = (unsigned long)GetProcAddress( hinstDLL, "g_rgSCardRawPci" );
-    
+
             }
          }
     #endif // WIN32
@@ -518,11 +518,11 @@ long winscard_init(void)
                                                          }
         void* handle=NULL;
         char* dlsym_error;
-		char *lib = NULL;
+        char *lib = NULL;
 #ifdef __APPLE__
-		lib = "/System/Library/Frameworks/PCSC.framework/PCSC";
+        lib = "/System/Library/Frameworks/PCSC.framework/PCSC";
 #else
-		lib = "libpcsclite.so";
+        lib = "libpcsclite.so";
 #endif
 
         if( bFirstCall )
@@ -550,9 +550,8 @@ long winscard_init(void)
                 GETPROCADDRESS( SCARDCONTROL           , SCardControl           , SCardControl );
 
                 #ifndef __APPLE__
-                GETPROCADDRESS( SCARDGETATTRIB         , SCardGetAttrib         , SCardGetAttrib         );                
+                GETPROCADDRESS( SCARDGETATTRIB         , SCardGetAttrib         , SCardGetAttrib         );
                 GETPROCADDRESS( SCARDSETATTRIB         , SCardSetAttrib         , SCardSetAttrib         );
-                GETPROCADDRESS( SCARDISVALIDCONTEXT    , SCardIsValidContext    , SCardIsValidContext );
                 #endif
 
                 myg_prgSCardT0Pci   = (unsigned long)dlsym( handle, "g_rgSCardT0Pci"  );
@@ -563,7 +562,7 @@ long winscard_init(void)
                 dlsym_error = dlerror();
                 if( NULL!= dlsym_error )
                 {
-                    printf( "Failed to load symbol address from %s: %s!", lib, (char*)dlsym_error ); 
+                    printf( "Failed to load symbol address from %s: %s!", lib, (char*)dlsym_error );
                 }
             }
             else
@@ -571,7 +570,7 @@ long winscard_init(void)
                 dlsym_error = dlerror();
                 if( NULL!= dlsym_error )
                 {
-                    printf( "Failed to dlopen %s: %s!", lib, (dlsym_error==NULL) ? "" : (char*)dlsym_error ); 
+                    printf( "Failed to dlopen %s: %s!", lib, (dlsym_error==NULL) ? "" : (char*)dlsym_error );
                 }
             }
          }
