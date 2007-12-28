@@ -19,7 +19,9 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 ==============================================================================*/
 #include <stdio.h>
-#include <stdint.h>
+#ifdef __APPLE__
+    #include <stdint.h>
+#endif
 #include "pcsctypes.h"
 #include "winscarddll.h"
 
