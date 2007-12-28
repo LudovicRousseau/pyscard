@@ -15,14 +15,19 @@ Last update : pyscard 1.6.5 (December 2007)
   library to write your python smart card application if you want to write your
   own python framework, or if you want to access some features of the SCardXXX
   C API not available in the smartcard framework.
-<p>The of <a href="html/smartcard.scard.scard-module.html">smartcard.scard</a>
+<p>The <a href="html/smartcard.scard.scard-module.html">smartcard.scard</a>
   module is a native extension module wrapping Windows smart card base components
-  (also known as PCSC), whereas the <a href="html/index.html">smartcard framework</a>
-  is a pure python framework hiding scard complexity and PCSC.
+  (also known as PCSC) on Windows, and pcsc-lite on linux and Mac OS X, whereas 
+  the <a href="html/index.html">smartcard framework</a> is a pure python 
+  framework hiding scard complexity and PCSC.
 <p align="center"><img src="images/pyscard.jpg" width="396" height="540" 
     align="middle">
 <h2>smartcard.scard samples</h2>
 <table border>
+  <tr>
+    <td>send a Control Code to a card or reader</td>
+    <td><a href="Examples/scard-api/sample_control.py" >view source</a></td>
+  </tr>
   <tr>
     <td>get the ATR of a card</td>
     <td><a href="Examples/scard-api/sample_getATR.py" >view source</a></td>
@@ -43,6 +48,10 @@ Last update : pyscard 1.6.5 (December 2007)
   <tr>
     <td>list the cards introduced in the system</td>
     <td><a href="Examples/scard-api/sample_listCards.py">view source</a></td>
+  </tr>
+    <td>list the interfaces supported by a card</td>
+    <td><a href="Examples/scard-api/sample_listInterfaces.py">view 
+        source</a></td>
   </tr>
   <tr>
     <td>locate cards in the system</td>
