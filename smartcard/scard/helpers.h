@@ -44,7 +44,7 @@ typedef struct
     int bAllocated;
     GUID* aguid;
     unsigned long cGuids;
-    unsigned long hcontext;
+    SCARDCONTEXT hcontext;
 } GUIDLIST ;
 
 typedef struct
@@ -57,14 +57,14 @@ typedef struct
 typedef struct
 {
     int bAllocated;
-    unsigned long hcontext;
+    SCARDCONTEXT hcontext;
     char* sz;
 } STRING;
 
 typedef struct
 {
     int bAllocated;
-    unsigned long hcontext;
+    SCARDCONTEXT hcontext;
     char* ac;
 } STRINGLIST ;
 
