@@ -54,8 +54,8 @@ elif 'darwin' in get_platform() or 'macosx' in get_platform():
     platform_sources=[]
     platform_libraries=[]
     platform_include_dirs=['PCSC']
-    platform_extra_compile_args=['-v','-framework', 'PCSC', '-arch', 'i386', '-arch', 'ppc']
-    platform_extra_link_args=['-arch', 'i386', '-arch', 'ppc']
+    platform_extra_compile_args=['-v','-framework', 'PCSC', '-arch', 'i386', '-arch', 'ppc', '-ggdb', '-O0']
+    platform_extra_link_args=['-arch', 'i386', '-arch', 'ppc','-ggdb']
 else:
     sys.exit("unsupported platform: " + get_platform() )
 

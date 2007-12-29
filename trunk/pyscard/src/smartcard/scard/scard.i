@@ -442,12 +442,11 @@ SCARDRETCODE _GetAttrib( unsigned long hcard, unsigned long dwAttrId, BYTELIST* 
 ///////////////////////////////////////////////////////////////////////////////
 SCARDRETCODE _GetStatusChange(
     SCARDCONTEXT hcontext,
-    unsigned long dwTimeout,
+    SCARDDWORDARG dwTimeout,
     READERSTATELIST* prsl )
 {
-    long hresult;
-    unsigned long ulResult;
-    unsigned int i;
+    SCARDRETCODE hresult;
+    int i;
 
     winscard_init();
 
@@ -465,9 +464,9 @@ SCARDRETCODE _GetStatusChange(
         prsl->ars[i].dwCurrentState = prsl->ars[i].dwCurrentState & (0xFFFFFFFF ^ SCARD_STATE_CHANGED);
     }
 
-    ulResult = (mySCardGetStatusChangeA)( hcontext, dwTimeout, prsl->ars, prsl->cRStates );
+    hresult = (mySCardGetStatusChangeA)( hcontext, dwTimeout, prsl->ars, prsl->cRStates );
 
-    //printf( "\n%.8lx ", ulResult );
+    //printf( "\n%.8lx ", hresult );
     //for( i=0; i<prsl->cRStates; i++ )
     //{
     //    printf( "%.8lx %.8lx ", prsl->ars[i].dwCurrentState, prsl->ars[i].dwEventState );
@@ -475,7 +474,7 @@ SCARDRETCODE _GetStatusChange(
 
     // there was a time-out or we asked for an unexisting reader
     // in this case, the output values of the READERSTATELIST are meaningless
-    if( SCARD_E_TIMEOUT==ulResult || SCARD_E_UNKNOWN_READER==ulResult)
+    if( SCARD_E_TIMEOUT==hresult || SCARD_E_UNKNOWN_READER==hresult)
     {
         // for each state, output event state is input event state, and nuke ATR if no card present
         for( i=0; i<prsl->cRStates; i++ )
@@ -491,7 +490,6 @@ SCARDRETCODE _GetStatusChange(
 
     // internally, we use unsigned long to compare easily scarderr.h values from the debugger
     // for python, we return a long
-    hresult=ulResult;
     return hresult;
 }
 
