@@ -51,7 +51,7 @@ typedef struct
 {
     SCARD_READERSTATE* ars;
     char** aszReaderNames;
-    unsigned long cRStates;
+    int cRStates;
 } READERSTATELIST ;
 
 typedef struct

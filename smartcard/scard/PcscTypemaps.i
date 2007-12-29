@@ -210,7 +210,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 %typemap(in,numinputs=0) READERSTATELIST *OUTPUT(READERSTATELIST temp)
 {
     $1 = &temp;
-    //$1->bAllocated=FALSE;
 }
 
 // release READERSTATELIST INPUT/OUTPUT argument
@@ -220,7 +219,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 {
     if(NULL!=$1)
     {
-        unsigned int i;
+        int i;
         for(i=0; i<$1->cRStates; i++ )
         {
             if($1->aszReaderNames[i])
@@ -249,7 +248,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 {
     if(NULL!=$1)
     {
-        unsigned int i;
+        int i;
         for(i=0; i<$1->cRStates; i++ )
         {
             if($1->aszReaderNames[i])
@@ -282,8 +281,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 }
 
 // reader state list as input and output
-%typemap(in) READERSTATELIST *BOTH = READERSTATELIST *prsl;
-%typemap(argout) READERSTATELIST *BOTH = READERSTATELIST *prsl;
+//%typemap(in) READERSTATELIST *BOTH = READERSTATELIST *prsl;
+//%typemap(argout) READERSTATELIST *BOTH = READERSTATELIST *prsl;
 
 
 // other names for READERSTATELIST as inpu/output parameter

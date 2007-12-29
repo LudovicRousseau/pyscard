@@ -103,7 +103,7 @@ static int _ReaderStateFromTuple( PyObject* o, READERSTATELIST* prl, unsigned in
 
     // second tuple item is current state
     o2=PyTuple_GetItem(o, 1);
-    prl->ars[x].dwCurrentState = PyInt_AsLong(o2);
+    prl->ars[x].dwCurrentState = (SCARDDWORDARG)PyInt_AsLong(o2);
 
     return 1;
 }
@@ -481,7 +481,7 @@ void SCardHelper_AppendReaderStateListToPyObject(
 {
     PyObject* oRStateList;
     //PyObject* o;
-    unsigned int i;
+    int i;
 
     if(source!=NULL)
     {
@@ -492,12 +492,12 @@ void SCardHelper_AppendReaderStateListToPyObject(
             PyObject* oEventState;
             PyObject* oAtr;
             PyObject* oByte;
-            unsigned int j;
+            SCARDDWORDARG j;
 
             // reader, event state, atr
             PyObject* ot = PyTuple_New( 3 );
             oReader = PyString_FromString( source->ars[i].szReader );
-            oEventState = PyInt_FromLong( source->ars[i].dwEventState );
+            oEventState = PyInt_FromLong( (SCARDDWORDARG)source->ars[i].dwEventState );
             oAtr = PyList_New( source->ars[i].cbAtr );
             for(j=0; j<source->ars[i].cbAtr; j++)
             {
@@ -548,7 +548,7 @@ READERSTATELIST* SCardHelper_PyReaderStateListToREADERSTATELIST(PyObject* source
 build a READERSTATELIST from a Python list of reader states
 ==============================================================================*/
 {
-    unsigned int cRStates, x;
+    int cRStates, x;
     READERSTATELIST* prl;
 
 
@@ -582,7 +582,6 @@ build a READERSTATELIST from a Python list of reader states
         PyErr_SetString( PyExc_MemoryError, "Unable to allocate temporary array" );
         return NULL;
     }
-    //prl->bAllocated=TRUE;
     prl->cRStates = cRStates;
 
     prl->ars = mem_Malloc( cRStates*sizeof(SCARD_READERSTATE) );
@@ -609,7 +608,7 @@ build a READERSTATELIST from a Python list of reader states
         int iRes = _ReaderStateFromTuple( o, prl, x );
         if(!iRes)
         {
-            unsigned int j;
+            SCARDDWORDARG j;
             for(j=0; j<x; j++)
             {
                 mem_Free( prl->aszReaderNames[x] );
@@ -628,7 +627,8 @@ void SCardHelper_PrintReaderStateList( READERSTATELIST* prl )
 dump a reader state list
 ==============================================================================*/
 {
-    unsigned int i, j;
+    int i;
+    SCARDDWORDARG j;
 
     for( i=0; prl && i<prl->cRStates; i++ )
     {
