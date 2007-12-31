@@ -3,12 +3,12 @@ Priority: optional
 Maintainer: Ludovic Rousseau <rousseau@debian.org>
 Build-Depends: debhelper (>= 5.0.38), python-support (>= 0.5.3), python-all-dev (>= 2.3.5-11), libpcsclite-dev
 Standards-Version: 3.7.3
-Section: libs
+Section: python
 XS-Python-Version: all
 Homepage: http://pyscard.sourceforge.net/
 
 Package: python-pyscard
-Section: libs
+Section: python
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}
 Provides: ${python:Provides}
