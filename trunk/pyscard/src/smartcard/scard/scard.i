@@ -80,10 +80,11 @@ SCardLocateCards
 SCardReconnect
 SCardReleaseContext
 SCardRemoveReaderFromGroup
+SCardSetAttrib
 SCardStatus
 SCardTransmit
 
-On linux with PCSC lite, the smartcard.scard module provides mapping for the following API functions:
+On linux or Mac OS X Leopard with PCSC lite, the smartcard.scard module provides mapping for the following API functions:
 
 SCardBeginTransaction
 SCardCancel
@@ -93,6 +94,25 @@ SCardDisconnect
 SCardEndTransaction
 SCardEstablishContext
 SCardGetAttrib
+SCardGetStatusChange
+SCardIsValidContext
+SCardListReaders
+SCardListReaderGroups
+SCardReconnect
+SCardReleaseContext
+SCardSetAttrib
+SCardStatus
+SCardTransmit
+
+On Mac OS X Tiger with PCSC lite, the smartcard.scard module provides mapping for the following API functions:
+
+SCardBeginTransaction
+SCardCancel
+SCardConnect
+SCardControl
+SCardDisconnect
+SCardEndTransaction
+SCardEstablishContext
 SCardGetStatusChange
 SCardListReaders
 SCardListReaderGroups
@@ -176,6 +196,10 @@ typedef STRING PROVIDERNAME_t;
 %include PcscTypemaps.i
 
 %{
+
+// 
+// these functions are only available on win32 PCSC
+// 
 
 #ifdef WIN32
 ///////////////////////////////////////////////////////////////////////////////
@@ -271,13 +295,6 @@ SCARDRETCODE _IntroduceReaderGroup( SCARDCONTEXT hcontext, char* szGroupName )
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _IsValidContext( SCARDCONTEXT hcontext )
-{
-    winscard_init();
-    return (mySCardIsValidContext)( hcontext );
-}
-
-///////////////////////////////////////////////////////////////////////////////
 SCARDRETCODE _ListCards( SCARDCONTEXT hcontext, BYTELIST* pbl, GUIDLIST* guidlist, STRINGLIST* pmszCards )
 {
     // autoallocate memory; will be freed on output typemap
@@ -354,67 +371,20 @@ SCARDRETCODE _RemoveReaderFromGroup(
 
 #endif // WIN32
 
+
+//
+// These functions are not available on Max OS X Tiger
+//
+#ifndef __TIGER__
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _BeginTransaction( SCARDHANDLE hcard )
+SCARDRETCODE _IsValidContext( SCARDCONTEXT hcontext )
 {
     winscard_init();
-    return (mySCardBeginTransaction)( hcard );
+    return (mySCardIsValidContext)( hcontext );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _Cancel( SCARDCONTEXT hcontext )
-{
-    winscard_init();
-    return (mySCardCancel)( hcontext );
-}
-
-///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _Connect(
-  SCARDCONTEXT hcontext,
-  char* szReader,
-  unsigned long dwShareMode,
-  unsigned long dwPreferredProtocols,
-  LPSCARDHANDLE phCard,
-  SCARDDWORDARG* pdwActiveProtocol
-)
-{
-    SCARDRETCODE lRet;
-    winscard_init();
-    lRet = (mySCardConnectA)(
-            hcontext,
-            (LPCTSTR)szReader,
-            dwShareMode,
-            dwPreferredProtocols,
-            phCard,
-            pdwActiveProtocol );
-    return lRet;
-}
-
-///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _Disconnect( SCARDHANDLE hcard, unsigned long dwDisposition )
-{
-    winscard_init();
-    return (mySCardDisconnect)( hcard, dwDisposition );
-}
-
-///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _EndTransaction( SCARDHANDLE hcard, unsigned long dwDisposition )
-{
-    winscard_init();
-    return (mySCardEndTransaction)( hcard, dwDisposition );
-}
-
-///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _EstablishContext( unsigned long dwScope, SCARDCONTEXT* phContext )
-{
-    long lRet;
-    winscard_init();
-    lRet = (mySCardEstablishContext)( dwScope, NULL, NULL, phContext );
-    return lRet;
-}
-
-///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _GetAttrib( unsigned long hcard, unsigned long dwAttrId, BYTELIST* pbl )
+SCARDRETCODE _GetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* pbl )
 {
     long lRetCode;
 
@@ -437,6 +407,78 @@ SCARDRETCODE _GetAttrib( unsigned long hcard, unsigned long dwAttrId, BYTELIST* 
 
     lRetCode = (mySCardGetAttrib)( hcard, dwAttrId, pbl->ab, &pbl->cBytes );
     return lRetCode;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+SCARDRETCODE _SetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* pbl )
+{
+    long lRetCode;
+
+    winscard_init();
+
+    lRetCode = (mySCardSetAttrib)( hcard, dwAttrId, pbl->ab, pbl->cBytes );
+    return lRetCode;
+}
+#endif // !__TIGER__
+
+
+///////////////////////////////////////////////////////////////////////////////
+SCARDRETCODE _BeginTransaction( SCARDHANDLE hcard )
+{
+    winscard_init();
+    return (mySCardBeginTransaction)( hcard );
+}
+
+///////////////////////////////////////////////////////////////////////////////
+SCARDRETCODE _Cancel( SCARDCONTEXT hcontext )
+{
+    winscard_init();
+    return (mySCardCancel)( hcontext );
+}
+
+///////////////////////////////////////////////////////////////////////////////
+SCARDRETCODE _Connect(
+  SCARDCONTEXT hcontext,
+  char* szReader,
+  SCARDDWORDARG dwShareMode,
+  SCARDDWORDARG dwPreferredProtocols,
+  LPSCARDHANDLE phCard,
+  SCARDDWORDARG* pdwActiveProtocol
+)
+{
+    SCARDRETCODE lRet;
+    winscard_init();
+    lRet = (mySCardConnectA)(
+            hcontext,
+            (LPCTSTR)szReader,
+            dwShareMode,
+            dwPreferredProtocols,
+            phCard,
+            pdwActiveProtocol );
+    return lRet;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+SCARDRETCODE _Disconnect( SCARDHANDLE hcard, SCARDDWORDARG dwDisposition )
+{
+    winscard_init();
+    return (mySCardDisconnect)( hcard, dwDisposition );
+}
+
+///////////////////////////////////////////////////////////////////////////////
+SCARDRETCODE _EndTransaction( SCARDHANDLE hcard, SCARDDWORDARG dwDisposition )
+{
+    winscard_init();
+    return (mySCardEndTransaction)( hcard, dwDisposition );
+}
+
+///////////////////////////////////////////////////////////////////////////////
+SCARDRETCODE _EstablishContext( SCARDDWORDARG dwScope, SCARDCONTEXT* phContext )
+{
+    long lRet;
+    winscard_init();
+    lRet = (mySCardEstablishContext)( dwScope, NULL, NULL, phContext );
+    return lRet;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -723,7 +765,7 @@ SCARDRETCODE _Transmit(
 ///////////////////////////////////////////////////////////////////////////////
 SCARDRETCODE _Control(
   SCARDHANDLE hcard,
-  unsigned long controlCode,
+  SCARDDWORDARG controlCode,
   BYTELIST* pblSendBuffer,
   BYTELIST* pblRecvBuffer
 )
@@ -984,6 +1026,10 @@ ERRORSTRING* _GetErrorMessage( long lErrCode )
 %typemap(doc, name="dwControlCode", type="") (SCARDDWORDARG dwControlCode) "dwControlCode: the control code to send";
 
 
+// 
+// these functions are only available on win32 PCSC
+// 
+
 #ifdef WIN32
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_ADDREADERTOGROUP
@@ -1208,26 +1254,6 @@ if hresult!=SCARD_S_SUCCESS:
 SCARDRETCODE _IntroduceReaderGroup( SCARDCONTEXT hcontext, char* szGroupName );
 
 ///////////////////////////////////////////////////////////////////////////////
-%define DOCSTRING_ISVALIDCONTEXT
-"
-This function determines whether a smart card context handle is still
-valid.  After a smart card context handle has been set by
-SCardEstablishContext(), it may become not valid if the resource manager
-service has been shut down.
-
-from smartcard.scard import *
-hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
-hresult = SCardIsValidContext( hcontext )
-if hresult!=SCARD_S_SUCCESS:
-    raise error, 'Invalid context: ' + SCardGetErrorMessage(hresult)
-...
-"
-%enddef
-%feature("docstring") DOCSTRING_ISVALIDCONTEXT;
-%rename(SCardIsValidContext) _IsValidContext( SCARDCONTEXT hcontext );
-SCARDRETCODE _IsValidContext( SCARDCONTEXT hcontext );
-
-///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_LISTINTERFACES
 "
 Provides a list of interfaces supplied by a given card.  The caller
@@ -1354,6 +1380,333 @@ SCARDRETCODE _RemoveReaderFromGroup(
   char* szGroupName );
 
 #endif // WIN32
+
+
+//
+// These functions are not available on Max OS X Tiger
+//
+//
+#ifndef __TIGER__
+
+    ///////////////////////////////////////////////////////////////////////////////
+    %define DOCSTRING_ISVALIDCONTEXT
+    "
+    This function determines whether a smart card context handle is still
+    valid.  After a smart card context handle has been set by
+    SCardEstablishContext(), it may become not valid if the resource manager
+    service has been shut down.
+    
+    from smartcard.scard import *
+    hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
+    hresult = SCardIsValidContext( hcontext )
+    if hresult!=SCARD_S_SUCCESS:
+        raise error, 'Invalid context: ' + SCardGetErrorMessage(hresult)
+    ...
+    "
+    %enddef
+    %feature("docstring") DOCSTRING_ISVALIDCONTEXT;
+    %rename(SCardIsValidContext) _IsValidContext( SCARDCONTEXT hcontext );
+    SCARDRETCODE _IsValidContext( SCARDCONTEXT hcontext );
+    
+    ///////////////////////////////////////////////////////////////////////////////
+    %define DOCSTRING_GETATTRIB
+    "
+    
+    This function get an attribute from the IFD Handler.
+    
+    For PCSC lite, the list of possible attributes is:
+    
+        * SCARD_ATTR_ASYNC_PROTOCOL_TYPES
+        * SCARD_ATTR_ATR_STRING
+        * SCARD_ATTR_CHANNEL_ID
+        * SCARD_ATTR_CHARACTERISTICS
+        * SCARD_ATTR_CURRENT_BWT
+        * SCARD_ATTR_CURRENT_CLK
+        * SCARD_ATTR_CURRENT_CWT
+        * SCARD_ATTR_CURRENT_D
+        * SCARD_ATTR_CURRENT_EBC_ENCODING
+        * SCARD_ATTR_CURRENT_F
+        * SCARD_ATTR_CURRENT_IFSC
+        * SCARD_ATTR_CURRENT_IFSD
+        * SCARD_ATTR_CURRENT_IO_STATE
+        * SCARD_ATTR_CURRENT_N
+        * SCARD_ATTR_CURRENT_PROTOCOL_TYPE
+        * SCARD_ATTR_CURRENT_W
+        * SCARD_ATTR_DEFAULT_CLK
+        * SCARD_ATTR_DEFAULT_DATA_RATE
+        * SCARD_ATTR_DEVICE_FRIENDLY_NAME_A
+        * SCARD_ATTR_DEVICE_FRIENDLY_NAME_W
+        * SCARD_ATTR_DEVICE_IN_USE
+        * SCARD_ATTR_DEVICE_SYSTEM_NAME_A
+        * SCARD_ATTR_DEVICE_SYSTEM_NAME_W
+        * SCARD_ATTR_DEVICE_UNIT
+        * SCARD_ATTR_ESC_AUTHREQUEST
+        * SCARD_ATTR_ESC_CANCEL
+        * SCARD_ATTR_ESC_RESET
+        * SCARD_ATTR_EXTENDED_BWT
+        * SCARD_ATTR_ICC_INTERFACE_STATUS
+        * SCARD_ATTR_ICC_PRESENCE
+        * SCARD_ATTR_ICC_TYPE_PER_ATR
+        * SCARD_ATTR_MAX_CLK
+        * SCARD_ATTR_MAX_DATA_RATE
+        * SCARD_ATTR_MAX_IFSD
+        * SCARD_ATTR_MAXINPUT
+        * SCARD_ATTR_POWER_MGMT_SUPPORT
+        * SCARD_ATTR_SUPRESS_T1_IFS_REQUEST
+        * SCARD_ATTR_SYNC_PROTOCOL_TYPES
+        * SCARD_ATTR_USER_AUTH_INPUT_DEVICE
+        * SCARD_ATTR_USER_TO_CARD_AUTH_DEVICE
+        * SCARD_ATTR_VENDOR_IFD_SERIAL_NO
+        * SCARD_ATTR_VENDOR_IFD_TYPE
+        * SCARD_ATTR_VENDOR_IFD_VERSION
+        * SCARD_ATTR_VENDOR_NAME
+    
+    For Windows Resource Manager, the list of possible attributes is:
+    
+        * SCARD_ATTR_VENDOR_NAME
+        * SCARD_ATTR_VENDOR_IFD_TYPE
+        * SCARD_ATTR_VENDOR_IFD_VERSION
+        * SCARD_ATTR_VENDOR_IFD_SERIAL_NO
+        * SCARD_ATTR_CHANNEL_ID
+        * SCARD_ATTR_DEFAULT_CLK
+        * SCARD_ATTR_MAX_CLK
+        * SCARD_ATTR_DEFAULT_DATA_RATE
+        * SCARD_ATTR_MAX_DATA_RATE
+        * SCARD_ATTR_MAX_IFSD
+        * SCARD_ATTR_POWER_MGMT_SUPPORT
+        * SCARD_ATTR_USER_TO_CARD_AUTH_DEVICE
+        * SCARD_ATTR_USER_AUTH_INPUT_DEVICE
+        * SCARD_ATTR_CHARACTERISTICS
+        * SCARD_ATTR_CURRENT_PROTOCOL_TYPE
+        * SCARD_ATTR_CURRENT_CLK
+        * SCARD_ATTR_CURRENT_F
+        * SCARD_ATTR_CURRENT_D
+        * SCARD_ATTR_CURRENT_N
+        * SCARD_ATTR_CURRENT_W
+        * SCARD_ATTR_CURRENT_IFSC
+        * SCARD_ATTR_CURRENT_IFSD
+        * SCARD_ATTR_CURRENT_BWT
+        * SCARD_ATTR_CURRENT_CWT
+        * SCARD_ATTR_CURRENT_EBC_ENCODING
+        * SCARD_ATTR_EXTENDED_BWT
+        * SCARD_ATTR_ICC_PRESENCE
+        * SCARD_ATTR_ICC_INTERFACE_STATUS
+        * SCARD_ATTR_CURRENT_IO_STATE
+        * SCARD_ATTR_ATR_STRING
+        * SCARD_ATTR_ICC_TYPE_PER_ATR
+        * SCARD_ATTR_ESC_RESET
+        * SCARD_ATTR_ESC_CANCEL
+        * SCARD_ATTR_ESC_AUTHREQUEST
+        * SCARD_ATTR_MAXINPUT
+        * SCARD_ATTR_DEVICE_UNIT
+        * SCARD_ATTR_DEVICE_IN_USE
+        * SCARD_ATTR_DEVICE_FRIENDLY_NAME_A
+        * SCARD_ATTR_DEVICE_SYSTEM_NAME_A
+        * SCARD_ATTR_DEVICE_FRIENDLY_NAME_W
+        * SCARD_ATTR_DEVICE_SYSTEM_NAME_W
+        * SCARD_ATTR_SUPRESS_T1_IFS_REQUEST
+    
+    Not all the dwAttrId values listed above may be implemented in the IFD
+    Handler you are using.  And some dwAttrId values not listed here may be
+    implemented.
+    
+    
+    from smartcard.scard import *
+    ... establish context and connect to card ...
+    hresult, attrib = SCardGetAttrib( hcard, SCARD_ATTR_ATR_STRING )
+    if hresult==SCARD_S_SUCCESS:
+        for j in attrib:
+             print '0x%.2X' % attrib,
+    ...
+    "
+    %enddef
+    %feature("docstring") DOCSTRING_GETATTRIB;
+    %rename(SCardGetAttrib) _GetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* ATTRIBUTES );
+    SCARDRETCODE _GetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* ATTRIBUTES );
+    
+    ///////////////////////////////////////////////////////////////////////////////
+    %define DOCSTRING_SETATTRIB
+    "
+    
+    This function sets an attribute from the IFD Handler. Not all attributes are supported by all readers nor can 
+    they be set at all times.
+    
+    For PCSC lite, the list of possible attributes is:
+    
+        * SCARD_ATTR_ASYNC_PROTOCOL_TYPES
+        * SCARD_ATTR_ATR_STRING
+        * SCARD_ATTR_CHANNEL_ID
+        * SCARD_ATTR_CHARACTERISTICS
+        * SCARD_ATTR_CURRENT_BWT
+        * SCARD_ATTR_CURRENT_CLK
+        * SCARD_ATTR_CURRENT_CWT
+        * SCARD_ATTR_CURRENT_D
+        * SCARD_ATTR_CURRENT_EBC_ENCODING
+        * SCARD_ATTR_CURRENT_F
+        * SCARD_ATTR_CURRENT_IFSC
+        * SCARD_ATTR_CURRENT_IFSD
+        * SCARD_ATTR_CURRENT_IO_STATE
+        * SCARD_ATTR_CURRENT_N
+        * SCARD_ATTR_CURRENT_PROTOCOL_TYPE
+        * SCARD_ATTR_CURRENT_W
+        * SCARD_ATTR_DEFAULT_CLK
+        * SCARD_ATTR_DEFAULT_DATA_RATE
+        * SCARD_ATTR_DEVICE_FRIENDLY_NAME_A
+        * SCARD_ATTR_DEVICE_FRIENDLY_NAME_W
+        * SCARD_ATTR_DEVICE_IN_USE
+        * SCARD_ATTR_DEVICE_SYSTEM_NAME_A
+        * SCARD_ATTR_DEVICE_SYSTEM_NAME_W
+        * SCARD_ATTR_DEVICE_UNIT
+        * SCARD_ATTR_ESC_AUTHREQUEST
+        * SCARD_ATTR_ESC_CANCEL
+        * SCARD_ATTR_ESC_RESET
+        * SCARD_ATTR_EXTENDED_BWT
+        * SCARD_ATTR_ICC_INTERFACE_STATUS
+        * SCARD_ATTR_ICC_PRESENCE
+        * SCARD_ATTR_ICC_TYPE_PER_ATR
+        * SCARD_ATTR_MAX_CLK
+        * SCARD_ATTR_MAX_DATA_RATE
+        * SCARD_ATTR_MAX_IFSD
+        * SCARD_ATTR_MAXINPUT
+        * SCARD_ATTR_POWER_MGMT_SUPPORT
+        * SCARD_ATTR_SUPRESS_T1_IFS_REQUEST
+        * SCARD_ATTR_SYNC_PROTOCOL_TYPES
+        * SCARD_ATTR_USER_AUTH_INPUT_DEVICE
+        * SCARD_ATTR_USER_TO_CARD_AUTH_DEVICE
+        * SCARD_ATTR_VENDOR_IFD_SERIAL_NO
+        * SCARD_ATTR_VENDOR_IFD_TYPE
+        * SCARD_ATTR_VENDOR_IFD_VERSION
+        * SCARD_ATTR_VENDOR_NAME
+    
+    For Windows Resource Manager, the list of possible attributes is:
+    
+        * SCARD_ATTR_VENDOR_NAME
+        * SCARD_ATTR_VENDOR_IFD_TYPE
+        * SCARD_ATTR_VENDOR_IFD_VERSION
+        * SCARD_ATTR_VENDOR_IFD_SERIAL_NO
+        * SCARD_ATTR_CHANNEL_ID
+        * SCARD_ATTR_DEFAULT_CLK
+        * SCARD_ATTR_MAX_CLK
+        * SCARD_ATTR_DEFAULT_DATA_RATE
+        * SCARD_ATTR_MAX_DATA_RATE
+        * SCARD_ATTR_MAX_IFSD
+        * SCARD_ATTR_POWER_MGMT_SUPPORT
+        * SCARD_ATTR_USER_TO_CARD_AUTH_DEVICE
+        * SCARD_ATTR_USER_AUTH_INPUT_DEVICE
+        * SCARD_ATTR_CHARACTERISTICS
+        * SCARD_ATTR_CURRENT_PROTOCOL_TYPE
+        * SCARD_ATTR_CURRENT_CLK
+        * SCARD_ATTR_CURRENT_F
+        * SCARD_ATTR_CURRENT_D
+        * SCARD_ATTR_CURRENT_N
+        * SCARD_ATTR_CURRENT_W
+        * SCARD_ATTR_CURRENT_IFSC
+        * SCARD_ATTR_CURRENT_IFSD
+        * SCARD_ATTR_CURRENT_BWT
+        * SCARD_ATTR_CURRENT_CWT
+        * SCARD_ATTR_CURRENT_EBC_ENCODING
+        * SCARD_ATTR_EXTENDED_BWT
+        * SCARD_ATTR_ICC_PRESENCE
+        * SCARD_ATTR_ICC_INTERFACE_STATUS
+        * SCARD_ATTR_CURRENT_IO_STATE
+        * SCARD_ATTR_ATR_STRING
+        * SCARD_ATTR_ICC_TYPE_PER_ATR
+        * SCARD_ATTR_ESC_RESET
+        * SCARD_ATTR_ESC_CANCEL
+        * SCARD_ATTR_ESC_AUTHREQUEST
+        * SCARD_ATTR_MAXINPUT
+        * SCARD_ATTR_DEVICE_UNIT
+        * SCARD_ATTR_DEVICE_IN_USE
+        * SCARD_ATTR_DEVICE_FRIENDLY_NAME_A
+        * SCARD_ATTR_DEVICE_SYSTEM_NAME_A
+        * SCARD_ATTR_DEVICE_FRIENDLY_NAME_W
+        * SCARD_ATTR_DEVICE_SYSTEM_NAME_W
+        * SCARD_ATTR_SUPRESS_T1_IFS_REQUEST
+    
+    Not all the dwAttrId values listed above may be implemented in the IFD
+    Handler you are using.  And some dwAttrId values not listed here may be
+    implemented.
+    
+    
+    from smartcard.scard import *
+    ... establish context and connect to card ...
+    hresult, attrib = SCardSetAttrib( hcard, SCARD_ATTR_VENDOR_NAME, ['G', 'e', 'm', 'a', 'l', 't', 'o'] )
+    if hresult!=SCARD_S_SUCCESS:
+         print 'Failed to set attribute'
+    ...
+    "
+    %enddef
+    %feature("docstring") DOCSTRING_SETATTRIB;
+    %rename(SCardSetAttrib) _SetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* ATTRIBUTESIN );
+    SCARDRETCODE _SetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* ATTRIBUTESIN );
+    
+#endif // !__TIGER__
+
+
+//
+// SCardControl does not have the same prototype on Mac OS X Tiger
+// 
+#ifdef __TIGER__
+    ///////////////////////////////////////////////////////////////////////////////
+    %define DOCSTRING_CONTROL
+    "
+    This function sends a control command to the reader connected to by SCardConnect().
+    It returns a result and the control response.
+
+    from smartcard.scard import *
+    hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
+    hresult, hcard, dwActiveProtocol = SCardConnect(
+         hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 )
+    CMD = [ 42, 0x12, 0x34]
+    hresult, response = SCardControl( hcard, CMD )
+    if hresult!=SCARD_S_SUCCESS:
+        raise error, 'Failed to control: ' + SCardGetErrorMessage(hresult)
+    "
+    %enddef
+    %feature("docstring") DOCSTRING_CONTROL;
+    %rename(SCardControl) _Control(
+      SCARDHANDLE hcard,
+      BYTELIST* INBUFFER,
+      BYTELIST* OUTBUFFER
+    );
+    SCARDRETCODE _Control(
+      SCARDHANDLE hcard,
+      BYTELIST* INBUFFER,
+      BYTELIST* OUTBUFFER
+    );
+#else // !__TIGER__
+    ///////////////////////////////////////////////////////////////////////////////
+    %define DOCSTRING_CONTROL
+    "
+    This function sends a control command to the reader connected to by SCardConnect().
+    It returns a result and the control response.
+    
+    
+    from smartcard.scard import *
+    hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
+    hresult, hcard, dwActiveProtocol = SCardConnect(
+         hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 )
+    CMD = [0x12, 0x34]
+    hresult, response = SCardControl( hcard, 42, CMD )
+    if hresult!=SCARD_S_SUCCESS:
+        raise error, 'Failed to control: ' + SCardGetErrorMessage(hresult)
+    "
+    %enddef
+    %feature("docstring") DOCSTRING_CONTROL;
+    %rename(SCardControl) _Control(
+      SCARDHANDLE hcard,
+      SCARDDWORDARG dwControlCode,
+      BYTELIST* INBUFFER,
+      BYTELIST* OUTBUFFER
+    );
+    SCARDRETCODE _Control(
+      SCARDHANDLE hcard,
+      SCARDDWORDARG dwControlCode,
+      BYTELIST* INBUFFER,
+      BYTELIST* OUTBUFFER
+    );
+#endif // __TIGER__
+
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_BEGINTRANSACTION
@@ -1520,122 +1873,6 @@ if hresult!=SCARD_S_SUCCESS:
 %rename(SCardEstablishContext) _EstablishContext( SCARDDWORDARG dwScope, SCARDCONTEXT* phcontext );
 SCARDRETCODE _EstablishContext( SCARDDWORDARG dwScope, SCARDCONTEXT* phcontext );
 
-
-///////////////////////////////////////////////////////////////////////////////
-%define DOCSTRING_GETATTRIB
-"
-
-This function get an attribute from the IFD Handler.
-
-For PCSC lite, the list of possible attributes is:
-
-    * SCARD_ATTR_ASYNC_PROTOCOL_TYPES
-    * SCARD_ATTR_ATR_STRING
-    * SCARD_ATTR_CHANNEL_ID
-    * SCARD_ATTR_CHARACTERISTICS
-    * SCARD_ATTR_CURRENT_BWT
-    * SCARD_ATTR_CURRENT_CLK
-    * SCARD_ATTR_CURRENT_CWT
-    * SCARD_ATTR_CURRENT_D
-    * SCARD_ATTR_CURRENT_EBC_ENCODING
-    * SCARD_ATTR_CURRENT_F
-    * SCARD_ATTR_CURRENT_IFSC
-    * SCARD_ATTR_CURRENT_IFSD
-    * SCARD_ATTR_CURRENT_IO_STATE
-    * SCARD_ATTR_CURRENT_N
-    * SCARD_ATTR_CURRENT_PROTOCOL_TYPE
-    * SCARD_ATTR_CURRENT_W
-    * SCARD_ATTR_DEFAULT_CLK
-    * SCARD_ATTR_DEFAULT_DATA_RATE
-    * SCARD_ATTR_DEVICE_FRIENDLY_NAME_A
-    * SCARD_ATTR_DEVICE_FRIENDLY_NAME_W
-    * SCARD_ATTR_DEVICE_IN_USE
-    * SCARD_ATTR_DEVICE_SYSTEM_NAME_A
-    * SCARD_ATTR_DEVICE_SYSTEM_NAME_W
-    * SCARD_ATTR_DEVICE_UNIT
-    * SCARD_ATTR_ESC_AUTHREQUEST
-    * SCARD_ATTR_ESC_CANCEL
-    * SCARD_ATTR_ESC_RESET
-    * SCARD_ATTR_EXTENDED_BWT
-    * SCARD_ATTR_ICC_INTERFACE_STATUS
-    * SCARD_ATTR_ICC_PRESENCE
-    * SCARD_ATTR_ICC_TYPE_PER_ATR
-    * SCARD_ATTR_MAX_CLK
-    * SCARD_ATTR_MAX_DATA_RATE
-    * SCARD_ATTR_MAX_IFSD
-    * SCARD_ATTR_MAXINPUT
-    * SCARD_ATTR_POWER_MGMT_SUPPORT
-    * SCARD_ATTR_SUPRESS_T1_IFS_REQUEST
-    * SCARD_ATTR_SYNC_PROTOCOL_TYPES
-    * SCARD_ATTR_USER_AUTH_INPUT_DEVICE
-    * SCARD_ATTR_USER_TO_CARD_AUTH_DEVICE
-    * SCARD_ATTR_VENDOR_IFD_SERIAL_NO
-    * SCARD_ATTR_VENDOR_IFD_TYPE
-    * SCARD_ATTR_VENDOR_IFD_VERSION
-    * SCARD_ATTR_VENDOR_NAME
-
-For Windows Resource Manager, the list of possible attributes is:
-
-    * SCARD_ATTR_VENDOR_NAME
-    * SCARD_ATTR_VENDOR_IFD_TYPE
-    * SCARD_ATTR_VENDOR_IFD_VERSION
-    * SCARD_ATTR_VENDOR_IFD_SERIAL_NO
-    * SCARD_ATTR_CHANNEL_ID
-    * SCARD_ATTR_DEFAULT_CLK
-    * SCARD_ATTR_MAX_CLK
-    * SCARD_ATTR_DEFAULT_DATA_RATE
-    * SCARD_ATTR_MAX_DATA_RATE
-    * SCARD_ATTR_MAX_IFSD
-    * SCARD_ATTR_POWER_MGMT_SUPPORT
-    * SCARD_ATTR_USER_TO_CARD_AUTH_DEVICE
-    * SCARD_ATTR_USER_AUTH_INPUT_DEVICE
-    * SCARD_ATTR_CHARACTERISTICS
-    * SCARD_ATTR_CURRENT_PROTOCOL_TYPE
-    * SCARD_ATTR_CURRENT_CLK
-    * SCARD_ATTR_CURRENT_F
-    * SCARD_ATTR_CURRENT_D
-    * SCARD_ATTR_CURRENT_N
-    * SCARD_ATTR_CURRENT_W
-    * SCARD_ATTR_CURRENT_IFSC
-    * SCARD_ATTR_CURRENT_IFSD
-    * SCARD_ATTR_CURRENT_BWT
-    * SCARD_ATTR_CURRENT_CWT
-    * SCARD_ATTR_CURRENT_EBC_ENCODING
-    * SCARD_ATTR_EXTENDED_BWT
-    * SCARD_ATTR_ICC_PRESENCE
-    * SCARD_ATTR_ICC_INTERFACE_STATUS
-    * SCARD_ATTR_CURRENT_IO_STATE
-    * SCARD_ATTR_ATR_STRING
-    * SCARD_ATTR_ICC_TYPE_PER_ATR
-    * SCARD_ATTR_ESC_RESET
-    * SCARD_ATTR_ESC_CANCEL
-    * SCARD_ATTR_ESC_AUTHREQUEST
-    * SCARD_ATTR_MAXINPUT
-    * SCARD_ATTR_DEVICE_UNIT
-    * SCARD_ATTR_DEVICE_IN_USE
-    * SCARD_ATTR_DEVICE_FRIENDLY_NAME_A
-    * SCARD_ATTR_DEVICE_SYSTEM_NAME_A
-    * SCARD_ATTR_DEVICE_FRIENDLY_NAME_W
-    * SCARD_ATTR_DEVICE_SYSTEM_NAME_W
-    * SCARD_ATTR_SUPRESS_T1_IFS_REQUEST
-
-Not all the dwAttrId values listed above may be implemented in the IFD
-Handler you are using.  And some dwAttrId values not listed here may be
-implemented.
-
-
-from smartcard.scard import *
-... establish context and connect to card ...
-hresult, attrib = SCardGetAttrib( hcard, SCARD_ATTR_ATR_STRING )
-if hresult==SCARD_S_SUCCESS:
-    for j in attrib:
-         print '0x%.2X' % attrib,
-...
-"
-%enddef
-%feature("docstring") DOCSTRING_GETATTRIB;
-%rename(SCardGetAttrib) _GetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* ATTRIBUTES );
-SCARDRETCODE _GetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* ATTRIBUTES );
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_GETSTATUSCHANGE
@@ -1887,37 +2124,6 @@ SCARDRETCODE _Transmit(
   unsigned long pioSendPci,
   BYTELIST* APDUCOMMAND,
   BYTELIST* APDURESPONSE
-);
-
-///////////////////////////////////////////////////////////////////////////////
-%define DOCSTRING_CONTROL
-"
-This function sends a control command to the reader connected to by SCardConnect().
-It returns a result and the control response.
-
-
-from smartcard.scard import *
-hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
-hresult, hcard, dwActiveProtocol = SCardConnect(
-     hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 )
-CMD = [0x12, 0x34]
-hresult, response = SCardControl( hcard, 42, CMD )
-if hresult!=SCARD_S_SUCCESS:
-    raise error, 'Failed to control: ' + SCardGetErrorMessage(hresult)
-"
-%enddef
-%feature("docstring") DOCSTRING_CONTROL;
-%rename(SCardControl) _Control(
-  SCARDHANDLE hcard,
-  SCARDDWORDARG dwControlCode,
-  BYTELIST* INBUFFER,
-  BYTELIST* OUTBUFFER
-);
-SCARDRETCODE _Control(
-  SCARDHANDLE hcard,
-  SCARDDWORDARG dwControlCode,
-  BYTELIST* INBUFFER,
-  BYTELIST* OUTBUFFER
 );
 
 ///////////////////////////////////////////////////////////////////////////////

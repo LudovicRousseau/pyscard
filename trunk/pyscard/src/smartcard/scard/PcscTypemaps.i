@@ -74,6 +74,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 // other names for BYTELIST as INPUT parameter
 %apply BYTELIST* INPUT { BYTELIST* ATR };
+%apply BYTELIST* INPUT { BYTELIST* ATTRIBUTESIN };
 %apply BYTELIST* INPUT { BYTELIST* MASK };
 %apply BYTELIST* INPUT { BYTELIST* APDUCOMMAND };
 %apply BYTELIST* INPUT { BYTELIST* INBUFFER };

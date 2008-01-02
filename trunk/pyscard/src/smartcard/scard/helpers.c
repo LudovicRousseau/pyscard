@@ -548,7 +548,7 @@ READERSTATELIST* SCardHelper_PyReaderStateListToREADERSTATELIST(PyObject* source
 build a READERSTATELIST from a Python list of reader states
 ==============================================================================*/
 {
-    int cRStates, x;
+    SCARDDWORDARG cRStates, x;
     READERSTATELIST* prl;
 
 
