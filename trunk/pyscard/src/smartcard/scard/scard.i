@@ -422,6 +422,59 @@ SCARDRETCODE _SetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* pb
 #endif // !__TIGER__
 
 
+//
+// SCardControl does not have the same prototype on Mac OS X Tiger
+// 
+
+#ifdef __TIGER__
+    ///////////////////////////////////////////////////////////////////////////////
+    SCARDRETCODE _Control(
+      SCARDHANDLE hcard,
+      BYTELIST* pblSendBuffer,
+      BYTELIST* pblRecvBuffer
+    )
+    {
+        SCARDRETCODE lRet;
+        winscard_init();
+    
+        pblRecvBuffer->ab = (unsigned char*)mem_Malloc(1024*sizeof(unsigned char));
+        pblRecvBuffer->cBytes=1024;
+    
+        lRet = (mySCardControl)(
+                    hcard,
+                    pblSendBuffer->ab,
+                    pblSendBuffer->cBytes,
+                    pblRecvBuffer->ab,
+                    &pblRecvBuffer->cBytes );
+        return lRet;
+    }
+#else // !__TIGER__
+    ///////////////////////////////////////////////////////////////////////////////
+    SCARDRETCODE _Control(
+      SCARDHANDLE hcard,
+      SCARDDWORDARG controlCode,
+      BYTELIST* pblSendBuffer,
+      BYTELIST* pblRecvBuffer
+    )
+    {
+        SCARDRETCODE lRet;
+        winscard_init();
+    
+        pblRecvBuffer->ab = (unsigned char*)mem_Malloc(1024*sizeof(unsigned char));
+        pblRecvBuffer->cBytes=1024;
+    
+        lRet = (mySCardControl)(
+                    hcard,
+                    controlCode,
+                    pblSendBuffer->ab,
+                    pblSendBuffer->cBytes,
+                    pblRecvBuffer->ab,
+                    pblRecvBuffer->cBytes,
+                    &pblRecvBuffer->cBytes );
+        return lRet;
+    }
+#endif // __TIGER__
+
 ///////////////////////////////////////////////////////////////////////////////
 SCARDRETCODE _BeginTransaction( SCARDHANDLE hcard )
 {
@@ -760,40 +813,6 @@ SCARDRETCODE _Transmit(
                 &pblRecvBuffer->cBytes );
 
     return ret;
-}
-
-///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _Control(
-  SCARDHANDLE hcard,
-  SCARDDWORDARG controlCode,
-  BYTELIST* pblSendBuffer,
-  BYTELIST* pblRecvBuffer
-)
-{
-    SCARDRETCODE lRet;
-    winscard_init();
-
-    pblRecvBuffer->ab = (unsigned char*)mem_Malloc(1024*sizeof(unsigned char));
-    pblRecvBuffer->cBytes=1024;
-
-    #ifdef __APPLE__
-        lRet = (mySCardControl)(
-                    hcard,
-                    pblSendBuffer->ab,
-                    pblSendBuffer->cBytes,
-                    pblRecvBuffer->ab,
-                    &pblRecvBuffer->cBytes );
-    #else // !__APPLE__
-        lRet = (mySCardControl)(
-                    hcard,
-                    controlCode,
-                    pblSendBuffer->ab,
-                    pblSendBuffer->cBytes,
-                    pblRecvBuffer->ab,
-                    pblRecvBuffer->cBytes,
-                    &pblRecvBuffer->cBytes );
-    #endif // __APPLE__
-    return lRet;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
