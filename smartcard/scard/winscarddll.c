@@ -26,186 +26,272 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include "winscarddll.h"
 
 #ifdef PCSCLITE
-#include <dlfcn.h>
+    #include <dlfcn.h>
 #endif // PCSCLITE
 
 #ifndef NULL
-#define NULL    ((void*)0)
+    #define NULL    ((void*)0)
 #endif //NULL
 
-// isolate functions not supported by pcsc lite
+// 
+// these functions are only available on win32 PCSC
+// 
 #ifdef WIN32
-WINSCARDAPI HANDLE
-WINAPI _defaultSCARDACCESSSTARTEDEVENT(void)
-{
-    return NULL;
-}
+    WINSCARDAPI HANDLE
+    WINAPI _defaultSCARDACCESSSTARTEDEVENT(void)
+    {
+        return NULL;
+    }
+    
+    WINSCARDAPI SCARDRETCODE
+    WINAPI _defaultSCARDADDREADERTOGROUPA(
+        IN SCARDCONTEXT hContext,
+        IN LPCSTR szReaderName,
+        IN LPCSTR szGroupName)
+    {
+        return SCARD_E_NO_SERVICE;
+    }
+    
+    WINSCARDAPI SCARDRETCODE
+    WINAPI _defaultSCARDFORGETCARDTYPEA(
+        IN SCARDCONTEXT hContext,
+        IN LPCSTR szCardName)
+    {
+        return SCARD_E_NO_SERVICE;
+    }
+    
+    WINSCARDAPI SCARDRETCODE
+    WINAPI _defaultSCARDFORGETREADERA(
+        IN SCARDCONTEXT hContext,
+        IN LPCSTR szReaderName)
+    {
+        return SCARD_E_NO_SERVICE;
+    }
+    
+    WINSCARDAPI SCARDRETCODE
+    WINAPI _defaultSCARDFORGETREADERGROUPA(
+        IN SCARDCONTEXT hContext,
+        IN LPCSTR szGroupName)
+    {
+        return SCARD_E_NO_SERVICE;
+    }
+    
+    WINSCARDAPI SCARDRETCODE
+    WINAPI _defaultSCARDGETPROVIDERIDA(
+        IN      SCARDCONTEXT hContext,
+        IN      LPCSTR szCard,
+        OUT     LPGUID pguidProviderId)
+    {
+        return SCARD_E_NO_SERVICE;
+    }
+    
+    WINSCARDAPI SCARDRETCODE
+    WINAPI _defaultSCARDGETCARDTYPEPROVIDERNAMEA(
+        IN SCARDCONTEXT hContext,
+        IN LPCSTR szCardName,
+        IN SCARDDWORDARG dwProviderId,
+        OUT LPTSTR szProvider,
+        IN OUT SCARDDWORDARG* pcchProvider)
+    {
+        return SCARD_E_NO_SERVICE;
+    }
+    
+    WINSCARDAPI SCARDRETCODE
+    WINAPI _defaultSCARDINTRODUCECARDTYPEA(
+        IN SCARDCONTEXT hContext,
+        IN LPCSTR szCardName,
+        IN LPCGUID pguidPrimaryProvider,
+        IN LPCGUID rgguidInterfaces,
+        IN SCARDDWORDARG dwInterfaceCount,
+        IN LPCBYTE pbAtr,
+        IN LPCBYTE pbAtrMask,
+        IN SCARDDWORDARG cbAtrLen)
+    {
+        return SCARD_E_NO_SERVICE;
+    }
+    
+    
+    WINSCARDAPI SCARDRETCODE
+    WINAPI _defaultSCARDINTRODUCEREADERA(
+        IN SCARDCONTEXT hContext,
+        IN LPCSTR szReaderName,
+        IN LPCSTR szDeviceName)
+    {
+        return SCARD_E_NO_SERVICE;
+    }
+    
+    WINSCARDAPI SCARDRETCODE
+    WINAPI _defaultSCARDINTRODUCEREADERGROUPA(
+        IN SCARDCONTEXT hContext,
+        IN LPCSTR szGroupName)
+    {
+        return SCARD_E_NO_SERVICE;
+    }
+    
+    WINSCARDAPI SCARDRETCODE
+    WINAPI _defaultSCARDLISTCARDSA(
+        IN      SCARDCONTEXT hContext,
+        IN      LPCBYTE pbAtr,
+        IN      LPCGUID rgquidInterfaces,
+        IN      SCARDDWORDARG cguidInterfaceCount,
+        OUT     LPTSTR mszCards,
+        IN OUT  SCARDDWORDARG* pcchCards)
+    {
+        return SCARD_E_NO_SERVICE;
+    }
+    
+    WINSCARDAPI SCARDRETCODE
+    WINAPI _defaultSCARDLISTINTERFACESA(
+        IN      SCARDCONTEXT hContext,
+        IN      LPCSTR szCard,
+        OUT     LPGUID pguidInterfaces,
+        IN OUT  SCARDDWORDARG* pcguidInterfaces)
+    {
+        return SCARD_E_NO_SERVICE;
+    }
+    
+    WINSCARDAPI SCARDRETCODE
+    WINAPI _defaultSCARDLOCATECARDSA(
+        IN      SCARDCONTEXT hContext,
+        IN      LPCSTR mszCards,
+        IN OUT  LPSCARD_READERSTATEA rgReaderStates,
+        IN      SCARDDWORDARG cReaders)
+    {
+        return SCARD_E_NO_SERVICE;
+    }
+    
+    WINSCARDAPI SCARDRETCODE
+    WINAPI _defaultSCARDLOCATECARDSBYATRA(
+        IN      SCARDCONTEXT hContext,
+        IN      LPSCARD_ATRMASK rgAtrMasks,
+        IN      SCARDDWORDARG cAtrs,
+        IN OUT  LPSCARD_READERSTATEA rgReaderStates,
+        IN      SCARDDWORDARG cReaders)
+    {
+        return SCARD_E_NO_SERVICE;
+    }
+    
+    WINSCARDAPI void
+    WINAPI _defaultSCARDRELEASESTARTEDEVENT(void)
+    {
+        return;
+    }
+    
+    WINSCARDAPI SCARDRETCODE
+    WINAPI _defaultSCARDREMOVEREADERFROMGROUPA(
+        IN SCARDCONTEXT hContext,
+        IN LPCSTR szReaderName,
+        IN LPCSTR szGroupName)
+    {
+        return SCARD_E_NO_SERVICE;
+    }
+    
+    WINSCARDAPI SCARDRETCODE
+    WINAPI _defaultSCARDSETCARDTYPEPROVIDERNAMEA(
+        IN SCARDCONTEXT hContext,
+        IN LPCSTR szCardName,
+        IN SCARDDWORDARG dwProviderId,
+        IN LPCSTR szProvider)
+    {
+        return SCARD_E_NO_SERVICE;
+    }
+    
+    WINSCARDAPI SCARDRETCODE
+    WINAPI _defaultSCARDSTATE(
+        IN SCARDHANDLE hCard,
+        OUT SCARDDWORDARG* pdwState,
+        OUT SCARDDWORDARG* pdwProtocol,
+        OUT LPBYTE pbAtr,
+        IN OUT SCARDDWORDARG* pcbAtrLen)
+    {
+        return SCARD_E_NO_SERVICE;
+    }
 
-WINSCARDAPI SCARDRETCODE
-WINAPI _defaultSCARDADDREADERTOGROUPA(
-    IN SCARDCONTEXT hContext,
-    IN LPCSTR szReaderName,
-    IN LPCSTR szGroupName)
-{
-    return SCARD_E_NO_SERVICE;
-}
-
-WINSCARDAPI SCARDRETCODE
-WINAPI _defaultSCARDFORGETCARDTYPEA(
-    IN SCARDCONTEXT hContext,
-    IN LPCSTR szCardName)
-{
-    return SCARD_E_NO_SERVICE;
-}
-
-WINSCARDAPI SCARDRETCODE
-WINAPI _defaultSCARDFORGETREADERA(
-    IN SCARDCONTEXT hContext,
-    IN LPCSTR szReaderName)
-{
-    return SCARD_E_NO_SERVICE;
-}
-
-WINSCARDAPI SCARDRETCODE
-WINAPI _defaultSCARDFORGETREADERGROUPA(
-    IN SCARDCONTEXT hContext,
-    IN LPCSTR szGroupName)
-{
-    return SCARD_E_NO_SERVICE;
-}
-
-WINSCARDAPI SCARDRETCODE
-WINAPI _defaultSCARDGETPROVIDERIDA(
-    IN      SCARDCONTEXT hContext,
-    IN      LPCSTR szCard,
-    OUT     LPGUID pguidProviderId)
-{
-    return SCARD_E_NO_SERVICE;
-}
-
-WINSCARDAPI SCARDRETCODE
-WINAPI _defaultSCARDGETCARDTYPEPROVIDERNAMEA(
-    IN SCARDCONTEXT hContext,
-    IN LPCSTR szCardName,
-    IN SCARDDWORDARG dwProviderId,
-    OUT LPTSTR szProvider,
-    IN OUT SCARDDWORDARG* pcchProvider)
-{
-    return SCARD_E_NO_SERVICE;
-}
-
-WINSCARDAPI SCARDRETCODE
-WINAPI _defaultSCARDINTRODUCECARDTYPEA(
-    IN SCARDCONTEXT hContext,
-    IN LPCSTR szCardName,
-    IN LPCGUID pguidPrimaryProvider,
-    IN LPCGUID rgguidInterfaces,
-    IN SCARDDWORDARG dwInterfaceCount,
-    IN LPCBYTE pbAtr,
-    IN LPCBYTE pbAtrMask,
-    IN SCARDDWORDARG cbAtrLen)
-{
-    return SCARD_E_NO_SERVICE;
-}
-
-
-WINSCARDAPI SCARDRETCODE
-WINAPI _defaultSCARDINTRODUCEREADERA(
-    IN SCARDCONTEXT hContext,
-    IN LPCSTR szReaderName,
-    IN LPCSTR szDeviceName)
-{
-    return SCARD_E_NO_SERVICE;
-}
-
-WINSCARDAPI SCARDRETCODE
-WINAPI _defaultSCARDINTRODUCEREADERGROUPA(
-    IN SCARDCONTEXT hContext,
-    IN LPCSTR szGroupName)
-{
-    return SCARD_E_NO_SERVICE;
-}
-
-WINSCARDAPI SCARDRETCODE
-WINAPI _defaultSCARDLISTCARDSA(
-    IN      SCARDCONTEXT hContext,
-    IN      LPCBYTE pbAtr,
-    IN      LPCGUID rgquidInterfaces,
-    IN      SCARDDWORDARG cguidInterfaceCount,
-    OUT     LPTSTR mszCards,
-    IN OUT  SCARDDWORDARG* pcchCards)
-{
-    return SCARD_E_NO_SERVICE;
-}
-
-WINSCARDAPI SCARDRETCODE
-WINAPI _defaultSCARDLISTINTERFACESA(
-    IN      SCARDCONTEXT hContext,
-    IN      LPCSTR szCard,
-    OUT     LPGUID pguidInterfaces,
-    IN OUT  SCARDDWORDARG* pcguidInterfaces)
-{
-    return SCARD_E_NO_SERVICE;
-}
-
-WINSCARDAPI SCARDRETCODE
-WINAPI _defaultSCARDLOCATECARDSA(
-    IN      SCARDCONTEXT hContext,
-    IN      LPCSTR mszCards,
-    IN OUT  LPSCARD_READERSTATEA rgReaderStates,
-    IN      SCARDDWORDARG cReaders)
-{
-    return SCARD_E_NO_SERVICE;
-}
-
-WINSCARDAPI SCARDRETCODE
-WINAPI _defaultSCARDLOCATECARDSBYATRA(
-    IN      SCARDCONTEXT hContext,
-    IN      LPSCARD_ATRMASK rgAtrMasks,
-    IN      SCARDDWORDARG cAtrs,
-    IN OUT  LPSCARD_READERSTATEA rgReaderStates,
-    IN      SCARDDWORDARG cReaders)
-{
-    return SCARD_E_NO_SERVICE;
-}
-
-WINSCARDAPI void
-WINAPI _defaultSCARDRELEASESTARTEDEVENT(void)
-{
-    return;
-}
-
-WINSCARDAPI SCARDRETCODE
-WINAPI _defaultSCARDREMOVEREADERFROMGROUPA(
-    IN SCARDCONTEXT hContext,
-    IN LPCSTR szReaderName,
-    IN LPCSTR szGroupName)
-{
-    return SCARD_E_NO_SERVICE;
-}
-
-WINSCARDAPI SCARDRETCODE
-WINAPI _defaultSCARDSETCARDTYPEPROVIDERNAMEA(
-    IN SCARDCONTEXT hContext,
-    IN LPCSTR szCardName,
-    IN SCARDDWORDARG dwProviderId,
-    IN LPCSTR szProvider)
-{
-    return SCARD_E_NO_SERVICE;
-}
-
-WINSCARDAPI SCARDRETCODE
-WINAPI _defaultSCARDSTATE(
-    IN SCARDHANDLE hCard,
-    OUT SCARDDWORDARG* pdwState,
-    OUT SCARDDWORDARG* pdwProtocol,
-    OUT LPBYTE pbAtr,
-    IN OUT SCARDDWORDARG* pcbAtrLen)
-{
-    return SCARD_E_NO_SERVICE;
-}
-
+    SCARDACCESSSTARTEDEVENT         mySCardAccessStartedEvent           = _defaultSCARDACCESSSTARTEDEVENT;
+    SCARDADDREADERTOGROUPA          mySCardAddReaderToGroupA            = _defaultSCARDADDREADERTOGROUPA;
+    SCARDFORGETCARDTYPEA            mySCardForgetCardTypeA              = _defaultSCARDFORGETCARDTYPEA;
+    SCARDFORGETREADERA              mySCardForgetReaderA                = _defaultSCARDFORGETREADERA;
+    SCARDFORGETREADERGROUPA         mySCardForgetReaderGroupA           = _defaultSCARDFORGETREADERGROUPA;
+    SCARDGETPROVIDERIDA             mySCardGetProviderIdA               = _defaultSCARDGETPROVIDERIDA;
+    SCARDGETCARDTYPEPROVIDERNAMEA   mySCardGetCardTypeProviderNameA     = _defaultSCARDGETCARDTYPEPROVIDERNAMEA;
+    SCARDINTRODUCECARDTYPEA         mySCardIntroduceCardTypeA           = _defaultSCARDINTRODUCECARDTYPEA;
+    SCARDINTRODUCEREADERA           mySCardIntroduceReaderA             = _defaultSCARDINTRODUCEREADERA;
+    SCARDINTRODUCEREADERGROUPA      mySCardIntroduceReaderGroupA        = _defaultSCARDINTRODUCEREADERGROUPA;
+    SCARDLISTCARDSA                 mySCardListCardsA                   = _defaultSCARDLISTCARDSA;
+    SCARDLISTINTERFACESA            mySCardListInterfacesA              = _defaultSCARDLISTINTERFACESA;
+    SCARDLOCATECARDSA               mySCardLocateCardsA                 = _defaultSCARDLOCATECARDSA;
+    SCARDLOCATECARDSBYATRA          mySCardLocateCardsByATRA            = _defaultSCARDLOCATECARDSBYATRA;
+    SCARDRELEASESTARTEDEVENT        mySCardReleaseStartedEvent          = _defaultSCARDRELEASESTARTEDEVENT;
+    SCARDREMOVEREADERFROMGROUPA     mySCardRemoveReaderFromGroupA       = _defaultSCARDREMOVEREADERFROMGROUPA;
+    SCARDSETCARDTYPEPROVIDERNAMEA   mySCardSetCardTypeProviderNameA     = _defaultSCARDSETCARDTYPEPROVIDERNAMEA;
+    SCARDSTATE                      mySCardState                        = _defaultSCARDSTATE;
 #endif // WIN32
+
+//
+// These functions are not available on Max OS X Tiger
+//
+#ifndef __TIGER__
+    WINSCARDAPI SCARDRETCODE
+    WINAPI _defaultSCARDISVALIDCONTEXT(
+        IN      SCARDCONTEXT hContext)
+    {
+        return SCARD_E_NO_SERVICE;
+    }
+
+    WINSCARDAPI SCARDRETCODE
+    WINAPI _defaultSCARDGETATTRIB(
+        IN SCARDHANDLE hCard,
+        IN SCARDDWORDARG dwAttrId,
+        OUT LPBYTE pbAttr,
+        IN OUT SCARDDWORDARG* pcbAttrLen)
+    {
+        return SCARD_E_NO_SERVICE;
+    }
+
+    WINSCARDAPI SCARDRETCODE
+    WINAPI _defaultSCARDSETATTRIB(
+        IN SCARDHANDLE hCard,
+        IN SCARDDWORDARG dwAttrId,
+        IN LPCBYTE pbAttr,
+        IN SCARDDWORDARG cbAttrLen)
+    {
+        return SCARD_E_NO_SERVICE;
+    }
+    
+    SCARDISVALIDCONTEXT             mySCardIsValidContext               = _defaultSCARDISVALIDCONTEXT;
+    SCARDGETATTRIB                  mySCardGetAttrib                    = _defaultSCARDGETATTRIB;
+    SCARDSETATTRIB                  mySCardSetAttrib                    = _defaultSCARDSETATTRIB;
+
+#endif // !__TIGER__
+
+//
+// SCardControl does not have the same prototype on Mac OS X Tiger
+// 
+#ifdef __TIGER__
+    WINSCARDAPI SCARDRETCODE
+    WINAPI _defaultSCARDCONTROL(
+        IN      SCARDHANDLE hCard,
+        IN      const unsigned char* lpInBuffer,
+        IN      SCARDDWORDARG nInBufferSize,
+        OUT     unsigned char* lpOutBuffer,
+        IN OUT  SCARDDWORDARG* lpBytesReturned)
+    {
+        return SCARD_E_NO_SERVICE;
+    }
+#else // !__TIGER__
+    WINSCARDAPI SCARDRETCODE
+    WINAPI _defaultSCARDCONTROL(
+        IN      SCARDHANDLE hCard,
+        IN      SCARDDWORDARG dwControlCode,
+        IN      LPCVOID lpInBuffer,
+        IN      SCARDDWORDARG nInBufferSize,
+        OUT     LPVOID lpOutBuffer,
+        IN      SCARDDWORDARG nOutBufferSize,
+        OUT     SCARDDWORDARG* lpBytesReturned)
+    {
+        return SCARD_E_NO_SERVICE;
+    }
+#endif // __TIGER__
 
 WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDBEGINTRANSACTION(
@@ -239,34 +325,6 @@ WINAPI _defaultSCARDCONNECTA(
 {
     return SCARD_E_NO_SERVICE;
 }
-
-// SCardControl does not have the same prototype
-// on pcsclite-apple-darwin
-#ifdef __APPLE__
-    WINSCARDAPI SCARDRETCODE
-    WINAPI _defaultSCARDCONTROL(
-        IN      SCARDHANDLE hCard,
-        IN      const unsigned char* lpInBuffer,
-        IN      SCARDDWORDARG nInBufferSize,
-        OUT     unsigned char* lpOutBuffer,
-        IN OUT  SCARDDWORDARG* lpBytesReturned)
-    {
-        return SCARD_E_NO_SERVICE;
-    }
-#else //!__APPLE__
-    WINSCARDAPI SCARDRETCODE
-    WINAPI _defaultSCARDCONTROL(
-        IN      SCARDHANDLE hCard,
-        IN      SCARDDWORDARG dwControlCode,
-        IN      LPCVOID lpInBuffer,
-        IN      SCARDDWORDARG nInBufferSize,
-        OUT     LPVOID lpOutBuffer,
-        IN      SCARDDWORDARG nOutBufferSize,
-        OUT     SCARDDWORDARG* lpBytesReturned)
-    {
-        return SCARD_E_NO_SERVICE;
-    }
-#endif // __APPLE__
 
 WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDDISCONNECT(
@@ -303,28 +361,11 @@ WINAPI _defaultSCARDFREEMEMORY(
 }
 
 WINSCARDAPI SCARDRETCODE
-WINAPI _defaultSCARDGETATTRIB(
-    IN SCARDHANDLE hCard,
-    IN SCARDDWORDARG dwAttrId,
-    OUT LPBYTE pbAttr,
-    IN OUT SCARDDWORDARG* pcbAttrLen)
-{
-    return SCARD_E_NO_SERVICE;
-}
-
-WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDGETSTATUSCHANGEA(
     IN      SCARDCONTEXT hContext,
     IN      SCARDDWORDARG dwTimeout,
     IN OUT  LPSCARD_READERSTATEA rgReaderStates,
     IN      SCARDDWORDARG cReaders)
-{
-    return SCARD_E_NO_SERVICE;
-}
-
-WINSCARDAPI SCARDRETCODE
-WINAPI _defaultSCARDISVALIDCONTEXT(
-    IN      SCARDCONTEXT hContext)
 {
     return SCARD_E_NO_SERVICE;
 }
@@ -367,16 +408,6 @@ WINAPI _defaultSCARDRELEASECONTEXT(
 }
 
 WINSCARDAPI SCARDRETCODE
-WINAPI _defaultSCARDSETATTRIB(
-    IN SCARDHANDLE hCard,
-    IN SCARDDWORDARG dwAttrId,
-    IN LPCBYTE pbAttr,
-    IN SCARDDWORDARG cbAttrLen)
-{
-    return SCARD_E_NO_SERVICE;
-}
-
-WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDSTATUSA(
     IN SCARDHANDLE hCard,
     OUT LPTSTR szReaderName,
@@ -402,28 +433,6 @@ WINAPI _defaultSCARDTRANSMIT(
     return SCARD_E_NO_SERVICE;
 }
 
-#ifdef WIN32
-SCARDACCESSSTARTEDEVENT         mySCardAccessStartedEvent           = _defaultSCARDACCESSSTARTEDEVENT;
-SCARDADDREADERTOGROUPA          mySCardAddReaderToGroupA            = _defaultSCARDADDREADERTOGROUPA;
-SCARDFORGETCARDTYPEA            mySCardForgetCardTypeA              = _defaultSCARDFORGETCARDTYPEA;
-SCARDFORGETREADERA              mySCardForgetReaderA                = _defaultSCARDFORGETREADERA;
-SCARDFORGETREADERGROUPA         mySCardForgetReaderGroupA           = _defaultSCARDFORGETREADERGROUPA;
-SCARDGETPROVIDERIDA             mySCardGetProviderIdA               = _defaultSCARDGETPROVIDERIDA;
-SCARDGETCARDTYPEPROVIDERNAMEA   mySCardGetCardTypeProviderNameA     = _defaultSCARDGETCARDTYPEPROVIDERNAMEA;
-SCARDINTRODUCECARDTYPEA         mySCardIntroduceCardTypeA           = _defaultSCARDINTRODUCECARDTYPEA;
-SCARDINTRODUCEREADERA           mySCardIntroduceReaderA             = _defaultSCARDINTRODUCEREADERA;
-SCARDINTRODUCEREADERGROUPA      mySCardIntroduceReaderGroupA        = _defaultSCARDINTRODUCEREADERGROUPA;
-SCARDISVALIDCONTEXT             mySCardIsValidContext               = _defaultSCARDISVALIDCONTEXT;
-SCARDLISTCARDSA                 mySCardListCardsA                   = _defaultSCARDLISTCARDSA;
-SCARDLISTINTERFACESA            mySCardListInterfacesA              = _defaultSCARDLISTINTERFACESA;
-SCARDLOCATECARDSA               mySCardLocateCardsA                 = _defaultSCARDLOCATECARDSA;
-SCARDLOCATECARDSBYATRA          mySCardLocateCardsByATRA            = _defaultSCARDLOCATECARDSBYATRA;
-SCARDRELEASESTARTEDEVENT        mySCardReleaseStartedEvent          = _defaultSCARDRELEASESTARTEDEVENT;
-SCARDREMOVEREADERFROMGROUPA     mySCardRemoveReaderFromGroupA       = _defaultSCARDREMOVEREADERFROMGROUPA;
-SCARDSETCARDTYPEPROVIDERNAMEA   mySCardSetCardTypeProviderNameA     = _defaultSCARDSETCARDTYPEPROVIDERNAMEA;
-SCARDSTATE                      mySCardState                        = _defaultSCARDSTATE;
-#endif // WIN32
-
 SCARDBEGINTRANSACTION           mySCardBeginTransaction             = _defaultSCARDBEGINTRANSACTION;
 SCARDCANCEL                     mySCardCancel                       = _defaultSCARDCANCEL;
 SCARDCANCELTRANSACTION          mySCardCancelTransaction            = _defaultSCARDCANCELTRANSACTION;
@@ -433,22 +442,18 @@ SCARDDISCONNECT                 mySCardDisconnect                   = _defaultSC
 SCARDENDTRANSACTION             mySCardEndTransaction               = _defaultSCARDENDTRANSACTION;
 SCARDESTABLISHCONTEXT           mySCardEstablishContext             = _defaultSCARDESTABLISHCONTEXT;
 SCARDFREEMEMORY                 mySCardFreeMemory                   = _defaultSCARDFREEMEMORY;
-SCARDGETATTRIB                  mySCardGetAttrib                    = _defaultSCARDGETATTRIB;
 SCARDGETSTATUSCHANGEA           mySCardGetStatusChangeA             = _defaultSCARDGETSTATUSCHANGEA;
 SCARDLISTREADERSA               mySCardListReadersA                 = _defaultSCARDLISTREADERSA;
 SCARDLISTREADERGROUPSA          mySCardListReaderGroupsA            = _defaultSCARDLISTREADERGROUPSA;
 SCARDRECONNECT                  mySCardReconnect                    = _defaultSCARDRECONNECT;
 SCARDRELEASECONTEXT             mySCardReleaseContext               = _defaultSCARDRELEASECONTEXT;
-SCARDSETATTRIB                  mySCardSetAttrib                    = _defaultSCARDSETATTRIB;
 SCARDSTATUSA                    mySCardStatusA                      = _defaultSCARDSTATUSA;
 SCARDTRANSMIT                   mySCardTransmit                     = _defaultSCARDTRANSMIT;
-
 
 
 unsigned long myg_prgSCardT0Pci=0L;
 unsigned long myg_prgSCardT1Pci=0L;
 unsigned long myg_prgSCardRawPci=0L;
-
 
 long winscard_init(void)
 {
@@ -511,6 +516,7 @@ long winscard_init(void)
             }
          }
     #endif // WIN32
+
     #ifdef PCSCLITE
         #define  GETPROCADDRESS( type, name, realname )  my##name=(type)dlsym( handle, #realname ); \
                                                          dlsym_error = dlerror(); \
@@ -521,11 +527,11 @@ long winscard_init(void)
         void* handle=NULL;
         char* dlsym_error;
         char *lib = NULL;
-#ifdef __APPLE__
-        lib = "/System/Library/Frameworks/PCSC.framework/PCSC";
-#else
-        lib = "libpcsclite.so";
-#endif
+        #ifdef __APPLE__
+            lib = "/System/Library/Frameworks/PCSC.framework/PCSC";
+        #else
+            lib = "libpcsclite.so";
+        #endif
 
         if( bFirstCall )
         {
@@ -551,9 +557,10 @@ long winscard_init(void)
                 GETPROCADDRESS( SCARDTRANSMIT          , SCardTransmit          , SCardTransmit          );
                 GETPROCADDRESS( SCARDCONTROL           , SCardControl           , SCardControl );
 
-                #ifndef __APPLE__
-                GETPROCADDRESS( SCARDGETATTRIB         , SCardGetAttrib         , SCardGetAttrib         );
-                GETPROCADDRESS( SCARDSETATTRIB         , SCardSetAttrib         , SCardSetAttrib         );
+                #ifndef __TIGER__
+                    GETPROCADDRESS( SCARDISVALIDCONTEXT    , SCardIsValidContext    , SCardIsValidContext    );
+                    GETPROCADDRESS( SCARDGETATTRIB         , SCardGetAttrib         , SCardGetAttrib         );
+                    GETPROCADDRESS( SCARDSETATTRIB         , SCardSetAttrib         , SCardSetAttrib         );
                 #endif
 
                 myg_prgSCardT0Pci   = (unsigned long)dlsym( handle, "g_rgSCardT0Pci"  );
