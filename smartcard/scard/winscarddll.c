@@ -33,16 +33,16 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     #define NULL    ((void*)0)
 #endif //NULL
 
-// 
+//
 // these functions are only available on win32 PCSC
-// 
+//
 #ifdef WIN32
     WINSCARDAPI HANDLE
     WINAPI _defaultSCARDACCESSSTARTEDEVENT(void)
     {
         return NULL;
     }
-    
+
     WINSCARDAPI SCARDRETCODE
     WINAPI _defaultSCARDADDREADERTOGROUPA(
         IN SCARDCONTEXT hContext,
@@ -51,7 +51,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     {
         return SCARD_E_NO_SERVICE;
     }
-    
+
     WINSCARDAPI SCARDRETCODE
     WINAPI _defaultSCARDFORGETCARDTYPEA(
         IN SCARDCONTEXT hContext,
@@ -59,7 +59,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     {
         return SCARD_E_NO_SERVICE;
     }
-    
+
     WINSCARDAPI SCARDRETCODE
     WINAPI _defaultSCARDFORGETREADERA(
         IN SCARDCONTEXT hContext,
@@ -67,7 +67,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     {
         return SCARD_E_NO_SERVICE;
     }
-    
+
     WINSCARDAPI SCARDRETCODE
     WINAPI _defaultSCARDFORGETREADERGROUPA(
         IN SCARDCONTEXT hContext,
@@ -75,7 +75,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     {
         return SCARD_E_NO_SERVICE;
     }
-    
+
     WINSCARDAPI SCARDRETCODE
     WINAPI _defaultSCARDGETPROVIDERIDA(
         IN      SCARDCONTEXT hContext,
@@ -84,7 +84,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     {
         return SCARD_E_NO_SERVICE;
     }
-    
+
     WINSCARDAPI SCARDRETCODE
     WINAPI _defaultSCARDGETCARDTYPEPROVIDERNAMEA(
         IN SCARDCONTEXT hContext,
@@ -95,7 +95,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     {
         return SCARD_E_NO_SERVICE;
     }
-    
+
     WINSCARDAPI SCARDRETCODE
     WINAPI _defaultSCARDINTRODUCECARDTYPEA(
         IN SCARDCONTEXT hContext,
@@ -109,8 +109,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     {
         return SCARD_E_NO_SERVICE;
     }
-    
-    
+
+
     WINSCARDAPI SCARDRETCODE
     WINAPI _defaultSCARDINTRODUCEREADERA(
         IN SCARDCONTEXT hContext,
@@ -119,7 +119,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     {
         return SCARD_E_NO_SERVICE;
     }
-    
+
     WINSCARDAPI SCARDRETCODE
     WINAPI _defaultSCARDINTRODUCEREADERGROUPA(
         IN SCARDCONTEXT hContext,
@@ -127,7 +127,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     {
         return SCARD_E_NO_SERVICE;
     }
-    
+
     WINSCARDAPI SCARDRETCODE
     WINAPI _defaultSCARDLISTCARDSA(
         IN      SCARDCONTEXT hContext,
@@ -139,7 +139,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     {
         return SCARD_E_NO_SERVICE;
     }
-    
+
     WINSCARDAPI SCARDRETCODE
     WINAPI _defaultSCARDLISTINTERFACESA(
         IN      SCARDCONTEXT hContext,
@@ -149,7 +149,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     {
         return SCARD_E_NO_SERVICE;
     }
-    
+
     WINSCARDAPI SCARDRETCODE
     WINAPI _defaultSCARDLOCATECARDSA(
         IN      SCARDCONTEXT hContext,
@@ -159,7 +159,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     {
         return SCARD_E_NO_SERVICE;
     }
-    
+
     WINSCARDAPI SCARDRETCODE
     WINAPI _defaultSCARDLOCATECARDSBYATRA(
         IN      SCARDCONTEXT hContext,
@@ -170,13 +170,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     {
         return SCARD_E_NO_SERVICE;
     }
-    
+
     WINSCARDAPI void
     WINAPI _defaultSCARDRELEASESTARTEDEVENT(void)
     {
         return;
     }
-    
+
     WINSCARDAPI SCARDRETCODE
     WINAPI _defaultSCARDREMOVEREADERFROMGROUPA(
         IN SCARDCONTEXT hContext,
@@ -185,7 +185,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     {
         return SCARD_E_NO_SERVICE;
     }
-    
+
     WINSCARDAPI SCARDRETCODE
     WINAPI _defaultSCARDSETCARDTYPEPROVIDERNAMEA(
         IN SCARDCONTEXT hContext,
@@ -195,7 +195,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     {
         return SCARD_E_NO_SERVICE;
     }
-    
+
     WINSCARDAPI SCARDRETCODE
     WINAPI _defaultSCARDSTATE(
         IN SCARDHANDLE hCard,
@@ -257,7 +257,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     {
         return SCARD_E_NO_SERVICE;
     }
-    
+
     SCARDISVALIDCONTEXT             mySCardIsValidContext               = _defaultSCARDISVALIDCONTEXT;
     SCARDGETATTRIB                  mySCardGetAttrib                    = _defaultSCARDGETATTRIB;
     SCARDSETATTRIB                  mySCardSetAttrib                    = _defaultSCARDSETATTRIB;
@@ -266,7 +266,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 //
 // SCardControl does not have the same prototype on Mac OS X Tiger
-// 
+//
 #ifdef __TIGER__
     WINSCARDAPI SCARDRETCODE
     WINAPI _defaultSCARDCONTROL(
@@ -524,6 +524,12 @@ long winscard_init(void)
                                                          { \
                                                             printf( "Failed to load symbol for: %s, %s!\n", #realname, (char*)dlsym_error ); \
                                                          }
+
+        // some functions are not available on older releases of pcsc-lite, such
+        // as SCardIsValidContext; don't complain if they are not located
+        #define  SILENTGETPROCADDRESS( type, name, realname )  my##name=(type)dlsym( handle, #realname ); \
+                                                         dlsym_error = dlerror();
+
         void* handle=NULL;
         char* dlsym_error;
         char *lib = NULL;
@@ -558,7 +564,7 @@ long winscard_init(void)
                 GETPROCADDRESS( SCARDCONTROL           , SCardControl           , SCardControl );
 
                 #ifndef __TIGER__
-                    GETPROCADDRESS( SCARDISVALIDCONTEXT    , SCardIsValidContext    , SCardIsValidContext    );
+                    SILENTGETPROCADDRESS( SCARDISVALIDCONTEXT    , SCardIsValidContext    , SCardIsValidContext    );
                     GETPROCADDRESS( SCARDGETATTRIB         , SCardGetAttrib         , SCardGetAttrib         );
                     GETPROCADDRESS( SCARDSETATTRIB         , SCardSetAttrib         , SCardSetAttrib         );
                 #endif
