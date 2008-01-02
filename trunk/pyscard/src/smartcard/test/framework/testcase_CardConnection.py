@@ -46,6 +46,7 @@ except:
 from smartcard.Exceptions import CardConnectionException, NoCardException
 from smartcard.System import readers
 from smartcard.CardConnection import CardConnection
+from smartcard.scard import resourceManagerSubType
 
 
 class testcase_CardConnection(unittest.TestCase):
@@ -90,11 +91,13 @@ class testcase_CardConnection(unittest.TestCase):
 
         for reader in readers():
             cc = reader.createConnection()
-            if []!=expectedATRinReader[str(reader)]:
-                # should fail since the test card does not support T1
-                self.assertRaises( CardConnectionException, cc.connect, CardConnection.T1_protocol )
-            else:
-                self.assertRaises( NoCardException, cc.connect )
+            # on Mac OS X Tiger, trying to connect with T=1 protocol does not except
+            if not 'pcsclite-tiger'==resourceManagerSubType:
+                if []!=expectedATRinReader[str(reader)]:
+                    # should fail since the test card does not support T1
+                    self.assertRaises( CardConnectionException, cc.connect, CardConnection.T1_protocol )
+                else:
+                    self.assertRaises( NoCardException, cc.connect )
         cc.disconnect()
 
 
