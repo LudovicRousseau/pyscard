@@ -40,6 +40,7 @@ if 'win32'==get_platform():
     platform_include_dirs=[]
     platform_extra_compile_args=[]
     platform_extra_link_args=[]
+
 elif get_platform() in ('linux-i586', 'linux-i686', 'linux-x86_64'):
     platform__cc_defines=[('PCSCLITE', '1')]
     platform_swig_opts=['-DPCSCLITE']
@@ -48,9 +49,27 @@ elif get_platform() in ('linux-i586', 'linux-i686', 'linux-x86_64'):
     platform_include_dirs=['/usr/include/PCSC']
     platform_extra_compile_args=[]#['-ggdb', '-O0']
     platform_extra_link_args=[]#['-ggdb']
-elif 'darwin' in get_platform() or 'macosx' in get_platform():
-    platform__cc_defines=[('PCSCLITE', '1'),('__APPLE__','1')]
-    platform_swig_opts=['-DPCSCLITE', '-D__APPLE__']
+
+#
+# Mac OS X Tiger has python 2.3 preinstalled
+# get_platform() returns a string similar to 'darwin-8.11.1-i386' with python 2.3
+# if python 2.5 is installed, get_platform() returns a string similar to 'macosx-10.3-fat'
+elif 'darwin' in get_platform() or 'macosx-10.3' or 'macosx-10.4' in get_platform():
+    platform__cc_defines=[ ('PCSCLITE', '1'), ('__APPLE__','1'), ('__TIGER__','1')]
+    platform_swig_opts=[ '-DPCSCLITE', '-D__APPLE__', '-D__TIGER__' ]
+    platform_sources=[]
+    platform_libraries=[]
+    platform_include_dirs=['PCSC']
+    platform_extra_compile_args=['-v','-framework', 'PCSC', '-arch', 'i386', '-arch', 'ppc', '-ggdb', '-O0']
+    platform_extra_link_args=['-arch', 'i386', '-arch', 'ppc','-ggdb']
+
+#
+# Mac OS X Leopard has python 2.5 preinstalled
+# get_platform() returns a string similar to 'macosx-10.5-i386'
+# 
+elif 'macosx-10.5' in get_platform():
+    platform__cc_defines=[ ('PCSCLITE', '1'), ('__APPLE__','1'), ('__LEOPARD__','1')]
+    platform_swig_opts=[ '-DPCSCLITE', '-D__APPLE__', '-D__LEOPARD__' ]
     platform_sources=[]
     platform_libraries=[]
     platform_include_dirs=['PCSC']
