@@ -464,6 +464,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 // other names for STRING as output parameter
 %apply STRING* OUTPUT { PROVIDERNAME_t* pszProviderName };
+%apply STRING* OUTPUT { STRING* pszReaderNameOut };
 
 /*==============================================================================
 //

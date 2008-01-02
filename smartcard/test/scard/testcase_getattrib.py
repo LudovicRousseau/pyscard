@@ -66,7 +66,7 @@ class testcase_getAttrib(unittest.TestCase):
             try:
                 hresult, reader, state, protocol, atr = SCardStatus( hcard )
                 self.assertEquals(hresult, 0)
-                self.assertEquals( reader, [expectedReaders[r]] )
+                self.assertEquals( reader, expectedReaders[r] )
                 self.assertEquals( atr, expectedATRs[r] )
 
                 if scard.__dict__.has_key( 'SCARD_ATTR_ATR_STRING' ):

@@ -69,7 +69,7 @@ class testcase_transaction(unittest.TestCase):
 
                 hresult, reader, state, protocol, atr = SCardStatus( hcard )
                 self.assertEquals(hresult, 0)
-                self.assertEquals( reader, [expectedReaders[r]] )
+                self.assertEquals( reader, expectedReaders[r] )
                 self.assertEquals( atr, expectedATRs[r] )
 
                 hresult = SCardEndTransaction( hcard, SCARD_LEAVE_CARD )
