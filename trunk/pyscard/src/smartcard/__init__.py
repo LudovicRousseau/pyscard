@@ -4,10 +4,10 @@ The smartcard utility module provides classes and functions to
 access smartcards and readers.
 
 __author__ = "gemalto http://www.gemalto.com"
-__date__ = "December 2007"
+__date__ = "January 2008"
 __version__ = "1.6.5"
 
-Copyright 2001-2007 gemalto
+Copyright 2001-2008 gemalto
 Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
 
 This file is part of pyscard.
