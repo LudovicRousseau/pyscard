@@ -500,6 +500,7 @@ SCARDRETCODE _Connect(
 )
 {
     SCARDRETCODE lRet;
+
     winscard_init();
     lRet = (mySCardConnectA)(
             hcontext,
@@ -508,6 +509,7 @@ SCARDRETCODE _Connect(
             dwPreferredProtocols,
             phCard,
             pdwActiveProtocol );
+
     return lRet;
 }
 
@@ -734,8 +736,8 @@ SCARDRETCODE _Status(
 )
 {
     long lRetCode;
-    DWORD dwReaderLen=256;
-    DWORD dwAtrLen=32;
+    SCARDDWORDARG dwReaderLen=256;
+    SCARDDWORDARG dwAtrLen=36;
 
     winscard_init();
     for(;;)
