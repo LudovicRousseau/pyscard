@@ -729,7 +729,7 @@ SCARDRETCODE _ReleaseContext( SCARDCONTEXT hcontext )
 ///////////////////////////////////////////////////////////////////////////////
 SCARDRETCODE _Status(
   SCARDHANDLE hcard,
-  STRINGLIST*  pszReaderName,
+  STRING*  pszReaderName,
   SCARDDWORDARG* pdwState,
   SCARDDWORDARG* pdwProtocol,
   BYTELIST* pbl
@@ -749,16 +749,16 @@ SCARDRETCODE _Status(
             break;
         }
         pbl->cBytes = dwAtrLen;
-        pszReaderName->ac = mem_Malloc(dwReaderLen*sizeof(char));
-        if( pszReaderName->ac == NULL )
+        pszReaderName->sz = mem_Malloc(dwReaderLen*sizeof(char));
+        pszReaderName->hcontext = 0;
+        if( NULL == pszReaderName->sz )
         {
             lRetCode=SCARD_E_NO_MEMORY;
             break;
         }
-        pszReaderName->hcontext = 0;
         lRetCode = (mySCardStatusA)(
             hcard,
-            (LPTSTR)pszReaderName->ac,
+            (LPTSTR)pszReaderName->sz,
             &dwReaderLen,
             pdwState,
             pdwProtocol,
@@ -1011,6 +1011,8 @@ ERRORSTRING* _GetErrorMessage( long lErrCode )
 %typemap(doc, name="devicename", type="") (char* szDeviceName) "devicename: card reader device name";
 
 %typemap(doc, name="providername", type="") (PROVIDERNAME_t* pszProviderName) "providername: on output, provider name";
+
+%typemap(doc, name="readername", type="") (STRING* pszReaderNameOut) "readername: on output, reader name";
 
 %typemap(doc, name="apducommand", type="byte[]") (BYTELIST* APDUCOMMAND) "apducommand: list of APDU bytes to transmit";
 %typemap(doc, name="apduresponse", type="byte[]") (BYTELIST* APDURESPONSE) "apduresponse: on output, the list of APDU response bytes";
@@ -2098,14 +2100,14 @@ print ""
 %feature("docstring") DOCSTRING_STATUS;
 %rename(SCardStatus) _Status(
   SCARDHANDLE hcard,
-  STRINGLIST* pszReaderName,
+  STRING* pszReaderNameOut,
   SCARDDWORDARG* pdwState,
   SCARDDWORDARG* pdwProtocol,
   BYTELIST* ATROUT
 );
 SCARDRETCODE _Status(
   SCARDHANDLE hcard,
-  STRINGLIST* pszReaderName,
+  STRING* pszReaderNameOut,
   SCARDDWORDARG* pdwState,
   SCARDDWORDARG* pdwProtocol,
   BYTELIST* ATROUT
