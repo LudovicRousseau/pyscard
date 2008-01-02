@@ -2228,7 +2228,12 @@ def SCardLocateCards( hcontext, cardnames, readerstates ):
 #ifdef PCSCLITE
 %constant char* resourceManager = "pcsclite" ;
     #ifdef __APPLE__
-        %constant char* resourceManagerSubType = "pcsclite-darwin" ;
+        #ifdef __TIGER__
+            %constant char* resourceManagerSubType = "pcsclite-tiger" ;
+        #endif //__TIGER__
+        #ifdef __LEOPARD__
+            %constant char* resourceManagerSubType = "pcsclite-leopard" ;
+        #endif //__LEOPARD__
     #else // !__APPLE__
         %constant char* resourceManagerSubType = "pcsclite-linux" ;
     #endif // __APPLE__

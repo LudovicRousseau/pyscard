@@ -72,7 +72,7 @@ if 'winscard'==resourceManager:
         SCARD_ATTR_DEVICE_SYSTEM_NAME_W     : 'SCARD_ATTR_DEVICE_SYSTEM_NAME_W'     ,
         SCARD_ATTR_SUPRESS_T1_IFS_REQUEST   : 'SCARD_ATTR_SUPRESS_T1_IFS_REQUEST'
     }
-elif 'pcsclite'==resourceManager and 'pcsclite-darwin'!=resourceManagerSubType:
+elif 'pcsclite'==resourceManager and 'pcsclite-tiger'!=resourceManagerSubType:
     attributes = {
         SCARD_ATTR_VENDOR_NAME              : 'SCARD_ATTR_VENDOR_NAME',
         SCARD_ATTR_VENDOR_IFD_TYPE          : 'SCARD_ATTR_VENDOR_IFD_TYPE',
