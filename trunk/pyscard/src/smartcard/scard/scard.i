@@ -824,7 +824,7 @@ long _SCARD_CTL_CODE( long code )
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// some pcsclite versions (e.g. on Max OS X darwint) don't have a pcsc stringify
+// some pcsclite versions (e.g. on Max OS X Tiger) have no pcsc_stringify
 // this function was taken from pcsclite
 //
 char* _pcsc_stringify_error( SCARDRETCODE pcscError )
@@ -984,7 +984,7 @@ ERRORSTRING* _GetErrorMessage( long lErrCode )
         return ppszError;
     #endif // WIN32
     #ifdef PCSCLITE
-    #ifdef __APPLE__
+    #ifdef __TIGER__
         return (ERRORSTRING*)_pcsc_stringify_error( lErrCode );
     #endif
         return (ERRORSTRING*)pcsc_stringify_error( lErrCode );
