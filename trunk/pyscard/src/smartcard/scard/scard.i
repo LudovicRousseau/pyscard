@@ -533,6 +533,18 @@ SCARDRETCODE _EstablishContext( SCARDDWORDARG dwScope, SCARDCONTEXT* phContext )
     long lRet;
     winscard_init();
     lRet = (mySCardEstablishContext)( dwScope, NULL, NULL, phContext );
+
+    #ifdef __TIGER__
+        // SCardReleaseContext on Mac OS X Tiger fails if SCardConnect is not called with an established
+        // context, even on a dummy reader
+        if( SCARD_S_SUCCESS==lRet ) 
+        {
+            SCARDHANDLE hcard;
+            SCARDDWORDARG dwarg;
+            (mySCardConnectA)( *phContext, "dummy-reader", SCARD_SHARE_SHARED, SCARD_PROTOCOL_ANY, &hcard, &dwarg );  
+        }
+    #endif // __TIGER__
+
     return lRet;
 }
 
