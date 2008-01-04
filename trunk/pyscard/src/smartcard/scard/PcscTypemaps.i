@@ -287,7 +287,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 
 // other names for READERSTATELIST as inpu/output parameter
-%apply READERSTATELIST *BOTH {READERSTATELIST *prsl};
+%apply READERSTATELIST *BOTH {READERSTATELIST* prsl};
 
 
 /*==============================================================================

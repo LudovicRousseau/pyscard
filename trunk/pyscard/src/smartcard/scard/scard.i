@@ -597,8 +597,7 @@ SCARDRETCODE _GetStatusChange(
         }
     }
 
-    // internally, we use unsigned long to compare easily scarderr.h values from the debugger
-    // for python, we return a long
+
     return hresult;
 }
 
