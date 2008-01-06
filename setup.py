@@ -75,7 +75,8 @@ elif 'macosx-10.5' in get_platform():
     platform_include_dirs=['PCSC']
     platform_extra_compile_args=['-v','-framework', 'PCSC', '-arch', 'i386', '-arch', 'ppc', '-ggdb', '-O0']
     platform_extra_link_args=['-arch', 'i386', '-arch', 'ppc','-ggdb']
-else:
+# Leopard not supported yet
+#else:
     sys.exit("unsupported platform: " + get_platform() )
 
 
