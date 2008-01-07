@@ -10,6 +10,7 @@ include smartcard/scard/gemalto.ver
 include smartcard/scard/helpers.c
 include smartcard/scard/helpers.h
 include smartcard/scard/memlog.h
+include smartcard/scard/pcsctypes.h
 include smartcard/scard/PcscDefs.i
 include smartcard/scard/PcscTypemaps.i
 include smartcard/scard/scard.def
