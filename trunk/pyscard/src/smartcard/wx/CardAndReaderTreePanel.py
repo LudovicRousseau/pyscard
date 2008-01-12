@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 # smartcard imports
 from threading import RLock
-from smartcard.Exceptions import NoCardException
+from smartcard.Exceptions import CardConnectionException, NoCardException
 from smartcard.ReaderMonitoring import ReaderMonitor, ReaderObserver
 from smartcard.CardMonitoring import CardMonitor, CardObserver
 from smartcard.util import toHexString
@@ -159,6 +159,8 @@ class ReaderTreeCtrl( BaseCardTreeCtrl ):
                 atr=toHexString( connection.getATR() )
                 connection.disconnect()
         except NoCardException:
+            pass
+        except CardConnectionException:
             pass
         return atr
 
