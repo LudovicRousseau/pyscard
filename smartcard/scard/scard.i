@@ -995,11 +995,16 @@ ERRORSTRING* _GetErrorMessage( long lErrCode )
         return ppszError;
     #endif // WIN32
     #ifdef PCSCLITE
-    #ifdef __TIGER__
-        return (ERRORSTRING*)_pcsc_stringify_error( lErrCode );
-    #endif
-        return (ERRORSTRING*)pcsc_stringify_error( lErrCode );
-    #else
+            #ifdef __APPLE__
+                #ifdef __TIGER__
+                    return (ERRORSTRING*)_pcsc_stringify_error( lErrCode );
+                #endif
+                #ifdef __LEOPARD__
+                    return (ERRORSTRING*)_pcsc_stringify_error( lErrCode );
+                #endif
+            #else
+                return (ERRORSTRING*)pcsc_stringify_error( lErrCode );
+            #endif
     #endif // PCSCLITE
 }
 
