@@ -54,7 +54,7 @@ elif get_platform() in ('linux-i586', 'linux-i686', 'linux-x86_64'):
 # Mac OS X Tiger has python 2.3 preinstalled
 # get_platform() returns a string similar to 'darwin-8.11.1-i386' with python 2.3
 # if python 2.5 is installed, get_platform() returns a string similar to 'macosx-10.3-fat'
-elif 'darwin' in get_platform() or 'macosx-10.3' or 'macosx-10.4' in get_platform():
+elif 'darwin' in get_platform() or 'macosx-10.3' in get_platform() or 'macosx-10.4' in get_platform():
     platform__cc_defines=[ ('PCSCLITE', '1'), ('__APPLE__','1'), ('__TIGER__','1')]
     platform_swig_opts=[ '-DPCSCLITE', '-D__APPLE__', '-D__TIGER__' ]
     platform_sources=[]
@@ -76,7 +76,7 @@ elif 'macosx-10.5' in get_platform():
     platform_extra_compile_args=['-v','-framework', 'PCSC', '-arch', 'i386', '-arch', 'ppc', '-ggdb', '-O0']
     platform_extra_link_args=['-arch', 'i386', '-arch', 'ppc','-ggdb']
 # Leopard not supported yet
-#else:
+else:
     sys.exit("unsupported platform: " + get_platform() )
 
 
