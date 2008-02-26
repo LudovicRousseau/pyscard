@@ -1,3 +1,7 @@
+1.6.6
+=====
+        * added support for Mac OS X Leopard
+
 1.6.5
 =====
         * added sample_MonitorCardsAndTransmit.py sample to illustrate how to transmit apdu to a card notified
