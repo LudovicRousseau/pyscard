@@ -51,7 +51,7 @@ class testcase_CardService(unittest.TestCase):
     """Test case for CardService."""
 
     def testcase_CardService(self):
-        """Test that the response to SELECT DF_TELECOM has two bytes."""
+        """Test the response to SELECT DF_TELECOM."""
         SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
         DF_TELECOM = [0x7F, 0x10]
 
@@ -63,7 +63,7 @@ class testcase_CardService(unittest.TestCase):
                 response, sw1, sw2 = cs.connection.transmit( SELECT + DF_TELECOM )
                 expectedSWs={ "9f 1a":1, "6e 0":2, "9f 20":3, "9f 22":4 }
                 self.assertEquals( [], response )
-                self.assert_( expectedSWs.has_key( "%x %x" % (sw1, sw2 ) ) )
+                self.assert_( expectedSWs.has_key( "%x %x" % (sw1, sw2 ) ) or "9f"==sw1 )
 
 
 def suite():
