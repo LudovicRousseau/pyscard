@@ -61,7 +61,7 @@ elif 'darwin' in get_platform() or 'macosx-10.3' in get_platform() or 'macosx-10
     platform_libraries=[]
     platform_include_dirs=['PCSC']
     platform_extra_compile_args=['-v','-framework', 'PCSC', '-arch', 'i386', '-arch', 'ppc', '-ggdb', '-O0']
-    platform_extra_link_args=['-arch', 'i386', '-arch', 'ppc','-ggdb']
+    platform_extra_link_args=['-arch', 'i386', '-arch', 'ppc','-ggdb', '-framework', 'PCSC' ]
 
 #
 # Mac OS X Leopard has python 2.5 preinstalled
