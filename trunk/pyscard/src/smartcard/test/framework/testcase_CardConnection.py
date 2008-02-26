@@ -53,7 +53,7 @@ class testcase_CardConnection(unittest.TestCase):
     """Test case for CardConnection."""
 
     def testcase_CardConnection(self):
-        """Test with default protocols that the response to SELECT DF_TELECOM has two bytes."""
+        """Test with default protocols the response to SELECT DF_TELECOM."""
         SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
         DF_TELECOM = [0x7F, 0x10]
 
@@ -64,13 +64,13 @@ class testcase_CardConnection(unittest.TestCase):
                 response, sw1, sw2 = cc.transmit( SELECT + DF_TELECOM )
                 expectedSWs={ "9f 1a":1, "6e 0":2, "9f 20":3, "9f 22":4 }
                 self.assertEquals( [], response )
-                self.assert_( expectedSWs.has_key( "%x %x" % (sw1, sw2 ) ) )
+                self.assert_( expectedSWs.has_key( "%x %x" % (sw1, sw2 ) ) or "9f"==sw1 )
             else:
                 self.assertRaises( NoCardException, cc.connect )
         cc.disconnect()
 
     def testcase_CardConnectionT0(self):
-        """Test with T0 that the response to SELECT DF_TELECOM has two bytes."""
+        """Test with T0 the response to SELECT DF_TELECOM."""
         SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
         DF_TELECOM = [0x7F, 0x10]
 
@@ -81,7 +81,7 @@ class testcase_CardConnection(unittest.TestCase):
                 response, sw1, sw2 = cc.transmit( SELECT + DF_TELECOM )
                 expectedSWs={ "9f 1a":1, "6e 0":2, "9f 20":3, "9f 22":4 }
                 self.assertEquals( [], response )
-                self.assert_( expectedSWs.has_key( "%x %x" % (sw1, sw2 ) ) )
+                self.assert_( expectedSWs.has_key( "%x %x" % (sw1, sw2 ) ) or "9f"==sw1 )
             else:
                 self.assertRaises( NoCardException, cc.connect )
         cc.disconnect()
@@ -116,7 +116,7 @@ class testcase_CardConnection(unittest.TestCase):
         cc.disconnect()
 
     def testcase_CardConnectionT0T1(self):
-        """Test test with T0 | T1 that the response to SELECT DF_TELECOM has two bytes."""
+        """Test test with T0 | T1  the response to SELECT DF_TELECOM."""
         SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
         DF_TELECOM = [0x7F, 0x10]
 
@@ -127,14 +127,14 @@ class testcase_CardConnection(unittest.TestCase):
                 response, sw1, sw2 = cc.transmit( SELECT + DF_TELECOM )
                 expectedSWs={ "9f 1a":1, "6e 0":2, "9f 20":3, "9f 22":4 }
                 self.assertEquals( [], response )
-                self.assert_( expectedSWs.has_key( "%x %x" % (sw1, sw2 ) ) )
+                self.assert_( expectedSWs.has_key( "%x %x" % (sw1, sw2 ) ) or "9f"==sw1 )
             else:
                 self.assertRaises( NoCardException, cc.connect )
         cc.disconnect()
 
 
     def testcase_CardConnectionT0inTransmit(self):
-        """Test with T0 in transmit that the response to SELECT DF_TELECOM has two bytes."""
+        """Test with T0 in transmit the response to SELECT DF_TELECOM."""
         SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
         DF_TELECOM = [0x7F, 0x10]
 
@@ -145,14 +145,14 @@ class testcase_CardConnection(unittest.TestCase):
                 response, sw1, sw2 = cc.transmit( SELECT + DF_TELECOM, CardConnection.T0_protocol )
                 expectedSWs={ "9f 1a":1, "6e 0":2, "9f 20":3, "9f 22":4 }
                 self.assertEquals( [], response )
-                self.assert_( expectedSWs.has_key( "%x %x" % (sw1, sw2 ) ) )
+                self.assert_( expectedSWs.has_key( "%x %x" % (sw1, sw2 ) ) or "9f"==sw1 )
             else:
                 self.assertRaises( NoCardException, cc.connect )
         cc.disconnect()
 
 
     def testcase_CardConnectionT0T1inTransmitMustFail(self):
-        """Test with bad parameter in transmit that the response to SELECT DF_TELECOM has two bytes."""
+        """Test with bad parameter in transmit  the response to SELECT DF_TELECOM."""
         SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
         DF_TELECOM = [0x7F, 0x10]
 
