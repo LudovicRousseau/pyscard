@@ -4,7 +4,7 @@ pyscard smartcard library for python
 http://pyscard.sourceforge.net/
 -------------------------------------------------------------------------------
 
-Copyright 2001-2007 gemalto
+Copyright 2001-2008 gemalto
 Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
 
 This file is part of pyscard.
@@ -153,7 +153,7 @@ Installing on Mac OS X Tiger from the source distribution
 ----------------------------------------------------------
 
 1. you will need swig 1.3.31 (http://www.swig.org); gcc and pcsc-lite are available
-out of the box on Max OS X darwin
+out of the box on Max OS X Tiger
 
 2. download the source distribution
 
@@ -168,6 +168,44 @@ sudo python setup.py build_ext install
 
 This will build pyscard and install it in the site-packages directory of your python distribution, e.g.
 /System/Library/Frameworks/Python.framework/Versions/2.3/lib/python2.3/lib/site-packages/smartcard
+
+
+Installation on Max OS X Leopard:
+---------------------------------
+
+The Mac OS X Leopard support is experimental on pyscard 1.6.6. It was developed
+and tested on a i386 MacBook Pro. Please drop me a mail if you succeed on a
+ppc MacBook.
+
+Installing on Mac OS X Leopard from the binary distribution:
+----------------------------------------------------
+
+1. download the binary distribution
+
+The binary distribution is an archive file, with a name similar to
+pyscard-1.6.6-py-2.5-macosx10.5.mpkg.
+
+2. Open the package and proceed with installation.
+
+Installing on Mac OS X Leopard from the source distribution
+------------------------------------------------------------
+
+1. you will need swig 1.3.31 (http://www.swig.org); gcc and pcsc-lite are available
+out of the box on Max OS X Leopard
+
+2. download the source distribution
+
+The source distribution is available as pyscard-1.6.6.zip or
+pyscard-1.6.6.tar.gz.
+
+3. untar or unzip the source distribution
+
+4. from a terminal, type the following:
+
+sudo python setup.py build_ext install
+
+This will build pyscard and install it in the site-packages directory of your python distribution, e.g.
+/System/Library/Frameworks/Python.framework/Versions/2.5/lib/python2.3/lib/site-packages/smartcard
 
 
 -------------------------------------------------------------------------------
@@ -246,7 +284,7 @@ swig 1.3.31 (same requirements as for installing from the source distribution)
 and bdist_mpkg 0.4.3 (http://cheeseshop.python.org/pypi/bdist_mpkg/).
 
 
-If you are using the pre-installed python 2.3 distributuion, in the root directory 
+If you are using the pre-installed python 2.3 distribution, in the root directory 
 of the source distribution, i.e. in the src directory, execute the following commands 
 in a terminal:
 
@@ -262,6 +300,26 @@ python setup.py build_ext
 /Library/Frameworks/Python.Framework/Versions/2.5/bin/bdist_mpkg setup.py
 
 This will build package pyscard-1.6.6-py-2.6-macosx10.4.mpkg.
+
+
+Building a binary distribution for Mac OS X Leopard
+---------------------------------------------------
+
+To build a binary distribution from the source distribution, you will need
+swig 1.3.31 (same requirements as for installing from the source distribution)
+and bdist_mpkg 0.4.3 (http://cheeseshop.python.org/pypi/bdist_mpkg/).
+
+Install bdist_mpkg by executing the bdist_mpkg setup.py script with build and
+install as arguments, i.e. from the root directory of the bdist_mpkg 
+source distribution enter: python setup.py build install.
+
+From the root directory of the pyscard source distribution, 
+i.e. in the src directory, execute the following commands in a terminal:
+
+python setup.py build_ext
+/Library/Frameworks/Python.Framework/Versions/2.5/Extras/bin/bdist_mpkg setup.py
+
+This will build package pyscard-1.6.6-py-2.5-macosx10.5.mpkg.
 
 
 -------------------------------------------------------------------------------
