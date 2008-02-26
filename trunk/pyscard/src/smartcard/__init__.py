@@ -5,7 +5,7 @@ access smartcards and readers.
 
 __author__ = "gemalto http://www.gemalto.com"
 __date__ = "January 2008"
-__version__ = "1.6.5"
+__version__ = "1.6.6"
 
 Copyright 2001-2008 gemalto
 Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
