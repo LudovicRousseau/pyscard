@@ -74,8 +74,7 @@ elif 'macosx-10.5' in get_platform():
     platform_libraries=[]
     platform_include_dirs=['PCSC']
     platform_extra_compile_args=['-v','-framework', 'PCSC', '-arch', 'i386', '-arch', 'ppc', '-ggdb', '-O0']
-    platform_extra_link_args=['-arch', 'i386', '-arch', 'ppc','-ggdb']
-# Leopard not supported yet
+    platform_extra_link_args=['-arch', 'i386', '-arch', 'ppc','-ggdb', '-framework', 'PCSC' ]
 else:
     sys.exit("unsupported platform: " + get_platform() )
 
@@ -178,7 +177,7 @@ kw = {'name':"pyscard",
                              extra_compile_args=platform_extra_compile_args,
                              extra_link_args=platform_extra_link_args,
                              swig_opts=['-outdir','smartcard/scard']+platform_swig_opts)],
-      'cmdclass':{'build_ext': _pyscardBuildExt}
+      'cmdclass':{'build_ext': _pyscardBuildExt},
      }
 
 # If we're running >Python 2.3, add extra information
