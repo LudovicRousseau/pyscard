@@ -29,17 +29,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 from sys import exc_info
-from threading import Thread, Event
+from threading import Thread, Event, enumerate
 from time import sleep
 
 from smartcard.System import readers
 from smartcard.Exceptions import ListReadersException
 from smartcard.Observer import Observer
 from smartcard.Observer import Observable
-
-from smartcard.Synchronization import *
-
-_START_ON_DEMAND_=False
 
 # ReaderObserver interface
 class ReaderObserver(Observer):
@@ -58,153 +54,123 @@ class ReaderObserver(Observer):
         """
         pass
 
-class ReaderMonitor:
+class ReaderMonitor( Observable ):
     """Class that monitors reader insertion/removal.
     and notify observers
 
     note: a reader monitoring thread will be running
     as long as the reader monitor has observers, or ReaderMonitor.stop()
-    is called. Do not forget to delete all your observer by
-    calling deleteObserver, or your program will run forever...
+    is called.
 
-    Not that we use the singleton pattern from Thinking in Python
-    Bruce Eckel, http://mindview.net/Books/TIPython to make sure
-    there is only one ReaderMonitor.
+    It implements the shared state design pattern, where objects
+    of the same type all share the same state, in our case essentially
+    the ReaderMonitoring Thread.
     """
 
-    class __ReaderMonitorSingleton( Observable ):
-        """The real reader monitor class.
 
-        A single instance of this class is created
-        by the public ReaderMonitor class.
-        """
-        def __init__(self):
-            Observable.__init__(self)
-            if _START_ON_DEMAND_:
-                self.rmthread=None
-            else:
-                self.rmthread = ReaderMonitoringThread( self )
+    __shared_state = {}
 
-        def addObserver(self, observer):
-            """Add an observer.
+    def __init__( self, startOnDemand=True ):
+        self.__dict__ = self.__shared_state
+        Observable.__init__( self )
+        self.startOnDemand = startOnDemand
+        if self.startOnDemand:
+            self.rmthread=None
+        else:
+            self.rmthread = ReaderMonitoringThread( self )
+            self.rmthread.start()
 
-            We only start the reader monitoring thread when
-            there are observers.
-            """
-            Observable.addObserver( self, observer )
-            if _START_ON_DEMAND_:
-                if self.countObservers()>0 and self.rmthread==None:
+    def addObserver( self, observer ):
+        """Add an observer."""
+        Observable.addObserver( self, observer )
+
+        # If self.startOnDemand is True, the reader monitoring 
+        # thread only runs when there are observers.
+        if self.startOnDemand:
+            if 0<self.countObservers():
+                if not self.rmthread:
                     self.rmthread = ReaderMonitoringThread( self )
-            else:
-                observer.update( self, (self.rmthread.readers, [] ) )
 
-        def deleteObserver(self, observer):
-            """Remove an observer.
+                    # start reader monitoring thread in another thread to
+                    # avoid a deadlock; addObserver and notifyObservers called
+                    # in the ReaderMonitoringThread run() method are synchronized
+                    import thread
+                    thread.start_new_thread( self.rmthread.start, () )
+        else:
+            observer.update( self, (self.rmthread.readers, []) )
 
-            We stop the reader monitoring thread when there
-            are no more observers.
-            """
-            Observable.deleteObserver( self, observer )
-            if _START_ON_DEMAND_:
-                if self.countObservers()==0:
-                    if self.rmthread!=None:
-                        self.rmthread.stop()
-                        self.rmthread=None
+    def deleteObserver( self, observer ):
+        """Remove an observer."""
+        Observable.deleteObserver( self, observer )
+        # If self.startOnDemand is True, the reader monitoring 
+        # thread is stopped when there are no more observers.
+        if self.startOnDemand:
+            if 0==self.countObservers():
+                self.rmthread.stop()
+                del self.rmthread
+                self.rmthread = None
 
-        def __str__( self ):
-            return 'ReaderMonitor'
+    def __str__(self):
+        return self.__class__.__name__
 
-    # the singleton
-    instance = None
-
-    def __init__(self):
-        if not ReaderMonitor.instance:
-            ReaderMonitor.instance = ReaderMonitor.__ReaderMonitorSingleton()
-
-    def __getattr__(self, name):
-        return getattr(self.instance, name)
-
-class ReaderMonitoringThread:
+class ReaderMonitoringThread(Thread):
     """Reader insertion thread.
     This thread polls for pcsc reader insertion, since no
     reader insertion event is available in pcsc.
     """
 
-    class __ReaderMonitoringThreadSingleton( Thread ):
-        """The real reader monitoring thread class.
 
-        A single instance of this class is created
-        by the public ReaderMonitoringThread class.
+    __shared_state = {}
+    def __init__( self, observable ):
+        self.__dict__ = self.__shared_state
+        Thread.__init__( self )
+        self.observable = observable
+        self.stopEvent = Event()
+        self.stopEvent.clear()
+        self.readers = []
+        self.setDaemon( True )
+        self.setName( 'smartcard.ReaderMonitoringThread' )
+ 
+    def run(self):
+        """Runs until stopEvent is notified, and notify
+        observers of all reader insertion/removal.
         """
-        def __init__(self, observable):
-            Thread.__init__(self)
-            self.observable=observable
-            self.stopEvent = Event()
-            self.stopEvent.clear()
-            self.readers = []
-            self.setDaemon(True)
+        while not self.stopEvent.isSet():
+            try:
+                # no need to monitor if no observers
+                if 0<self.observable.countObservers():
+                    currentReaders = readers()
+                    addedReaders = []
+                    removedReaders = []
+        
+                    if currentReaders != self.readers:
+                        for reader in currentReaders:
+                            if not reader in self.readers:
+                                addedReaders.append(reader)
+                        for reader in self.readers:
+                            if not reader in currentReaders:
+                                removedReaders.append(reader)
+        
+                        if addedReaders or removedReaders:
+                            # Notify observers
+                            self.readers = currentReaders
+                            self.observable.setChanged()
+                            self.observable.notifyObservers((addedReaders, removedReaders))
+    
+                # wait every second on stopEvent
+                self.stopEvent.wait(1)
 
-        # the actual monitoring thread
-        def run(self):
-            """Runs until stopEvent is notified, and notify
-            observers of all reader insertion/removal.
-            """
-            while self.stopEvent.isSet()!=1:
-                try:
-                    currentreaders = readers()
+            except Exception, e:
+                # Most likely raised during interpreter shutdown due
+                # to unclean exit which failed to remove all observers.
+                # To solve this, we set the stop event and pass the
+                # exception to let the thread finish gracefully.
+                self.stopEvent.set()
 
-                    addedreaders=[]
-                    for reader in currentreaders:
-                        if not self.readers.__contains__( reader ):
-                            addedreaders.append( reader )
+    def stop(self):
+        self.stopEvent.set()
+        self.join()
 
-                    removedreaders=[]
-                    for reader in self.readers:
-                        if not currentreaders.__contains__( reader ):
-                            removedreaders.append( reader )
-
-                    if addedreaders!=[] or removedreaders!=[]:
-                        self.readers=currentreaders
-                        self.observable.setChanged()
-                        self.observable.notifyObservers( (addedreaders, removedreaders) )
-
-                # when ReaderMonitoringThread.__del__() is invoked in response to shutdown,
-                # e.g., when execution of the program is done, other globals referenced
-                # by the __del__() method may already have been deleted.
-                # this causes ReaderMonitoringThread.run() to except with a TypeError
-                except TypeError:
-                    pass
-
-                except:
-                    import sys
-                    print sys.exc_info()[1]
-                    print sys.exc_info()[2]
-                    print sys.exc_info()[0]
-
-                # don't poll too much
-                sleep(1)
-
-
-        # stop the thread by signaling stopEvent
-        def stop(self):
-            self.stopEvent.set()
-
-    # the singleton
-    instance = None
-
-    def __init__(self, observable):
-        if not ReaderMonitoringThread.instance:
-            ReaderMonitoringThread.instance = ReaderMonitoringThread.__ReaderMonitoringThreadSingleton( observable )
-            ReaderMonitoringThread.instance.start()
-
-
-    def __getattr__(self, name):
-        return getattr(self.instance, name)
-
-    def __del__(self):
-        if ReaderMonitoringThread.instance!=None:
-            ReaderMonitoringThread.instance.stop()
-            ReaderMonitoringThread.instance = None
 
 
 if __name__ == "__main__":
@@ -238,5 +204,7 @@ if __name__ == "__main__":
     t2 = testthread(2)
     t1.start()
     t2.start()
+    t1.join()
+    t2.join()
 
 
