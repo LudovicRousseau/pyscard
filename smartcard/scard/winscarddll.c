@@ -561,7 +561,16 @@ long winscard_init(void)
                 GETPROCADDRESS( SCARDRELEASECONTEXT    , SCardReleaseContext    , SCardReleaseContext    );
                 GETPROCADDRESS( SCARDSTATUSA           , SCardStatusA           , SCardStatus            );
                 GETPROCADDRESS( SCARDTRANSMIT          , SCardTransmit          , SCardTransmit          );
-                GETPROCADDRESS( SCARDCONTROL           , SCardControl           , SCardControl );
+
+                #ifndef __APPLE__
+                    GETPROCADDRESS( SCARDCONTROL, SCardControl, SCardControl );
+                #else // !__APPLE__
+                    #ifdef __TIGER__
+                        GETPROCADDRESS( SCARDCONTROL, SCardControl, SCardControl );
+                    #else // ! __TIGER__
+                        GETPROCADDRESS( SCARDCONTROL, SCardControl, SCardControl132 );
+                    #endif // __TIGER__
+                #endif // __APPLE__
 
                 #ifndef __TIGER__
                     SILENTGETPROCADDRESS( SCARDISVALIDCONTEXT    , SCardIsValidContext    , SCardIsValidContext    );
