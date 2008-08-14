@@ -40,6 +40,7 @@ def suite():
         'testcase_CardType',
         'testcase_CAtr',
         'testcase_ErrorChecking',
+        'testcase_ExclusiveCardConnection',
         'testcase_readers',
         'testcase_readergroups',
         'testcase_readermonitor',
