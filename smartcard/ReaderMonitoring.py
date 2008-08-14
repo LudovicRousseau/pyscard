@@ -32,10 +32,12 @@ from sys import exc_info
 from threading import Thread, Event, enumerate
 from time import sleep
 
-from smartcard.System import readers
+import smartcard.System
 from smartcard.Exceptions import ListReadersException
 from smartcard.Observer import Observer
 from smartcard.Observer import Observable
+from smartcard.Synchronization import *
+
 
 # ReaderObserver interface
 class ReaderObserver(Observer):
@@ -64,20 +66,23 @@ class ReaderMonitor( Observable ):
 
     It implements the shared state design pattern, where objects
     of the same type all share the same state, in our case essentially
-    the ReaderMonitoring Thread.
+    the ReaderMonitoring Thread. Thanks to Frank Aune for implementing
+    the shared state pattern logics.
     """
 
 
     __shared_state = {}
 
-    def __init__( self, startOnDemand=True ):
+    def __init__( self, startOnDemand=True, readerProc=smartcard.System.readers, period=1 ):
         self.__dict__ = self.__shared_state
         Observable.__init__( self )
         self.startOnDemand = startOnDemand
+        self.readerProc = readerProc
+        self.period = period
         if self.startOnDemand:
             self.rmthread=None
         else:
-            self.rmthread = ReaderMonitoringThread( self )
+            self.rmthread = ReaderMonitoringThread( self, self.readerProc, self.period )
             self.rmthread.start()
 
     def addObserver( self, observer ):
@@ -89,7 +94,7 @@ class ReaderMonitor( Observable ):
         if self.startOnDemand:
             if 0<self.countObservers():
                 if not self.rmthread:
-                    self.rmthread = ReaderMonitoringThread( self )
+                    self.rmthread = ReaderMonitoringThread( self, self.readerProc, self.period )
 
                     # start reader monitoring thread in another thread to
                     # avoid a deadlock; addObserver and notifyObservers called
@@ -113,6 +118,12 @@ class ReaderMonitor( Observable ):
     def __str__(self):
         return self.__class__.__name__
 
+synchronize( ReaderMonitor,
+  "addObserver deleteObserver deleteObservers " +
+  "setChanged clearChanged hasChanged " +
+  "countObservers")
+
+
 class ReaderMonitoringThread(Thread):
     """Reader insertion thread.
     This thread polls for pcsc reader insertion, since no
@@ -121,7 +132,7 @@ class ReaderMonitoringThread(Thread):
 
 
     __shared_state = {}
-    def __init__( self, observable ):
+    def __init__( self, observable, readerProc, period ):
         self.__dict__ = self.__shared_state
         Thread.__init__( self )
         self.observable = observable
@@ -130,6 +141,8 @@ class ReaderMonitoringThread(Thread):
         self.readers = []
         self.setDaemon( True )
         self.setName( 'smartcard.ReaderMonitoringThread' )
+        self.readerProc = readerProc
+        self.period = period
  
     def run(self):
         """Runs until stopEvent is notified, and notify
@@ -139,11 +152,11 @@ class ReaderMonitoringThread(Thread):
             try:
                 # no need to monitor if no observers
                 if 0<self.observable.countObservers():
-                    currentReaders = readers()
+                    currentReaders = self.readerProc()
                     addedReaders = []
                     removedReaders = []
-        
-                    if currentReaders != self.readers:
+
+                    if currentReaders!=self.readers:
                         for reader in currentReaders:
                             if not reader in self.readers:
                                 addedReaders.append(reader)
@@ -153,12 +166,13 @@ class ReaderMonitoringThread(Thread):
         
                         if addedReaders or removedReaders:
                             # Notify observers
-                            self.readers = currentReaders
+                            self.readers=[]
+                            for r in currentReaders: self.readers.append(r)
                             self.observable.setChanged()
                             self.observable.notifyObservers((addedReaders, removedReaders))
     
                 # wait every second on stopEvent
-                self.stopEvent.wait(1)
+                self.stopEvent.wait(self.period)
 
             except Exception, e:
                 # Most likely raised during interpreter shutdown due
@@ -171,11 +185,9 @@ class ReaderMonitoringThread(Thread):
         self.stopEvent.set()
         self.join()
 
-
-
 if __name__ == "__main__":
     from smartcard.ReaderMonitoring import ReaderMonitor
-    print 'insert or remove readers in the next 10 seconds'
+    print 'insert or remove readers in the next 20 seconds'
 
     # a simple reader observer that prints added/removed readers
     class printobserver( ReaderObserver ):
@@ -197,7 +209,7 @@ if __name__ == "__main__":
             # create and register observer
             self.observer = printobserver( self.obsindex )
             self.readermonitor.addObserver(self.observer)
-            sleep(10)
+            sleep(20)
             self.readermonitor.deleteObserver(self.observer)
 
     t1 = testthread(1)
