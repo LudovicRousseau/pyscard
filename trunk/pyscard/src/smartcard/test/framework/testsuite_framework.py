@@ -45,6 +45,7 @@ def suite():
         'testcase_readers',
         'testcase_readergroups',
         'testcase_readermonitor',
+        'testcase_readermonitorstress',
         'testcase_ulist',
         'testcase_utils',
         )
