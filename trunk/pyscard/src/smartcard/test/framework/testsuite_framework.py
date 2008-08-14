@@ -33,6 +33,7 @@ import configcheck
 def suite():
     modules_to_test = (
         'testcase_ATR',
+        'testcase_Card',
         'testcase_CardConnection',
         'testcase_CardMonitor',
         'testcase_CardRequest',
