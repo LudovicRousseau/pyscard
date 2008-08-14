@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 import threading, time
 
 from smartcard.AbstractCardRequest import AbstractCardRequest
-from smartcard.Exceptions import CardRequestTimeoutException, CardRequestException
+from smartcard.Exceptions import CardRequestTimeoutException, CardRequestException, ListReadersException
 from smartcard.pcsc.PCSCReader import PCSCReader
 from smartcard.pcsc.PCSCContext import PCSCContext
 from smartcard import Card
