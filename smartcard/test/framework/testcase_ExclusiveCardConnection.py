@@ -116,7 +116,8 @@ class testcase_cardmonitor(unittest.TestCase):
         for t in threads:
             t.join()
         for t in threads:
-            print 'Thread %d: transmitted %ld apdus.' % (t.threadindex, t.countTransmitted )
+            if 0==1:
+                print 'Thread %d: transmitted %ld apdus.' % (t.threadindex, t.countTransmitted )
 
 def suite():
     suite1 = unittest.makeSuite(testcase_cardmonitorthread)
