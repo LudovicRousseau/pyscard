@@ -63,7 +63,7 @@ class testcase_Card(unittest.TestCase):
             if []!=expectedATRinReader[str(reader)]:
                 cc.connect()
                 response, sw1, sw2 = cc.transmit( SELECT + DF_TELECOM )
-                expectedSWs={ "9f 1a":1, "6e 0":2 }
+                expectedSWs={ "9f 1a":1, "9f 20":2, "6e 0":3 }
                 self.assertEquals( [], response )
                 self.assert_( expectedSWs.has_key( "%x %x" % (sw1, sw2 ) ) )
             else:
@@ -81,7 +81,7 @@ class testcase_Card(unittest.TestCase):
             if []!=expectedATRinReader[str(reader)]:
                 cc.connect()
                 response, sw1, sw2 = cc.transmit( SELECT + DF_TELECOM )
-                expectedSWs={ "9f 1a":1, "6e 0":2 }
+                expectedSWs={ "9f 1a":1, "9f 20":2, "6e 0":3 }
                 self.assertEquals( [], response )
                 self.assert_( expectedSWs.has_key( "%x %x" % (sw1, sw2 ) ) )
             else:
