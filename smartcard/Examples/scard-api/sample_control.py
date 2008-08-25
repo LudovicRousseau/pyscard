@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 """
-Sample for python PCSC wrapper module: get card ATR in first pcsc reader
+Sample for python PCSC wrapper module: send a Control Code to a card or
+reader
 
 __author__ = "Ludovic Rousseau"
 
