@@ -10,9 +10,11 @@ Download-URL: http://sourceforge.net/projects/pyscard/
 Description: Smartcard package for Python
 Platform: linux
 Platform: win32
+Platform: Mac OSX
 Classifier: Development Status :: 1.6.7 - Release
 Classifier: License :: GNU LESSER GENERAL PUBLIC LICENSE
 Classifier: Intended Audience :: Developers
 Classifier: Operating System :: Unix
 Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: MacOS :: MacOS X
 Classifier: Topic :: Security :: Smartcards
