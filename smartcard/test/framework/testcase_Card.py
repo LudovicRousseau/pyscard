@@ -65,7 +65,7 @@ class testcase_Card(unittest.TestCase):
                 response, sw1, sw2 = cc.transmit( SELECT + DF_TELECOM )
                 expectedSWs={ "9f 1a":1, "9f 20":2, "6e 0":3 }
                 self.assertEquals( [], response )
-                self.assert_( expectedSWs.has_key( "%x %x" % (sw1, sw2 ) ) )
+                self.assert_( expectedSWs.has_key( "%x %x" % (sw1, sw2 ) ) or "9f"== "%x" % sw1 )
             else:
                 self.assertRaises( NoCardException, cc.connect )
 
@@ -83,7 +83,7 @@ class testcase_Card(unittest.TestCase):
                 response, sw1, sw2 = cc.transmit( SELECT + DF_TELECOM )
                 expectedSWs={ "9f 1a":1, "9f 20":2, "6e 0":3 }
                 self.assertEquals( [], response )
-                self.assert_( expectedSWs.has_key( "%x %x" % (sw1, sw2 ) ) )
+                self.assert_( expectedSWs.has_key( "%x %x" % (sw1, sw2 ) ) or "9f"== "%x" % sw1 )
             else:
                 self.assertRaises( NoCardException, cc.connect )
 
