@@ -2,6 +2,7 @@
 =====
         * better thread support and clean-up in ReaderMonitoringThread (Frank Aune)
         * fixed issue on Mac OS X Leopard with dlsym loading of bad SCardControl function (Mattias Brändström)
+        * supported build of documentation files on linux and removed unresolved doc links (Ludovic Rousseau) 
 
 1.6.6
 =====
