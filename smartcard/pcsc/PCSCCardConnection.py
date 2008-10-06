@@ -162,12 +162,3 @@ if __name__ == '__main__':
     cc.connect()
     print "%r %x %x" % cc.transmit( SELECT + DF_TELECOM )
 
-
-
-
-
-
-
-
-
-

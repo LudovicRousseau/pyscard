@@ -54,5 +54,3 @@ class ReaderFactory:
         return ReaderFactory.factories[clazz].create( readername )
     createReader = staticmethod(createReader)
 
-
-

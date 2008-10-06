@@ -42,5 +42,3 @@ class ErrorChecker:
         Derived classes must raise a smartcard.sw.SWException upon error."""
         pass
 
-
-

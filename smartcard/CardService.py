@@ -68,12 +68,3 @@ if __name__ == '__main__':
     print "%X %X" % ( sw1, sw2 )
     cs.connection.disconnect()
 
-
-
-
-
-
-
-
-
-

@@ -78,4 +78,3 @@ class AbstractCardRequest:
         """Wait for card insertion or removal."""
         pass
 
-

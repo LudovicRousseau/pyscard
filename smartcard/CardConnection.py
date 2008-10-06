@@ -139,14 +139,3 @@ class CardConnection(Observable):
         Subclasses must override this method for implementing apdu transmission."""
         pass
 
-
-
-
-
-
-
-
-
-
-
-

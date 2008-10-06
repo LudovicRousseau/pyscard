@@ -57,4 +57,3 @@ class PCSCContext:
         if self.instance:
             return getattr( self.instance, name )
 
-

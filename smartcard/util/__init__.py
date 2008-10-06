@@ -209,5 +209,3 @@ def toHexString( bytes=[], format=0 ):
                 pformat = "0x"+pformat
         return rstrip(rstrip(reduce( lambda a, b: a+pformat % ((b+256)%256), [""] + bytes )),',')
 
-
-

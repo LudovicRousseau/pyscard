@@ -72,4 +72,3 @@ class APDUTracerPanel( wx.Panel, CardConnectionObserver ):
 
         self.apdutextctrl.AppendText( apduline + "\n" )
 
-

@@ -2259,5 +2259,3 @@ def SCardLocateCards( hcontext, cardnames, readerstates ):
 %constant char* resourceManagerSubType = "winscard-win32" ;
 #endif // WIN32
 
-
-

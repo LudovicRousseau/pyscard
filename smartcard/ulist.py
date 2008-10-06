@@ -117,5 +117,3 @@ class ulist(list):
         """Called for each item removed. Override in subclasses for adding custom action."""
         pass
 
-
-

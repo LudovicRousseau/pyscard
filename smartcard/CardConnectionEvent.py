@@ -37,11 +37,3 @@ class CardConnectionEvent:
         self.type=type
         self.args=args
 
-
-
-
-
-
-
-
-
