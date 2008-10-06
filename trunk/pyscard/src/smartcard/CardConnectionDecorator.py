@@ -76,7 +76,7 @@ class CardConnectionDecorator( CardConnection ):
         """call inner component setProtocol"""
         return self.component.setProtocol( protocol )
 
-    def transmit( self, bytes, protocol=CardConnection.T0_protocol ):
+    def transmit( self, bytes, protocol=None ):
         """call inner component transmit"""
         return self.component.transmit( bytes, protocol )
 
