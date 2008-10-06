@@ -88,7 +88,7 @@ class PCSCCardConnection( CardConnection ):
         pcscprotocol = translateprotocolmask( protocol )
         if 0==pcscprotocol: pcscprotocol = self.getProtocol()
 
-        hresult, self.hcard, dwActiveProtocol = SCardConnect(
+        hresult, self.hcard, self.dwActiveProtocol = SCardConnect(
             self.hcontext, str(self.reader), SCARD_SHARE_SHARED, pcscprotocol )
         if hresult!=0:
             self.hcard=None
@@ -137,6 +137,8 @@ class PCSCCardConnection( CardConnection ):
                     sw2 is status word 2, e.g. 0x1A
                     response are the response bytes excluding status words
         """
+        if None==protocol:
+            protocol = self.dwActiveProtocol
         CardConnection.doTransmit( self, bytes, protocol )
         pcscprotocolheader = translateprotocolheader( protocol )
         if 0==pcscprotocolheader:
