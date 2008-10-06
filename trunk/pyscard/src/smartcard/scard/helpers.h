@@ -112,4 +112,3 @@ void SCardHelper_AppendStringListToPyObject( STRINGLIST* source, PyObject** ptar
 STRINGLIST* SCardHelper_PyStringListToStringList(PyObject* source);
 void SCardHelper_PrintStringList( STRINGLIST* apsz );
 
-

@@ -62,4 +62,3 @@ class ConsoleCardConnectionObserver( CardConnectionObserver ):
             else:
                 print '< ', toHexString(ccevent.args[0]), "%-2X %-2X" % tuple(ccevent.args[-2:])
 
-

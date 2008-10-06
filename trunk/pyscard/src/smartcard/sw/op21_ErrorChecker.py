@@ -125,4 +125,3 @@ if __name__ == '__main__':
     except smartcard.sw.SWExceptions.CheckingErrorException, e:
         print e, "%x %x" % (e.sw1, e.sw2)
 
-

@@ -46,4 +46,3 @@ else:
     if os.path.exists( os.path.join( "images", 'reader.ico' ) ):
         ICO_READER = os.path.join( "images", 'reader.ico' )
 
-

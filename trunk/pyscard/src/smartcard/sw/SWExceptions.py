@@ -66,4 +66,3 @@ class CheckingErrorException( SWException ):
     def __init__( self, data, sw1, sw2, message="" ):
         SWException.__init__( self, data, sw1, sw2, "checking error - " + message )
 
-

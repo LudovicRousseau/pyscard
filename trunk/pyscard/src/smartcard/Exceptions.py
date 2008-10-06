@@ -81,5 +81,3 @@ class NoReadersException(SmartcardException):
     def __init__( self, message="" ):
         SmartcardException.__init__( self, 'no readers found' )
 
-
-

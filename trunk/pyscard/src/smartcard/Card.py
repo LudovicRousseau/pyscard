@@ -69,8 +69,3 @@ class Card:
             #raise CardConnectionException( 'not a valid reader: ' + str(self.reader) )
             return None
 
-
-
-
-
-

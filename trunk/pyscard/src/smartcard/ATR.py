@@ -287,17 +287,3 @@ if __name__ == '__main__':
         a.dump()
         print reduce( lambda a, b: a+"%-0.2X " % ((b+256)%256), a.getHistoricalBytes(), '' )
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-

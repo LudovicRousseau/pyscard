@@ -87,6 +87,3 @@ class ReaderToolbar( wx.ToolBar ):
 
         self.Realize()
 
-
-
-

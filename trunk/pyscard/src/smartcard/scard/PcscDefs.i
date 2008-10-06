@@ -329,8 +329,3 @@ typedef enum
 %constant unsigned long INFINITE = 0xFFFFFFFF ;
 #endif // __TIGER__
 
-
-
-
-
-

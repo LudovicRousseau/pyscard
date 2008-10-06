@@ -1226,6 +1226,3 @@ Initialize and clean-up memory logging on process attach and detach
 }
 #endif // WIN32
 
-
-
-

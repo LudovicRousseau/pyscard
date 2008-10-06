@@ -306,5 +306,3 @@ class SimpleSCardAppFrame(wx.Frame):
         if isinstance( reader, smartcard.reader.Reader.Reader ):
             self.treeuserpanel.dialogpanel.OnActivateReader( reader )
 
-
-
