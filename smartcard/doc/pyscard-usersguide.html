@@ -1400,7 +1400,7 @@ class SecureChannelConnection( CardConnectionDecorator ):
         print 'uncyphering', toHexString( data )
         return data
 
-    def transmit( self, bytes, protocol=CardConnection.T0_protocol ):
+    def transmit( self, bytes, protocol=None ):
         """Cypher/uncypher APDUs before transmission"""
         cypheredbytes = self.cypher( bytes )
         data, sw1, sw2 = CardConnectionDecorator.transmit( self, cypheredbytes, protocol )
