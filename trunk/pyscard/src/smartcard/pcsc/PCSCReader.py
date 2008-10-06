@@ -111,7 +111,7 @@ if __name__ == '__main__':
     DF_TELECOM = [0x7F, 0x10]
 
     creaders=readers()
-    cc = creaders[1].createConnection()
+    cc = creaders[0].createConnection()
     cc.connect()
     data, sw1, sw2 = cc.transmit( SELECT + DF_TELECOM )
     print "%X %X" % (sw1, sw2)
