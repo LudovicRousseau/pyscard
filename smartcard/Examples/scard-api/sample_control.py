@@ -49,7 +49,7 @@ try:
 
             try:
                 hresult, hcard, dwActiveProtocol = SCardConnect(
-                    hcontext, zreader, SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 )
+                    hcontext, zreader, SCARD_SHARE_DIRECT, SCARD_PROTOCOL_T0 )
                 if hresult!=0:
                     raise error, 'Unable to connect: ' + SCardGetErrorMessage(hresult)
                 print 'Connected with active protocol', dwActiveProtocol
