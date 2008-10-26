@@ -41,15 +41,6 @@ if 'win32'==get_platform():
     platform_extra_compile_args=[]
     platform_extra_link_args=[]
 
-elif get_platform() in ('linux-i586', 'linux-i686', 'linux-x86_64'):
-    platform__cc_defines=[('PCSCLITE', '1')]
-    platform_swig_opts=['-DPCSCLITE']
-    platform_sources=[]
-    platform_libraries=['pcsclite']
-    platform_include_dirs=['/usr/include/PCSC']
-    platform_extra_compile_args=[]#['-ggdb', '-O0']
-    platform_extra_link_args=[]#['-ggdb']
-
 #
 # Mac OS X Tiger has python 2.3 preinstalled
 # get_platform() returns a string similar to 'darwin-8.11.1-i386' with python 2.3
@@ -76,7 +67,13 @@ elif 'macosx-10.5' in get_platform():
     platform_extra_compile_args=['-v','-framework', 'PCSC', '-arch', 'i386', '-arch', 'ppc', '-ggdb', '-O0']
     platform_extra_link_args=['-arch', 'i386', '-arch', 'ppc','-ggdb', '-framework', 'PCSC' ]
 else:
-    sys.exit("unsupported platform: " + get_platform() )
+    platform__cc_defines=[('PCSCLITE', '1')]
+    platform_swig_opts=['-DPCSCLITE']
+    platform_sources=[]
+    platform_libraries=['pcsclite']
+    platform_include_dirs=['/usr/include/PCSC']
+    platform_extra_compile_args=[]#['-ggdb', '-O0']
+    platform_extra_link_args=[]#['-ggdb']
 
 
 class _pyscardBuildExt(build_ext):
@@ -216,6 +213,4 @@ if sys.version_info < (2,4):
             newdir = os.path.dirname( file )
             dir_util.mkpath( os.path.join( targetdir, newdir ) ) 
             file_util.copy_file( file, os.path.join( targetdir, file ) )
-
-
 
