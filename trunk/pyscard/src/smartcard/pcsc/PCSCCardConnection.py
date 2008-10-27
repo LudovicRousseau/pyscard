@@ -68,6 +68,7 @@ class PCSCCardConnection( CardConnection ):
         """
         CardConnection.__init__( self, reader )
         self.hcard = None
+        self.dwActiveProtocol = SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1
         hresult, self.hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
         if hresult!=0:
             raise CardConnectionException( 'Failed to establish context : ' + SCardGetErrorMessage(hresult) )
@@ -123,6 +124,10 @@ class PCSCCardConnection( CardConnection ):
         if hresult!=0:
             raise CardConnectionException( 'Failed to get status: ' + SCardGetErrorMessage(hresult) )
         return atr
+
+    def getProtocol( self ):
+        """Return the protocol negociated during connect()."""
+        return self.dwActiveProtocol
 
     def doTransmit( self, bytes, protocol=None ):
         """Transmit an apdu to the card and return response apdu.
