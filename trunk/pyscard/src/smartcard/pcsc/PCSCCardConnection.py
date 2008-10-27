@@ -96,7 +96,7 @@ class PCSCCardConnection( CardConnection ):
             if SCARD_W_REMOVED_CARD==hresult:
                 raise NoCardException( 'Unable to connect: ' + SCardGetErrorMessage(hresult) )
             else:
-                raise CardConnectionException( 'Unable to connect with protocol: ' + dictProtocol[pcscprotocol] + ' ' + SCardGetErrorMessage(hresult) )
+                raise CardConnectionException( 'Unable to connect with protocol: ' + dictProtocol[pcscprotocol] + '. ' + SCardGetErrorMessage(hresult) )
 
     def disconnect( self ):
         """Disconnect from the card."""
