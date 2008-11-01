@@ -68,7 +68,6 @@ class PCSCCardConnection( CardConnection ):
         """
         CardConnection.__init__( self, reader )
         self.hcard = None
-        self.dwActiveProtocol = SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1
         hresult, self.hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
         if hresult!=0:
             raise CardConnectionException( 'Failed to establish context : ' + SCardGetErrorMessage(hresult) )
@@ -89,7 +88,7 @@ class PCSCCardConnection( CardConnection ):
         pcscprotocol = translateprotocolmask( protocol )
         if 0==pcscprotocol: pcscprotocol = self.getProtocol()
 
-        hresult, self.hcard, self.dwActiveProtocol = SCardConnect(
+        hresult, self.hcard, dwActiveProtocol = SCardConnect(
             self.hcontext, str(self.reader), SCARD_SHARE_SHARED, pcscprotocol )
         if hresult!=0:
             self.hcard=None
@@ -97,6 +96,7 @@ class PCSCCardConnection( CardConnection ):
                 raise NoCardException( 'Unable to connect: ' + SCardGetErrorMessage(hresult) )
             else:
                 raise CardConnectionException( 'Unable to connect with protocol: ' + dictProtocol[pcscprotocol] + '. ' + SCardGetErrorMessage(hresult) )
+        PCSCCardConnection.setProtocol(self, dwActiveProtocol)
 
     def disconnect( self ):
         """Disconnect from the card."""
@@ -125,10 +125,6 @@ class PCSCCardConnection( CardConnection ):
             raise CardConnectionException( 'Failed to get status: ' + SCardGetErrorMessage(hresult) )
         return atr
 
-    def getProtocol( self ):
-        """Return the protocol negociated during connect()."""
-        return self.dwActiveProtocol
-
     def doTransmit( self, bytes, protocol=None ):
         """Transmit an apdu to the card and return response apdu.
 
@@ -143,7 +139,7 @@ class PCSCCardConnection( CardConnection ):
                     response are the response bytes excluding status words
         """
         if None==protocol:
-            protocol = self.dwActiveProtocol
+            protocol = self.getProtocol()
         CardConnection.doTransmit( self, bytes, protocol )
         pcscprotocolheader = translateprotocolheader( protocol )
         if 0==pcscprotocolheader:
