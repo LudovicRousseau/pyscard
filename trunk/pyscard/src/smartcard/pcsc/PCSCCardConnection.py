@@ -96,7 +96,11 @@ class PCSCCardConnection( CardConnection ):
                 raise NoCardException( 'Unable to connect: ' + SCardGetErrorMessage(hresult) )
             else:
                 raise CardConnectionException( 'Unable to connect with protocol: ' + dictProtocol[pcscprotocol] + '. ' + SCardGetErrorMessage(hresult) )
-        PCSCCardConnection.setProtocol(self, dwActiveProtocol)
+        protocol = 0
+        for p in dictProtocol:
+            if p == dwActiveProtocol:
+                protocol = eval("CardConnection.%s_protocol" % dictProtocol[p])
+        PCSCCardConnection.setProtocol(self, protocol)
 
     def disconnect( self ):
         """Disconnect from the card."""
