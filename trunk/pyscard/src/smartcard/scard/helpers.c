@@ -498,6 +498,10 @@ void SCardHelper_AppendReaderStateListToPyObject(
             PyObject* ot = PyTuple_New( 3 );
             oReader = PyString_FromString( source->ars[i].szReader );
             oEventState = PyInt_FromLong( (SCARDDWORDARG)source->ars[i].dwEventState );
+			// ATR visibly not initialised
+			if ( source->ars[i].cbAtr > MAX_ATR_SIZE)
+				source->ars[i].cbAtr = 0;
+
             oAtr = PyList_New( source->ars[i].cbAtr );
             for(j=0; j<source->ars[i].cbAtr; j++)
             {
