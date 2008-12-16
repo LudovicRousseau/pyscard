@@ -890,7 +890,7 @@ build a SCARDDWORDARG from a python SCARDDWORDARG
     if( !PyLong_Check(source) && !PyInt_Check(source) )
     {
         PyErr_SetString( PyExc_TypeError, "Expected a python integer or long." );
-        return 0;
+        return -1;
     }
 
     #ifdef PCSCLITE
