@@ -750,7 +750,7 @@ build a SCARDCONTEXT from a python SCARDCONTEXT
     // do we have a python long?
     if (!PyLong_Check(source))
     {
-        PyErr_SetString( PyExc_TypeError, "Expected a python long." );
+        PyErr_SetString( PyExc_TypeError, "Expected a python long as SCARDCONTEXT." );
         return 0;
     }
 
@@ -820,7 +820,7 @@ build a SCARDHANDLE from a python SCARDHANDLE
     // do we have a python long?
     if (!PyLong_Check(source))
     {
-        PyErr_SetString( PyExc_TypeError, "Expected a python long." );
+        PyErr_SetString( PyExc_TypeError, "Expected a python long as SCARDHANDLE." );
         return 0;
     }
 
