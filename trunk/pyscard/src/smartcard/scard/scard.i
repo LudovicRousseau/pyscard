@@ -253,7 +253,8 @@ SCARDRETCODE _GetCardTypeProviderName(
     psl->sz=NULL;
 
     lRetCode=(mySCardGetCardTypeProviderNameA)(
-        hcontext, pszCardName, dwProviderId, (LPTSTR)&psl->sz, &cchProviderName );
+        hcontext, pszCardName, dwProviderId,
+        (LPTSTR)&psl->sz, &cchProviderName );
 
     return lRetCode;
 };
@@ -330,7 +331,8 @@ SCARDRETCODE _ListInterfaces(
     pgl->hcontext = hcontext;
     pgl->aguid = NULL;
 
-    lRetCode = (mySCardListInterfacesA)( hcontext, pszCard, (LPGUID)&pgl->aguid, &pgl->cGuids );
+    lRetCode = (mySCardListInterfacesA)(hcontext, pszCard, (LPGUID)&pgl->aguid,
+        &pgl->cGuids );
     if( lRetCode!=SCARD_S_SUCCESS )
     {
         pgl->cGuids=0;
@@ -541,7 +543,8 @@ SCARDRETCODE _EstablishContext( SCARDDWORDARG dwScope, SCARDCONTEXT* phContext )
         {
             SCARDHANDLE hcard;
             SCARDDWORDARG dwarg;
-            (mySCardConnectA)( *phContext, "dummy-reader", SCARD_SHARE_SHARED, SCARD_PROTOCOL_ANY, &hcard, &dwarg );  
+            (mySCardConnectA)( *phContext, "dummy-reader", SCARD_SHARE_SHARED,
+                SCARD_PROTOCOL_ANY, &hcard, &dwarg );  
         }
     #endif // __TIGER__
 
@@ -573,7 +576,8 @@ SCARDRETCODE _GetStatusChange(
         prsl->ars[i].dwCurrentState = prsl->ars[i].dwCurrentState & (0xFFFFFFFF ^ SCARD_STATE_CHANGED);
     }
 
-    hresult = (mySCardGetStatusChangeA)( hcontext, dwTimeout, prsl->ars, prsl->cRStates );
+    hresult = (mySCardGetStatusChangeA)( hcontext, dwTimeout, prsl->ars,
+        prsl->cRStates );
 
     //printf( "\n%.8lx ", hresult );
     //for( i=0; i<prsl->cRStates; i++ )
@@ -593,10 +597,8 @@ SCARDRETCODE _GetStatusChange(
 
             // ATR not valid on output
             prsl->ars[i].cbAtr=0;
-
         }
     }
-
 
     return hresult;
 }
@@ -613,7 +615,7 @@ SCARDRETCODE _ListReaders(
 
     winscard_init();
 
-    if(pmszGroups)
+    if (pmszGroups)
     {
         mszGroups=pmszGroups->ac;
     }
@@ -629,7 +631,8 @@ SCARDRETCODE _ListReaders(
         pmszReaders->ac=NULL;
         pmszReaders->hcontext=hcontext;
 
-        return (mySCardListReadersA)( hcontext, mszGroups, (LPTSTR)&pmszReaders->ac, &cchReaders );
+        return (mySCardListReadersA)( hcontext, mszGroups,
+            (LPTSTR)&pmszReaders->ac, &cchReaders );
     #endif //AUTOALLOCATE
 
     // no autoallocate on pcsc-lite; do a first call to get length
@@ -640,7 +643,10 @@ SCARDRETCODE _ListReaders(
         pmszReaders->hcontext=0;
         pmszReaders->ac=NULL;
         cchReaders=0;
-        lRetCode = (mySCardListReadersA)( hcontext, mszGroups, NULL, &cchReaders );
+
+        lRetCode = (mySCardListReadersA)( hcontext, mszGroups, NULL,
+            &cchReaders );
+
         if ( SCARD_S_SUCCESS!=lRetCode )
         {
             return lRetCode;
@@ -659,7 +665,6 @@ SCARDRETCODE _ListReaders(
 
         return (mySCardListReadersA)( hcontext, mszGroups, (LPTSTR)pmszReaders->ac, &cchReaders );
     #endif // !NOAUTOALLOCATE
-
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -675,7 +680,8 @@ SCARDRETCODE _ListReaderGroups( SCARDCONTEXT hcontext, STRINGLIST* pmszReaderGro
         pmszReaderGroups->ac=NULL;
         pmszReaderGroups->hcontext=hcontext;
 
-        return (mySCardListReaderGroupsA)( hcontext, (LPTSTR)&pmszReaderGroups->ac, &cchReaderGroups );
+        return (mySCardListReaderGroupsA)( hcontext,
+            (LPTSTR)&pmszReaderGroups->ac, &cchReaderGroups );
     #endif // NOAUTOALLOCATE
 
     // no autoallocate on pcsc-lite; do a first call to get length
@@ -687,7 +693,8 @@ SCARDRETCODE _ListReaderGroups( SCARDCONTEXT hcontext, STRINGLIST* pmszReaderGro
         pmszReaderGroups->hcontext=0;
         cchReaderGroups = 0;
         pmszReaderGroups->ac=NULL;
-        lRetCode = (mySCardListReaderGroupsA)( hcontext, (LPTSTR)pmszReaderGroups->ac, &cchReaderGroups );
+        lRetCode = (mySCardListReaderGroupsA)( hcontext,
+            (LPTSTR)pmszReaderGroups->ac, &cchReaderGroups );
         if ( SCARD_S_SUCCESS!=lRetCode )
         {
             return lRetCode;
@@ -965,7 +972,7 @@ char* _pcsc_stringify_error( SCARDRETCODE pcscError )
 ERRORSTRING* _GetErrorMessage( long lErrCode )
 {
     #ifdef WIN32
-    #define _NO_SERVICE_MSG     "The Smart card resource manager is not running."
+    #define _NO_SERVICE_MSG "The Smart card resource manager is not running."
 
         DWORD dwRetCode;
         LPVOID ppszError;
