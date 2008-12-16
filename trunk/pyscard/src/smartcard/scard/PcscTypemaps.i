@@ -48,6 +48,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 %typemap(in) BYTELIST* INPUT(BYTELIST*)
 {
     $1 =  SCardHelper_PyByteListToBYTELIST( $input );
+    if (NULL == $1)
+        goto fail;
 }
 
 // release bytelist arg
@@ -185,6 +187,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 %typemap(in) GUIDLIST* INPUT(GUIDLIST*)
 {
     $1 =  SCardHelper_PyGuidListToGUIDLIST( $input );
+    if (NULL == $1)
+        goto fail;
 }
 
 // builds a Python list from a GUID list
@@ -273,6 +277,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 %typemap(in) READERSTATELIST *prsl(READERSTATELIST*)
 {
     $1 =  SCardHelper_PyReaderStateListToREADERSTATELIST( $input );
+    if (NULL == $1)
+        goto fail;
 }
 
 // builds a Python list from a win32 string list
@@ -303,6 +309,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 %typemap(in) SCARDCONTEXT hcontext(SCARDCONTEXT)
 {
     $1 =  SCardHelper_PyScardContextToSCARDCONTEXT( $input );
+    if (0 == $1)
+        goto fail;
 }
 
 %typemap(argout) SCARDCONTEXT *OUTPUT
@@ -327,6 +335,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 %typemap(in) SCARDDWORDARG INPUT(SCARDDWORDARG)
 {
     $1 =  SCardHelper_PySCardDwordArgToSCARDDWORDARG( $input );
+    if (-1 == $1)
+        goto fail;
 }
 
 %typemap(argout) SCARDDWORDARG* OUTPUT
@@ -363,6 +373,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 %typemap(in) SCARDHANDLE hcard(SCARDHANDLE)
 {
     $1 =  SCardHelper_PyScardHandleToSCARDHANDLE( $input );
+    if (0 == $1)
+        goto fail;
 }
 
 %typemap(argout) SCARDHANDLE* OUTPUT
@@ -454,6 +466,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 %typemap(in) STRING *INPUT( STRING )
 {
     $1 =  SCardHelper_PyStringToString( $input );
+    if (NULL == $1)
+        goto fail;
 }
 
 // builds a Python string from a STRING
@@ -520,6 +534,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 %typemap(in) STRINGLIST* INPUT(STRINGLIST*)
 {
     $1 =  SCardHelper_PyStringListToStringList( $input );
+    if (NULL == $1)
+        goto fail;
 }
 
 // builds a Python list from a win32 string list
