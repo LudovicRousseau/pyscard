@@ -35,7 +35,6 @@ class PCSCContext:
         def __init__( self ):
             hresult, self.hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
             if hresult!=0:
-                print "establishcontext failed: %.8x" % hresult
                 raise EstablishContextException( 'Failed to establish context: ' + SCardGetErrorMessage(hresult) )
 
         def getContext( self ):
