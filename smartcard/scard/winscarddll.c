@@ -536,7 +536,7 @@ long winscard_init(void)
         #ifdef __APPLE__
             lib = "/System/Library/Frameworks/PCSC.framework/PCSC";
         #else
-            lib = "libpcsclite.so";
+            lib = "libpcsclite.so.1";
         #endif
 
         if( bFirstCall )
