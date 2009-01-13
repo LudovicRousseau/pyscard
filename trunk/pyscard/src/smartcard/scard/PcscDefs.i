@@ -271,7 +271,7 @@ typedef enum
 #ifdef __APPLE__
 #define TYPE int
 #else
-#define TYPE unsigned long
+#define TYPE long
 #endif
 
 %constant TYPE SCARD_S_SUCCESS             = SCARD_S_SUCCESS ;
