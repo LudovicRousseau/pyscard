@@ -59,7 +59,7 @@ class testcase_getATR(unittest.TestCase):
     def _getATR(self, r):
         if r<len(expectedATRs) and []!=expectedATRs[r]:
             hresult, hcard, dwActiveProtocol = SCardConnect(
-                self.hcontext, self.readers[r], SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 )
+                self.hcontext, self.readers[r], SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1)
             self.assertEquals(hresult, 0)
 
             try:
