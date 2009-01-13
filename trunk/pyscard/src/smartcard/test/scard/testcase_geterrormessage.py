@@ -29,6 +29,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import unittest
 from smartcard.scard import *
+import sys
 
 
 class testcase_geterrormessage(unittest.TestCase):
@@ -46,7 +47,10 @@ class testcase_geterrormessage(unittest.TestCase):
         self.assertEquals(hresult, 0)
 
         hresult = SCardReleaseContext( 123L )
-        self.assertEquals( (SCARD_E_INVALID_HANDLE==hresult or ERROR_INVALID_HANDLE==hresult), True )
+        if 'win32'==sys.platform:
+            self.assertEquals( (SCARD_E_INVALID_HANDLE==hresult or ERROR_INVALID_HANDLE==hresult), True )
+        else:
+            self.assertEquals( (SCARD_E_INVALID_HANDLE==hresult), True )
         self.assertEquals( ( SCardGetErrorMessage(hresult).rstrip()=='Invalid handle.'.rstrip() or
                              SCardGetErrorMessage(hresult).rstrip()=='The handle is invalid.'.rstrip() ), True )
 
