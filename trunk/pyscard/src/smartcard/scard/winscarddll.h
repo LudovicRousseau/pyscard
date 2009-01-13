@@ -341,6 +341,14 @@ typedef WINSCARDAPI SCARDRETCODE
     OUT LPBYTE pbRecvBuffer,
     IN OUT SCARDDWORDARG* pcbRecvLength);
 
+#ifdef PCSCLITE
+typedef WINSCARDAPI char*
+(WINAPI *PCSCSTRINGIFYERROR)(
+	IN SCARDRETCODE pcscError);
+
+extern PCSCSTRINGIFYERROR              myPcscStringifyError;
+#endif
+
 extern SCARDBEGINTRANSACTION           mySCardBeginTransaction;
 extern SCARDCANCEL                     mySCardCancel;
 extern SCARDCANCELTRANSACTION          mySCardCancelTransaction;
