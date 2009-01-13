@@ -583,9 +583,9 @@ SCARDTRANSMIT                   mySCardTransmit                     = _defaultSC
 PCSCSTRINGIFYERROR              myPcscStringifyError                = _defaultPCSCSTRINGIFYERROR;
 
 
-unsigned long myg_prgSCardT0Pci=0L;
-unsigned long myg_prgSCardT1Pci=0L;
-unsigned long myg_prgSCardRawPci=0L;
+void * myg_prgSCardT0Pci=NULL;
+void * myg_prgSCardT1Pci=NULL;
+void * myg_prgSCardRawPci=NULL;
 
 long winscard_init(void)
 {
@@ -711,9 +711,9 @@ long winscard_init(void)
                     GETPROCADDRESS( SCARDSETATTRIB         , SCardSetAttrib         , SCardSetAttrib         );
                 #endif
 
-                myg_prgSCardT0Pci   = (unsigned long)dlsym( handle, "g_rgSCardT0Pci"  );
-                myg_prgSCardT1Pci   = (unsigned long)dlsym( handle, "g_rgSCardT1Pci"  );
-                myg_prgSCardRawPci  = (unsigned long)dlsym( handle, "g_rgSCardRawPci" );
+                myg_prgSCardT0Pci  = dlsym( handle, "g_rgSCardT0Pci"  );
+                myg_prgSCardT1Pci  = dlsym( handle, "g_rgSCardT1Pci"  );
+                myg_prgSCardRawPci = dlsym( handle, "g_rgSCardRawPci" );
 
                 dlsym_error = dlerror();
                 if( NULL!= dlsym_error )

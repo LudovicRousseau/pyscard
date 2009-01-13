@@ -366,9 +366,9 @@ extern SCARDRELEASECONTEXT             mySCardReleaseContext;
 extern SCARDSTATUSA                    mySCardStatusA;
 extern SCARDTRANSMIT                   mySCardTransmit;
 
-extern unsigned long myg_prgSCardT0Pci;
-extern unsigned long myg_prgSCardT1Pci;
-extern unsigned long myg_prgSCardRawPci;
+extern void * myg_prgSCardT0Pci;
+extern void * myg_prgSCardT1Pci;
+extern void * myg_prgSCardRawPci;
 
 long winscard_init(void);
 
