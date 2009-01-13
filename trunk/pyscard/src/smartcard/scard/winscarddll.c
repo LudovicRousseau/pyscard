@@ -582,7 +582,6 @@ long winscard_init(void)
                 myg_prgSCardT1Pci   = (unsigned long)dlsym( handle, "g_rgSCardT1Pci"  );
                 myg_prgSCardRawPci  = (unsigned long)dlsym( handle, "g_rgSCardRawPci" );
 
-                dlclose( handle );
                 dlsym_error = dlerror();
                 if( NULL!= dlsym_error )
                 {
