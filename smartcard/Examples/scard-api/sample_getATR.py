@@ -25,6 +25,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 from smartcard.scard import *
+import smartcard.util
 
 try:
     hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
@@ -58,10 +59,7 @@ try:
                     print 'Reader:', reader
                     print 'State:', state
                     print 'Protocol:', protocol
-                    print 'ATR:',
-                    for i in xrange(len(atr)):
-                        print "0x%.2X" % atr[i],
-                    print ""
+                    print 'ATR:', smartcard.util.toHexString(atr, smartcard.util.HEX)
 
                 finally:
                     hresult = SCardDisconnect( hcard, SCARD_UNPOWER_CARD )

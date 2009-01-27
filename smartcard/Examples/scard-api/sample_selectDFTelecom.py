@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 from smartcard.scard import *
-
+import smartcard.util
 
 SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
 DF_TELECOM = [0x7F, 0x10]
@@ -61,17 +61,11 @@ try:
                     hresult, response = SCardTransmit( hcard, SCARD_PCI_T0, SELECT + DF_TELECOM )
                     if hresult!=0:
                         raise error, 'Failed to transmit: ' + SCardGetErrorMessage(hresult)
-                    print 'Selected DF_TELECOM:',
-                    for i in xrange(len(response)):
-                        print "0x%.2X" % response[i],
-                    print ""
+                    print 'Selected DF_TELECOM: ' + smartcard.util.toHexString(response, smartcard.util.HEX)
                     hresult, response = SCardTransmit( hcard, SCARD_PCI_T0, GET_RESPONSE + [response[1]] )
                     if hresult!=0:
                         raise error, 'Failed to transmit: ' + SCardGetErrorMessage(hresult)
-                    print 'GET_RESPONSE after SELECT DF_TELECOM:',
-                    for i in xrange(len(response)):
-                        print "0x%.2X" % response[i],
-                    print ""
+                    print 'GET_RESPONSE after SELECT DF_TELECOM: ' + smartcard.util.toHexString(response, smartcard.util.HEX)
                 finally:
                     hresult = SCardDisconnect( hcard, SCARD_UNPOWER_CARD )
                     if hresult!=0:
