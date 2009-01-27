@@ -330,6 +330,6 @@ typedef enum
 #ifdef __TIGER__
 %constant unsigned long INFINITE = 4320000 ;
 #else // !__TIGER__
-%constant unsigned long INFINITE = 0xFFFFFFFF ;
+%constant unsigned long INFINITE = 0x7FFFFFFF ;
 #endif // __TIGER__
 
