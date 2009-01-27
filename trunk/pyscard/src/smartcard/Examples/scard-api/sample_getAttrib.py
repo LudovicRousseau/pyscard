@@ -26,6 +26,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import struct
 from smartcard.scard import *
+import smartcard.util
 
 if 'winscard'==resourceManager:
     attributes = {
@@ -126,9 +127,7 @@ else:
 def printAttribute( attrib, value ):
     print '-----------------', attributes[attrib], '-----------------'
     print value
-    for j in xrange(len(value)):
-        print "0x%.2X" % value[j],
-    print ""
+    print smartcard.util.toHexString(value, smartcard.util.HEX)
     print apply( struct.pack, [ '<' + 'B' * len(value)] + value )
 
 

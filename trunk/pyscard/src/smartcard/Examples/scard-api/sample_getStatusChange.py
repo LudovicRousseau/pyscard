@@ -25,16 +25,14 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 from smartcard.scard import *
+import smartcard.util
 
 srTreeATR = [0x3B, 0x77, 0x94, 0x00, 0x00, 0x82, 0x30, 0x00, 0x13, 0x6C, 0x9F, 0x22]
 srTreeMask= [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
 
 def printstate (state):
     reader, eventstate, atr = state
-    print reader,
-    for b in atr:
-        print "0x%.2X" % b,
-    print ""
+    print reader + " " + smartcard.util.toHexString(atr, smartcard.util.HEX)
     if eventstate & SCARD_STATE_ATRMATCH:
         print '\tCard found'
     if eventstate & SCARD_STATE_UNAWARE:
