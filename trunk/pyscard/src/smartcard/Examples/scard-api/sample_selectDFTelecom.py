@@ -52,17 +52,17 @@ try:
 
             try:
                 hresult, hcard, dwActiveProtocol = SCardConnect(
-                    hcontext, zreader, SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 )
+                    hcontext, zreader, SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1 )
                 if hresult!=0:
                     raise error, 'Unable to connect: ' + SCardGetErrorMessage(hresult)
                 print 'Connected with active protocol', dwActiveProtocol
 
                 try:
-                    hresult, response = SCardTransmit( hcard, SCARD_PCI_T0, SELECT + DF_TELECOM )
+                    hresult, response = SCardTransmit( hcard, dwActiveProtocol, SELECT + DF_TELECOM )
                     if hresult!=0:
                         raise error, 'Failed to transmit: ' + SCardGetErrorMessage(hresult)
                     print 'Selected DF_TELECOM: ' + smartcard.util.toHexString(response, smartcard.util.HEX)
-                    hresult, response = SCardTransmit( hcard, SCARD_PCI_T0, GET_RESPONSE + [response[1]] )
+                    hresult, response = SCardTransmit( hcard, dwActiveProtocol, GET_RESPONSE + [response[1]] )
                     if hresult!=0:
                         raise error, 'Failed to transmit: ' + SCardGetErrorMessage(hresult)
                     print 'GET_RESPONSE after SELECT DF_TELECOM: ' + smartcard.util.toHexString(response, smartcard.util.HEX)
