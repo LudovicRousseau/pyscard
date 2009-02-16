@@ -149,7 +149,7 @@ try:
 
         for reader in readers:
             hresult, hcard, dwActiveProtocol = SCardConnect(
-                hcontext, reader, SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 )
+                hcontext, reader, SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1 )
             if hresult!=0:
                 print error, 'Unable to connect: ' + SCardGetErrorMessage(hresult)
             else:
