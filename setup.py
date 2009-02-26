@@ -58,7 +58,7 @@ elif 'darwin' in get_platform() or 'macosx-10.3' in get_platform() or 'macosx-10
 # Mac OS X Leopard has python 2.5 preinstalled
 # get_platform() returns a string similar to 'macosx-10.5-i386'
 # 
-elif 'macosx-10.5' in get_platform():
+elif 'macosx-10.' in get_platform():
     platform__cc_defines=[ ('PCSCLITE', '1'), ('__APPLE__','1'), ('__LEOPARD__','1')]
     platform_swig_opts=[ '-DPCSCLITE', '-D__APPLE__', '-D__LEOPARD__' ]
     platform_sources=[]
