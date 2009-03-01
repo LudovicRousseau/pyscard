@@ -39,6 +39,7 @@ def suite():
         'testcase_listcards',
         'testcase_locatecards',
         'testcase_readergroups',
+        'testcase_returncodes',
         'testcase_transaction' )
     testsuite_scard = unittest.TestSuite()
     for module in map(__import__, modules_to_test):
