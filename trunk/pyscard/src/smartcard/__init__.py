@@ -7,7 +7,7 @@ __author__ = "gemalto http://www.gemalto.com"
 __date__ = "August 2008"
 __version__ = "1.6.7"
 
-Copyright 2001-2008 gemalto
+Copyright 2001-2009 gemalto
 Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
 
 This file is part of pyscard.

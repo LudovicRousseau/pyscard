@@ -7,7 +7,7 @@ card service is almost always smart card operating system specific
 
 __author__ = "http://www.gemalto.com"
 
-Copyright 2001-2008 gemalto
+Copyright 2001-2009 gemalto
 Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
 
 This file is part of pyscard.
