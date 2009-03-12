@@ -52,34 +52,34 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     #endif
 #endif // PCSCLITE
 
-// 
+//
 // these functions are only available on win32 PCSC
-// 
+//
 #ifdef WIN32
     typedef WINSCARDAPI HANDLE
     (WINAPI *SCARDACCESSSTARTEDEVENT)(void);
-    
+
     typedef WINSCARDAPI SCARDRETCODE
     (WINAPI *SCARDADDREADERTOGROUPA)(
         IN SCARDCONTEXT hContext,
         IN LPCTSTR szReaderName,
         IN LPCTSTR szGroupName);
-    
+
     typedef WINSCARDAPI SCARDRETCODE
     (WINAPI *SCARDFORGETCARDTYPEA)(
         IN SCARDCONTEXT hContext,
         IN LPCSTR szCardName);
-    
+
     typedef WINSCARDAPI SCARDRETCODE
     (WINAPI *SCARDFORGETREADERA)(
         IN SCARDCONTEXT hContext,
         IN LPCSTR szReaderName);
-    
+
     typedef WINSCARDAPI SCARDRETCODE
     (WINAPI *SCARDFORGETREADERGROUPA)(
         IN SCARDCONTEXT hContext,
         IN LPCSTR szGroupName);
-    
+
     typedef WINSCARDAPI SCARDRETCODE
     (WINAPI *SCARDGETCARDTYPEPROVIDERNAMEA)(
         IN SCARDCONTEXT hContext,
@@ -87,13 +87,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
         IN SCARDDWORDARG dwProviderId,
         OUT LPTSTR szProvider,
         IN OUT SCARDDWORDARG* pcchProvider);
-    
+
     typedef WINSCARDAPI SCARDRETCODE
     (WINAPI *SCARDGETPROVIDERIDA)(
         IN      SCARDCONTEXT hContext,
         IN      LPCSTR szCard,
         OUT     LPGUID pguidProviderId);
-    
+
     typedef WINSCARDAPI SCARDRETCODE
     (WINAPI *SCARDINTRODUCECARDTYPEA)(
         IN SCARDCONTEXT hContext,
@@ -104,18 +104,18 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
         IN LPCBYTE pbAtr,
         IN LPCBYTE pbAtrMask,
         IN SCARDDWORDARG cbAtrLen);
-    
+
     typedef WINSCARDAPI SCARDRETCODE
     (WINAPI *SCARDINTRODUCEREADERA)(
         IN SCARDCONTEXT hContext,
         IN LPCSTR szReaderName,
         IN LPCSTR szDeviceName);
-    
+
     typedef WINSCARDAPI SCARDRETCODE
     (WINAPI *SCARDINTRODUCEREADERGROUPA)(
         IN SCARDCONTEXT hContext,
         IN LPCSTR szGroupName);
-    
+
     typedef WINSCARDAPI SCARDRETCODE
     (WINAPI *SCARDLISTCARDSA)(
         IN      SCARDCONTEXT hContext,
@@ -124,21 +124,21 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
         IN      SCARDDWORDARG cguidInterfaceCount,
         OUT     LPTSTR mszCards,
         IN OUT  SCARDDWORDARG* pcchCards);
-    
+
     typedef WINSCARDAPI SCARDRETCODE
     (WINAPI *SCARDLISTINTERFACESA)(
         IN      SCARDCONTEXT hContext,
         IN      LPCSTR szCard,
         OUT     LPGUID pguidInterfaces,
         IN OUT  SCARDDWORDARG* pcguidInterfaces);
-    
+
     typedef WINSCARDAPI SCARDRETCODE
     (WINAPI *SCARDLOCATECARDSA)(
         IN      SCARDCONTEXT hContext,
         IN      LPCSTR mszCards,
         IN OUT  LPSCARD_READERSTATEA rgReaderStates,
         IN      SCARDDWORDARG cReaders);
-    
+
     typedef WINSCARDAPI SCARDRETCODE
     (WINAPI *SCARDLOCATECARDSBYATRA)(
         IN      SCARDCONTEXT hContext,
@@ -146,23 +146,23 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
         IN      SCARDDWORDARG cAtrs,
         IN OUT  LPSCARD_READERSTATEA rgReaderStates,
         IN      SCARDDWORDARG cReaders);
-    
+
     typedef WINSCARDAPI SCARDRETCODE
     (WINAPI *SCARDSETCARDTYPEPROVIDERNAMEA)(
         IN SCARDCONTEXT hContext,
         IN LPCSTR szCardName,
         IN SCARDDWORDARG dwProviderId,
         IN LPCSTR szProvider);
-    
+
     typedef WINSCARDAPI void
     (WINAPI *SCARDRELEASESTARTEDEVENT)(void);
-    
+
     typedef WINSCARDAPI SCARDRETCODE
     (WINAPI *SCARDREMOVEREADERFROMGROUPA)(
         IN SCARDCONTEXT hContext,
         IN LPCTSTR szReaderName,
         IN LPCTSTR szGroupName);
-    
+
     typedef WINSCARDAPI SCARDRETCODE
     (WINAPI *SCARDSTATE)(
         IN SCARDHANDLE hCard,
@@ -189,7 +189,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     extern SCARDREMOVEREADERFROMGROUPA     mySCardRemoveReaderFromGroupA;
     extern SCARDSETCARDTYPEPROVIDERNAMEA   mySCardSetCardTypeProviderNameA;
     extern SCARDSTATE                      mySCardState;
-    
+
 #endif // WIN32
 
 
@@ -207,7 +207,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
         IN SCARDDWORDARG dwAttrId,
         OUT LPBYTE pbAttr,
         IN OUT SCARDDWORDARG* pcbAttrLen);
-    
+
     typedef WINSCARDAPI SCARDRETCODE
     (WINAPI *SCARDSETATTRIB)(
         IN SCARDHANDLE hCard,
@@ -223,7 +223,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 //
 // SCardControl does not have the same prototype on Mac OS X Tiger
-// 
+//
 #ifdef __TIGER__
     typedef WINSCARDAPI SCARDRETCODE
     (WINAPI *SCARDCONTROL)(
@@ -344,10 +344,10 @@ typedef WINSCARDAPI SCARDRETCODE
 #ifdef PCSCLITE
 typedef WINSCARDAPI char*
 (WINAPI *PCSCSTRINGIFYERROR)(
-	IN SCARDRETCODE pcscError);
+    IN SCARDRETCODE pcscError);
 
 extern PCSCSTRINGIFYERROR              myPcscStringifyError;
-#endif
+#endif // PCSCLITE
 
 extern SCARDBEGINTRANSACTION           mySCardBeginTransaction;
 extern SCARDCANCEL                     mySCardCancel;
