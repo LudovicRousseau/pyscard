@@ -645,9 +645,9 @@ long winscard_init(void)
                 GETPROCADDRESS( SCARDTRANSMIT                   , SCardTransmit );
 
 
-                myg_prgSCardT0Pci   = (unsigned long)GetProcAddress( hinstDLL, "g_rgSCardT0Pci"  );
-                myg_prgSCardT1Pci   = (unsigned long)GetProcAddress( hinstDLL, "g_rgSCardT1Pci"  );
-                myg_prgSCardRawPci  = (unsigned long)GetProcAddress( hinstDLL, "g_rgSCardRawPci" );
+                myg_prgSCardT0Pci   = GetProcAddress( hinstDLL, "g_rgSCardT0Pci"  );
+                myg_prgSCardT1Pci   = GetProcAddress( hinstDLL, "g_rgSCardT1Pci"  );
+                myg_prgSCardRawPci  = GetProcAddress( hinstDLL, "g_rgSCardRawPci" );
 
             }
          }
