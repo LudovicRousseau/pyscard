@@ -580,7 +580,11 @@ SCARDRECONNECT                  mySCardReconnect                    = _defaultSC
 SCARDRELEASECONTEXT             mySCardReleaseContext               = _defaultSCARDRELEASECONTEXT;
 SCARDSTATUSA                    mySCardStatusA                      = _defaultSCARDSTATUSA;
 SCARDTRANSMIT                   mySCardTransmit                     = _defaultSCARDTRANSMIT;
+
+
+#ifdef PCSCLITE
 PCSCSTRINGIFYERROR              myPcscStringifyError                = _defaultPCSCSTRINGIFYERROR;
+#endif // PCSCLITE
 
 
 void * myg_prgSCardT0Pci=NULL;
