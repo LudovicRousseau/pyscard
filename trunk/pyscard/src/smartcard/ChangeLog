@@ -1,3 +1,15 @@
+1.6.8
+=====
+        * fixed SCARD_ERROR types to match correct types on linux and Mac OS X (Ludovic Rousseau)
+        * store g_rgSCard* references as void* (Ludovic Rousseau)
+        * modified Mac OS X build to locate PCSC headers using -framework option (Ludovic Rousseau)
+        * added contrib root directory and parseATR as first contribution (Ludovic Rousseau)
+        * updated a few samples to support  SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1 instead of just SCARD_PROTOCOL_T0 (Ludovic Rousseau)
+        * added SCARD_E_NO_READERS_AVAILABLE definition (Ludovic Rousseau)
+        * added simpleAPDU.py, a simple script to send a couple of APDUs (Ludovic Rousseau)
+        * added support for Snow Leopard 10.6 (Ludovic Rousseau)
+        * redefined error codes to be non-Windows or -linux specifics (Ludovic Rousseau)
+
 1.6.7
 =====
         * better thread support and clean-up in ReaderMonitoringThread (Frank Aune)
