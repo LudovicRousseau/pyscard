@@ -14,9 +14,11 @@
 <ul>
   <li> <a HREF="#copyright">Copyright</a> 
   <li> <a HREF="#introduction">Introduction</a> 
+  <li><a href="#smartcards">Smart Cards</a> 
   <li><a href="#quickstart">Quick-Start </a> 
     <ul>
       <li><a href="#readercentric">The reader-centric approach</a></li>
+      <li><a href="#atr">The Answer To Reset (ATR)</a></li>
       <li><a href="#cardcentric">The card-centric approach</a> 
         <ul>
           <li><a href="#atrrequest">Requesting a card with a known ATR</a></li>
@@ -64,7 +66,7 @@
     <ul>
       <li><a href="#cardrequestconnection">Creating a connection from a CardRequest</a></li>
       <li><a href="#cardmonitoringconnection">Creating a connection from CardMonitoring</a></li>
-      <li><a href="#cardconnectiondecorators">Card connection decorators</a>
+      <li><a href="#cardconnectiondecorators">Card connection decorators</a> 
         <ul>
           <li><a href="#exclusiveconnectiondecorator">Exclusive card connection 
             decorator</a></li>
@@ -76,6 +78,13 @@
     </ul>
   </li>
   <li><a href="smartcard.html"> Smartcard reference</a> 
+  <li><a href="#cryptography">A word on cryptography</a> 
+    <ul>
+      <li><a href="#binstring">Binary strings and list of bytes</a></li>
+      <li><a href="#hashing">Hashing</a></li>
+      <li><a href="#secretkey">Secret key cryptography</a></li>
+    </ul>
+  
   <li><a href="#License">License</a> </li>
 </ul>
 <hr>
@@ -103,7 +112,30 @@
   aware applications in Python. The smartcard module is built on top of the <a href="scard.html"> 
   PCSC API</a> Python wrapper module. 
 <p>pyscard supports Windows 2000 and XP by using the <a href="http://msdn2.microsoft.com/en-us/library/aa374731.aspx#smart_card_functions">Microsoft 
-  Smart Card Base</a> components, and linux by using <a href="http://pcsclite.alioth.debian.org/">PCSC-lite</a>.
+  Smart Card Base</a> components, and linux and Mac OS X by using <a href="http://pcsclite.alioth.debian.org/">PCSC-lite</a>. 
+<hr>
+<h2><a name="smartcards"></a>Smart Cards</h2>
+<p>Smart cards are plastic cards having generally the size of a credit card and 
+  embedding a microprocessor. Smart cards communicate with the outside world thru 
+  a serial port interface and an half-duplex protocol. Smartcards usually interface 
+  with a dedicated terminal, such as a point-of-sale terminal or a mobile phone. 
+  Sometime, smart cards have to be interfaced with personal computers. This is 
+  the case for some applications such as secure login, mail cyphering or digital 
+  signature, but also for some PC based smart card tools used to personnalize 
+  or edit the content of smart cards. Smart cards are interfaced with a personnal 
+  computer using a smart card reader. The smart card reader connects on one side 
+  to the serial port of the smart card, and on the other side to the PC, often 
+  nowadays thru a USB port.</p>
+<p>The PCSC workgroup has defined a standard API to interface smart card and smart 
+  card readers to a PC. The resulting reference implementation on linux and Mac 
+  OS X operating systems is <a href="http://pcsclite.alioth.debian.org/">PC/SC-lite</a>. 
+  All windows operating systems also include out of the box smart card support, 
+  usually called <a href="http://msdn2.microsoft.com/en-us/library/aa374731.aspx#smart_card_functions">PCSC</a>.</p>
+<p>The PCSC API is implemented in C language, and several bridges are provided 
+  to access the PCSC API from different languages such as java or visual basic. 
+  pyscard is a python framework to develop smart card PC applications on linux, 
+  Mac OS X and windows. pyscard lower layers interface to the PCSC API to access 
+  the smart cards and smart card readers.</p>
 <p>&nbsp;
 <hr>
 <h2><a name="quickstart"></a>Quick-start</h2>
@@ -117,7 +149,13 @@
   a smart card.</p>
 <p></p>
 <h3><a name="readercentric"></a>The reader-centric approach</h3>
-<p>In the reader-centric approach, we open a connection with a card thru a smart
+<p>A PC application interacts with a card by sending list of bytes, known as Application 
+  Protocol Data Units (APDU). The format of these APDUs is defined in the ISO7816-4 
+  standard. To send APDUs to a card, the application needs first to connect to 
+  a card thru a smart card reader. Smart card aware applications that first select 
+  a smart card reader, then connect to the card inserted in the smart card reader 
+  use the reader-centric approach.</p>
+<p>In the reader-centric approach, we open a connection with a card thru a smart 
   card reader, and send APDU commands to the card using the connection:</p>
 <p></p>
 <p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
@@ -156,8 +194,55 @@
     we expect; in the previous example, we might try to select the DF_TELECOM
     of an EMV card.</li>
 </ul>
-<p>Most of these issues are solved with the card-centric approach</p>
+<p>Most of these issues are solved with the card-centric approach, based on card 
+  type detection techniques, such as using the Answer To Reset (ATR) of the card.</p>
 <p><a href="#top">to the top</a></p>
+<h3><a name="atr"></a>The Answer To Reset (ATR)</h3>
+<p>The first answer of a smart card inserted in a smart card reader is call the 
+  ATR. The purpose of the ATR is to describe the supported communication parameters. 
+  The smart card reader, smart card reader driver, and operating system will use 
+  these parameters to establish a communication with the card. The ATR is described 
+  in the ISO7816-3 standard. The first bytes of the ATR describe the voltage convention 
+  (direct or inverse), followed by bytes describing the available communication 
+  interfaces and their respective parameters. These interface bytes are then followed 
+  by Historical Bytes which are not standardized, and are useful for transmitting 
+  proprietary informations such as the card type, the version of the embedded 
+  software, or the card state. Finally these historical bytes are eventually followd 
+  by a checksum byte.</p>
+<p>The class <a href="epydoc/smartcard.ATR.ATR-class.html">smartcard.ATR</a> is 
+  a pyscard utility class that can interpret the content of an ATR:</p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">
+ #! /usr/bin/env python<br>
+from smartcard.ATR import ATR<br>
+from smartcard.util import toHexString<br>
+<br>
+atr = ATR([0x3B, 0x9E, 0x95, 0x80, 0x1F, 0xC3, 0x80, 0x31, 0xA0, 0x73,<br>
+                 0xBE, 0x21, 0x13, 0x67, 0x29, 0x02, 0x01, 0x01, 0x81,0xCD,0xB9] )<br>
+
+print atr<br>
+print 'historical bytes: ', toHexString( atr.getHistoricalBytes() )<br>
+print 'checksum: ', "0x%X" % atr.getChecksum()<br>
+print 'checksum OK: ', atr.checksumOK<br>
+print 'T0  supported: ', atr.isT0Supported()<br>
+print 'T1  supported: ', atr.isT1Supported()<br>
+print 'T15 supported: ', atr.isT15Supported()<br>
+
+  </font></p>
+<p>Which results in the following output:</p>
+<p><font face="Courier New, Courier, mono" size="2" color="#0033FF">
+3B 9E 95 80 1F C3 80 31 A0 73 BE 21 13 67 29 02 01 01 81 CD B9<br>
+historical bytes:  80 31 A0 73 BE 21 13 67 29 02 01 01 81 CD<br>
+checksum:  0xB9<br>
+checksum OK:  True<br>
+T0  supported:  True<br>
+T1  supported:  False<br>
+T15 supported:  True<br>  </font></p>
+<p>In practice, the ATR can be used to detect a particular card, either by trying 
+  to match a card with a complete ATR, or by matching a card with some data in 
+  the historical bytes. Smart card aware PC applications that detects smart cards 
+  based on the content of the ATR use the card-centric approach, independently 
+  on the smart card reader in which the card is inserted..<br>
+</p>
 <h3><a name="cardcentric"></a>The card-centric approach</h3>
 <p>In the card-centric approach, we create a request for a specific type of card
   and wait until a card matching the request is inserted. Once a matching card
@@ -291,7 +376,12 @@
 </ul>
 <p><a href="#top">to the top</a></p>
 <h3><a name="protocol"></a>Selecting the card communication protocol</h3>
-<p>By defaults, the connect() method of the CardConnection object.will try to 
+<p>Communication parameters are mostly important for the protocol negociation 
+  between the smart card reader and the card. The main smartcard protocols are 
+  the T=0 protocol and the T=1 protocol, for byte or block transmission, respectively. 
+  The required protocol can be specified at card connection or card transmission. 
+</p>
+<p> By defaults, the connect() method of the CardConnection object.will try to 
   connect using either the T=0 or T=1 protocol. To force a connection protocol, 
   you can pass the required protocol to the connect() method.</p>
 <p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt; 
@@ -633,8 +723,24 @@
 <p><a href="#top">to the top</a></p>
 <h3></h3>
 <h2><a name="apduerror"></a>Testing for APDU transmission errors</h2>
-<p>Errors can and do happen when sending APDUs to smart cards. This discussion
-  discusses possible strategies to check and report APDU transmission errors.</p>
+<p>Upon transmission and processing of an APDU, the smart card returns a pair 
+  of status words, SW1 and SW2, to report various success or error codes following 
+  the required processing. Some of these success or error codes are standardized 
+  in ISO7816-4, ISO7816-8 or ISO7816-9, for example. Other status word codes are 
+  standardized by standardization bodies such as Open Platform (e.g. javacard), 
+  3GPP (e.g. SIM or USIM cards), or Eurocard-Mastercard-Visa (EMV) (e.g. banking 
+  cards). Finally, any smart card application developper can defined application 
+  related proprietary codes; for example the <a href="http://www.linuxnet.com/musclecard/index.html">MUSCLE 
+  applet</a> defines a set of prioprietary codes related to the MUSCLE applet 
+  features.</p>
+<p>Some of these status word codes are uniques, but others have a different meaning 
+  depending on the card type and its supported standards. For example, ISO7816-4 
+  defines the error code 0x62 0x82 as &quot;File Invalidated&quot;, whereas in 
+  Open Platform 2.1 the same error code is defined as &quot;Card life cycle is 
+  CARD_LOCKED&quot;. As a result, the list of error codes that can be returned 
+  by a smart card and they interpretation depend on the card type. The following 
+  discussion outlines possible strategies to check and report smart card status 
+  word errors.</p>
 <h3><a name="bruteforceerror"></a>The brute force for testing APDU transmission
   errors</h3>
 <h3></h3>
@@ -1248,8 +1354,13 @@ class myobserver( CardObserver ):
 <p>
 <p><a href="#top">to the top</a> </p>
 <h3><a name="cardconnectiondecorators"></a>Card Connection Decorators</h3>
-<p>A CardConnectionDecorator modifies the behaviour of a CardConnection object. 
-  For example, the following CardConnectionDecorator overwrites the CardConnection 
+<p>APDUs are transmitted to a card using the CardConnection object. It is sometime 
+  useful to change transparently the behaviour of a smart card connection, for 
+  example to establish automatically a secure channel, or filter and modify on 
+  the fly some APDU commands or responses, or the smart card ATR. pyscard uses 
+  theDecorator design pattern to dynamically change the behaviour of a smart card 
+  connection. A CardConnectionDecorator modifies the behaviour of a CardConnection 
+  object. For example, the following CardConnectionDecorator overwrites the CardConnection 
   getATR() method:</p>
 <pre><font face="Courier New, Courier, mono" size="3" color="#0033FF">
 class FakeATRConnection( CardConnectionDecorator ):
@@ -1409,6 +1520,62 @@ class SecureChannelConnection( CardConnectionDecorator ):
         return data, sw1, sw2
 </font></pre>
 <p><a href="#top">to the top</a> </p>
+<h2><a name="cryptography"></a>A word on cryptography</h2>
+<p>Smart card are security devices. As a result, smart card applications usually 
+  require some kind cryptography, for example to establish a secure channel with 
+  the smart card. One of the reference cryptographic modules for python is <a href="http://www.amk.ca/python/code/crypto.html">pycrypto</a>, 
+  the python cryptographic toolkit. This section shows briefly the basics of pycrypto 
+  to give you a quick start to include cryptography in you python smart card applications.</p>
+<h3><a name="binstring"></a>Bynary strings and list of bytes</h3>
+<p>pycrypto processes binary strings, i.e. python strings that contains characters 
+  such as '\01\42\70\23', whereas pyscard processes APDUs as list of bytes such 
+  as [0x01, 0x42, 0x70, 0x23]. The utility function HexListToBinString and BinStringToHexList 
+  (and their short name versions hl2bs and bs2hl) provide conversion between the 
+  two types.</p>
+<p><font face="Courier New, Courier, mono" size="3" color="#0033FF"> from smartcard.util 
+  import HexListToBinString, BinStringToHexList<br>
+  test_data = [ 0x01, 0x42, 0x70, 0x23 ]<br>
+  binstring = HexListToBinString( test_data )<br>
+  hexlist = BinStringToHexList( binstring )<br>
+  print binstring, hexlist<br>
+  ?Bp# [1, 66, 112, 35]<br>
+  </font></p>
+<h3><a name="hashing"></a>Hashing</h3>
+<p>pycrypto supports the following hashing algorithms: SHA-1, MD2, MD4 et MD5. 
+  To hash 16 bytes of data with SHA-1:</p>
+<p><font face="Courier New, Courier, mono" size="3" color="#0033FF"> from Crypto.Hash 
+  import SHA<br>
+  <br>
+  from smartcard.util import toHexString, PACK<br>
+  <br>
+  test_data = [ 0x01, 0x42, 0x70, 0x23 ]<br>
+  binstring = HexListToBinString( test_data )<br>
+  <br>
+  zhash = SHA.new( binstring )<br>
+  hash_as_string = zhash.digest()[:16]<br>
+  hash_as_bytes = BinStringToHexList( hash_as_string )<br>
+  print hash_as_string, ',', toHexString( hash_as_bytes, PACK )<br>
+  </font><br>
+  To perform MD5 hashing, just replace SHA by MD5 in the previous script.<br>
+</p>
+<h3><a name="secretkey"></a>Secret key cryptography</h3>
+<p>pycrypto supports several secret key algorithms, such as DES, triple DES, AES, 
+  blowfish, or IDEA. To perform triple DES ciphering in ECB mode:</p>
+<p><font face="Courier New, Courier, mono" size="3" color="#0033FF">
+from Crypto.Cipher import DES3<br><br>
+from smartcard.util import toBytes<br>
+<br>
+key = "31323334353637383132333435363738"<br>
+key_as_binstring = HexListToBinString( toBytes( key ) )<br>
+zdes = DES3.new( key_as_binstring, DES3.MODE_ECB )<br>
+<br>
+message = "71727374757677787172737475767778"<br>
+message_as_binstring = HexListToBinString( toBytes( message ) )<br>
+<br>
+encrypted_as_string = zdes.encrypt( message_as_binstring )<br>
+decrypted_as_string = zdes.decrypt( encrypted_as_string )<br>
+print message_as_binstring, encrypted_as_string, decrypted_as_string<br>
+  </font></p>
 <h2><a name="License"></a>License</h2>
 <h3>GNU LESSER GENERAL PUBLIC LICENSE</h3>
 <p>Version 2.1, February 1999</p>
