@@ -209,3 +209,20 @@ def toHexString( bytes=[], format=0 ):
                 pformat = "0x"+pformat
         return rstrip(rstrip(reduce( lambda a, b: a+pformat % ((b+256)%256), [""] + bytes )),',')
 
+def HexListToBinString( hexlist ):
+    binstring=""
+    for byte in hexlist:
+        binstring= binstring + chr( eval( '0x%x' % byte ) )
+    return binstring
+
+def BinStringToHexList( binstring ):
+    hexlist=[]
+    for byte in binstring:
+       hexlist= hexlist + [ ord(byte) ]
+    return hexlist
+
+def hl2bs( hexlist ):
+    return HexListToBinString( hexlist )
+
+def bs2hl( binstring ):
+    return BinStringToHexList( binstring )
