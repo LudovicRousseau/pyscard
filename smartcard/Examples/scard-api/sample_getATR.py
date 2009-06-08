@@ -30,15 +30,15 @@ import smartcard.util
 try:
     hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
     if hresult!=0:
-        raise  'Failed to establish context: ' + SCardGetErrorMessage(hresult)
+        raise error, 'Failed to establish context: ' + SCardGetErrorMessage(hresult)
     print 'Context established!'
 
     try:
         hresult, readers = SCardListReaders( hcontext, [] )
         if hresult!=0:
-            raise  'Failed to list readers: ' + SCardGetErrorMessage(hresult)
+            raise error, 'Failed to list readers: ' + SCardGetErrorMessage(hresult)
         if len(readers)<1:
-            raise  'No smart card readers'
+            raise Exception('No smart card readers')
         print 'PCSC Readers:', readers
 
         for reader in readers:
@@ -71,7 +71,7 @@ try:
     finally:
         hresult = SCardReleaseContext( hcontext )
         if hresult!=0:
-            raise  'Failed to release context: ' + SCardGetErrorMessage(hresult)
+            raise error, 'Failed to release context: ' + SCardGetErrorMessage(hresult)
         print 'Released context.'
 
 except:

@@ -62,7 +62,7 @@ def verifypin(hCard, control=None):
 try:
     hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
     if hresult!=0:
-        raise  'Failed to establish context: ' + SCardGetErrorMessage(hresult)
+        raise error, 'Failed to establish context: ' + SCardGetErrorMessage(hresult)
     print 'Context established!'
 
     try:
@@ -111,7 +111,7 @@ try:
     finally:
         hresult = SCardReleaseContext( hcontext )
         if hresult!=SCARD_S_SUCCESS:
-            raise  'Failed to release context: ' + SCardGetErrorMessage(hresult)
+            raise error, 'Failed to release context: ' + SCardGetErrorMessage(hresult)
         print 'Released context.'
 
 except:
