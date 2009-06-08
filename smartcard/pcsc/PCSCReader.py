@@ -31,9 +31,7 @@ from smartcard.Exceptions import *
 from smartcard.pcsc.PCSCExceptions import *
 from smartcard.scard import *
 
-hcontext = PCSCContext().getContext()
-
-def __PCSCreaders__( groups=[] ):
+def __PCSCreaders__( hcontext, groups=[] ):
     """Returns the list of PCSC smartcard readers in PCSC group.
 
     If group is not specified, returns the list of all PCSC smartcard readers.
@@ -102,7 +100,9 @@ class PCSCReader( Reader ):
 
 def readers( groups=[] ):
     creaders=[]
-    for reader in __PCSCreaders__( groups ):
+    hcontext = PCSCContext().getContext()
+
+    for reader in __PCSCreaders__( hcontext, groups ):
         creaders.append( ReaderFactory.createReader( 'smartcard.pcsc.PCSCReader.PCSCReader', reader ) )
     return creaders
 
