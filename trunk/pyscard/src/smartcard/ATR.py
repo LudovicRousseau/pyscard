@@ -47,7 +47,7 @@ class ATR:
             TA[n], TB[n], TC[n], TD[n], for n=0,1,...: protocol parameters
                 note: protocol parameters indices start at 0, e.g. TA[0], TA[1] correspond to the ISO standard TA1, TA2 parameters
             historicalBytes: the ATR T1, T2, ..., TK historical bytes
-            TCK: checksum byte (only for protocols different than T=0
+            TCK: checksum byte (only for protocols different from T=0)
             FI: clock rate conversion factor
             DI: voltage adjustment factor
             PI1: programming voltage factor
