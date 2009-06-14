@@ -139,3 +139,27 @@ class CardConnection(Observable):
         Subclasses must override this method for implementing apdu transmission."""
         pass
 
+    def control( self, controlCode, bytes = [] ):
+        """Send a control command and buffer.  Internally calls doControl()
+        class method and notify observers upon command/response events.
+        Subclasses must override the doControl() class method.
+
+        controlCode: command code
+ 
+        bytes:       list of bytes to transmit
+        """
+        Observable.setChanged( self )
+        Observable.notifyObservers( self, CardConnectionEvent('command', [controlCode, bytes] ) )
+        data = self.doControl( controlCode, bytes )
+        Observable.setChanged( self )
+        Observable.notifyObservers( self, CardConnectionEvent( 'response', data ) )
+        if None!=self.errorcheckingchain:
+            self.errorcheckingchain[0]( data )
+        return data
+
+    def doControl( self, controlCode, bytes ):
+        """Performs the command control.
+
+        Subclasses must override this method for implementing control."""
+        pass
+
