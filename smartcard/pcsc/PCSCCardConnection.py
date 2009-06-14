@@ -160,6 +160,23 @@ class PCSCCardConnection( CardConnection ):
         data = map(lambda x: (x+256)%256, response[:-2])
         return data, sw1, sw2
 
+    def doControl( self, controlCode, bytes=[] ):
+        """Transmit a control command to the reader and return response.
+
+        controlCode: control command
+
+        bytes:       command data to transmit (list of bytes)
+
+        return:      response are the response bytes (if any)
+        """
+        CardConnection.doControl( self, controlCode, bytes )
+        hresult, response = SCardControl( self.hcard, controlCode, bytes )
+        if hresult!=0:
+            raise CardConnectionException( 'Failed to control ' + SCardGetErrorMessage(hresult) )
+
+        data = map(lambda x: (x+256)%256, response)
+        return data
+
 if __name__ == '__main__':
     """Small sample illustrating the use of CardConnection."""
     SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
@@ -169,3 +186,4 @@ if __name__ == '__main__':
     cc.connect()
     print "%r %x %x" % cc.transmit( SELECT + DF_TELECOM )
 
+    print cc.control( 0, [] )
