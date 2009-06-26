@@ -48,9 +48,9 @@ class CardConnectionDecorator( CardConnection ):
         """call inner component deleteObserver"""
         self.component.deleteObserver( observer )
 
-    def connect( self, protocol=None ):
+    def connect( self, protocol=None, mode=None ):
         """call inner component connect"""
-        self.component.connect( protocol )
+        self.component.connect( protocol, mode )
 
     def disconnect( self ):
         """call inner component disconnect"""
