@@ -583,7 +583,7 @@ SCARDTRANSMIT                   mySCardTransmit                     = _defaultSC
 
 
 #ifdef PCSCLITE
-PCSCSTRINGIFYERROR              myPcscStringifyError                = _defaultPCSCSTRINGIFYERROR;
+    PCSCSTRINGIFYERROR myPcscStringifyError = _defaultPCSCSTRINGIFYERROR;
 #endif // PCSCLITE
 
 

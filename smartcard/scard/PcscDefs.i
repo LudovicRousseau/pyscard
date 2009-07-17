@@ -188,7 +188,6 @@ typedef enum
 
 
 #ifdef PCSCLITE
-    #ifndef __APPLE__
     typedef enum
     {
         SCARD_ATTR_VENDOR_NAME              ,
@@ -239,7 +238,6 @@ typedef enum
 
     %constant unsigned long SCARD_ATTR_DEVICE_FRIENDLY_NAME = SCARD_ATTR_DEVICE_FRIENDLY_NAME_A ;
     %constant unsigned long SCARD_ATTR_DEVICE_SYSTEM_NAME = SCARD_ATTR_DEVICE_SYSTEM_NAME_A ;
-    #endif //!__APPLE__
 #endif //PCSCLITE
 
 
