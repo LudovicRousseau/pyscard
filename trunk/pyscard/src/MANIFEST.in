@@ -13,6 +13,7 @@ include smartcard/scard/memlog.h
 include smartcard/scard/pcsctypes.h
 include smartcard/scard/PcscDefs.i
 include smartcard/scard/PcscTypemaps.i
+include smartcard/scard/pyscard-reader.h
 include smartcard/scard/scard.def
 include smartcard/scard/scard.i
 include smartcard/scard/scard.rc

@@ -171,7 +171,7 @@ Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 #ifdef PCSCLITE
     #ifdef __APPLE__
-        //#include <PCSC/reader.h>
+        #include "pyscard-reader.h"
         #ifndef SCARD_CTL_CODE
             #define SCARD_CTL_CODE(code) (0x42000000 + (code))
         #endif
