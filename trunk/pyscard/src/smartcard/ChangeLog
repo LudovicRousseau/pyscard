@@ -1,5 +1,5 @@
 1.6.8 (July 2009)
-=====
+=================
         * fixed SCARD_ERROR types to match correct types on linux and Mac OS X (Ludovic Rousseau)
         * store g_rgSCard* references as void* (Ludovic Rousseau)
         * modified Mac OS X build to locate PCSC headers using -framework option (Ludovic Rousseau)
@@ -9,6 +9,15 @@
         * added simpleAPDU.py, a simple script to send a couple of APDUs (Ludovic Rousseau)
         * added support for Snow Leopard 10.6 (Ludovic Rousseau)
         * redefined error codes to be non-Windows or -linux specifics (Ludovic Rousseau)
+        * added definitions of SCARD_ATTR_xxx values for Mac OS X (Jean-Daniel Aussel)
+        * delay SCardEstablishContext call until needed instead of login, to allow use of utility classes
+          such as toHexString, even when the PCSC resource manager or pcscd daemon is not started (Ludovic Rousseau)
+        * added javascript code for Piwik web analytics to documentation pages (Jean-Daniel Aussel)
+        * update sourceforge logo pages to latest sourceforge standard (Jean-Daniel Aussel)
+        * fixed ATR parsing logics (Ludovic Rousseau)
+        * added control() method to CardConnection() (Ludovic Rousseau)
+        * added mode argument to connect() method of CardConnection (Ludovic Rousseau)
+        * added PCSC v2 feature management (Ludovic Rousseau)
 
 1.6.7
 =====
