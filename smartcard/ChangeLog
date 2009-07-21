@@ -1,4 +1,4 @@
-1.6.8
+1.6.8 (July 2009)
 =====
         * fixed SCARD_ERROR types to match correct types on linux and Mac OS X (Ludovic Rousseau)
         * store g_rgSCard* references as void* (Ludovic Rousseau)
