@@ -342,7 +342,7 @@ Install bdist_mpkg by executing the bdist_mpkg setup.py script with build and
 install as arguments, i.e. from the root directory of the bdist_mpkg 
 source distribution enter: python setup.py build install.
 
-From the root directory of the pyscard source distribution, 
+For python 2.5, from the root directory of the pyscard source distribution, 
 i.e. in the src directory, execute the following commands in a terminal:
 
 python setup.py build_ext
@@ -350,6 +350,13 @@ python setup.py build_ext
 
 This will build package pyscard-1.6.8-py-2.5-macosx10.5.mpkg.
 
+For python 2.6, from the root directory of the pyscard source distribution, 
+i.e. in the src directory, execute the following commands in a terminal:
+
+python setup.py build_ext
+/Library/Frameworks/Python.framework/Versions/2.6/bin/bdist_mpkg setup.py
+
+This will build package pyscard-1.6.8-py-2.6-macosx10.5.mpkg.
 
 -------------------------------------------------------------------------------
 Issue Tracking
