@@ -53,4 +53,3 @@ class ReaderFactory:
             ReaderFactory.factories[clazz] = get_class( clazz ).Factory()
         return ReaderFactory.factories[clazz].create( readername )
     createReader = staticmethod(createReader)
-

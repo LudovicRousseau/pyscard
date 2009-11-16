@@ -305,4 +305,3 @@ class SimpleSCardAppFrame(wx.Frame):
         reader = cb.GetClientData(cb.GetSelection())
         if isinstance( reader, smartcard.reader.Reader.Reader ):
             self.treeuserpanel.dialogpanel.OnActivateReader( reader )
-

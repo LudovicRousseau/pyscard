@@ -86,4 +86,3 @@ class ReaderToolbar( wx.ToolBar ):
         self.AddSeparator()
 
         self.Realize()
-

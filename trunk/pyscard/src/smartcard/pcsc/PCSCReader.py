@@ -115,4 +115,3 @@ if __name__ == '__main__':
     cc.connect()
     data, sw1, sw2 = cc.transmit( SELECT + DF_TELECOM )
     print "%X %X" % (sw1, sw2)
-

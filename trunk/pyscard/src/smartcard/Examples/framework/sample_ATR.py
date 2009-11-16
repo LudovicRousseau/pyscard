@@ -36,4 +36,3 @@ print 'checksum OK: ', atr.checksumOK
 print 'T0  supported: ', atr.isT0Supported()
 print 'T1  supported: ', atr.isT1Supported()
 print 'T15 supported: ', atr.isT15Supported()
-

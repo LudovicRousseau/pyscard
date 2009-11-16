@@ -70,4 +70,3 @@ if __name__ == "__main__":
         raise EstablishContextException( smartcard.scard.SCARD_E_NO_MEMORY )
     except:
         print sys.exc_info()[1]
-

@@ -81,4 +81,3 @@ class ErrorCheckingChain:
         if self.end():
             return
         return self.next()( data, sw1, sw2 )
-

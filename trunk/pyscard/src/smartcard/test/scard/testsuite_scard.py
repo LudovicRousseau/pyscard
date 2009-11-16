@@ -49,4 +49,3 @@ def suite():
 if __name__ == '__main__':
     configcheck.checklocalconfig()
     unittest.main(defaultTest='suite')
-

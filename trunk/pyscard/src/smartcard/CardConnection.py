@@ -164,4 +164,3 @@ class CardConnection(Observable):
 
         Subclasses must override this method for implementing control."""
         pass
-

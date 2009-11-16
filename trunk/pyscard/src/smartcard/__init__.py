@@ -36,4 +36,3 @@ __all__ = [
 # for legacy only
 from smartcard.System import listReaders
 from smartcard.Session import Session
-

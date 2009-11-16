@@ -104,4 +104,3 @@ if __name__ == '__main__':
     connection.connect()
     atrct=ATRCardType(  [0x3B, 0x16, 0x94, 0x20, 0x02, 0x01, 0x00, 0x00, 0x0D] )
     print atrct.matches( connection.getATR() )
-
