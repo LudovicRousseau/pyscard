@@ -242,4 +242,3 @@ if __name__ == "__main__":
     t2 = testthread(2)
     t1.start()
     t2.start()
-

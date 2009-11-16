@@ -60,4 +60,3 @@ class Reader:
     def __str__( self ):
         """Returns card reader name string for str(object) calls."""
         return self.name
-

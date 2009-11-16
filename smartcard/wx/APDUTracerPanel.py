@@ -71,4 +71,3 @@ class APDUTracerPanel( wx.Panel, CardConnectionObserver ):
                 apduline += "< " + toHexString( ccevent.args[0]) + "%-2X %-2X" % tuple(ccevent.args[-2:] )
 
         self.apdutextctrl.AppendText( apduline + "\n" )
-

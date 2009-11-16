@@ -80,4 +80,3 @@ class NoReadersException(SmartcardException):
     """Raised when the system has no smartcard reader."""
     def __init__( self, message="" ):
         SmartcardException.__init__( self, 'no readers found' )
-

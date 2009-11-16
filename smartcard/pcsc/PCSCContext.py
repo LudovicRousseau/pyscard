@@ -55,4 +55,3 @@ class PCSCContext:
     def __getattr__( self, name ):
         if self.instance:
             return getattr( self.instance, name )
-

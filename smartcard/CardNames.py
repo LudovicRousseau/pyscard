@@ -103,4 +103,3 @@ if __name__ == '__main__':
     cn.delete( "Palmera Protect V2" )
     print '---------'
     cn.dump()
-

@@ -65,4 +65,3 @@ class CheckingErrorException( SWException ):
     Examples of checking error: sw1=67 to 6F (ISO781604)."""
     def __init__( self, data, sw1, sw2, message="" ):
         SWException.__init__( self, data, sw1, sw2, "checking error - " + message )
-

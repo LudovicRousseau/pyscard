@@ -52,4 +52,3 @@ class SimpleSCardAppEventObserver:
     def OnSelectReader( self, reader ):
         """Called when a reader is selected in the reader tree control or toolbar."""
         self.selectedreader = reader
-

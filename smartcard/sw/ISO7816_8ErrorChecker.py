@@ -131,4 +131,3 @@ if __name__ == '__main__':
         ecs( [], 0x66, 0x87 )
     except smartcard.sw.SWExceptions.SecurityRelatedException, e:
         print e, "%x %x" % (e.sw1, e.sw2)
-

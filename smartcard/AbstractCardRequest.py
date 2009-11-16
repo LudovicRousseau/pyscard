@@ -77,4 +77,3 @@ class AbstractCardRequest:
     def waitforcardevent( self ):
         """Wait for card insertion or removal."""
         pass
-

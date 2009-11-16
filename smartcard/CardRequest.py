@@ -75,4 +75,3 @@ if __name__ == '__main__':
     cs.connection.connect()
     print cs.connection.getReader(), toHexString(cs.connection.getATR())
     cs.connection.disconnect()
-

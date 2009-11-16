@@ -47,4 +47,3 @@ def get_class(fullClassName, parentClass=None):
 
     # Return a reference to the class itself, not an instantiated object.
     return aClass
-

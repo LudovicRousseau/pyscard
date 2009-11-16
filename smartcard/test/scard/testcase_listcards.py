@@ -157,4 +157,3 @@ if 'winscard'==resourceManager:
 
 if __name__ == '__main__':
     unittest.main()
-

@@ -360,4 +360,3 @@ class CardAndReaderTreePanel( wx.Panel ):
             self.readermonitor.deleteObserver( self.readertreereaderobserver )
             self.cardmonitor.deleteObserver( self.readertreecardobserver )
         event.Skip()
-
