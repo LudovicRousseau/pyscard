@@ -27,7 +27,9 @@ from distutils import core, dir_util, file_util
 from distutils.core import Extension
 from distutils.util import get_platform
 from distutils.command.build_ext import build_ext
-import glob, os, sys
+import glob
+import os
+import sys
 
 if sys.version[0:1] == '1':
     raise RuntimeError, ("pyscard requires Python 2.x to build.")
