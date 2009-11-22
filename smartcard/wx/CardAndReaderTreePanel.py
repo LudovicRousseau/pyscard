@@ -197,7 +197,7 @@ class ReaderTreeCtrl( BaseCardTreeCtrl ):
 
             self.Expand(self.root)
         finally:
-            self.mutex.release();
+            self.mutex.release()
         self.EnsureVisible( self.root )
         self.Repaint()
 
@@ -226,7 +226,7 @@ class ReaderTreeCtrl( BaseCardTreeCtrl ):
                     self.Expand(childReader)
             self.Expand(self.root)
         finally:
-            self.mutex.release();
+            self.mutex.release()
         self.EnsureVisible( self.root )
         self.Repaint()
 
@@ -249,7 +249,7 @@ class ReaderTreeCtrl( BaseCardTreeCtrl ):
                         ( childReader, cookie ) = self.GetNextChild( parentnode, cookie )
             self.Expand(self.root)
         finally:
-            self.mutex.release();
+            self.mutex.release()
         self.EnsureVisible( self.root )
         self.Repaint()
 
@@ -268,7 +268,7 @@ class ReaderTreeCtrl( BaseCardTreeCtrl ):
                         ( childReader, cookie ) = self.GetNextChild( parentnode, cookie )
             self.Expand(self.root)
         finally:
-            self.mutex.release();
+            self.mutex.release()
         self.EnsureVisible( self.root )
         self.Repaint()
 

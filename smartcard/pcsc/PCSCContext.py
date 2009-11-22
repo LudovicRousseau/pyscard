@@ -45,12 +45,12 @@ class PCSCContext:
     instance = None
 
     def __init__( self ):
-        PCSCContext.mutex.acquire();
+        PCSCContext.mutex.acquire()
         try:
             if not PCSCContext.instance:
                 PCSCContext.instance = PCSCContext.__PCSCContextSingleton()
         finally:
-            PCSCContext.mutex.release();
+            PCSCContext.mutex.release()
 
     def __getattr__( self, name ):
         if self.instance:
