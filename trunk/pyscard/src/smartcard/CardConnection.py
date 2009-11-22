@@ -32,10 +32,10 @@ class CardConnection(Observable):
 
     Known subclasses: smartcard.pcsc.PCSCCardConnection
     """
-    T0_protocol         = 0x00000001
-    T1_protocol         = 0x00000002
-    RAW_protocol        = 0x00010000
-    T15_protocol        = 0x00000008
+    T0_protocol = 0x00000001
+    T1_protocol = 0x00000002
+    RAW_protocol = 0x00010000
+    T15_protocol = 0x00000008
 
 
     def __init__( self, reader ):

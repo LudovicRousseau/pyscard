@@ -41,7 +41,7 @@ if 'winscard'==resourceManager:
             hresult, self.hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
             self.assertEquals(hresult, 0)
             self.dummycardname = 'dummycard'
-            self.dummycardATR  = [ 0x3B, 0x75, 0x94, 0x00, 0x00, 0x62, 0x02, 0x02, 0x01, 0x01 ]
+            self.dummycardATR = [ 0x3B, 0x75, 0x94, 0x00, 0x00, 0x62, 0x02, 0x02, 0x01, 0x01 ]
             self.dummycardMask = [ 0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF ]
             self.dummycardguid1 = smartcard.guid.strToGUID('{AD4F1667-EA75-4124-84D4-641B3B197C65}')
             self.dummycardguid2 = smartcard.guid.strToGUID('{382AE95A-7C2C-449c-A179-56C6DE6FF3BC}')

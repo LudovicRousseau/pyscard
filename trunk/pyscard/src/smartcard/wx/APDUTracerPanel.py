@@ -54,7 +54,7 @@ class APDUTracerPanel( wx.Panel, CardConnectionObserver ):
     def update( self, cardconnection, ccevent ):
         '''CardConnectionObserver callback.'''
 
-        apduline  = ""
+        apduline = ""
         if 'connect'==ccevent.type:
             apduline += 'connecting to ' + cardconnection.getReader()
 
