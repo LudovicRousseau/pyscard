@@ -110,7 +110,7 @@ class SampleAPDUManagerPanel( wx.Panel, SimpleSCardAppEventObserver ):
         statictextCommand = wx.StaticText( self, ID_TEXT_COMMAND, "Command", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.commandtextctrl = wx.TextCtrl( self, ID_TEXTCTRL_COMMAND, "",
                                             wx.DefaultPosition, wx.DefaultSize, wx.TE_MULTILINE,
-                                            validator = APDUHexValidator() )
+                                            validator=APDUHexValidator() )
         statictextResponse = wx.StaticText( self, ID_TEXT_RESPONSE, "Response", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.responsetextctrl = wx.TextCtrl( self, ID_TEXTCTRL_RESPONSE, "", wx.DefaultPosition, wx.DefaultSize, wx.TE_MULTILINE | wx.TE_READONLY )
         statictextStatusWords = wx.StaticText( self, ID_TEXT_SW, "Status Words", wx.DefaultPosition, wx.DefaultSize, 0 )

@@ -42,7 +42,7 @@ class BaseCardTreeCtrl( wx.TreeCtrl ):
                   ID=wx.NewId(),
                   pos=wx.DefaultPosition,
                   size=wx.DefaultSize,
-                  style= 0,
+                  style=0,
                   clientpanel=None ):
         """Constructor. Initializes a smartcard or reader tree control."""
         wx.TreeCtrl.__init__( self, parent, ID, pos, size , wx.TR_SINGLE | wx.TR_NO_BUTTONS )
@@ -75,7 +75,7 @@ class CardTreeCtrl( BaseCardTreeCtrl ):
                   ID=wx.NewId(),
                   pos=wx.DefaultPosition,
                   size=wx.DefaultSize,
-                  style= 0,
+                  style=0,
                   clientpanel=None ):
         """Constructor. Create a smartcard tree control."""
         BaseCardTreeCtrl.__init__( self, parent, ID, pos, size ,
@@ -125,7 +125,7 @@ class ReaderTreeCtrl( BaseCardTreeCtrl ):
                   ID=wx.NewId(),
                   pos=wx.DefaultPosition,
                   size=wx.DefaultSize,
-                  style= 0,
+                  style=0,
                   clientpanel=None ):
         """Constructor. Create a reader tree control."""
 

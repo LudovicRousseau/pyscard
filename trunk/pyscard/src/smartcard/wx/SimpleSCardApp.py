@@ -38,12 +38,12 @@ class SimpleSCardApp( wx.App ):
     SimpleSCardApp is a subclass of wx.App.
     """
     def __init__( self,
-                  appname = '',
-                  apppanel = None,
-                  appstyle = TR_DEFAULT,
-                  appicon = None,
-                  pos = (-1,-1),
-                  size = (-1,-1) ):
+                  appname='',
+                  apppanel=None,
+                  appstyle=TR_DEFAULT,
+                  appicon=None,
+                  pos=(-1,-1),
+                  size=(-1,-1) ):
         """Constructor for simple smart card application.
         appname: the application name
         apppanel: the application panel to display in the application frame

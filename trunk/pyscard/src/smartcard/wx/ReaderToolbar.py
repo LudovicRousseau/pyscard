@@ -32,7 +32,7 @@ class ReaderComboBox( wx.ComboBox, ReaderObserver ):
         """Constructor. Registers as ReaderObserver to get
         notifications of reader insertion/removal."""
         wx.ComboBox.__init__( self, parent, wx.NewId(),
-                        size=(170,-1), style = wx.CB_DROPDOWN | wx.CB_SORT ,
+                        size=(170,-1), style=wx.CB_DROPDOWN | wx.CB_SORT ,
                         choices=[] )
 
         # register as a ReaderObserver; we will ge notified of added/removed readers
@@ -63,7 +63,7 @@ class ReaderToolbar( wx.ToolBar ):
                              parent,
                              pos=wx.DefaultPosition,
                              size=wx.DefaultSize,
-                             style = wx.SIMPLE_BORDER | wx.TB_HORIZONTAL | wx.TB_FLAT | wx.TB_TEXT,
+                             style=wx.SIMPLE_BORDER | wx.TB_HORIZONTAL | wx.TB_FLAT | wx.TB_TEXT,
                              name='Reader Toolbar' )
 
         # create bitmaps for toolbar
