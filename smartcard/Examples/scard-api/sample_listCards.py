@@ -56,8 +56,6 @@ if 'winscard'==resourceManager:
                 if hresult==0:
                     print i, 'CSP Provider:', providername
 
-
-
         finally:
             hresult = SCardReleaseContext( hcontext )
             if hresult!=0:

@@ -96,9 +96,6 @@ if 'winscard'==resourceManager:
                 if eventstate & SCARD_STATE_UNKNOWN:
                     print 'State unknowned'
 
-
-
-
         finally:
             hresult = SCardForgetCardType( hcontext, znewcardName )
             hresult = SCardReleaseContext( hcontext )
