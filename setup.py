@@ -32,7 +32,7 @@ import os
 import sys
 
 if sys.version[0:1] == '1':
-    raise RuntimeError, ("pyscard requires Python 2.x to build.")
+    raise RuntimeError("pyscard requires Python 2.x to build.")
 
 if 'win32'==get_platform():
     platform__cc_defines=[('WIN32', '100')]
