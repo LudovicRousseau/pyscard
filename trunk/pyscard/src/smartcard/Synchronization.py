@@ -11,12 +11,12 @@ from threading import RLock
 def synchronized(method):
   def f(*args):
     self = args[0]
-    self.mutex.acquire();
+    self.mutex.acquire()
     # print method.__name__, 'acquired'
     try:
       return apply(method, args)
     finally:
-      self.mutex.release();
+      self.mutex.release()
       # print method.__name__, 'released'
   return f
 
