@@ -150,15 +150,15 @@ if sys.version_info < (2, 4):
 
     build_ext.swig_sources = swig_sources
 
-kw = {'name':"pyscard",
-      'version':"1.6.8",
-      'description':"Smartcard module for Python.",
-      'author':"Jean-Daniel Aussel",
-      'author_email':"aussel.jean-daniel@gemalto.com",
-      'url':"http://www.gemalto.com",
-      'long_description':'Smartcard package for Python',
-      'license':'GNU LESSER GENERAL PUBLIC LICENSE',
-      'platforms':['linux','win32'],
+kw = {'name': "pyscard",
+      'version': "1.6.8",
+      'description': "Smartcard module for Python.",
+      'author': "Jean-Daniel Aussel",
+      'author_email': "aussel.jean-daniel@gemalto.com",
+      'url': "http://www.gemalto.com",
+      'long_description': 'Smartcard package for Python',
+      'license': 'GNU LESSER GENERAL PUBLIC LICENSE',
+      'platforms': ['linux','win32'],
       'packages' : [ "smartcard",
                      "smartcard/pcsc",
                      "smartcard/reader",
@@ -167,7 +167,7 @@ kw = {'name':"pyscard",
                      "smartcard/util",
                      "smartcard/wx",
                      ],
-      'package_dir' : { "":"." },
+      'package_dir' : { "": "." },
       'package_data' : {
                          "smartcard" : [
                                         "ACKS",
@@ -180,7 +180,7 @@ kw = {'name':"pyscard",
                        } ,
 
       # the _scard.pyd extension to build
-      'ext_modules':[Extension("smartcard.scard._scard",
+      'ext_modules': [Extension("smartcard.scard._scard",
                              define_macros=platform__cc_defines,
                              include_dirs=['smartcard/scard/'] + platform_include_dirs,
                              sources=["smartcard/scard/helpers.c",
