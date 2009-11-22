@@ -7,7 +7,8 @@ Source: Robert Brewer at the Python Cookbook:
 http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/223972
 """
 
-import sys, types
+import sys
+import types
 
 def get_mod(modulePath):
     """Import a module."""
