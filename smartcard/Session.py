@@ -94,7 +94,7 @@ class Session:
                 sw1, sw2 are the two status words
         """
 
-        response, sw1, sw2 =  self.cs.connection.transmit( command )
+        response, sw1, sw2 = self.cs.connection.transmit( command )
 
         if len(response)>2:
             response.append( sw1 )
