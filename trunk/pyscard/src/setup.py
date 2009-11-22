@@ -48,40 +48,40 @@ if 'win32' == get_platform():
 # get_platform() returns a string similar to 'darwin-8.11.1-i386' with python 2.3
 # if python 2.5 is installed, get_platform() returns a string similar to 'macosx-10.3-fat'
 elif 'darwin' in get_platform() or 'macosx-10.3' in get_platform() or 'macosx-10.4' in get_platform():
-    platform__cc_defines = [ ('PCSCLITE', '1'), ('__APPLE__','1'), ('__TIGER__','1')]
+    platform__cc_defines = [ ('PCSCLITE', '1'), ('__APPLE__', '1'), ('__TIGER__', '1')]
     platform_swig_opts = [ '-DPCSCLITE', '-D__APPLE__', '-D__TIGER__' ]
     platform_sources = []
     platform_libraries = []
     platform_include_dirs = []
-    platform_extra_compile_args = ['-v','-framework', 'PCSC', '-arch', 'i386', '-arch', 'ppc', '-ggdb', '-O0']
-    platform_extra_link_args = ['-arch', 'i386', '-arch', 'ppc','-ggdb']
+    platform_extra_compile_args = ['-v', '-framework', 'PCSC', '-arch', 'i386', '-arch', 'ppc', '-ggdb', '-O0']
+    platform_extra_link_args = ['-arch', 'i386', '-arch', 'ppc', '-ggdb']
 
 #
 # Mac OS X Snow Leopard, python 2.6
 # PowerPC is no more supported, x86_64 is new
 #
 elif 'macosx-10.6' in get_platform():
-    platform__cc_defines = [ ('PCSCLITE', '1'), ('__APPLE__','1'), ('__LEOPARD__','1')]
+    platform__cc_defines = [ ('PCSCLITE', '1'), ('__APPLE__', '1'), ('__LEOPARD__', '1')]
     platform_swig_opts = [ '-DPCSCLITE', '-D__APPLE__', '-D__LEOPARD__' ]
     platform_sources = []
     platform_libraries = []
     platform_include_dirs = []
-    platform_extra_compile_args = ['-v','-framework', 'PCSC', '-arch',
+    platform_extra_compile_args = ['-v', '-framework', 'PCSC', '-arch',
             'i386', '-arch', 'x86_64', '-ggdb', '-O0']
-    platform_extra_link_args = ['-arch', 'i386', '-arch', 'x86_64','-ggdb']
+    platform_extra_link_args = ['-arch', 'i386', '-arch', 'x86_64', '-ggdb']
 
 #
 # Mac OS X Leopard has python 2.5 preinstalled
 # get_platform() returns a string similar to 'macosx-10.5-i386'
 #
 elif 'macosx-10.' in get_platform():
-    platform__cc_defines = [ ('PCSCLITE', '1'), ('__APPLE__','1'), ('__LEOPARD__','1')]
+    platform__cc_defines = [ ('PCSCLITE', '1'), ('__APPLE__', '1'), ('__LEOPARD__', '1')]
     platform_swig_opts = [ '-DPCSCLITE', '-D__APPLE__', '-D__LEOPARD__' ]
     platform_sources = []
     platform_libraries = []
     platform_include_dirs = []
-    platform_extra_compile_args = ['-v','-framework', 'PCSC', '-arch', 'i386', '-arch', 'ppc', '-ggdb', '-O0']
-    platform_extra_link_args = ['-arch', 'i386', '-arch', 'ppc','-ggdb']
+    platform_extra_compile_args = ['-v', '-framework', 'PCSC', '-arch', 'i386', '-arch', 'ppc', '-ggdb', '-O0']
+    platform_extra_link_args = ['-arch', 'i386', '-arch', 'ppc', '-ggdb']
 else:
     platform__cc_defines = [('PCSCLITE', '1')]
     platform_swig_opts = ['-DPCSCLITE']
@@ -94,7 +94,7 @@ else:
 
 class _pyscardBuildExt(build_ext):
     '''Specialization of build_ext to enable swig_opts for python 2.3 distutils'''
-if sys.version_info < (2,4):
+if sys.version_info < (2, 4):
 
     # This copy of swig_sources is from Python 2.3.
     # This is to add support of swig_opts for Python 2.3 distutils
@@ -214,7 +214,7 @@ pyscard_dist = core.setup(**kw)
 
 # Python 2.3 distutils does not support package_data
 # copy manually package_data
-if sys.version_info < (2,4):
+if sys.version_info < (2, 4):
     from distutils.util import convert_path
     from glob import glob
     if "install" in sys.argv:
