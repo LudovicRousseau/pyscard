@@ -94,7 +94,6 @@ class ATRCardType(CardType):
             maskedatr=atr
         return self.maskedatr==maskedatr
 
-
     
 if __name__ == '__main__':
     """Small sample illustrating the use of CardType.py."""
