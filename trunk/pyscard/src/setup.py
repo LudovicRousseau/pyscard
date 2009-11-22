@@ -190,7 +190,7 @@ kw = {'name': "pyscard",
                              extra_compile_args=platform_extra_compile_args,
                              extra_link_args=platform_extra_link_args,
                              swig_opts=['-outdir', 'smartcard/scard'] + platform_swig_opts)],
-      'cmdclass':{'build_ext': _pyscardBuildExt},
+      'cmdclass': {'build_ext': _pyscardBuildExt},
      }
 
 # If we're running >Python 2.3, add extra information
