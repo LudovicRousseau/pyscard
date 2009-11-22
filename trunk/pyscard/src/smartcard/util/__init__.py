@@ -218,7 +218,7 @@ def HexListToBinString( hexlist ):
 def BinStringToHexList( binstring ):
     hexlist=[]
     for byte in binstring:
-       hexlist= hexlist + [ ord(byte) ]
+        hexlist= hexlist + [ ord(byte) ]
     return hexlist
 
 def hl2bs( hexlist ):
