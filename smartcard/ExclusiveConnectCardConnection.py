@@ -42,7 +42,8 @@ class ExclusiveConnectCardConnection( CardConnectionDecorator ):
         while True:
             if isinstance( component, smartcard.pcsc.PCSCCardConnection.PCSCCardConnection ):
                 pcscprotocol = PCSCCardConnection.translateprotocolmask( protocol )
-                if 0==pcscprotocol: pcscprotocol = component.getProtocol()
+                if 0==pcscprotocol:
+                    pcscprotocol = component.getProtocol()
 
                 if None!=component.hcard:
                     hresult = SCardDisconnect( component.hcard, SCARD_LEAVE_CARD )

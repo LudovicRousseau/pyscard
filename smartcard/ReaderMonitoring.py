@@ -167,7 +167,8 @@ class ReaderMonitoringThread(Thread):
                         if addedReaders or removedReaders:
                             # Notify observers
                             self.readers=[]
-                            for r in currentReaders: self.readers.append(r)
+                            for r in currentReaders:
+                                self.readers.append(r)
                             self.observable.setChanged()
                             self.observable.notifyObservers((addedReaders, removedReaders))
     

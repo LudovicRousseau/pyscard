@@ -67,7 +67,8 @@ class __CardNames__(Synchronization):
 
     def find( self, atr, reader=None ):
         for k,v in self.db.iteritems():
-            if loads(v).matches( atr, reader ): return k
+            if loads(v).matches( atr, reader ):
+                return k
                 
 
 synchronize( __CardNames__, "add delete dump find" )

@@ -43,17 +43,21 @@ from smartcard.System import readers
 print 'insert two smartcard readers'
 while True:
     readerz=readers()
-    if 2<=len( readerz ): break
+    if 2<=len( readerz ):
+        break
     time.sleep(.3)
-for reader in readerz: print '\t', reader
+for reader in readerz:
+    print '\t', reader
 
 print 'insert two cards in the readers'
 cardrequest = CardRequest()
 while True:
     cardz=cardrequest.waitforcardevent()
-    if 2<=len( cardz ): break
+    if 2<=len( cardz ):
+        break
     time.sleep(.3)
-for card in cardz: print '\t', toHexString(card.atr)
+for card in cardz:
+    print '\t', toHexString(card.atr)
 
 
 #
@@ -74,7 +78,8 @@ class testcase_manualCardRequest( unittest.TestCase, CardObserver ):
         cardrequest = CardRequest()
         while True:
             cards=cardrequest.waitforcardevent()
-            if 0==len( cards ): break
+            if 0==len( cards ):
+                break
             time.sleep(.3)
         print 'ok'
 
@@ -173,7 +178,8 @@ class testcase_manualCardRequest( unittest.TestCase, CardObserver ):
         _readerz=readers()
         while True:
             readerz=readers()
-            if len(_readerz)>len( readerz ): break
+            if len(_readerz)>len( readerz ):
+                break
             time.sleep(.1)
 
         for reader in readerz:

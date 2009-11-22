@@ -44,7 +44,8 @@ class Observable(Synchronization):
 
     self.mutex.acquire()
     try:
-      if not self.changed: return
+      if not self.changed:
+          return
       # Make a local copy in case of synchronous
       # additions of observers:
       localArray = self.obs[:]
@@ -55,11 +56,16 @@ class Observable(Synchronization):
     for observer in localArray:
       observer.update(self, arg)
 
-  def deleteObservers(self): self.obs = []
-  def setChanged(self): self.changed = 1
-  def clearChanged(self): self.changed = 0
-  def hasChanged(self): return self.changed
-  def countObservers(self): return len(self.obs)
+  def deleteObservers(self):
+      self.obs = []
+  def setChanged(self):
+      self.changed = 1
+  def clearChanged(self):
+      self.changed = 0
+  def hasChanged(self):
+      return self.changed
+  def countObservers(self):
+      return len(self.obs)
 
 synchronize(Observable,
   "addObserver deleteObserver deleteObservers " +

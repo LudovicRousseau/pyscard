@@ -24,7 +24,8 @@ def synchronize(klass, names=None):
   """Synchronize methods in the given class.
   Only synchronize the methods whose names are
   given, or all methods if names=None."""
-  if type(names)==type(''): names = names.split()
+  if type(names)==type(''):
+      names = names.split()
   for (name, val) in klass.__dict__.items():
     if callable(val) and name != '__init__' and \
       (names == None or name in names):

@@ -83,8 +83,10 @@ class testcase_ErrorChecking(unittest.TestCase):
         except excClass, e:
             return e
         else:
-            if hasattr(excClass,'__name__'): excName = excClass.__name__
-            else: excName = str(excClass)
+            if hasattr(excClass,'__name__'):
+                excName = excClass.__name__
+            else:
+                excName = str(excClass)
             raise self.failureException, excName
 
 
