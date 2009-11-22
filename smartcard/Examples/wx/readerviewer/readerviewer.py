@@ -28,11 +28,11 @@ from smartcard.wx.SimpleSCardApp import *
 
 def main( argv ):
     app = SimpleSCardApp(
-        appname = 'A simple reader monitoring tool',
-        apppanel = None,
-        appstyle = TR_READER,
-        appicon = os.path.join( os.path.dirname( __file__ ), 'images', 'readerviewer.ico' ),
-        size = (800,600) )
+        appname='A simple reader monitoring tool',
+        apppanel=None,
+        appstyle=TR_READER,
+        appicon=os.path.join( os.path.dirname( __file__ ), 'images', 'readerviewer.ico' ),
+        size=(800,600) )
     app.MainLoop()
 
 if __name__ == "__main__":

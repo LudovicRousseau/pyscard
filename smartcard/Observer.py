@@ -35,7 +35,7 @@ class Observable(Synchronization):
   def deleteObserver(self, observer):
     self.obs.remove(observer)
 
-  def notifyObservers(self, arg = None):
+  def notifyObservers(self, arg=None):
     '''If 'changed' indicates that this object
     has changed, notify all its observers, then
     call clearChanged(). Each observer has its

@@ -98,7 +98,7 @@ def hasFeature(featureList, feature):
         if f[0] == feature or Features[f[0]] == feature:
             return f[1]
 
-def getPinProperties(cardConnection, featureList = None, controlCode = None):
+def getPinProperties(cardConnection, featureList=None, controlCode=None):
     """ return the PIN_PROPERTIES structure
 
     cardConnection: CardConnection object

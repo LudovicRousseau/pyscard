@@ -87,11 +87,11 @@ class SamplePanel( wx.Panel, SimpleSCardAppEventObserver ):
 
 def main( argv ):
     app = SimpleSCardApp(
-        appname = 'A simple card monitoring tool',
-        apppanel = SamplePanel,
-        appstyle = TR_SMARTCARD | TR_READER,
-        appicon = os.path.join( os.path.dirname( __file__ ), 'images', 'mysmartcard.ico' ),
-        size = (800,600) )
+        appname='A simple card monitoring tool',
+        apppanel=SamplePanel,
+        appstyle=TR_SMARTCARD | TR_READER,
+        appicon=os.path.join( os.path.dirname( __file__ ), 'images', 'mysmartcard.ico' ),
+        size=(800,600) )
     app.MainLoop()
 
 if __name__ == "__main__":

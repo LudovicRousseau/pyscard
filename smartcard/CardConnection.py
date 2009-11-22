@@ -141,7 +141,7 @@ class CardConnection(Observable):
         Subclasses must override this method for implementing apdu transmission."""
         pass
 
-    def control( self, controlCode, bytes = [] ):
+    def control( self, controlCode, bytes=[] ):
         """Send a control command and buffer.  Internally calls doControl()
         class method and notify observers upon command/response events.
         Subclasses must override the doControl() class method.
