@@ -73,7 +73,7 @@ elif 'macosx-10.6' in get_platform():
 #
 # Mac OS X Leopard has python 2.5 preinstalled
 # get_platform() returns a string similar to 'macosx-10.5-i386'
-# 
+#
 elif 'macosx-10.' in get_platform():
     platform__cc_defines=[ ('PCSCLITE', '1'), ('__APPLE__','1'), ('__LEOPARD__','1')]
     platform_swig_opts=[ '-DPCSCLITE', '-D__APPLE__', '-D__LEOPARD__' ]
@@ -139,7 +139,7 @@ if sys.version_info < (2,4):
         if self.swig_cpp:
             swig_cmd.append("-c++")
 
-        swig_cmd += platform_swig_opts 
+        swig_cmd += platform_swig_opts
 
         for source in swig_sources:
             target = swig_targets[source]
@@ -147,7 +147,7 @@ if sys.version_info < (2,4):
             self.spawn(swig_cmd + ["-o", target, source])
 
         return new_sources
-    
+
     build_ext.swig_sources = swig_sources
 
 kw = {'name':"pyscard",
@@ -216,7 +216,7 @@ pyscard_dist=core.setup(**kw)
 # copy manually package_data
 if sys.version_info < (2,4):
     from distutils.util import convert_path
-    from glob import glob 
+    from glob import glob
     if "install" in sys.argv:
         targetdir = pyscard_dist.command_obj['install'].install_purelib
         package_data=kw['package_data']
@@ -227,6 +227,6 @@ if sys.version_info < (2,4):
                 files.extend( [fn for fn in filelist if fn not in files] )
         for file in files:
             newdir = os.path.dirname( file )
-            dir_util.mkpath( os.path.join( targetdir, newdir ) ) 
+            dir_util.mkpath( os.path.join( targetdir, newdir ) )
             file_util.copy_file( file, os.path.join( targetdir, file ) )
 
