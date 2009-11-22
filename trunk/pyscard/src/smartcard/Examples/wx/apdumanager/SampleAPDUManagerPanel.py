@@ -101,7 +101,7 @@ class SampleAPDUManagerPanel( wx.Panel, SimpleSCardAppEventObserver ):
             data, sw1, sw2 = self.selectedcard.connection.transmit( toBytes( apdu ) )
             self.SW1textctrl.SetValue( "%x" % sw1 )
             self.SW2textctrl.SetValue( "%x" % sw2 )
-            self.responsetextctrl.SetValue( toHexString( data +  [sw1, sw2] ) )
+            self.responsetextctrl.SetValue( toHexString( data + [sw1, sw2] ) )
         event.Skip()
 
     def layoutControls( self ):
