@@ -229,4 +229,3 @@ if sys.version_info < (2,4):
             newdir = os.path.dirname( file )
             dir_util.mkpath( os.path.join( targetdir, newdir ) )
             file_util.copy_file( file, os.path.join( targetdir, file ) )
-
