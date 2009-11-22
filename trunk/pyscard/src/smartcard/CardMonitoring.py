@@ -174,8 +174,10 @@ class CardMonitoringThread:
                 # by the __del__() method may already have been deleted.
                 # this causes ReaderMonitoringThread.run() to except with a TypeError
                 # or AttributeError
-                except TypeError: pass
-                except AttributeError: pass
+                except TypeError:
+                    pass
+                except AttributeError:
+                    pass
 
                 except:
                     try:

@@ -94,10 +94,14 @@ class ATR:
             self.TC += [None]
             self.TD += [None]
 
-            if self.hasTA[n]: self.TA[n]=self.bytes[ offset+self.hasTA[n] ]
-            if self.hasTB[n]: self.TB[n]=self.bytes[ offset+self.hasTA[n]+self.hasTB[n] ]
-            if self.hasTC[n]: self.TC[n]=self.bytes[ offset+self.hasTA[n]+self.hasTB[n]+self.hasTC[n] ]
-            if self.hasTD[n]: self.TD[n]=self.bytes[ offset+self.hasTA[n]+self.hasTB[n]+self.hasTC[n]+self.hasTD[n] ]
+            if self.hasTA[n]:
+                self.TA[n]=self.bytes[ offset+self.hasTA[n] ]
+            if self.hasTB[n]:
+                self.TB[n]=self.bytes[ offset+self.hasTA[n]+self.hasTB[n] ]
+            if self.hasTC[n]:
+                self.TC[n]=self.bytes[ offset+self.hasTA[n]+self.hasTB[n]+self.hasTC[n] ]
+            if self.hasTD[n]:
+                self.TD[n]=self.bytes[ offset+self.hasTA[n]+self.hasTB[n]+self.hasTC[n]+self.hasTD[n] ]
 
             self.interfaceBytesCount += self.hasTA[n]+self.hasTB[n]+self.hasTC[n]+self.hasTD[n]
             TD=self.TD[n]
@@ -241,10 +245,14 @@ class ATR:
         """Dump the details of an ATR."""
 
         for i in range( 0, len(self.TA) ):
-            if self.TA[i]!=None: print "TA%d: %x" % (i+1,self.TA[i])
-            if self.TB[i]!=None: print "TB%d: %x" % (i+1,self.TB[i])
-            if self.TC[i]!=None: print "TC%d: %x" % (i+1,self.TC[i])
-            if self.TD[i]!=None: print "TD%d: %x" % (i+1,self.TD[i])
+            if self.TA[i]!=None:
+                print "TA%d: %x" % (i+1,self.TA[i])
+            if self.TB[i]!=None:
+                print "TB%d: %x" % (i+1,self.TB[i])
+            if self.TC[i]!=None:
+                print "TC%d: %x" % (i+1,self.TC[i])
+            if self.TD[i]!=None:
+                print "TD%d: %x" % (i+1,self.TD[i])
 
         print 'supported protocols', self.getSupportedProtocols()
         print 'T=0 supported', self.isT0Supported()

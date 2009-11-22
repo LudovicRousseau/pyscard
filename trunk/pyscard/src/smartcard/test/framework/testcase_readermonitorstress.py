@@ -80,8 +80,10 @@ class readerInsertionThread( threading.Thread ):
                 mutexvreaders.acquire()
                 if newreader not in virtualreaders:
                     virtualreaders.append( newreader )
-                    if insertedreaderstats.has_key(newreader): insertedreaderstats[newreader]+=1 
-                    else: insertedreaderstats[newreader]=1
+                    if insertedreaderstats.has_key(newreader):
+                        insertedreaderstats[newreader]+=1 
+                    else:
+                        insertedreaderstats[newreader]=1
             finally:
                 readerEvent.clear()
                 mutexvreaders.release()
@@ -100,8 +102,10 @@ class readerRemovalThread( threading.Thread ):
                 if virtualreaders:
                     oldreader=random.choice( virtualreaders )
                     virtualreaders.remove(oldreader)
-                    if removedreaderstats.has_key(oldreader): removedreaderstats[oldreader]+=1 
-                    else: removedreaderstats[oldreader]=1
+                    if removedreaderstats.has_key(oldreader):
+                        removedreaderstats[oldreader]+=1 
+                    else:
+                        removedreaderstats[oldreader]=1
             finally:
                 readerEvent.clear()
                 mutexvreaders.release()
@@ -117,11 +121,15 @@ class countobserver( ReaderObserver ):
     def update( self, observable, (addedreaders, removedreaders) ):
         self.countnotified+=1
         for newreader in addedreaders:
-            if self.insertedreaderstats.has_key(newreader): self.insertedreaderstats[newreader]+=1 
-            else: self.insertedreaderstats[newreader]=1
+            if self.insertedreaderstats.has_key(newreader):
+                self.insertedreaderstats[newreader]+=1 
+            else:
+                self.insertedreaderstats[newreader]=1
         for oldreader in removedreaders:
-            if self.removedreaderstats.has_key(oldreader): self.removedreaderstats[oldreader]+=1 
-            else: self.removedreaderstats[oldreader]=1
+            if self.removedreaderstats.has_key(oldreader):
+                self.removedreaderstats[oldreader]+=1 
+            else:
+                self.removedreaderstats[oldreader]=1
 
 
 class testcase_readermonitorstress( unittest.TestCase ):

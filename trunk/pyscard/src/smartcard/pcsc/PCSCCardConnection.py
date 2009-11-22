@@ -90,9 +90,11 @@ class PCSCCardConnection( CardConnection ):
         If mode is not specified, connect with SCARD_SHARE_SHARED."""
         CardConnection.connect( self, protocol )
         pcscprotocol = translateprotocolmask( protocol )
-        if 0==pcscprotocol: pcscprotocol = self.getProtocol()
+        if 0==pcscprotocol:
+            pcscprotocol = self.getProtocol()
 
-        if mode==None: mode = SCARD_SHARE_SHARED
+        if mode==None:
+            mode = SCARD_SHARE_SHARED
         hresult, self.hcard, dwActiveProtocol = SCardConnect(
             self.hcontext, str(self.reader), mode, pcscprotocol )
         if hresult!=0:

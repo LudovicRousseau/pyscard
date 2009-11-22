@@ -38,7 +38,8 @@ def __PCSCreaders__( hcontext, groups=[] ):
     """
 
     # in case we have a string instead of a list
-    if isinstance( groups, type("")): groups=[groups]
+    if isinstance( groups, type("")):
+        groups=[groups]
     hresult, readers = SCardListReaders( hcontext, groups )
     if hresult!=0:
         if hresult==SCARD_E_NO_READERS_AVAILABLE:

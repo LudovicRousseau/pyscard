@@ -107,8 +107,10 @@ class PCSCCardRequest(AbstractCardRequest):
 
         # for non infinite timeout, a timer will signal the end of the time-out by setting the evt event
         evt = threading.Event()
-        if INFINITE==self.timeout: timertimeout=1
-        else: timertimeout=self.timeout
+        if INFINITE==self.timeout:
+            timertimeout=1
+        else:
+            timertimeout=self.timeout
         timer = threading.Timer( timertimeout, signalEvent, [evt, INFINITE==self.timeout] )
 
         # create a dictionary entry for new readers
@@ -224,7 +226,8 @@ class PCSCCardRequest(AbstractCardRequest):
                     # update state dictionary
                     readerstates[readername] = ( readername, eventstate )
 
-            if evt.isSet(): raise CardRequestTimeoutException()
+            if evt.isSet():
+                raise CardRequestTimeoutException()
 
 
 
@@ -235,8 +238,10 @@ class PCSCCardRequest(AbstractCardRequest):
         evt = threading.Event()
 
         # for non infinite timeout, a timer will signal the end of the time-out
-        if INFINITE==self.timeout: timertimeout=1
-        else: timertimeout=self.timeout
+        if INFINITE==self.timeout:
+            timertimeout=1
+        else:
+            timertimeout=self.timeout
         timer = threading.Timer( timertimeout, signalEvent, [evt, INFINITE==self.timeout] )
 
         # get status change until time-out, e.g. evt is set
@@ -301,7 +306,8 @@ class PCSCCardRequest(AbstractCardRequest):
                         presentcards.append( Card.Card( readername, atr ) )
                 return presentcards
 
-        if evt.isSet(): raise CardRequestTimeoutException()
+        if evt.isSet():
+            raise CardRequestTimeoutException()
 
 if __name__ == '__main__':
     """Small sample illustrating the use of PCSCCardRequest.py."""
