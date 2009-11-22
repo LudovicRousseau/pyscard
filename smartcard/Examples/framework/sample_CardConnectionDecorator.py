@@ -68,7 +68,7 @@ class FakeATRConnection( CardConnectionDecorator ):
     def getATR( self ):
         """Replace first BYTE of ATR by 3F"""
         atr = CardConnectionDecorator.getATR( self )
-        return [ 0x3f ] + atr [1:]
+        return [ 0x3f ] + atr[1:]
 
 
 # define the apdus used in this script
