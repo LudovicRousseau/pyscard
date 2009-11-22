@@ -46,7 +46,7 @@ class ErrorCheckingChain:
         # Where this link is in the chain:
         location = self.chain.index(self)
         if not self.end():
-          return self.chain[location + 1]
+            return self.chain[location + 1]
 
     def addFilterException( self, exClass ):
         """Add an exception filter to the error checking chain.

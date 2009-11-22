@@ -27,7 +27,7 @@ import os.path
 import sys
 
 def main_is_frozen():
-   return( hasattr( sys, "frozen" ) or hasattr( sys, "importers" ) or imp.is_frozen( "__main__") )
+    return( hasattr( sys, "frozen" ) or hasattr( sys, "importers" ) or imp.is_frozen( "__main__") )
 
 
 ICO_SMARTCARD=None
