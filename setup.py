@@ -34,62 +34,62 @@ import sys
 if sys.version[0:1] == '1':
     raise RuntimeError("pyscard requires Python 2.x to build.")
 
-if 'win32'==get_platform():
-    platform__cc_defines=[('WIN32', '100')]
-    platform_swig_opts=['-DWIN32']
-    platform_sources=['smartcard/scard/scard.rc']
-    platform_libraries=['winscard']
-    platform_include_dirs=[]
-    platform_extra_compile_args=[]
-    platform_extra_link_args=[]
+if 'win32' == get_platform():
+    platform__cc_defines = [('WIN32', '100')]
+    platform_swig_opts = ['-DWIN32']
+    platform_sources = ['smartcard/scard/scard.rc']
+    platform_libraries = ['winscard']
+    platform_include_dirs = []
+    platform_extra_compile_args = []
+    platform_extra_link_args = []
 
 #
 # Mac OS X Tiger has python 2.3 preinstalled
 # get_platform() returns a string similar to 'darwin-8.11.1-i386' with python 2.3
 # if python 2.5 is installed, get_platform() returns a string similar to 'macosx-10.3-fat'
 elif 'darwin' in get_platform() or 'macosx-10.3' in get_platform() or 'macosx-10.4' in get_platform():
-    platform__cc_defines=[ ('PCSCLITE', '1'), ('__APPLE__','1'), ('__TIGER__','1')]
-    platform_swig_opts=[ '-DPCSCLITE', '-D__APPLE__', '-D__TIGER__' ]
-    platform_sources=[]
-    platform_libraries=[]
-    platform_include_dirs=[]
-    platform_extra_compile_args=['-v','-framework', 'PCSC', '-arch', 'i386', '-arch', 'ppc', '-ggdb', '-O0']
-    platform_extra_link_args=['-arch', 'i386', '-arch', 'ppc','-ggdb']
+    platform__cc_defines = [ ('PCSCLITE', '1'), ('__APPLE__','1'), ('__TIGER__','1')]
+    platform_swig_opts = [ '-DPCSCLITE', '-D__APPLE__', '-D__TIGER__' ]
+    platform_sources = []
+    platform_libraries = []
+    platform_include_dirs = []
+    platform_extra_compile_args = ['-v','-framework', 'PCSC', '-arch', 'i386', '-arch', 'ppc', '-ggdb', '-O0']
+    platform_extra_link_args = ['-arch', 'i386', '-arch', 'ppc','-ggdb']
 
 #
 # Mac OS X Snow Leopard, python 2.6
 # PowerPC is no more supported, x86_64 is new
 #
 elif 'macosx-10.6' in get_platform():
-    platform__cc_defines=[ ('PCSCLITE', '1'), ('__APPLE__','1'), ('__LEOPARD__','1')]
-    platform_swig_opts=[ '-DPCSCLITE', '-D__APPLE__', '-D__LEOPARD__' ]
-    platform_sources=[]
-    platform_libraries=[]
-    platform_include_dirs=[]
-    platform_extra_compile_args=['-v','-framework', 'PCSC', '-arch',
+    platform__cc_defines = [ ('PCSCLITE', '1'), ('__APPLE__','1'), ('__LEOPARD__','1')]
+    platform_swig_opts = [ '-DPCSCLITE', '-D__APPLE__', '-D__LEOPARD__' ]
+    platform_sources = []
+    platform_libraries = []
+    platform_include_dirs = []
+    platform_extra_compile_args = ['-v','-framework', 'PCSC', '-arch',
             'i386', '-arch', 'x86_64', '-ggdb', '-O0']
-    platform_extra_link_args=['-arch', 'i386', '-arch', 'x86_64','-ggdb']
+    platform_extra_link_args = ['-arch', 'i386', '-arch', 'x86_64','-ggdb']
 
 #
 # Mac OS X Leopard has python 2.5 preinstalled
 # get_platform() returns a string similar to 'macosx-10.5-i386'
 #
 elif 'macosx-10.' in get_platform():
-    platform__cc_defines=[ ('PCSCLITE', '1'), ('__APPLE__','1'), ('__LEOPARD__','1')]
-    platform_swig_opts=[ '-DPCSCLITE', '-D__APPLE__', '-D__LEOPARD__' ]
-    platform_sources=[]
-    platform_libraries=[]
-    platform_include_dirs=[]
-    platform_extra_compile_args=['-v','-framework', 'PCSC', '-arch', 'i386', '-arch', 'ppc', '-ggdb', '-O0']
-    platform_extra_link_args=['-arch', 'i386', '-arch', 'ppc','-ggdb']
+    platform__cc_defines = [ ('PCSCLITE', '1'), ('__APPLE__','1'), ('__LEOPARD__','1')]
+    platform_swig_opts = [ '-DPCSCLITE', '-D__APPLE__', '-D__LEOPARD__' ]
+    platform_sources = []
+    platform_libraries = []
+    platform_include_dirs = []
+    platform_extra_compile_args = ['-v','-framework', 'PCSC', '-arch', 'i386', '-arch', 'ppc', '-ggdb', '-O0']
+    platform_extra_link_args = ['-arch', 'i386', '-arch', 'ppc','-ggdb']
 else:
-    platform__cc_defines=[('PCSCLITE', '1')]
-    platform_swig_opts=['-DPCSCLITE']
-    platform_sources=[]
-    platform_libraries=["python%d.%d" % sys.version_info[:2]]
-    platform_include_dirs=['/usr/include/PCSC']
-    platform_extra_compile_args=[]#['-ggdb', '-O0']
-    platform_extra_link_args=[]#['-ggdb']
+    platform__cc_defines = [('PCSCLITE', '1')]
+    platform_swig_opts = ['-DPCSCLITE']
+    platform_sources = []
+    platform_libraries = ["python%d.%d" % sys.version_info[:2]]
+    platform_include_dirs = ['/usr/include/PCSC']
+    platform_extra_compile_args = []    #['-ggdb', '-O0']
+    platform_extra_link_args = []   #['-ggdb']
 
 
 class _pyscardBuildExt(build_ext):
@@ -182,14 +182,14 @@ kw = {'name':"pyscard",
       # the _scard.pyd extension to build
       'ext_modules':[Extension("smartcard.scard._scard",
                              define_macros=platform__cc_defines,
-                             include_dirs=['smartcard/scard/']+platform_include_dirs,
-                             sources=["smartcard/scard/helpers.c",
+                             include_dirs = ['smartcard/scard/'] + platform_include_dirs,
+                             sources = ["smartcard/scard/helpers.c",
                                       "smartcard/scard/winscarddll.c",
-                                      "smartcard/scard/scard.i"]+platform_sources,
-                             libraries=platform_libraries,
-                             extra_compile_args=platform_extra_compile_args,
-                             extra_link_args=platform_extra_link_args,
-                             swig_opts=['-outdir','smartcard/scard']+platform_swig_opts)],
+                                      "smartcard/scard/scard.i"] + platform_sources,
+                             libraries = platform_libraries,
+                             extra_compile_args = platform_extra_compile_args,
+                             extra_link_args = platform_extra_link_args,
+                             swig_opts = ['-outdir','smartcard/scard'] + platform_swig_opts)],
       'cmdclass':{'build_ext': _pyscardBuildExt},
      }
 
@@ -209,7 +209,7 @@ if hasattr(core, 'setup_keywords'):
                               '%s-%s.zip' % (kw['name'], kw['version']) )
 
 
-pyscard_dist=core.setup(**kw)
+pyscard_dist = core.setup(**kw)
 
 
 # Python 2.3 distutils does not support package_data
@@ -219,8 +219,8 @@ if sys.version_info < (2,4):
     from glob import glob
     if "install" in sys.argv:
         targetdir = pyscard_dist.command_obj['install'].install_purelib
-        package_data=kw['package_data']
-        files=[]
+        package_data = kw['package_data']
+        files = []
         for directory in package_data:
             for pattern in package_data[directory]:
                 filelist = glob( os.path.join( directory, convert_path(pattern) ) )
