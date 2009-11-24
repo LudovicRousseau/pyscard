@@ -28,11 +28,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 from smartcard.scard import *
 from smartcard.util import toASCIIBytes
 
-def candoverifypin(hCard):
+def can_do_verify_pin(hCard):
     FEATURE_VERIFY_PIN_DIRECT = 6
     return parse_get_feature_request(hCard, FEATURE_VERIFY_PIN_DIRECT)
 
-def candomodifypin(hCard):
+def can_do_modify_pin(hCard):
     FEATURE_MODIFY_PIN_DIRECT = 7
     return parse_get_feature_request(hCard, FEATURE_MODIFY_PIN_DIRECT)
 
@@ -51,7 +51,7 @@ def parse_get_feature_request(hCard, feature):
 
 def verifypin(hCard, control=None):
     if None==control:
-        control = candoverifypin(hCard)
+        control = can_do_verif_ypin(hCard)
         if (None == control):
             raise error, "Not a pinpad"
     hresult, response = SCardControl(hcard, control, [])
@@ -86,11 +86,11 @@ try:
                 print 'Connected with active protocol', dwActiveProtocol
 
                 try:
-                    cmd_verify = candoverifypin(hcard)
+                    cmd_verify = can_do_verif_ypin(hcard)
                     if (cmd_verify):
                         print "can do verify pin: 0x%08X" % cmd_verify
 
-                    cmd_modify = candomodifypin(hcard)
+                    cmd_modify = can_do_modify_pin(hcard)
                     if (cmd_modify):
                         print "can do modify pin: 0x%08X" % cmd_modify
 
