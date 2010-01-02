@@ -414,7 +414,7 @@ char* _defaultPCSCSTRINGIFYERROR( SCARDRETCODE pcscError )
             strncpy( strError, "Service was stopped.", sizeof( strError ) );
             break;
         default:
-            snprintf(strError, sizeof(strError)-1, "Unkown error: %ld, 0x%08lx", (long)pcscError, (long unsigned int)pcscError);
+            snprintf(strError, sizeof(strError)-1, "Unknown error: %ld, 0x%08lx", (long)pcscError, (long unsigned int)pcscError);
     };
 
     // zero terminates string
