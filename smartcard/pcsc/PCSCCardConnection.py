@@ -82,7 +82,7 @@ class PCSCCardConnection( CardConnection ):
             raise CardConnectionException( 'Failed to release context: ' + SCardGetErrorMessage(hresult) )
         CardConnection.__del__( self )
 
-    def connect( self, protocol=None, mode=None ):
+    def connect( self, protocol=None, mode=None, disposition=None ):
         """Connect to the card.
         
         If protocol is not specified, connect with the default connection protocol.
@@ -95,6 +95,12 @@ class PCSCCardConnection( CardConnection ):
 
         if mode==None:
             mode = SCARD_SHARE_SHARED
+
+        # store the way to dispose the card
+        if disposition==None:
+            disposition = SCARD_UNPOWER_CARD
+        self.disposition = disposition
+
         hresult, self.hcard, dwActiveProtocol = SCardConnect(
             self.hcontext, str(self.reader), mode, pcscprotocol )
         if hresult!=0:
@@ -121,7 +127,7 @@ class PCSCCardConnection( CardConnection ):
         except TypeError:
             pass
         if None!=self.hcard:
-            hresult = SCardDisconnect( self.hcard, SCARD_UNPOWER_CARD )
+            hresult = SCardDisconnect( self.hcard, self.disposition )
             if hresult!=0:
                 raise CardConnectionException( 'Failed to disconnect: ' + SCardGetErrorMessage(hresult) )
             self.hcard = None
