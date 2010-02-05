@@ -32,7 +32,7 @@ def main( argv ):
         apppanel=None,
         appstyle=TR_READER,
         appicon=os.path.join( os.path.dirname( __file__ ), 'images', 'readerviewer.ico' ),
-        size=(800,600) )
+        size=(800, 600) )
     app.MainLoop()
 
 if __name__ == "__main__":
