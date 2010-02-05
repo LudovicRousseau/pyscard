@@ -29,13 +29,13 @@ import smartcard.util
 
 try:
     hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
-    if hresult!=0:
+    if hresult!=SCARD_S_SUCCESS:
         raise error, 'Failed to establish context: ' + SCardGetErrorMessage(hresult)
     print 'Context established!'
 
     try:
         hresult, readers = SCardListReaders( hcontext, [] )
-        if hresult!=0:
+        if hresult!=SCARD_S_SUCCESS:
             raise error, 'Failed to list readers: ' + SCardGetErrorMessage(hresult)
         if len(readers)<1:
             raise Exception('No smart card readers')
@@ -46,7 +46,7 @@ try:
 
             hresult, hcard, dwActiveProtocol = SCardConnect(
                 hcontext, reader, SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1 )
-            if hresult!=0:
+            if hresult!=SCARD_S_SUCCESS:
                 print 'Unable to connect: ' + SCardGetErrorMessage(hresult)
             else:
 
@@ -54,7 +54,7 @@ try:
 
                 try:
                     hresult, reader, state, protocol, atr = SCardStatus( hcard )
-                    if hresult!=0:
+                    if hresult!=SCARD_S_SUCCESS:
                         print 'failed to get status: ' + SCardGetErrorMessage(hresult)
                     print 'Reader:', reader
                     print 'State:', state
@@ -63,14 +63,14 @@ try:
 
                 finally:
                     hresult = SCardDisconnect( hcard, SCARD_UNPOWER_CARD )
-                    if hresult!=0:
+                    if hresult!=SCARD_S_SUCCESS:
                         print 'Failed to disconnect: ' + SCardGetErrorMessage(hresult)
                     print 'Disconnected'
 
 
     finally:
         hresult = SCardReleaseContext( hcontext )
-        if hresult!=0:
+        if hresult!=SCARD_S_SUCCESS:
             raise error, 'Failed to release context: ' + SCardGetErrorMessage(hresult)
         print 'Released context.'
 

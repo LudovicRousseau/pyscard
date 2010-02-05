@@ -92,13 +92,13 @@ def printAttribute( attrib, value ):
 
 try:
     hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
-    if hresult!=0:
+    if hresult!=SCARD_S_SUCCESS:
         raise error, 'Faile to establish context: ' + SCardGetErrorMessage(hresult)
     print 'Context established!'
 
     try:
         hresult, readers = SCardListReaders( hcontext, [] )
-        if hresult!=0:
+        if hresult!=SCARD_S_SUCCESS:
             raise error, 'Failed to list readers: ' + SCardGetErrorMessage(hresult)
         print 'PCSC Readers:', readers
 
@@ -109,7 +109,7 @@ try:
         for reader in readers:
             hresult, hcard, dwActiveProtocol = SCardConnect(
                 hcontext, reader, SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1 )
-            if hresult!=0:
+            if hresult!=SCARD_S_SUCCESS:
                 print error, 'Unable to connect: ' + SCardGetErrorMessage(hresult)
             else:
 
@@ -118,7 +118,7 @@ try:
                 try:
                     for i in attributes.keys():
                         hresult, attrib = SCardGetAttrib( hcard, i )
-                        if hresult==0:
+                        if hresult==SCARD_S_SUCCESS:
                             printAttribute( i, attrib )
                         else:
                             print '-----------------', attributes[i], '-----------------'
@@ -126,13 +126,13 @@ try:
 
                 finally:
                     hresult = SCardDisconnect( hcard, SCARD_UNPOWER_CARD )
-                    if hresult!=0:
+                    if hresult!=SCARD_S_SUCCESS:
                         raise error, 'Failed to disconnect: ' + SCardGetErrorMessage(hresult)
                     print 'Disconnected'
 
     finally:
         hresult = SCardReleaseContext( hcontext )
-        if hresult!=0:
+        if hresult!=SCARD_S_SUCCESS:
             raise error, 'Failed to release context: ' + SCardGetErrorMessage(hresult)
         print 'Released context.'
 

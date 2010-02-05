@@ -30,13 +30,13 @@ from smartcard.util import toBytes
 
 try:
     hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
-    if hresult!=0:
+    if hresult!=SCARD_S_SUCCESS:
         raise error, 'Failed to establish context: ' + SCardGetErrorMessage(hresult)
     print 'Context established!'
 
     try:
         hresult, readers = SCardListReaders( hcontext, [] )
-        if hresult!=0:
+        if hresult!=SCARD_S_SUCCESS:
             raise error, 'Failed to list readers: ' + SCardGetErrorMessage(hresult)
         print 'PCSC Readers:', readers
 
@@ -50,7 +50,7 @@ try:
             try:
                 hresult, hcard, dwActiveProtocol = SCardConnect(
                     hcontext, zreader, SCARD_SHARE_DIRECT, SCARD_PROTOCOL_T0 )
-                if hresult!=0:
+                if hresult!=SCARD_S_SUCCESS:
                     raise error, 'Unable to connect: ' + SCardGetErrorMessage(hresult)
                 print 'Connected with active protocol', dwActiveProtocol
 
@@ -75,7 +75,7 @@ try:
                         print 'Control:', r
                 finally:
                     hresult = SCardDisconnect( hcard, SCARD_UNPOWER_CARD )
-                    if hresult!=0:
+                    if hresult!=SCARD_S_SUCCESS:
                         raise error, 'Failed to disconnect: ' + SCardGetErrorMessage(hresult)
                     print 'Disconnected'
 
