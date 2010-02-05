@@ -34,13 +34,13 @@ if 'winscard'==resourceManager:
 
     try:
         hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
-        if hresult!=0:
+        if hresult!=SCARD_S_SUCCESS:
             raise scard.error, 'Failed to establish context: ' + SCardGetErrorMessage(hresult)
         print 'Context established!'
 
         try:
             hresult, readers = SCardListReaders( hcontext, [] )
-            if hresult!=0:
+            if hresult!=SCARD_S_SUCCESS:
                 raise scard.error, 'Failed to list readers: ' + SCardGetErrorMessage(hresult)
             print 'PCSC Readers:', readers
 
@@ -49,14 +49,14 @@ if 'winscard'==resourceManager:
             print 'Introducing card ' + znewcardName
             hresult = SCardIntroduceCardType( hcontext, znewcardName, [],
                                               [], znewcardATR, znewcardMask )
-            if hresult!=0:
+            if hresult!=SCARD_S_SUCCESS:
                 if hresult==ERROR_ALREADY_EXISTS:
                     print 'Card already exists'
                 else:
                     raise error, 'Failed to introduce card type: ' + SCardGetErrorMessage(hresult)
 
             hresult, cards = SCardListCards( hcontext, [], [] )
-            if hresult!=0:
+            if hresult!=SCARD_S_SUCCESS:
                 raise error, 'Failure to list cards'
             print 'Cards:', cards
 
@@ -99,7 +99,7 @@ if 'winscard'==resourceManager:
         finally:
             hresult = SCardForgetCardType( hcontext, znewcardName )
             hresult = SCardReleaseContext( hcontext )
-            if hresult!=0:
+            if hresult!=SCARD_S_SUCCESS:
                 raise error, 'Failed to release context: ' + SCardGetErrorMessage(hresult)
             print 'Released context.'
 

@@ -38,7 +38,7 @@ if 'winscard'==resourceManager:
 
     try:
         hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
-        if hresult!=0:
+        if hresult!=SCARD_S_SUCCESS:
             raise scard.error, 'Failed to establish context: ' + SCardGetErrorMessage(hresult)
         print 'Context established!'
 
@@ -46,7 +46,7 @@ if 'winscard'==resourceManager:
 
             # list interfaces for a known card
             hresult, interfaces = SCardListInterfaces( hcontext, 'Schlumberger Cryptoflex 8k v2' )
-            if hresult!=0:
+            if hresult!=SCARD_S_SUCCESS:
                 raise scard.error, 'Failed to list interfaces: ' + SCardGetErrorMessage(hresult)
             print 'Interfaces for Schlumberger Cryptoflex 8k v2:', interfaces
 
@@ -55,25 +55,25 @@ if 'winscard'==resourceManager:
             print 'Introducing card ' + znewcardName
             hresult = SCardIntroduceCardType( hcontext, znewcardName, znewcardPrimGuid,
                                               znewcardPrimGuid + znewcardSecGuid, znewcardATR, znewcardMask )
-            if hresult!=0:
+            if hresult!=SCARD_S_SUCCESS:
                 raise error, 'Failed to introduce card type: ' + SCardGetErrorMessage(hresult)
 
 
             # list card interfaces
             hresult, interfaces = SCardListInterfaces( hcontext, znewcardName )
-            if hresult!=0:
+            if hresult!=SCARD_S_SUCCESS:
                 raise error, 'Failed to list interfaces: ' + SCardGetErrorMessage(hresult)
             for i in interfaces:
                 print 'Interface for ' + znewcardName + ' :', smartcard.guid.GUIDToStr(i)
 
             print 'Forgeting card ' + znewcardName
             hresult = SCardForgetCardType( hcontext, znewcardName )
-            if hresult!=0:
+            if hresult!=SCARD_S_SUCCESS:
                 raise error, 'Failed to remove card type: ' + SCardGetErrorMessage(hresult)
 
         finally:
             hresult2 = SCardReleaseContext( hcontext )
-            if hresult2!=0:
+            if hresult2!=SCARD_S_SUCCESS:
                 raise error, 'Failed to release context: ' + SCardGetErrorMessage(hresult)
             print 'Released context.'
 
