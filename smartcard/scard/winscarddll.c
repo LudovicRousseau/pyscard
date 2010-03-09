@@ -677,7 +677,6 @@ long winscard_init(void)
 
         if( bFirstCall )
         {
-            bFirstCall=FALSE;
             dlerror();
             handle = dlopen( lib, RTLD_NOW );
             if( NULL!=handle )
@@ -733,6 +732,7 @@ long winscard_init(void)
                     printf( "Failed to dlopen %s: %s!", lib, (dlsym_error==NULL) ? "" : (char*)dlsym_error );
                 }
             }
+            bFirstCall=FALSE;
          }
     #endif // PCSCLITE
     return lRetCode;
