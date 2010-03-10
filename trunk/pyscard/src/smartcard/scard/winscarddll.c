@@ -236,6 +236,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     WINAPI _defaultSCARDISVALIDCONTEXT(
         IN      SCARDCONTEXT hContext)
     {
+		(void)hContext;
+
         return SCARD_E_NO_SERVICE;
     }
 
@@ -246,6 +248,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
         OUT LPBYTE pbAttr,
         IN OUT SCARDDWORDARG* pcbAttrLen)
     {
+		(void)hCard;
+		(void)dwAttrId;
+		(void)pbAttr;
+		(void)pcbAttrLen;
+
         return SCARD_E_NO_SERVICE;
     }
 
@@ -256,6 +263,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
         IN LPCBYTE pbAttr,
         IN SCARDDWORDARG cbAttrLen)
     {
+		(void)hCard;
+		(void)dwAttrId;
+		(void)pbAttr;
+		(void)cbAttrLen;
+
         return SCARD_E_NO_SERVICE;
     }
 
@@ -290,6 +302,14 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
         IN      SCARDDWORDARG nOutBufferSize,
         OUT     SCARDDWORDARG* lpBytesReturned)
     {
+        (void)hCard;
+        (void)dwControlCode;
+        (void)lpInBuffer;
+        (void)nInBufferSize;
+        (void)lpOutBuffer;
+        (void)nOutBufferSize;
+        (void)lpBytesReturned;
+
         return SCARD_E_NO_SERVICE;
     }
 #endif // __TIGER__
@@ -428,6 +448,8 @@ static WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDBEGINTRANSACTION(
     IN      SCARDHANDLE hCard)
 {
+	(void)hCard;
+
     return SCARD_E_NO_SERVICE;
 }
 
@@ -435,6 +457,8 @@ static WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDCANCEL(
     IN      SCARDCONTEXT hContext)
 {
+	(void)hContext;
+
     return SCARD_E_NO_SERVICE;
 }
 
@@ -442,6 +466,8 @@ static WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDCANCELTRANSACTION(
     IN      SCARDHANDLE hCard)
 {
+	(void)hCard;
+
     return SCARD_E_NO_SERVICE;
 }
 
@@ -454,6 +480,13 @@ WINAPI _defaultSCARDCONNECTA(
     OUT     LPSCARDHANDLE phCard,
     OUT     SCARDDWORDARG* pdwActiveProtocol)
 {
+    (void)hContext;
+    (void)szReader;
+    (void)dwShareMode;
+    (void)dwPreferredProtocols;
+    (void)phCard;
+    (void)pdwActiveProtocol;
+
     return SCARD_E_NO_SERVICE;
 }
 
@@ -462,6 +495,9 @@ WINAPI _defaultSCARDDISCONNECT(
     IN      SCARDHANDLE hCard,
     IN      SCARDDWORDARG dwDisposition)
 {
+    (void)hCard;
+    (void)dwDisposition;
+
     return SCARD_E_NO_SERVICE;
 }
 
@@ -470,6 +506,9 @@ WINAPI _defaultSCARDENDTRANSACTION(
     IN      SCARDHANDLE hCard,
     IN      SCARDDWORDARG dwDisposition)
 {
+    (void)hCard;
+    (void)dwDisposition;
+
     return SCARD_E_NO_SERVICE;
 }
 
@@ -480,6 +519,11 @@ WINAPI _defaultSCARDESTABLISHCONTEXT(
     IN  LPCVOID pvReserved2,
     OUT LPSCARDCONTEXT phContext)
 {
+    (void)dwScope;
+    (void)pvReserved1;
+    (void)pvReserved2;
+    (void)phContext;
+
     return SCARD_E_NO_SERVICE;
 }
 
@@ -488,6 +532,9 @@ WINAPI _defaultSCARDFREEMEMORY(
     IN SCARDCONTEXT hContext,
     IN LPCVOID pvMem)
 {
+    (void)hContext;
+    (void)pvMem;
+
     return SCARD_E_NO_SERVICE;
 }
 
@@ -498,6 +545,11 @@ WINAPI _defaultSCARDGETSTATUSCHANGEA(
     IN OUT  LPSCARD_READERSTATEA rgReaderStates,
     IN      SCARDDWORDARG cReaders)
 {
+    (void)hContext;
+    (void)dwTimeout;
+    (void)rgReaderStates;
+    (void)cReaders;
+
     return SCARD_E_NO_SERVICE;
 }
 
@@ -508,6 +560,11 @@ WINAPI _defaultSCARDLISTREADERSA(
     OUT     LPTSTR mszReaders,
     IN OUT  SCARDDWORDARG* pcchReaders)
 {
+    (void)hContext;
+    (void)mszGroups;
+    (void)mszReaders;
+    (void)pcchReaders;
+
     return SCARD_E_NO_SERVICE;
 }
 
@@ -517,6 +574,10 @@ WINAPI _defaultSCARDLISTREADERGROUPSA(
     OUT     LPTSTR mszGroups,
     IN OUT  SCARDDWORDARG* pcchGroups)
 {
+    (void)hContext;
+    (void)mszGroups;
+    (void)pcchGroups;
+
     return SCARD_E_NO_SERVICE;
 }
 
@@ -528,6 +589,12 @@ WINAPI _defaultSCARDRECONNECT(
     IN      SCARDDWORDARG dwInitialization,
     OUT     SCARDDWORDARG* pdwActiveProtocol)
 {
+    (void)hCard;
+    (void)dwShareMode;
+    (void)dwPreferredProtocols;
+    (void)dwInitialization;
+    (void)pdwActiveProtocol;
+
     return SCARD_E_NO_SERVICE;
 }
 
@@ -535,6 +602,8 @@ static WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDRELEASECONTEXT(
     IN      SCARDCONTEXT hContext)
 {
+    (void)hContext;
+
     return SCARD_E_NO_SERVICE;
 }
 
@@ -548,6 +617,14 @@ WINAPI _defaultSCARDSTATUSA(
     OUT LPBYTE pbAtr,
     IN OUT SCARDDWORDARG* pcbAtrLen)
 {
+    (void)hCard;
+    (void)szReaderName;
+    (void)pcchReaderLen;
+    (void)pdwState;
+    (void)pdwProtocol;
+    (void)pbAtr;
+    (void)pcbAtrLen;
+
     return SCARD_E_NO_SERVICE;
 }
 
@@ -561,6 +638,14 @@ WINAPI _defaultSCARDTRANSMIT(
     OUT LPBYTE pbRecvBuffer,
     IN OUT SCARDDWORDARG* pcbRecvLength)
 {
+    (void)hCard;
+    (void)pioSendPci;
+    (void)pbSendBuffer;
+    (void)cbSendLength;
+    (void)pioRecvPci;
+    (void)pbRecvBuffer;
+    (void)pcbRecvLength;
+
     return SCARD_E_NO_SERVICE;
 }
 
