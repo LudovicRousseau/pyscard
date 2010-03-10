@@ -753,7 +753,7 @@ long winscard_init(void)
 
         void* handle=NULL;
         char* dlsym_error;
-        char *lib = NULL;
+        const char *lib = NULL;
         #ifdef __APPLE__
             lib = "/System/Library/Frameworks/PCSC.framework/PCSC";
         #else
