@@ -27,9 +27,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #endif
 
 #ifdef __APPLE__
-    #ifndef PCSC_API
-        #define PCSC_API
-    #endif
     #include <PCSC/wintypes.h>
     #include <PCSC/winscard.h>
     #define LPCTSTR char*
@@ -38,7 +35,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #endif
 
 #ifdef PCSCLITE
-    #define WINSCARDAPI PCSC_API
+    #define WINSCARDAPI
     #define WINAPI
     #define IN
     #define OUT
