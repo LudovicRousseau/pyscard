@@ -379,14 +379,14 @@ SCARDRETCODE _RemoveReaderFromGroup(
 //
 #ifndef __TIGER__
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _IsValidContext( SCARDCONTEXT hcontext )
+static SCARDRETCODE _IsValidContext( SCARDCONTEXT hcontext )
 {
     winscard_init();
     return (mySCardIsValidContext)( hcontext );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _GetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* pbl )
+static SCARDRETCODE _GetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* pbl )
 {
     long lRetCode;
 
@@ -412,7 +412,7 @@ SCARDRETCODE _GetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* pb
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _SetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* pbl )
+static SCARDRETCODE _SetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* pbl )
 {
     long lRetCode;
 
@@ -430,7 +430,7 @@ SCARDRETCODE _SetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* pb
 
 #ifdef __TIGER__
     ///////////////////////////////////////////////////////////////////////////////
-    SCARDRETCODE _Control(
+    static SCARDRETCODE _Control(
       SCARDHANDLE hcard,
       BYTELIST* pblSendBuffer,
       BYTELIST* pblRecvBuffer
@@ -452,7 +452,7 @@ SCARDRETCODE _SetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* pb
     }
 #else // !__TIGER__
     ///////////////////////////////////////////////////////////////////////////////
-    SCARDRETCODE _Control(
+    static SCARDRETCODE _Control(
       SCARDHANDLE hcard,
       SCARDDWORDARG controlCode,
       BYTELIST* pblSendBuffer,
@@ -478,21 +478,21 @@ SCARDRETCODE _SetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* pb
 #endif // __TIGER__
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _BeginTransaction( SCARDHANDLE hcard )
+static SCARDRETCODE _BeginTransaction( SCARDHANDLE hcard )
 {
     winscard_init();
     return (mySCardBeginTransaction)( hcard );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _Cancel( SCARDCONTEXT hcontext )
+static SCARDRETCODE _Cancel( SCARDCONTEXT hcontext )
 {
     winscard_init();
     return (mySCardCancel)( hcontext );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _Connect(
+static SCARDRETCODE _Connect(
   SCARDCONTEXT hcontext,
   char* szReader,
   SCARDDWORDARG dwShareMode,
@@ -516,21 +516,21 @@ SCARDRETCODE _Connect(
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _Disconnect( SCARDHANDLE hcard, SCARDDWORDARG dwDisposition )
+static SCARDRETCODE _Disconnect( SCARDHANDLE hcard, SCARDDWORDARG dwDisposition )
 {
     winscard_init();
     return (mySCardDisconnect)( hcard, dwDisposition );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _EndTransaction( SCARDHANDLE hcard, SCARDDWORDARG dwDisposition )
+static SCARDRETCODE _EndTransaction( SCARDHANDLE hcard, SCARDDWORDARG dwDisposition )
 {
     winscard_init();
     return (mySCardEndTransaction)( hcard, dwDisposition );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _EstablishContext( SCARDDWORDARG dwScope, SCARDCONTEXT* phContext )
+static SCARDRETCODE _EstablishContext( SCARDDWORDARG dwScope, SCARDCONTEXT* phContext )
 {
     long lRet;
     winscard_init();
@@ -552,7 +552,7 @@ SCARDRETCODE _EstablishContext( SCARDDWORDARG dwScope, SCARDCONTEXT* phContext )
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _GetStatusChange(
+static SCARDRETCODE _GetStatusChange(
     SCARDCONTEXT hcontext,
     SCARDDWORDARG dwTimeout,
     READERSTATELIST* prsl )
@@ -604,7 +604,7 @@ SCARDRETCODE _GetStatusChange(
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _ListReaders(
+static SCARDRETCODE _ListReaders(
     SCARDCONTEXT hcontext,
     STRINGLIST* pmszGroups,
     STRINGLIST* pmszReaders )
@@ -668,7 +668,7 @@ SCARDRETCODE _ListReaders(
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _ListReaderGroups( SCARDCONTEXT hcontext, STRINGLIST* pmszReaderGroups )
+static SCARDRETCODE _ListReaderGroups( SCARDCONTEXT hcontext, STRINGLIST* pmszReaderGroups )
 {
     DWORD cchReaderGroups;
     LONG lRetCode;
@@ -717,7 +717,7 @@ SCARDRETCODE _ListReaderGroups( SCARDCONTEXT hcontext, STRINGLIST* pmszReaderGro
 
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _Reconnect(
+static SCARDRETCODE _Reconnect(
     SCARDHANDLE hcard,
     SCARDDWORDARG dwShareMode,
     SCARDDWORDARG dwPreferredProtocols,
@@ -736,7 +736,7 @@ SCARDRETCODE _Reconnect(
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _ReleaseContext( SCARDCONTEXT hcontext )
+static SCARDRETCODE _ReleaseContext( SCARDCONTEXT hcontext )
 {
     SCARDRETCODE lRet;
     winscard_init();
@@ -745,7 +745,7 @@ SCARDRETCODE _ReleaseContext( SCARDCONTEXT hcontext )
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _Status(
+static SCARDRETCODE _Status(
   SCARDHANDLE hcard,
   STRING*  pszReaderName,
   SCARDDWORDARG* pdwState,
@@ -789,7 +789,7 @@ SCARDRETCODE _Status(
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _Transmit(
+static SCARDRETCODE _Transmit(
   SCARDHANDLE hcard,
   unsigned long pioSendPci,
   BYTELIST* pblSendBuffer,
@@ -836,12 +836,12 @@ SCARDRETCODE _Transmit(
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-long _SCARD_CTL_CODE( long code )
+static long _SCARD_CTL_CODE( long code )
 {
     return SCARD_CTL_CODE(code);
 }
 
-ERRORSTRING* _GetErrorMessage( long lErrCode )
+static ERRORSTRING* _GetErrorMessage( long lErrCode )
 {
     #ifdef WIN32
     #define _NO_SERVICE_MSG "The Smart card resource manager is not running."
