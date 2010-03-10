@@ -45,11 +45,13 @@ if 'win32' == get_platform():
 
 #
 # Mac OS X Tiger has python 2.3 preinstalled
-# get_platform() returns a string similar to 'darwin-8.11.1-i386' with python 2.3
-# if python 2.5 is installed, get_platform() returns a string similar to 'macosx-10.3-fat'
+# get_platform() returns a string similar to 'darwin-8.11.1-i386' with
+# python 2.3
+# if python 2.5 is installed, get_platform() returns a string similar to
+# 'macosx-10.3-fat'
 elif 'darwin' in get_platform() or 'macosx-10.3' in get_platform() or 'macosx-10.4' in get_platform():
-    platform__cc_defines = [ ('PCSCLITE', '1'), ('__APPLE__', '1'), ('__TIGER__', '1')]
-    platform_swig_opts = [ '-DPCSCLITE', '-D__APPLE__', '-D__TIGER__' ]
+    platform__cc_defines = [('PCSCLITE', '1'), ('__APPLE__', '1'), ('__TIGER__', '1')]
+    platform_swig_opts = ['-DPCSCLITE', '-D__APPLE__', '-D__TIGER__']
     platform_sources = []
     platform_libraries = []
     platform_include_dirs = []
@@ -61,8 +63,8 @@ elif 'darwin' in get_platform() or 'macosx-10.3' in get_platform() or 'macosx-10
 # PowerPC is no more supported, x86_64 is new
 #
 elif 'macosx-10.6' in get_platform():
-    platform__cc_defines = [ ('PCSCLITE', '1'), ('__APPLE__', '1'), ('__LEOPARD__', '1')]
-    platform_swig_opts = [ '-DPCSCLITE', '-D__APPLE__', '-D__LEOPARD__' ]
+    platform__cc_defines = [('PCSCLITE', '1'), ('__APPLE__', '1'), ('__LEOPARD__', '1')]
+    platform_swig_opts = ['-DPCSCLITE', '-D__APPLE__', '-D__LEOPARD__']
     platform_sources = []
     platform_libraries = []
     platform_include_dirs = []
@@ -75,8 +77,8 @@ elif 'macosx-10.6' in get_platform():
 # get_platform() returns a string similar to 'macosx-10.5-i386'
 #
 elif 'macosx-10.' in get_platform():
-    platform__cc_defines = [ ('PCSCLITE', '1'), ('__APPLE__', '1'), ('__LEOPARD__', '1')]
-    platform_swig_opts = [ '-DPCSCLITE', '-D__APPLE__', '-D__LEOPARD__' ]
+    platform__cc_defines = [('PCSCLITE', '1'), ('__APPLE__', '1'), ('__LEOPARD__', '1')]
+    platform_swig_opts = ['-DPCSCLITE', '-D__APPLE__', '-D__LEOPARD__']
     platform_sources = []
     platform_libraries = []
     platform_include_dirs = []
@@ -100,7 +102,7 @@ if sys.version_info < (2, 4):
     # This is to add support of swig_opts for Python 2.3 distutils
     # (in particular for MacOS X darwin that comes with Python 2.3)
 
-    def swig_sources (self, sources):
+    def swig_sources(self, sources):
 
         """Walk the list of source files in 'sources', looking for SWIG
         interface (.i) files.  Run SWIG on all that are found, and
@@ -159,25 +161,25 @@ kw = {'name': "pyscard",
       'long_description': 'Smartcard package for Python',
       'license': 'GNU LESSER GENERAL PUBLIC LICENSE',
       'platforms': ['linux', 'win32'],
-      'packages' : [ "smartcard",
-                     "smartcard/pcsc",
-                     "smartcard/reader",
-                     "smartcard/scard",
-                     "smartcard/sw",
-                     "smartcard/util",
-                     "smartcard/wx",
-                     ],
-      'package_dir' : { "": "." },
-      'package_data' : {
-                         "smartcard" : [
+      'packages': ["smartcard",
+                   "smartcard/pcsc",
+                   "smartcard/reader",
+                   "smartcard/scard",
+                   "smartcard/sw",
+                   "smartcard/util",
+                   "smartcard/wx",
+                   ],
+      'package_dir': {"": "."},
+      'package_data': {
+                         "smartcard": [
                                         "ACKS",
                                         "ChangeLog",
                                         "LICENSE",
                                         "README",
                                         "TODO",
                                         ],
-                         "smartcard/wx" : ["resources/*.ico"],
-                       } ,
+                         "smartcard/wx": ["resources/*.ico"],
+                       },
 
       # the _scard.pyd extension to build
       'ext_modules': [Extension("smartcard.scard._scard",
@@ -206,7 +208,7 @@ if hasattr(core, 'setup_keywords'):
           ]
     if 'download_url' in core.setup_keywords:
         kw['download_url'] = ('http://sourceforge.net/projects/pyscard/'
-                              '%s-%s.zip' % (kw['name'], kw['version']) )
+                              '%s-%s.zip' % (kw['name'], kw['version']))
 
 
 pyscard_dist = core.setup(**kw)
@@ -223,9 +225,9 @@ if sys.version_info < (2, 4):
         files = []
         for directory in package_data:
             for pattern in package_data[directory]:
-                filelist = glob( os.path.join( directory, convert_path(pattern) ) )
-                files.extend( [fn for fn in filelist if fn not in files] )
+                filelist = glob(os.path.join(directory, convert_path(pattern)))
+                files.extend([fn for fn in filelist if fn not in files])
         for file in files:
-            newdir = os.path.dirname( file )
-            dir_util.mkpath( os.path.join( targetdir, newdir ) )
-            file_util.copy_file( file, os.path.join( targetdir, file ) )
+            newdir = os.path.dirname(file)
+            dir_util.mkpath(os.path.join(targetdir, newdir))
+            file_util.copy_file(file, os.path.join(targetdir, file))
