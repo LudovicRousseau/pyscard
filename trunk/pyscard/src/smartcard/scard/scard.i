@@ -210,7 +210,6 @@ SCARDRETCODE _AddReaderToGroup(
   char* szReaderName,
   char* szGroupName )
 {
-    winscard_init();
     return (mySCardAddReaderToGroupA)(
                          hcontext,
                          szReaderName,
@@ -220,21 +219,18 @@ SCARDRETCODE _AddReaderToGroup(
 ///////////////////////////////////////////////////////////////////////////////
 SCARDRETCODE _ForgetCardType( SCARDCONTEXT hcontext, char* pszCardName )
 {
-    winscard_init();
     return (mySCardForgetCardTypeA)( hcontext, pszCardName );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 SCARDRETCODE _ForgetReader( SCARDCONTEXT hcontext, char* szReaderName )
 {
-    winscard_init();
     return (mySCardForgetReaderA)( hcontext, szReaderName );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 SCARDRETCODE _ForgetReaderGroup( SCARDCONTEXT hcontext, char* szGroupName )
 {
-    winscard_init();
     return (mySCardForgetReaderGroupA)( hcontext, szGroupName );
 }
 
@@ -248,7 +244,6 @@ SCARDRETCODE _GetCardTypeProviderName(
     long lRetCode;
     unsigned long cchProviderName=SCARD_AUTOALLOCATE;
 
-    winscard_init();
 
     // autoallocate memory; will be freed on output typemap
     psl->hcontext=hcontext;
@@ -271,7 +266,6 @@ SCARDRETCODE _IntroduceCardType(
   BYTELIST* pbAtrMask
 )
 {
-    winscard_init();
     return (mySCardIntroduceCardTypeA)(
                 hcontext,
                 pszCardName,
@@ -286,14 +280,12 @@ SCARDRETCODE _IntroduceCardType(
 ///////////////////////////////////////////////////////////////////////////////
 SCARDRETCODE _IntroduceReader( SCARDCONTEXT hcontext, char* szReaderName, char* szDeviceName )
 {
-    winscard_init();
     return (mySCardIntroduceReaderA)( hcontext, szReaderName, szDeviceName );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 SCARDRETCODE _IntroduceReaderGroup( SCARDCONTEXT hcontext, char* szGroupName )
 {
-    winscard_init();
     return (mySCardIntroduceReaderGroupA)( hcontext, szGroupName );
 }
 
@@ -303,7 +295,6 @@ SCARDRETCODE _ListCards( SCARDCONTEXT hcontext, BYTELIST* pbl, GUIDLIST* guidlis
     // autoallocate memory; will be freed on output typemap
     unsigned long cchCards=SCARD_AUTOALLOCATE;
 
-    winscard_init();
     pmszCards->ac=NULL;
     pmszCards->hcontext=hcontext;
 
@@ -327,8 +318,6 @@ SCARDRETCODE _ListInterfaces(
 {
     long lRetCode;
 
-    winscard_init();
-
     pgl->cGuids = SCARD_AUTOALLOCATE;
     pgl->hcontext = hcontext;
     pgl->aguid = NULL;
@@ -351,8 +340,6 @@ SCARDRETCODE _LocateCards(
 {
     LPCSTR pcstr=(0==strlen((LPCTSTR)mszCards->ac)) ? NULL : (LPCTSTR)mszCards->ac;
 
-    winscard_init();
-
     return (mySCardLocateCardsA)(
                 hcontext,
                 pcstr,
@@ -366,7 +353,6 @@ SCARDRETCODE _RemoveReaderFromGroup(
   char* szReaderName,
   char* szGroupName )
 {
-    winscard_init();
     return (mySCardRemoveReaderFromGroupA)(
                          hcontext,
                          szReaderName,
@@ -383,7 +369,6 @@ SCARDRETCODE _RemoveReaderFromGroup(
 ///////////////////////////////////////////////////////////////////////////////
 static SCARDRETCODE _IsValidContext( SCARDCONTEXT hcontext )
 {
-    winscard_init();
     return (mySCardIsValidContext)( hcontext );
 }
 
@@ -391,8 +376,6 @@ static SCARDRETCODE _IsValidContext( SCARDCONTEXT hcontext )
 static SCARDRETCODE _GetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* pbl )
 {
     long lRetCode;
-
-    winscard_init();
 
     pbl->cBytes = 0;
     pbl->ab = NULL;
@@ -418,8 +401,6 @@ static SCARDRETCODE _SetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTEL
 {
     long lRetCode;
 
-    winscard_init();
-
     lRetCode = (mySCardSetAttrib)( hcard, dwAttrId, pbl->ab, pbl->cBytes );
     return lRetCode;
 }
@@ -439,7 +420,6 @@ static SCARDRETCODE _SetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTEL
     )
     {
         SCARDRETCODE lRet;
-        winscard_init();
     
         pblRecvBuffer->ab = (unsigned char*)mem_Malloc(MAX_BUFFER_SIZE_EXTENDED*sizeof(unsigned char));
         pblRecvBuffer->cBytes = MAX_BUFFER_SIZE_EXTENDED;
@@ -462,7 +442,6 @@ static SCARDRETCODE _SetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTEL
     )
     {
         SCARDRETCODE lRet;
-        winscard_init();
     
         pblRecvBuffer->ab = (unsigned char*)mem_Malloc(MAX_BUFFER_SIZE_EXTENDED*sizeof(unsigned char));
         pblRecvBuffer->cBytes = MAX_BUFFER_SIZE_EXTENDED;
@@ -482,14 +461,12 @@ static SCARDRETCODE _SetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTEL
 ///////////////////////////////////////////////////////////////////////////////
 static SCARDRETCODE _BeginTransaction( SCARDHANDLE hcard )
 {
-    winscard_init();
     return (mySCardBeginTransaction)( hcard );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 static SCARDRETCODE _Cancel( SCARDCONTEXT hcontext )
 {
-    winscard_init();
     return (mySCardCancel)( hcontext );
 }
 
@@ -505,7 +482,6 @@ static SCARDRETCODE _Connect(
 {
     SCARDRETCODE lRet;
 
-    winscard_init();
     lRet = (mySCardConnectA)(
             hcontext,
             (LPCTSTR)szReader,
@@ -520,14 +496,12 @@ static SCARDRETCODE _Connect(
 ///////////////////////////////////////////////////////////////////////////////
 static SCARDRETCODE _Disconnect( SCARDHANDLE hcard, SCARDDWORDARG dwDisposition )
 {
-    winscard_init();
     return (mySCardDisconnect)( hcard, dwDisposition );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 static SCARDRETCODE _EndTransaction( SCARDHANDLE hcard, SCARDDWORDARG dwDisposition )
 {
-    winscard_init();
     return (mySCardEndTransaction)( hcard, dwDisposition );
 }
 
@@ -535,7 +509,6 @@ static SCARDRETCODE _EndTransaction( SCARDHANDLE hcard, SCARDDWORDARG dwDisposit
 static SCARDRETCODE _EstablishContext( SCARDDWORDARG dwScope, SCARDCONTEXT* phContext )
 {
     long lRet;
-    winscard_init();
     lRet = (mySCardEstablishContext)( dwScope, NULL, NULL, phContext );
 
     #ifdef __TIGER__
@@ -561,8 +534,6 @@ static SCARDRETCODE _GetStatusChange(
 {
     SCARDRETCODE hresult;
     int i;
-
-    winscard_init();
 
     // bad reader state list
     if( NULL==prsl )
@@ -614,8 +585,6 @@ static SCARDRETCODE _ListReaders(
     LPCTSTR mszGroups;
     SCARDDWORDARG cchReaders;
     LONG lRetCode;
-
-    winscard_init();
 
     if (pmszGroups)
     {
@@ -675,8 +644,6 @@ static SCARDRETCODE _ListReaderGroups( SCARDCONTEXT hcontext, STRINGLIST* pmszRe
     DWORD cchReaderGroups;
     LONG lRetCode;
 
-    winscard_init();
-
     #ifdef NOAUTOALLOCATE
         cchReaderGroups = SCARD_AUTOALLOCATE;
         pmszReaderGroups->ac=NULL;
@@ -727,8 +694,6 @@ static SCARDRETCODE _Reconnect(
     SCARDDWORDARG* pdwActiveProtocol
 )
 {
-    winscard_init();
-
     return (mySCardReconnect)(
                                hcard,
                                dwShareMode,
@@ -741,7 +706,6 @@ static SCARDRETCODE _Reconnect(
 static SCARDRETCODE _ReleaseContext( SCARDCONTEXT hcontext )
 {
     SCARDRETCODE lRet;
-    winscard_init();
     lRet = (mySCardReleaseContext)( hcontext );
     return lRet;
 }
@@ -759,7 +723,6 @@ static SCARDRETCODE _Status(
     SCARDDWORDARG dwReaderLen=256;
     SCARDDWORDARG dwAtrLen=36;
 
-    winscard_init();
     for(;;)
     {
         pbl->ab = (unsigned char*)mem_Malloc(dwAtrLen*sizeof(unsigned char));
@@ -801,8 +764,6 @@ static SCARDRETCODE _Transmit(
     PSCARD_IO_REQUEST piorequest=NULL;
     long ret;
 
-    winscard_init();
-
     pblRecvBuffer->ab = (unsigned char*)mem_Malloc(MAX_BUFFER_SIZE_EXTENDED*sizeof(unsigned char));
     pblRecvBuffer->cBytes = MAX_BUFFER_SIZE_EXTENDED;
 
@@ -843,6 +804,7 @@ static long _SCARD_CTL_CODE( long code )
     return SCARD_CTL_CODE(code);
 }
 
+///////////////////////////////////////////////////////////////////////////////
 static ERRORSTRING* _GetErrorMessage( long lErrCode )
 {
     #ifdef WIN32
@@ -2087,6 +2049,9 @@ ERRORSTRING* _GetErrorMessage( long lErrCode );
     PyExc_SCardError = PyErr_NewException("scard.error", NULL, NULL);
     if (PyExc_SCardError != NULL)
             PyDict_SetItemString(d, "error", PyExc_SCardError);
+
+    /* load the PCSC library */
+    winscard_init();
 %}
 
 //----------------------------------------------------------------------
