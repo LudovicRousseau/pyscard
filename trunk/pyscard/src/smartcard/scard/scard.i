@@ -180,9 +180,9 @@ Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
     #endif
 #else // !PCSCLITE
 // SCARD_CTL_CODE defined in WinSmCrd.h included by Win32 winscard.h
-#endif //PCSCLITE
-
+// MAX_BUFFER_SIZE_EXTENDED is pcsc-lite specific
 #define MAX_BUFFER_SIZE_EXTENDED (1<<16)
+#endif //PCSCLITE
 
 #include "pcsctypes.h"
 #include "helpers.h"
