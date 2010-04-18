@@ -68,8 +68,7 @@ elif 'macosx-10.6' in get_platform():
     platform_sources = []
     platform_libraries = []
     platform_include_dirs = []
-    platform_extra_compile_args = ['-v', '-framework', 'PCSC', '-arch',
-            'i386', '-arch', 'x86_64', '-ggdb', '-O0']
+    platform_extra_compile_args = ['-v', '-arch', 'i386', '-arch', 'x86_64', '-ggdb', '-O0']
     platform_extra_link_args = ['-arch', 'i386', '-arch', 'x86_64', '-ggdb']
 
 #
