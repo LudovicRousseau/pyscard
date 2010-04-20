@@ -51,7 +51,7 @@ def parse_get_feature_request(hCard, feature):
 
 def verifypin(hCard, control=None):
     if None==control:
-        control = can_do_verif_ypin(hCard)
+        control = can_do_verify_ypin(hCard)
         if (None == control):
             raise error, "Not a pinpad"
     hresult, response = SCardControl(hcard, control, [])
