@@ -137,7 +137,13 @@ class PCSCCardRequest(AbstractCardRequest):
         if 0!=hresult and SCARD_E_TIMEOUT!=hresult and SCARD_E_UNKNOWN_READER!=hresult:
                 raise CardRequestException( 'Failed to SCardGetStatusChange ' + SCardGetErrorMessage(hresult) )
 
-
+        # in case of timeout or reader disappearing, the content of the states is useless
+        # in which case we clear the changed bit
+        if SCARD_E_TIMEOUT==hresult or SCARD_E_UNKNOWN_READER==hresult:
+            for state in newstates:
+                state[1] = state[1] & (0xFFFFFFFF ^ SCARD_STATE_CHANGED)
+    
+    
         # update readerstate
         for state in newstates:
             readername, eventstate, atr = state
