@@ -9,6 +9,10 @@
         * rename FEATURE_MCT_READERDIRECT in FEATURE_MCT_READER_DIRECT to be conform with PCSC v2 part 10 ch. 2.3 (Ludovic Rousseau)
         * added missing CARD_E_NO_READERS_AVAILABLE (Kjell Tore Fossbakk)
         * added support of x86_64 on Mac OS X Snow Leopard (Jakob Schlyter)
+        * ATR can be passed in input in the reader state list (Benoit Allard)
+        * clear state changed bit in waitforcard/waitforcardevent upon time-out or reader removal (Jean-Daniel Aussel)
+        * removed clearing of states and ATR content upon SCardGetStatusChange() error (Benoit Allard); handling is now moved up in python framework (Jean-Daniel Aussel)
+
 
 
 1.6.8 (July 2009)
