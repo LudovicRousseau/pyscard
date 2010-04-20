@@ -51,7 +51,7 @@ def parse_get_feature_request(hCard, feature):
 
 def verifypin(hCard, control=None):
     if None==control:
-        control = can_do_verify_ypin(hCard)
+        control = can_do_verify_pin(hCard)
         if (None == control):
             raise error, "Not a pinpad"
     hresult, response = SCardControl(hcard, control, [])
@@ -86,7 +86,7 @@ try:
                 print 'Connected with active protocol', dwActiveProtocol
 
                 try:
-                    cmd_verify = can_do_verif_ypin(hcard)
+                    cmd_verify = can_do_verify_pin(hcard)
                     if (cmd_verify):
                         print "can do verify pin: 0x%08X" % cmd_verify
 
