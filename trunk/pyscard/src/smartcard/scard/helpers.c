@@ -105,6 +105,22 @@ static int _ReaderStateFromTuple( PyObject* o, READERSTATELIST* prl, unsigned in
     o2=PyTuple_GetItem(o, 1);
     prl->ars[x].dwCurrentState = (SCARDDWORDARG)PyInt_AsLong(o2);
 
+    // third tuple item is the ATR (optionally)
+    if(PyTuple_Size(o)==3)
+    {
+        BYTELIST* ATR = mem_Malloc(sizeof(BYTELIST));
+        if( !ATR )
+        {
+            PyErr_SetString( PyExc_MemoryError, "Unable to allocate temporary array" );
+            return 0;
+        }
+        o2 = PyTuple_GetItem(o, 2);
+
+        ATR = SCardHelper_PyByteListToBYTELIST(o2);
+        memcpy(prl->ars[x].rgbAtr, ATR->ab, ATR->cBytes);
+        prl->ars[x].cbAtr = ATR->cBytes;
+        mem_Free(ATR);
+    }
     return 1;
 }
 
