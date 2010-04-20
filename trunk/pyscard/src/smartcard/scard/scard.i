@@ -558,21 +558,6 @@ static SCARDRETCODE _GetStatusChange(
     //    printf( "%.8lx %.8lx ", prsl->ars[i].dwCurrentState, prsl->ars[i].dwEventState );
     //}
 
-    // there was a time-out or we asked for an unexisting reader
-    // in this case, the output values of the READERSTATELIST are meaningless
-    if( SCARD_E_TIMEOUT==hresult || SCARD_E_UNKNOWN_READER==hresult)
-    {
-        // for each state, output event state is input event state, and nuke ATR if no card present
-        for( i=0; i<prsl->cRStates; i++ )
-        {
-            // remove changed bit
-            prsl->ars[i].dwEventState = prsl->ars[i].dwCurrentState;
-
-            // ATR not valid on output
-            prsl->ars[i].cbAtr=0;
-        }
-    }
-
     return hresult;
 }
 
