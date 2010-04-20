@@ -1,3 +1,16 @@
+1.6.10 (April 2010)
+===================
+        * connect() has a new disposition parameter that is passed to SCardDisconnect (Ludovic Rousseau)
+        * fixed winscard_init() bad initialization causing problems in multithreaded environment (Ludovic Rousseau)
+        * Use MAX_BUFFER_SIZE_EXTENDED (64k) instead of 1024 for SCardControl and SCardTransmit (Ludovic Rousseau, reported by Lukasz Drygiel)
+        * call winscard_init() to load the library only in the %init section instead of in each wrapped function (Ludovic Rousseau)
+        * for Snow Leopard, do not pass -framework PCSC to the compiler (Martin Paljak)
+        * reformatting to meet pep8 (Style Guide for Python Code) guidelines (Ludovic Rousseau)
+        * rename FEATURE_MCT_READERDIRECT in FEATURE_MCT_READER_DIRECT to be conform with PCSC v2 part 10 ch. 2.3 (Ludovic Rousseau)
+        * added missing CARD_E_NO_READERS_AVAILABLE (Kjell Tore Fossbakk)
+        * added support of x86_64 on Mac OS X Snow Leopard (Jakob Schlyter)
+
+
 1.6.8 (July 2009)
 =================
         * fixed SCARD_ERROR types to match correct types on linux and Mac OS X (Ludovic Rousseau)

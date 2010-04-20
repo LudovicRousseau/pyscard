@@ -5,7 +5,7 @@ upon CardConnection events.
 
 __author__ = "http://www.gemalto.com"
 
-Copyright 2001-2009 gemalto
+Copyright 2001-2010 gemalto
 Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
 
 This file is part of pyscard.

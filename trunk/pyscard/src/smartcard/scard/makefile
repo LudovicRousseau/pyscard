@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# Copyright 2001-2009 gemalto
+# Copyright 2001-2010 gemalto
 # Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
 #
 # A little makefile to build the python extension outside of distutils
