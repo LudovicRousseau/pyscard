@@ -70,7 +70,7 @@ class CardConnection(Observable):
         """Remove a CardConnection observer."""
         Observable.deleteObserver( self, observer )
 
-    def connect( self, protocol=None, mode=None ):
+    def connect( self, protocol=None, mode=None, disposition=None ):
         """Connect to card.
         protocol: a bit mask of the protocols to use, from CardConnection.T0_protocol, CardConnection.T1_protocol,
         CardConnection.RAW_protocol, CardConnection.T15_protocol

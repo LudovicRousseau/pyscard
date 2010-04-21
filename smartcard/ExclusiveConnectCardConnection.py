@@ -35,9 +35,9 @@ class ExclusiveConnectCardConnection( CardConnectionDecorator ):
     def __init__( self, cardconnection ):
         CardConnectionDecorator.__init__( self, cardconnection )
 
-    def connect( self, protocol=None, mode=None ):
+    def connect( self, protocol=None, mode=None, disposition=None ):
         '''Disconnect and reconnect in exclusive mode PCSCCardconnections.'''
-        CardConnectionDecorator.connect( self, protocol, mode )
+        CardConnectionDecorator.connect( self, protocol, mode, disposition )
         component=self.component
         while True:
             if isinstance( component, smartcard.pcsc.PCSCCardConnection.PCSCCardConnection ):
