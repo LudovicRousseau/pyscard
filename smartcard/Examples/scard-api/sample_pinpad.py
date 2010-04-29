@@ -5,7 +5,7 @@ reader
 
 __author__ = "Ludovic Rousseau"
 
-Copyright 2009 Ludovic Rousseau
+Copyright 2009-2010 Ludovic Rousseau
 Author: Ludovic Rousseau, mailto:ludovic.rousseau@free.fr
 
 This file is part of pyscard.
@@ -28,50 +28,54 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 from smartcard.scard import *
 from smartcard.util import toASCIIBytes
 
+
 def can_do_verify_pin(hCard):
     FEATURE_VERIFY_PIN_DIRECT = 6
     return parse_get_feature_request(hCard, FEATURE_VERIFY_PIN_DIRECT)
+
 
 def can_do_modify_pin(hCard):
     FEATURE_MODIFY_PIN_DIRECT = 7
     return parse_get_feature_request(hCard, FEATURE_MODIFY_PIN_DIRECT)
 
+
 def parse_get_feature_request(hCard, feature):
     # check the reader can do a verify pin
     CM_IOCTL_GET_FEATURE_REQUEST = SCARD_CTL_CODE(3400)
     hresult, response = SCardControl(hcard, CM_IOCTL_GET_FEATURE_REQUEST, [])
-    if hresult!=SCARD_S_SUCCESS:
+    if hresult != SCARD_S_SUCCESS:
         raise error, 'SCardControl failed: ' + SCardGetErrorMessage(hresult)
     print response
     while (len(response) > 0):
         tag = response[0]
         if (feature == tag):
-            return (((((response[2]<<8) + response[3])<<8) + response[4])<<8) + response[5]
+            return (((((response[2] << 8) + response[3]) << 8) + response[4]) << 8) + response[5]
         response = response[6:]
 
+
 def verifypin(hCard, control=None):
-    if None==control:
+    if None == control:
         control = can_do_verify_pin(hCard)
         if (None == control):
             raise error, "Not a pinpad"
     hresult, response = SCardControl(hcard, control, [])
-    if hresult!=SCARD_S_SUCCESS:
+    if hresult != SCARD_S_SUCCESS:
         raise error, 'SCardControl failed: ' + SCardGetErrorMessage(hresult)
     return hresult, response
 
 try:
-    hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
-    if hresult!=SCARD_S_SUCCESS:
+    hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+    if hresult != SCARD_S_SUCCESS:
         raise error, 'Failed to establish context: ' + SCardGetErrorMessage(hresult)
     print 'Context established!'
 
     try:
-        hresult, readers = SCardListReaders( hcontext, [] )
-        if hresult!=SCARD_S_SUCCESS:
+        hresult, readers = SCardListReaders(hcontext, [])
+        if hresult != SCARD_S_SUCCESS:
             raise error, 'Failed to list readers: ' + SCardGetErrorMessage(hresult)
         print 'PCSC Readers:', readers
 
-        if len(readers)<1:
+        if len(readers) < 1:
             raise error, 'No smart card readers'
 
         for zreader in readers:
@@ -81,7 +85,7 @@ try:
             try:
                 hresult, hcard, dwActiveProtocol = SCardConnect(
                     hcontext, zreader, SCARD_SHARE_DIRECT, SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1)
-                if hresult!=SCARD_S_SUCCESS:
+                if hresult != SCARD_S_SUCCESS:
                     raise error, 'Unable to connect: ' + SCardGetErrorMessage(hresult)
                 print 'Connected with active protocol', dwActiveProtocol
 
@@ -100,8 +104,8 @@ try:
                         r += "%c" % response[i]
                     print 'Control:', r
                 finally:
-                    hresult = SCardDisconnect( hcard, SCARD_UNPOWER_CARD )
-                    if hresult!=SCARD_S_SUCCESS:
+                    hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
+                    if hresult != SCARD_S_SUCCESS:
                         raise error, 'Failed to disconnect: ' + SCardGetErrorMessage(hresult)
                     print 'Disconnected'
 
@@ -109,8 +113,8 @@ try:
                 print error, message
 
     finally:
-        hresult = SCardReleaseContext( hcontext )
-        if hresult!=SCARD_S_SUCCESS:
+        hresult = SCardReleaseContext(hcontext)
+        if hresult != SCARD_S_SUCCESS:
             raise error, 'Failed to release context: ' + SCardGetErrorMessage(hresult)
         print 'Released context.'
 
@@ -119,6 +123,6 @@ except:
     print sys.exc_info()[0], ':', sys.exc_info()[1]
 
 import sys
-if 'win32'==sys.platform:
+if 'win32' == sys.platform:
     print 'press Enter to continue'
     sys.stdin.read(1)

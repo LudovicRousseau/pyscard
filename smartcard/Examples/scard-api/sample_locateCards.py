@@ -6,6 +6,8 @@ __author__ = "http://www.gemalto.com"
 
 Copyright 2001-2010 gemalto
 Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
+Copyright 2010 Ludovic Rousseau
+Author: Ludovic Rousseau, mailto:ludovic.rousseau@free.fr
 
 This file is part of pyscard.
 
@@ -26,47 +28,47 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from smartcard.scard import *
 
-if 'winscard'==resourceManager:
+if 'winscard' == resourceManager:
 
     znewcardName = 'dummy-card'
     znewcardATR = [0x3B, 0x77, 0x94, 0x00, 0x00, 0x82, 0x30, 0x00, 0x13, 0x6C, 0x9F, 0x22]
-    znewcardMask= [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
+    znewcardMask = [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
 
     try:
-        hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
-        if hresult!=SCARD_S_SUCCESS:
+        hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+        if hresult != SCARD_S_SUCCESS:
             raise scard.error, 'Failed to establish context: ' + SCardGetErrorMessage(hresult)
         print 'Context established!'
 
         try:
-            hresult, readers = SCardListReaders( hcontext, [] )
-            if hresult!=SCARD_S_SUCCESS:
+            hresult, readers = SCardListReaders(hcontext, [])
+            if hresult != SCARD_S_SUCCESS:
                 raise scard.error, 'Failed to list readers: ' + SCardGetErrorMessage(hresult)
             print 'PCSC Readers:', readers
 
             # introduce a card (forget first in case it is already present)
-            hresult = SCardForgetCardType( hcontext, znewcardName )
+            hresult = SCardForgetCardType(hcontext, znewcardName)
             print 'Introducing card ' + znewcardName
-            hresult = SCardIntroduceCardType( hcontext, znewcardName, [],
-                                              [], znewcardATR, znewcardMask )
-            if hresult!=SCARD_S_SUCCESS:
-                if hresult==ERROR_ALREADY_EXISTS:
+            hresult = SCardIntroduceCardType(hcontext, znewcardName, [],
+                [], znewcardATR, znewcardMask)
+            if hresult != SCARD_S_SUCCESS:
+                if hresult == ERROR_ALREADY_EXISTS:
                     print 'Card already exists'
                 else:
                     raise error, 'Failed to introduce card type: ' + SCardGetErrorMessage(hresult)
 
-            hresult, cards = SCardListCards( hcontext, [], [] )
-            if hresult!=SCARD_S_SUCCESS:
+            hresult, cards = SCardListCards(hcontext, [], [])
+            if hresult != SCARD_S_SUCCESS:
                 raise error, 'Failure to list cards'
             print 'Cards:', cards
 
 
             readerstates = []
             for i in xrange(len(readers)):
-                readerstates += [ (readers[i], SCARD_STATE_UNAWARE ) ]
+                readerstates += [(readers[i], SCARD_STATE_UNAWARE)]
             print readerstates
 
-            hresult, newstates = SCardLocateCards( hcontext, cards, readerstates )
+            hresult, newstates = SCardLocateCards(hcontext, cards, readerstates)
             for i in newstates:
                 reader, eventstate, atr = i
                 print reader,
@@ -97,9 +99,9 @@ if 'winscard'==resourceManager:
                     print 'State unknowned'
 
         finally:
-            hresult = SCardForgetCardType( hcontext, znewcardName )
-            hresult = SCardReleaseContext( hcontext )
-            if hresult!=SCARD_S_SUCCESS:
+            hresult = SCardForgetCardType(hcontext, znewcardName)
+            hresult = SCardReleaseContext(hcontext)
+            if hresult != SCARD_S_SUCCESS:
                 raise error, 'Failed to release context: ' + SCardGetErrorMessage(hresult)
             print 'Released context.'
 
@@ -107,11 +109,11 @@ if 'winscard'==resourceManager:
         import sys
         print sys.exc_info()[0], ':', sys.exc_info()[1]
 
-elif 'pcsclite'==resourceManager:
+elif 'pcsclite' == resourceManager:
     print 'SCardLocateCards not supported by pcsc lite'
 
 
 import sys
-if 'win32'==sys.platform:
+if 'win32' == sys.platform:
     print 'press Enter to continue'
     sys.stdin.read(1)

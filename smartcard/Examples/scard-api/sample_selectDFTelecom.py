@@ -6,6 +6,8 @@ __author__ = "http://www.gemalto.com"
 
 Copyright 2001-2010 gemalto
 Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
+Copyright 2010 Ludovic Rousseau
+Author: Ludovic Rousseau, mailto:ludovic.rousseau@free.fr
 
 This file is part of pyscard.
 
@@ -32,18 +34,18 @@ DF_TELECOM = [0x7F, 0x10]
 GET_RESPONSE = [0xA0, 0xC0, 0x00, 0x00]
 
 try:
-    hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
-    if hresult!=SCARD_S_SUCCESS:
+    hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+    if hresult != SCARD_S_SUCCESS:
         raise error, 'Failed to establish context : ' + SCardGetErrorMessage(hresult)
     print 'Context established!'
 
     try:
-        hresult, readers = SCardListReaders( hcontext, [] )
-        if hresult!=SCARD_S_SUCCESS:
+        hresult, readers = SCardListReaders(hcontext, [])
+        if hresult != SCARD_S_SUCCESS:
             raise error, 'Failed to list readers: ' + SCardGetErrorMessage(hresult)
         print 'PCSC Readers:', readers
 
-        if len(readers)<1:
+        if len(readers) < 1:
             raise error, 'No smart card readers'
 
         for zreader in readers:
@@ -52,23 +54,23 @@ try:
 
             try:
                 hresult, hcard, dwActiveProtocol = SCardConnect(
-                    hcontext, zreader, SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1 )
-                if hresult!=SCARD_S_SUCCESS:
+                    hcontext, zreader, SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1)
+                if hresult != SCARD_S_SUCCESS:
                     raise error, 'Unable to connect: ' + SCardGetErrorMessage(hresult)
                 print 'Connected with active protocol', dwActiveProtocol
 
                 try:
-                    hresult, response = SCardTransmit( hcard, dwActiveProtocol, SELECT + DF_TELECOM )
-                    if hresult!=SCARD_S_SUCCESS:
+                    hresult, response = SCardTransmit(hcard, dwActiveProtocol, SELECT + DF_TELECOM)
+                    if hresult != SCARD_S_SUCCESS:
                         raise error, 'Failed to transmit: ' + SCardGetErrorMessage(hresult)
                     print 'Selected DF_TELECOM: ' + smartcard.util.toHexString(response, smartcard.util.HEX)
-                    hresult, response = SCardTransmit( hcard, dwActiveProtocol, GET_RESPONSE + [response[1]] )
-                    if hresult!=SCARD_S_SUCCESS:
+                    hresult, response = SCardTransmit(hcard, dwActiveProtocol, GET_RESPONSE + [response[1]])
+                    if hresult != SCARD_S_SUCCESS:
                         raise error, 'Failed to transmit: ' + SCardGetErrorMessage(hresult)
                     print 'GET_RESPONSE after SELECT DF_TELECOM: ' + smartcard.util.toHexString(response, smartcard.util.HEX)
                 finally:
-                    hresult = SCardDisconnect( hcard, SCARD_UNPOWER_CARD )
-                    if hresult!=SCARD_S_SUCCESS:
+                    hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
+                    if hresult != SCARD_S_SUCCESS:
                         raise error, 'Failed to disconnect: ' + SCardGetErrorMessage(hresult)
                     print 'Disconnected'
 
@@ -76,8 +78,8 @@ try:
                 print error, message
 
     finally:
-        hresult = SCardReleaseContext( hcontext )
-        if hresult!=SCARD_S_SUCCESS:
+        hresult = SCardReleaseContext(hcontext)
+        if hresult != SCARD_S_SUCCESS:
             raise error, 'Failed to release context: ' + SCardGetErrorMessage(hresult)
         print 'Released context.'
 
@@ -86,6 +88,6 @@ except error:
     print sys.exc_info()[0], ':', sys.exc_info()[1]
 
 import sys
-if 'win32'==sys.platform:
+if 'win32' == sys.platform:
     print 'press Enter to continue'
     sys.stdin.read(1)
