@@ -6,6 +6,8 @@ __author__ = "http://www.gemalto.com"
 
 Copyright 2001-2010 gemalto
 Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
+Copyright 2010 Ludovic Rousseau
+Author: Ludovic Rousseau, mailto:ludovic.rousseau@free.fr
 
 This file is part of pyscard.
 
@@ -29,14 +31,13 @@ from smartcard.util import toHexString
 
 for reader in readers():
     try:
-        connection=reader.createConnection()
+        connection = reader.createConnection()
         connection.connect()
-        print reader, toHexString( connection.getATR() )
+        print reader, toHexString(connection.getATR())
     except NoCardException:
         print reader, 'no card inserted'
 
-
 import sys
-if 'win32'==sys.platform:
+if 'win32' == sys.platform:
     print 'press Enter to continue'
     sys.stdin.read(1)
