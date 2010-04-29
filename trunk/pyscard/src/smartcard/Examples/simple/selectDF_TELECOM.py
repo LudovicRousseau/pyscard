@@ -6,6 +6,8 @@ __author__ = "http://www.gemalto.com"
 
 Copyright 2001-2010 gemalto
 Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
+Copyright 2010 Ludovic Rousseau
+Author: Ludovic Rousseau, mailto:ludovic.rousseau@free.fr
 
 This file is part of pyscard.
 
@@ -29,10 +31,9 @@ from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver
 from smartcard.Exceptions import CardRequestTimeoutException
 
 # define the apdus used in this script
-GET_RESPONSE = [0XA0, 0XC0, 00, 00 ]
+GET_RESPONSE = [0XA0, 0XC0, 00, 00]
 SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
 DF_TELECOM = [0x7F, 0x10]
-
 
 # request any card type
 cardtype = AnyCardType()
@@ -40,25 +41,24 @@ cardtype = AnyCardType()
 try:
     # request card insertion
     print 'insert a card (SIM card if possible) within 10s'
-    cardrequest = CardRequest( timeout=10, cardType=cardtype )
+    cardrequest = CardRequest(timeout=10, cardType=cardtype)
     cardservice = cardrequest.waitforcard()
 
 
     # attach the console tracer
-    observer=ConsoleCardConnectionObserver()
-    cardservice.connection.addObserver( observer )
-
+    observer = ConsoleCardConnectionObserver()
+    cardservice.connection.addObserver(observer)
 
     # connect to the card and perform a few transmits
     cardservice.connection.connect()
 
-    apdu = SELECT+DF_TELECOM
-    response, sw1, sw2 = cardservice.connection.transmit( apdu )
+    apdu = SELECT + DF_TELECOM
+    response, sw1, sw2 = cardservice.connection.transmit(apdu)
 
     # there is a DF_TELECOM
     if sw1 == 0x9F:
         apdu = GET_RESPONSE + [sw2]
-        response, sw1, sw2 = cardservice.connection.transmit( apdu )
+        response, sw1, sw2 = cardservice.connection.transmit(apdu)
 
     else:
         print 'no DF_TELECOM'
@@ -70,8 +70,7 @@ except:
     import sys
     print sys.exc_info()[1]
 
-
 import sys
-if 'win32'==sys.platform:
+if 'win32' == sys.platform:
     print 'press Enter to continue'
     sys.stdin.read(1)
