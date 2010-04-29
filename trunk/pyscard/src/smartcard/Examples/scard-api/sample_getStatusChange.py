@@ -6,6 +6,8 @@ __author__ = "http://www.gemalto.com"
 
 Copyright 2001-2010 gemalto
 Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
+Copyright 2010 Ludovic Rousseau
+Author: Ludovic Rousseau, mailto:ludovic.rousseau@free.fr
 
 This file is part of pyscard.
 
@@ -28,7 +30,8 @@ from smartcard.scard import *
 import smartcard.util
 
 srTreeATR = [0x3B, 0x77, 0x94, 0x00, 0x00, 0x82, 0x30, 0x00, 0x13, 0x6C, 0x9F, 0x22]
-srTreeMask= [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
+srTreeMask = [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
+
 
 def printstate(state):
     reader, eventstate, atr = state
@@ -58,42 +61,42 @@ def printstate(state):
 
 
 try:
-    hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
-    if hresult!=SCARD_S_SUCCESS:
+    hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+    if hresult != SCARD_S_SUCCESS:
         raise error, 'Failed to establish context: ' + SCardGetErrorMessage(hresult)
     print 'Context established!'
 
     try:
-        hresult, readers = SCardListReaders( hcontext, [] )
-        if hresult!=SCARD_S_SUCCESS:
+        hresult, readers = SCardListReaders(hcontext, [])
+        if hresult != SCARD_S_SUCCESS:
             raise error, 'Failed to list readers: ' + SCardGetErrorMessage(hresult)
         print 'PCSC Readers:', readers
 
         readerstates = []
         for i in xrange(len(readers)):
-            readerstates += [ (readers[i], SCARD_STATE_UNAWARE ) ]
+            readerstates += [(readers[i], SCARD_STATE_UNAWARE)]
 
         print '----- Current reader and card states are: -------'
-        hresult, newstates = SCardGetStatusChange( hcontext, 0, readerstates )
+        hresult, newstates = SCardGetStatusChange(hcontext, 0, readerstates)
         for i in newstates:
-            printstate( i )
+            printstate(i)
 
         print '----- Please insert or remove a card ------------'
-        hresult, newstates = SCardGetStatusChange( hcontext, INFINITE, newstates )
+        hresult, newstates = SCardGetStatusChange(hcontext, INFINITE, newstates)
 
         print '----- New reader and card states are: -----------'
         for i in newstates:
-            printstate( i )
+            printstate(i)
 
 
     finally:
-        hresult = SCardReleaseContext( hcontext )
-        if hresult!=SCARD_S_SUCCESS:
+        hresult = SCardReleaseContext(hcontext)
+        if hresult != SCARD_S_SUCCESS:
             raise error, 'Failed to release context: ' + SCardGetErrorMessage(hresult)
         print 'Released context.'
 
     import sys
-    if 'win32'==sys.platform:
+    if 'win32' == sys.platform:
         print 'press Enter to continue'
         sys.stdin.read(1)
 
