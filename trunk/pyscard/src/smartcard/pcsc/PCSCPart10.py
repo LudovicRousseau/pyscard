@@ -69,10 +69,35 @@ Features = {
 "FEATURE_CCID_ESC_COMMAND"         : FEATURE_CCID_ESC_COMMAND
 }
 
+# properties returned by FEATURE_GET_TLV_PROPERTIES
+PCSCv2_PART10_PROPERTY_wLcdLayout = 1
+PCSCv2_PART10_PROPERTY_bEntryValidationCondition = 2
+PCSCv2_PART10_PROPERTY_bTimeOut2 = 3
+PCSCv2_PART10_PROPERTY_wLcdMaxCharacters = 4
+PCSCv2_PART10_PROPERTY_wLcdMaxLines = 5
+PCSCv2_PART10_PROPERTY_bMinPINSize = 6
+PCSCv2_PART10_PROPERTY_bMaxPINSize = 7
+PCSCv2_PART10_PROPERTY_sFirmwareID = 8
+
+Properties = {
+"PCSCv2_PART10_PROPERTY_wLcdLayout" : PCSCv2_PART10_PROPERTY_wLcdLayout,
+"PCSCv2_PART10_PROPERTY_bEntryValidationCondition": PCSCv2_PART10_PROPERTY_bEntryValidationCondition,
+"PCSCv2_PART10_PROPERTY_bTimeOut2": PCSCv2_PART10_PROPERTY_bTimeOut2,
+"PCSCv2_PART10_PROPERTY_wLcdMaxCharacters": PCSCv2_PART10_PROPERTY_wLcdMaxCharacters,
+"PCSCv2_PART10_PROPERTY_wLcdMaxLines": PCSCv2_PART10_PROPERTY_wLcdMaxLines,
+"PCSCv2_PART10_PROPERTY_bMinPINSize": PCSCv2_PART10_PROPERTY_bMinPINSize,
+"PCSCv2_PART10_PROPERTY_bMaxPINSize": PCSCv2_PART10_PROPERTY_bMaxPINSize,
+"PCSCv2_PART10_PROPERTY_sFirmwareID": PCSCv2_PART10_PROPERTY_sFirmwareID
+}
+
 # we already have:       Features['FEATURE_x'] = FEATURE_x
 # we will now also have: Features[FEATURE_x] = 'FEATURE_x'
 for k in Features.keys():
     Features[Features[k]] = k
+
+for k in Properties.keys():
+    Properties[Properties[k]] = k
+
 
 def getFeatureRequest(cardConnection):
     """ Get the list of Part10 features supported by the reader.
@@ -85,13 +110,14 @@ def getFeatureRequest(cardConnection):
     features = []
     while (len(response) > 0):
         tag = response[0]
-        control = (((((response[2]<<8) + response[3])<<8) + response[4])<<8) + response[5]
+        control = (((((response[2] << 8) + response[3]) << 8) + response[4]) << 8) + response[5]
         try:
             features.append([Features[tag], control])
         except KeyError:
             pass
         del response[:6]
     return features
+
 
 def hasFeature(featureList, feature):
     """ return the controlCode for a feature or None
@@ -104,6 +130,7 @@ def hasFeature(featureList, feature):
     for f in featureList:
         if f[0] == feature or Features[f[0]] == feature:
             return f[1]
+
 
 def getPinProperties(cardConnection, featureList=None, controlCode=None):
     """ return the PIN_PROPERTIES structure
@@ -132,6 +159,56 @@ def getPinProperties(cardConnection, featureList=None, controlCode=None):
 
     return d
 
+
+def getTlvProperties(cardConnection, featureList=None, controlCode=None):
+    """ return the GET_TLV_PROPERTIES structure
+
+    cardConnection: CardConnection object
+    featureList: feature list as returned by getFeatureRequest()
+    controlCode: control code for FEATURE_GET_TLV_PROPERTIES
+
+    return: a dict """
+    if controlCode is None:
+        if featureList is None:
+            featureList = getFeatureRequest(cardConnection)
+        controlCode = hasFeature(featureList, FEATURE_GET_TLV_PROPERTIES)
+
+    if controlCode is None:
+        return
+
+    response = cardConnection.control(controlCode, [])
+    d = {
+            'raw': response,
+        }
+
+    # create a new list to consume it
+    tmp = list(response)
+    while tmp:
+        tag = tmp[0]
+        len = tmp[1]
+        data = tmp[2:2 + len]
+
+        if PCSCv2_PART10_PROPERTY_sFirmwareID == tag:
+            # convert to a string
+            data = "".join([chr(c) for c in data])
+        # we now suppose the value is an integer
+        elif 1 == len:
+            # byte
+            data = data[0]
+        elif 2 == len:
+            # 16 bits value
+            data = data[1] * 256 + data[0]
+        elif 4 == len:
+            # 32 bits value
+            data = ((data[3] * 256 + data[2]) * 256 + data[1]) * 256 + data[0]
+
+        # store the value in the dictionnary
+        d[Properties[tag]] = data
+
+        del tmp[0:2 + len]
+
+    return d
+
 if __name__ == '__main__':
     """Small sample illustrating the use of PCSCPart10."""
     from smartcard.pcsc.PCSCReader import readers
@@ -145,4 +222,12 @@ if __name__ == '__main__':
     print hasFeature(features, FEATURE_VERIFY_PIN_START)
     print hasFeature(features, FEATURE_VERIFY_PIN_DIRECT)
 
-    print getPinProperties(cc)
+    properties = getPinProperties(cc)
+    print "\nPinProperties:"
+    for k in properties.keys():
+        print " %s: %s" % (k, properties[k])
+
+    print "\nTlvProperties:"
+    properties = getTlvProperties(cc)
+    for k in properties.keys():
+        print " %s: %s" % (k, properties[k])
