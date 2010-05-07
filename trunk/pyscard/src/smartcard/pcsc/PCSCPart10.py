@@ -82,7 +82,6 @@ def getFeatureRequest(cardConnection):
     while (len(response) > 0):
         tag = response[0]
         control = (((((response[2]<<8) + response[3])<<8) + response[4])<<8) + response[5]
-        print tag, control
         try:
             features.append([Features[tag], control])
         except KeyError:
