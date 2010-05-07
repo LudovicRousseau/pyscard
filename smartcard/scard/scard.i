@@ -178,6 +178,10 @@ Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
     #else
         #include <reader.h>
     #endif
+    // undefined on older releases
+    #ifndef MAX_BUFFER_SIZE_EXTENDED
+        #define MAX_BUFFER_SIZE_EXTENDED    (4 + 3 + (1<<16) + 3)
+    #endif
 #else // !PCSCLITE
 // SCARD_CTL_CODE defined in WinSmCrd.h included by Win32 winscard.h
 // MAX_BUFFER_SIZE_EXTENDED is pcsc-lite specific
@@ -199,9 +203,9 @@ typedef STRING PROVIDERNAME_t;
 
 %{
 
-// 
+//
 // these functions are only available on win32 PCSC
-// 
+//
 
 #ifdef WIN32
 ///////////////////////////////////////////////////////////////////////////////
@@ -409,7 +413,7 @@ static SCARDRETCODE _SetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTEL
 
 //
 // SCardControl does not have the same prototype on Mac OS X Tiger
-// 
+//
 
 #ifdef __TIGER__
     ///////////////////////////////////////////////////////////////////////////////
@@ -420,10 +424,10 @@ static SCARDRETCODE _SetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTEL
     )
     {
         SCARDRETCODE lRet;
-    
+
         pblRecvBuffer->ab = (unsigned char*)mem_Malloc(MAX_BUFFER_SIZE_EXTENDED*sizeof(unsigned char));
         pblRecvBuffer->cBytes = MAX_BUFFER_SIZE_EXTENDED;
-    
+
         lRet = (mySCardControl)(
                     hcard,
                     pblSendBuffer->ab,
@@ -442,10 +446,10 @@ static SCARDRETCODE _SetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTEL
     )
     {
         SCARDRETCODE lRet;
-    
+
         pblRecvBuffer->ab = (unsigned char*)mem_Malloc(MAX_BUFFER_SIZE_EXTENDED*sizeof(unsigned char));
         pblRecvBuffer->cBytes = MAX_BUFFER_SIZE_EXTENDED;
-    
+
         lRet = (mySCardControl)(
                     hcard,
                     controlCode,
@@ -514,12 +518,12 @@ static SCARDRETCODE _EstablishContext( SCARDDWORDARG dwScope, SCARDCONTEXT* phCo
     #ifdef __TIGER__
         // SCardReleaseContext on Mac OS X Tiger fails if SCardConnect is not called with an established
         // context, even on a dummy reader
-        if( SCARD_S_SUCCESS==lRet ) 
+        if( SCARD_S_SUCCESS==lRet )
         {
             SCARDHANDLE hcard;
             SCARDDWORDARG dwarg;
             (mySCardConnectA)( *phContext, "dummy-reader", SCARD_SHARE_SHARED,
-                SCARD_PROTOCOL_ANY, &hcard, &dwarg );  
+                SCARD_PROTOCOL_ANY, &hcard, &dwarg );
         }
     #endif // __TIGER__
 
@@ -884,9 +888,9 @@ static ERRORSTRING* _GetErrorMessage( long lErrCode )
 %typemap(doc, name="dwControlCode", type="") (SCARDDWORDARG dwControlCode) "dwControlCode: the control code to send";
 
 
-// 
+//
 // these functions are only available on win32 PCSC
-// 
+//
 
 #ifdef WIN32
 ///////////////////////////////////////////////////////////////////////////////
@@ -1253,7 +1257,7 @@ SCARDRETCODE _RemoveReaderFromGroup(
     valid.  After a smart card context handle has been set by
     SCardEstablishContext(), it may become not valid if the resource manager
     service has been shut down.
-    
+
     from smartcard.scard import *
     hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
     hresult = SCardIsValidContext( hcontext )
@@ -1265,15 +1269,15 @@ SCARDRETCODE _RemoveReaderFromGroup(
     %feature("docstring") DOCSTRING_ISVALIDCONTEXT;
     %rename(SCardIsValidContext) _IsValidContext( SCARDCONTEXT hcontext );
     SCARDRETCODE _IsValidContext( SCARDCONTEXT hcontext );
-    
+
     ///////////////////////////////////////////////////////////////////////////////
     %define DOCSTRING_GETATTRIB
     "
-    
+
     This function get an attribute from the IFD Handler.
-    
+
     For PCSC lite, the list of possible attributes is:
-    
+
         * SCARD_ATTR_ASYNC_PROTOCOL_TYPES
         * SCARD_ATTR_ATR_STRING
         * SCARD_ATTR_CHANNEL_ID
@@ -1318,9 +1322,9 @@ SCARDRETCODE _RemoveReaderFromGroup(
         * SCARD_ATTR_VENDOR_IFD_TYPE
         * SCARD_ATTR_VENDOR_IFD_VERSION
         * SCARD_ATTR_VENDOR_NAME
-    
+
     For Windows Resource Manager, the list of possible attributes is:
-    
+
         * SCARD_ATTR_VENDOR_NAME
         * SCARD_ATTR_VENDOR_IFD_TYPE
         * SCARD_ATTR_VENDOR_IFD_VERSION
@@ -1363,12 +1367,12 @@ SCARDRETCODE _RemoveReaderFromGroup(
         * SCARD_ATTR_DEVICE_FRIENDLY_NAME_W
         * SCARD_ATTR_DEVICE_SYSTEM_NAME_W
         * SCARD_ATTR_SUPRESS_T1_IFS_REQUEST
-    
+
     Not all the dwAttrId values listed above may be implemented in the IFD
     Handler you are using.  And some dwAttrId values not listed here may be
     implemented.
-    
-    
+
+
     from smartcard.scard import *
     ... establish context and connect to card ...
     hresult, attrib = SCardGetAttrib( hcard, SCARD_ATTR_ATR_STRING )
@@ -1381,16 +1385,16 @@ SCARDRETCODE _RemoveReaderFromGroup(
     %feature("docstring") DOCSTRING_GETATTRIB;
     %rename(SCardGetAttrib) _GetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* ATTRIBUTES );
     SCARDRETCODE _GetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* ATTRIBUTES );
-    
+
     ///////////////////////////////////////////////////////////////////////////////
     %define DOCSTRING_SETATTRIB
     "
-    
-    This function sets an attribute from the IFD Handler. Not all attributes are supported by all readers nor can 
+
+    This function sets an attribute from the IFD Handler. Not all attributes are supported by all readers nor can
     they be set at all times.
-    
+
     For PCSC lite, the list of possible attributes is:
-    
+
         * SCARD_ATTR_ASYNC_PROTOCOL_TYPES
         * SCARD_ATTR_ATR_STRING
         * SCARD_ATTR_CHANNEL_ID
@@ -1435,9 +1439,9 @@ SCARDRETCODE _RemoveReaderFromGroup(
         * SCARD_ATTR_VENDOR_IFD_TYPE
         * SCARD_ATTR_VENDOR_IFD_VERSION
         * SCARD_ATTR_VENDOR_NAME
-    
+
     For Windows Resource Manager, the list of possible attributes is:
-    
+
         * SCARD_ATTR_VENDOR_NAME
         * SCARD_ATTR_VENDOR_IFD_TYPE
         * SCARD_ATTR_VENDOR_IFD_VERSION
@@ -1480,12 +1484,12 @@ SCARDRETCODE _RemoveReaderFromGroup(
         * SCARD_ATTR_DEVICE_FRIENDLY_NAME_W
         * SCARD_ATTR_DEVICE_SYSTEM_NAME_W
         * SCARD_ATTR_SUPRESS_T1_IFS_REQUEST
-    
+
     Not all the dwAttrId values listed above may be implemented in the IFD
     Handler you are using.  And some dwAttrId values not listed here may be
     implemented.
-    
-    
+
+
     from smartcard.scard import *
     ... establish context and connect to card ...
     hresult, attrib = SCardSetAttrib( hcard, SCARD_ATTR_VENDOR_NAME, ['G', 'e', 'm', 'a', 'l', 't', 'o'] )
@@ -1497,13 +1501,13 @@ SCARDRETCODE _RemoveReaderFromGroup(
     %feature("docstring") DOCSTRING_SETATTRIB;
     %rename(SCardSetAttrib) _SetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* ATTRIBUTESIN );
     SCARDRETCODE _SetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* ATTRIBUTESIN );
-    
+
 #endif // !__TIGER__
 
 
 //
 // SCardControl does not have the same prototype on Mac OS X Tiger
-// 
+//
 #ifdef __TIGER__
     ///////////////////////////////////////////////////////////////////////////////
     %define DOCSTRING_CONTROL
@@ -1538,8 +1542,8 @@ SCARDRETCODE _RemoveReaderFromGroup(
     "
     This function sends a control command to the reader connected to by SCardConnect().
     It returns a result and the control response.
-    
-    
+
+
     from smartcard.scard import *
     hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
     hresult, hcard, dwActiveProtocol = SCardConnect(
