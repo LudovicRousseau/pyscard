@@ -122,10 +122,8 @@ def getPinProperties(cardConnection, featureList=None, controlCode=None):
             'raw': response,
             'LcdLayoutX': response[0],
             'LcdLayoutY': response[1],
-            'LcdMaxCharacters': response[2]<<8 + response[3],
-            'LcdMaxLines': response[4]<<8 + response[5],
-            'EntryValidationCondition': response[6],
-            'TimeOut2': response[7]
+            'EntryValidationCondition': response[2],
+            'TimeOut2': response[3]
         }
 
     return d
