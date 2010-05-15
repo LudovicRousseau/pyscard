@@ -213,7 +213,7 @@ if __name__ == '__main__':
     """Small sample illustrating the use of PCSCPart10."""
     from smartcard.pcsc.PCSCReader import readers
     cc = readers()[0].createConnection()
-    cc.connect()
+    cc.connect(mode=SCARD_SHARE_DIRECT)
 
     #print cc.control( CM_IOCTL_GET_FEATURE_REQUEST )
     features = getFeatureRequest(cc)
