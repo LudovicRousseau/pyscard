@@ -146,7 +146,7 @@ def getPinProperties(cardConnection, featureList=None, controlCode=None):
         controlCode = hasFeature(featureList, FEATURE_IFD_PIN_PROPERTIES)
 
     if controlCode is None:
-        return
+        return { 'raw': [] }
 
     response = cardConnection.control(controlCode, [])
     d = {
@@ -174,7 +174,7 @@ def getTlvProperties(cardConnection, featureList=None, controlCode=None):
         controlCode = hasFeature(featureList, FEATURE_GET_TLV_PROPERTIES)
 
     if controlCode is None:
-        return
+        return { 'raw': [] }
 
     response = cardConnection.control(controlCode, [])
     d = {
