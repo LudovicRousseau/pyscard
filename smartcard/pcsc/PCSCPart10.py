@@ -2,7 +2,7 @@
 
 __author__ = "Ludovic Rousseau"
 
-Copyright 2009 Ludovic Rosseau
+Copyright 2009-2010 Ludovic Rosseau
 Author: Ludovic Rousseau, mailto:ludovic.rousseau@free.fr
 
 This file is part of pyscard.
