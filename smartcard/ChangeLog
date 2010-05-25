@@ -1,4 +1,4 @@
-1.6.10 (April 2010)
+1.6.10 (May 2010)
 ===================
         * connect() has a new disposition parameter that is passed to SCardDisconnect (Ludovic Rousseau)
         * fixed winscard_init() bad initialization causing problems in multithreaded environment (Ludovic Rousseau)
