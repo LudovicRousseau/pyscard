@@ -27,24 +27,26 @@ from threading import RLock
 from smartcard.scard import *
 from smartcard.pcsc.PCSCExceptions import EstablishContextException
 
+
 class PCSCContext:
     """Manage a singleton pcsc context handle."""
 
     class __PCSCContextSingleton:
         """The actual pcsc context class as a singleton."""
-        def __init__( self ):
-            hresult, self.hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
-            if hresult!=0:
+
+        def __init__(self):
+            hresult, self.hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+            if hresult != 0:
                 raise EstablishContextException(hresult)
 
-        def getContext( self ):
+        def getContext(self):
             return self.hcontext
 
     # the singleton
     mutex = RLock()
     instance = None
 
-    def __init__( self ):
+    def __init__(self):
         PCSCContext.mutex.acquire()
         try:
             if not PCSCContext.instance:
@@ -52,6 +54,6 @@ class PCSCContext:
         finally:
             PCSCContext.mutex.release()
 
-    def __getattr__( self, name ):
+    def __getattr__(self, name):
         if self.instance:
-            return getattr( self.instance, name )
+            return getattr(self.instance, name)
