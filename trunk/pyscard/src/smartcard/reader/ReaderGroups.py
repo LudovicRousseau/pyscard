@@ -25,15 +25,20 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 from smartcard.Exceptions import SmartcardException
 from smartcard.ulist import ulist
 
+
 class BadReaderGroupException(SmartcardException):
     """Raised when trying to add an invalid reader group."""
-    def __init__( self ):
-        SmartcardException.__init__( self, 'Invalid reader group' )
+
+    def __init__(self):
+        SmartcardException.__init__(self, 'Invalid reader group')
+
 
 class DeleteSCardDefaultReaderGroupException(SmartcardException):
     """Raised when trying to delete SCard$DefaultReaders reader group."""
-    def __init__( self ):
-        SmartcardException.__init__( self, 'SCard$DefaultReaders cannot be deleted' )
+
+    def __init__(self):
+        SmartcardException.__init__(self, 'SCard$DefaultReaders cannot be deleted')
+
 
 class innerreadergroups(ulist):
     """Smartcard readers groups private class.
@@ -42,48 +47,48 @@ class innerreadergroups(ulist):
     instance of this class.
     """
 
-    def __init__(self,  initlist=None ):
+    def __init__(self, initlist=None):
         """Retrieve and store list of reader groups"""
-        if None==initlist:
-            initlist=self.getreadergroups()
-        if None!=initlist:
-            ulist.__init__(self, initlist )
-        self.unremovablegroups=[]
+        if None == initlist:
+            initlist = self.getreadergroups()
+        if None != initlist:
+            ulist.__init__(self, initlist)
+        self.unremovablegroups = []
 
-
-    def __onadditem__( self, item ):
+    def __onadditem__(self, item):
         """Called when a reader group is added."""
-        self.addreadergroup( item )
+        self.addreadergroup(item)
 
-    def __onremoveitem__( self, item ):
+    def __onremoveitem__(self, item):
         """Called when a reader group is added."""
-        self.removereadergroup( item )
+        self.removereadergroup(item)
 
     #
     # abstract methods implemented in subclasses
     #
 
-    def getreadergroups( self ):
+    def getreadergroups(self):
         """Returns the list of smartcard reader groups."""
         return []
 
-    def addreadergroup( self, newgroup  ):
+    def addreadergroup(self, newgroup):
         """Add a reader group"""
-        if not isinstance( newgroup, type("") ):
+        if not isinstance(newgroup, type("")):
             raise BadReaderGroupException
 
-    def removereadergroup( self, group  ):
+    def removereadergroup(self, group):
         """Remove a reader group"""
-        if not isinstance( group, type("") ):
+        if not isinstance(group, type("")):
             raise BadReaderGroupException
 
-    def addreadertogroup( self, readername, groupname ):
+    def addreadertogroup(self, readername, groupname):
         """Add a reader to a reader group"""
         pass
 
-    def removereaderfromgroup( self, readername, groupname ):
+    def removereaderfromgroup(self, readername, groupname):
         """Remove a reader from a reader group"""
         pass
+
 
 class readergroups:
     """ReadersGroups organizes smart card reader as groups."""
@@ -92,11 +97,13 @@ class readergroups:
     instance = None
 
     """Constructor: create a single instance of __readergroups on first call"""
-    def __init__(self, initlist=None ):
-        if None==readergroups.instance:
-            readergroups.instance = innerreadergroups( initlist )
+
+    def __init__(self, initlist=None):
+        if None == readergroups.instance:
+            readergroups.instance = innerreadergroups(initlist)
 
     """All operators redirected to inner class."""
+
     def __getattr__(self, name):
         return getattr(self.instance, name)
 

@@ -22,6 +22,7 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
+
 class Reader:
     """Reader abstract class.
 
@@ -30,33 +31,34 @@ class Reader:
 
     Known subclasses: PCSCReader
     """
-    def __init__( self, readername ):
-        """Constructs a new reader and store readername."""
-        self.name=readername
 
-    def addtoreadergroup( self, groupname ):
+    def __init__(self, readername):
+        """Constructs a new reader and store readername."""
+        self.name = readername
+
+    def addtoreadergroup(self, groupname):
         """Add reader to a reader group."""
         pass
 
-    def removefromreadergroup( self, groupname ):
+    def removefromreadergroup(self, groupname):
         """Remove reader from a reader group."""
         pass
 
-    def createConnection( self ):
+    def createConnection(self):
         """Returns a card connection thru reader."""
         pass
 
-    def __eq__( self, other ):
+    def __eq__(self, other):
         """Returns 0 if self==other (same name)."""
-        if type(other)==type(self):
-            return self.name==other.name
+        if type(other) == type(self):
+            return self.name == other.name
         else:
             return 1
 
-    def __repr__( self ):
+    def __repr__(self):
         """Returns card reader name string for `object` calls."""
         return "'%s'" % self.name
 
-    def __str__( self ):
+    def __str__(self):
         """Returns card reader name string for str(object) calls."""
         return self.name
