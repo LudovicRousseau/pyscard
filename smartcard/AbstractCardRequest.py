@@ -26,6 +26,7 @@ from smartcard.CardType import AnyCardType
 from smartcard.PassThruCardService import PassThruCardService
 import smartcard.System
 
+
 class AbstractCardRequest:
     """The base class for xxxCardRequest classes.
 
@@ -34,19 +35,28 @@ class AbstractCardRequest:
 
     Known subclasses: smartcard.pcsc.PCSCCardRequest"""
 
-    def __init__( self, newcardonly=False, readers=None, cardType=None, cardServiceClass=None, timeout=1 ):
+    def __init__(self, newcardonly=False, readers=None, cardType=None, cardServiceClass=None, timeout=1):
         """Construct new CardRequest.
 
-        newcardonly:        if True, request a new card; default is False, i.e. accepts cards already inserted
+        newcardonly:        if True, request a new card; default is
+                            False, i.e. accepts cards already inserted
 
-        readers:            the list of readers to consider for requesting a card; default is to consider all readers
+        readers:            the list of readers to consider for
+                            requesting a card; default is to consider
+                            all readers
 
-        cardType:           the smartcard.CardType.CardType to wait for; default is smartcard.CardType.AnyCardType, i.e. the request will succeed with any card
+        cardType:           the smartcard.CardType.CardType to wait for;
+                            default is smartcard.CardType.AnyCardType,
+                            i.e. the request will succeed with any card
 
-        cardServiceClass:   the specific card service class to create and bind to the card;default is to create and bind a smartcard.PassThruCardService
+        cardServiceClass:   the specific card service class to create
+                            and bind to the card;default is to create
+                            and bind a smartcard.PassThruCardService
 
-        timeout:            the time in seconds we are ready to wait for connecting to the requested card.
-                            default is to wait one second; to wait forever, set timeout to None
+        timeout:            the time in seconds we are ready to wait for
+                            connecting to the requested card.  default
+                            is to wait one second; to wait forever, set
+                            timeout to None
         """
         self.newcardonly = newcardonly
         self.readersAsked = readers
@@ -55,25 +65,25 @@ class AbstractCardRequest:
         self.timeout = timeout
 
         # if no CardType requeted, use AnyCardType
-        if None==self.cardType:
-            self.cardType=AnyCardType()
+        if None == self.cardType:
+            self.cardType = AnyCardType()
 
         # if no card service requested, use pass-thru card service
-        if None==self.cardServiceClass:
-            self.cardServiceClass=PassThruCardService
+        if None == self.cardServiceClass:
+            self.cardServiceClass = PassThruCardService
 
-    def getReaders( self ):
+    def getReaders(self):
         """Returns the list or readers on which to wait for cards."""
         # if readers not given, use all readers
-        if None==self.readersAsked:
+        if None == self.readersAsked:
             return smartcard.System.readers()
         else:
             return self.readersAsked
 
-    def waitforcard( self ):
+    def waitforcard(self):
         """Wait for card insertion and returns a card service."""
         pass
 
-    def waitforcardevent( self ):
+    def waitforcardevent(self):
         """Wait for card insertion or removal."""
         pass
