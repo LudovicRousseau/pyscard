@@ -61,7 +61,7 @@ class PCSCReader( Reader ):
 
         hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
         if 0!=hresult:
-            raise error, 'Failed to establish context: ' + SCardGetErrorMessage(hresult)
+            raise EstablishContextException(hresult)
         try:
             hresult = SCardIntroduceReader( hcontext, self.name, self.name )
             if 0!=hresult and SCARD_E_DUPLICATE_READER!=hresult:
@@ -72,7 +72,7 @@ class PCSCReader( Reader ):
         finally:
             hresult = SCardReleaseContext( hcontext )
             if 0!=hresult:
-                raise error, 'Failed to release context: ' + SCardGetErrorMessage(hresult)
+                raise ReleaseContextException(hresult)
 
 
     def removefromreadergroup( self, groupname ):
@@ -80,7 +80,7 @@ class PCSCReader( Reader ):
 
         hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
         if 0!=hresult:
-            raise error, 'Failed to establish context: ' + SCardGetErrorMessage(hresult)
+            raise EstablishContextException(hresult)
         try:
             hresult = SCardRemoveReaderFromGroup( hcontext, self.name, groupname )
             if hresult!=0:
@@ -88,7 +88,7 @@ class PCSCReader( Reader ):
         finally:
             hresult = SCardReleaseContext( hcontext )
             if 0!=hresult:
-                raise error, 'Failed to release context: ' + SCardGetErrorMessage(hresult)
+                raise ReleaseContextException(hresult)
 
 
     def createConnection( self ):
