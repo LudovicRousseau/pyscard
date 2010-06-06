@@ -48,13 +48,13 @@ class pcscinnerreadergroups(innerreadergroups):
         innerreadergroups.getreadergroups(self)
 
         hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
-        if hresult!=0:
+        if hresult != 0:
             raise EstablishContextException(hresult)
         hresult, readers = SCardListReaderGroups(hcontext)
-        if hresult!=0:
+        if hresult != 0:
             raise ListReadersException(hresult)
         hresult = SCardReleaseContext(hcontext)
-        if hresult!=0:
+        if hresult != 0:
             raise ReleaseContextException(hresult)
         return readers
 
