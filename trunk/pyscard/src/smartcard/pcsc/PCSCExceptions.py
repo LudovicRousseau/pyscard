@@ -27,6 +27,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # gemalto scard library
 import smartcard.scard
 
+
 class BaseSCardException:
     """Base class for scard (aka PCSC) exceptions.
 
@@ -34,40 +35,52 @@ class BaseSCardException:
     low-level PCSC access to readers and cards.
 
     """
-    def __init__( self, hresult ):
+
+    def __init__(self, hresult):
         """Constructor that stores the pcsc error status."""
-        self.hresult=hresult
+        self.hresult = hresult
 
     def __str__(self):
         """Returns a string representation of the exception."""
-        return repr("scard exception: "  +
+        return repr("scard exception: " +
             smartcard.scard.SCardGetErrorMessage(self.hresult))
+
 
 class EstablishContextException(BaseSCardException):
     """Raised when scard failed to establish context with PCSC."""
 
     def __str__(self):
         """Returns a string representation of the exception."""
-        return repr( 'Failure to establish context: ' + smartcard.scard.SCardGetErrorMessage(self.hresult) )
+        return repr('Failure to establish context: ' +
+            smartcard.scard.SCardGetErrorMessage(self.hresult))
+
 
 class ListReadersException(BaseSCardException):
     """Raised when scard failed to list readers."""
+
     def __str__(self):
-        return repr( 'Failure to list readers: ' + smartcard.scard.SCardGetErrorMessage(self.hresult) )
+        return repr('Failure to list readers: ' +
+            smartcard.scard.SCardGetErrorMessage(self.hresult))
+
 
 class EstablishContextException(BaseSCardException):
     """Raised when scard failed to establish a PCSC context."""
+
     def __str__(self):
-        return repr( 'Failure to establish context: ' + smartcard.scard.SCardGetErrorMessage(self.hresult) )
+        return repr('Failure to establish context: ' +
+            smartcard.scard.SCardGetErrorMessage(self.hresult))
+
 
 class ReleaseContextException(BaseSCardException):
     """Raised when scard failed to release PCSC context."""
+
     def __str__(self):
-        return repr( 'Failure to release context: ' + smartcard.scard.SCardGetErrorMessage(self.hresult) )
+        return repr('Failure to release context: ' +
+            smartcard.scard.SCardGetErrorMessage(self.hresult))
 
 if __name__ == "__main__":
     import sys
     try:
-        raise EstablishContextException( smartcard.scard.SCARD_E_NO_MEMORY )
+        raise EstablishContextException(smartcard.scard.SCARD_E_NO_MEMORY)
     except BaseSCardException as exc:
         print exc
