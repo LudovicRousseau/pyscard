@@ -43,51 +43,50 @@ except:
     sys.exit()
 
 
-def getATR( reader ):
+def getATR(reader):
     """Return the ATR of the card inserted into the reader."""
-    connection=reader.createConnection()
-    atr=""
+    connection = reader.createConnection()
+    atr = ""
     try:
         connection.connect()
-        atr=smartcard.util.toHexString( connection.getATR() )
+        atr = smartcard.util.toHexString(connection.getATR())
         connection.disconnect()
     except smartcard.Exceptions.NoCardException:
-        atr="no card inserted"
+        atr = "no card inserted"
     return atr
 
 
-class pcscdiag( wx.Frame ):
+class pcscdiag(wx.Frame):
+
     def __init__(self, parent, title):
         wx.Frame.__init__(self, parent, -1, title, size=(600, 400))
         w, h = self.GetClientSizeTuple()
-        self.tree = wx.TreeCtrl( self, wx.NewId(), wx.DefaultPosition, (w, h), wx.TR_HAS_BUTTONS | wx.TR_EDIT_LABELS )
+        self.tree = wx.TreeCtrl(self, wx.NewId(), wx.DefaultPosition, (w, h), wx.TR_HAS_BUTTONS | wx.TR_EDIT_LABELS)
         self.InitTree()
         self.OnExpandAll()
 
-
-    def InitTree( self ):
+    def InitTree(self):
         self.tree.AddRoot("Readers and ReaderGroups")
 
-        readerNode = self.tree.AppendItem( self.tree.GetRootItem(), "Readers" )
+        readerNode = self.tree.AppendItem(self.tree.GetRootItem(), "Readers")
         for reader in smartcard.System.readers():
-            childReader = self.tree.AppendItem( readerNode, `reader` )
-            childCard = self.tree.AppendItem( childReader, getATR( reader ) )
+            childReader = self.tree.AppendItem(readerNode, `reader`)
+            childCard = self.tree.AppendItem(childReader, getATR(reader))
 
 
-        readerGroupNode = self.tree.AppendItem( self.tree.GetRootItem(), "Readers Groups")
+        readerGroupNode = self.tree.AppendItem(self.tree.GetRootItem(), "Readers Groups")
         for readergroup in smartcard.System.readergroups():
-            childReaderGroup = self.tree.AppendItem( readerGroupNode, readergroup )
-            readers=smartcard.System.readers( readergroup )
+            childReaderGroup = self.tree.AppendItem(readerGroupNode, readergroup)
+            readers = smartcard.System.readers(readergroup)
             for reader in readers:
-                child = self.tree.AppendItem( childReaderGroup, `reader` )
+                child = self.tree.AppendItem(childReaderGroup, `reader`)
 
-
-    def OnExpandAll(self ):
+    def OnExpandAll(self):
         """ expand all nodes """
         root = self.tree.GetRootItem()
         fn = self.tree.Expand
         self.traverse(root, fn)
-        self.tree.Expand( root )
+        self.tree.Expand(root)
 
     def traverse(self, traverseroot, function, cookie=0):
         """ recursivly walk tree control """
@@ -104,6 +103,6 @@ class pcscdiag( wx.Frame ):
 
 if __name__ == '__main__':
     app = wx.PySimpleApp()
-    frame = pcscdiag( None, "Smartcard readers and reader groups" )
+    frame = pcscdiag(None, "Smartcard readers and reader groups")
     frame.Show()
     app.MainLoop()
