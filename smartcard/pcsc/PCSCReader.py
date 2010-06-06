@@ -31,88 +31,90 @@ from smartcard.Exceptions import *
 from smartcard.pcsc.PCSCExceptions import *
 from smartcard.scard import *
 
-def __PCSCreaders__( hcontext, groups=[] ):
+
+def __PCSCreaders__(hcontext, groups=[]):
     """Returns the list of PCSC smartcard readers in PCSC group.
 
     If group is not specified, returns the list of all PCSC smartcard readers.
     """
 
     # in case we have a string instead of a list
-    if isinstance( groups, type("")):
-        groups=[groups]
-    hresult, readers = SCardListReaders( hcontext, groups )
-    if hresult!=0:
-        if hresult==SCARD_E_NO_READERS_AVAILABLE:
-            readers=[]
+    if isinstance(groups, type("")):
+        groups = [groups]
+    hresult, readers = SCardListReaders(hcontext, groups)
+    if hresult != 0:
+        if hresult == SCARD_E_NO_READERS_AVAILABLE:
+            readers = []
         else:
-            raise ListReadersException( hresult )
+            raise ListReadersException(hresult)
 
     return readers
 
 
-class PCSCReader( Reader ):
+class PCSCReader(Reader):
     """PCSC reader class."""
-    def __init__( self, readername ):
-        """Constructs a new PCSC reader."""
-        Reader.__init__( self, readername )
 
-    def addtoreadergroup( self, groupname ):
+    def __init__(self, readername):
+        """Constructs a new PCSC reader."""
+        Reader.__init__(self, readername)
+
+    def addtoreadergroup(self, groupname):
         """Add reader to a reader group."""
 
-        hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
-        if 0!=hresult:
+        hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+        if 0 != hresult:
             raise EstablishContextException(hresult)
         try:
-            hresult = SCardIntroduceReader( hcontext, self.name, self.name )
-            if 0!=hresult and SCARD_E_DUPLICATE_READER!=hresult:
+            hresult = SCardIntroduceReader(hcontext, self.name, self.name)
+            if 0 != hresult and SCARD_E_DUPLICATE_READER != hresult:
                 raise error, 'Unable to introduce reader: ' + self.name + ' : ' + SCardGetErrorMessage(hresult)
-            hresult = SCardAddReaderToGroup( hcontext, self.name, groupname )
-            if hresult!=0:
+            hresult = SCardAddReaderToGroup(hcontext, self.name, groupname)
+            if 0 != hresult:
                 raise error, 'Unable to add reader to group: ' + SCardGetErrorMessage(hresult)
         finally:
-            hresult = SCardReleaseContext( hcontext )
-            if 0!=hresult:
+            hresult = SCardReleaseContext(hcontext)
+            if 0 != hresult:
                 raise ReleaseContextException(hresult)
 
-
-    def removefromreadergroup( self, groupname ):
+    def removefromreadergroup(self, groupname):
         """Remove a reader from a reader group"""
 
-        hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
-        if 0!=hresult:
+        hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+        if 0 != hresult:
             raise EstablishContextException(hresult)
         try:
-            hresult = SCardRemoveReaderFromGroup( hcontext, self.name, groupname )
-            if hresult!=0:
+            hresult = SCardRemoveReaderFromGroup(hcontext, self.name, groupname)
+            if 0 != hresult:
                 raise error, 'Unable to add reader to group: ' + SCardGetErrorMessage(hresult)
         finally:
-            hresult = SCardReleaseContext( hcontext )
-            if 0!=hresult:
+            hresult = SCardReleaseContext(hcontext)
+            if 0 != hresult:
                 raise ReleaseContextException(hresult)
 
-
-    def createConnection( self ):
+    def createConnection(self):
         """Return a card connection thru PCSC reader."""
-        return CardConnectionDecorator( PCSCCardConnection( self.name ) )
+        return CardConnectionDecorator(PCSCCardConnection(self.name))
 
     class Factory:
-        def create(self, readername ):
-            return PCSCReader( readername )
 
-def readers( groups=[] ):
-    creaders=[]
+        def create(self, readername):
+            return PCSCReader(readername)
+
+
+def readers(groups=[]):
+    creaders = []
     hcontext = PCSCContext().getContext()
 
-    for reader in __PCSCreaders__( hcontext, groups ):
-        creaders.append( ReaderFactory.createReader( 'smartcard.pcsc.PCSCReader.PCSCReader', reader ) )
+    for reader in __PCSCreaders__(hcontext, groups):
+        creaders.append(ReaderFactory.createReader('smartcard.pcsc.PCSCReader.PCSCReader', reader))
     return creaders
 
 if __name__ == '__main__':
     SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
     DF_TELECOM = [0x7F, 0x10]
 
-    creaders=readers()
+    creaders = readers()
     cc = creaders[0].createConnection()
     cc.connect()
-    data, sw1, sw2 = cc.transmit( SELECT + DF_TELECOM )
+    data, sw1, sw2 = cc.transmit(SELECT + DF_TELECOM)
     print "%X %X" % (sw1, sw2)
