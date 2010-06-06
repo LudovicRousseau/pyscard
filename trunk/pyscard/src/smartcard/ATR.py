@@ -22,25 +22,25 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
+
 class ATR:
-
-    clockrateconversion=[ 372, 372, 558, 744, 1116, 1488, 1860, 'RFU', 'RFU', 512, 768, 1024, 1536, 2048, 'RFU', 'RFU', 'RFU' ]
-    bitratefactor=['RFU', 1, 2, 4, 8, 16, 32, 'RFU', 12, 20, 'RFU', 'RFU', 'RFU', 'RFU', 'RFU', 'RFU' ]
-    currenttable=[ 25, 50, 100, 'RFU' ]
-
-
     """ATR class."""
-    def __init__( self, bytes ):
+
+    clockrateconversion = [372, 372, 558, 744, 1116, 1488, 1860, 'RFU', 'RFU', 512, 768, 1024, 1536, 2048, 'RFU', 'RFU', 'RFU']
+    bitratefactor = ['RFU', 1, 2, 4, 8, 16, 32, 'RFU', 12, 20, 'RFU', 'RFU', 'RFU', 'RFU', 'RFU', 'RFU']
+    currenttable = [25, 50, 100, 'RFU']
+
+    def __init__(self, bytes):
         """Construct a new atr from bytes."""
         self.bytes = bytes
         self.__initInstance__()
 
-    def __checksyncbyte__( self ):
+    def __checksyncbyte__(self):
         """Check validity of TS."""
-        if not 0x3b==self.bytes[0] and not 0x03f==self.bytes[0]:
-            raise 'invalid TS',"0x%-0.2x"%self.bytes[0]
+        if not 0x3b == self.bytes[0] and not 0x03f == self.bytes[0]:
+            raise 'invalid TS', "0x%-0.2x" % self.bytes[0]
 
-    def __initInstance__( self ):
+    def __initInstance__(self):
         """Parse ATR and initialize members:
             TS: initial character
             T0: format character
@@ -76,18 +76,18 @@ class ATR:
         self.hasTC = []
         self.hasTD = []
 
-        TD=self.T0
-        hasTD=1
-        n=0
-        offset=1
-        self.interfaceBytesCount=0
+        TD = self.T0
+        hasTD = 1
+        n = 0
+        offset = 1
+        self.interfaceBytesCount = 0
         while hasTD:
-            self.Y += [TD>>4 & 0x0f]
+            self.Y += [TD >> 4 & 0x0f]
 
-            self.hasTD += [(self.Y[n] & 0x08)!=0 ]
-            self.hasTC += [(self.Y[n] & 0x04)!=0 ]
-            self.hasTB += [(self.Y[n] & 0x02)!=0 ]
-            self.hasTA += [(self.Y[n] & 0x01)!=0 ]
+            self.hasTD += [(self.Y[n] & 0x08) != 0]
+            self.hasTC += [(self.Y[n] & 0x04) != 0]
+            self.hasTB += [(self.Y[n] & 0x02) != 0]
+            self.hasTA += [(self.Y[n] & 0x01) != 0]
 
             self.TA += [None]
             self.TB += [None]
@@ -95,37 +95,37 @@ class ATR:
             self.TD += [None]
 
             if self.hasTA[n]:
-                self.TA[n]=self.bytes[ offset+self.hasTA[n] ]
+                self.TA[n] = self.bytes[offset + self.hasTA[n]]
             if self.hasTB[n]:
-                self.TB[n]=self.bytes[ offset+self.hasTA[n]+self.hasTB[n] ]
+                self.TB[n] = self.bytes[offset + self.hasTA[n] + self.hasTB[n]]
             if self.hasTC[n]:
-                self.TC[n]=self.bytes[ offset+self.hasTA[n]+self.hasTB[n]+self.hasTC[n] ]
+                self.TC[n] = self.bytes[offset + self.hasTA[n] + self.hasTB[n] + self.hasTC[n]]
             if self.hasTD[n]:
-                self.TD[n]=self.bytes[ offset+self.hasTA[n]+self.hasTB[n]+self.hasTC[n]+self.hasTD[n] ]
+                self.TD[n] = self.bytes[offset + self.hasTA[n] + self.hasTB[n] + self.hasTC[n] + self.hasTD[n]]
 
-            self.interfaceBytesCount += self.hasTA[n]+self.hasTB[n]+self.hasTC[n]+self.hasTD[n]
-            TD=self.TD[n]
-            hasTD=self.hasTD[n]
-            offset=offset+self.hasTA[n]+self.hasTB[n]+self.hasTC[n]+self.hasTD[n]
-            n=n+1
+            self.interfaceBytesCount += self.hasTA[n] + self.hasTB[n] + self.hasTC[n] + self.hasTD[n]
+            TD = self.TD[n]
+            hasTD = self.hasTD[n]
+            offset = offset + self.hasTA[n] + self.hasTB[n] + self.hasTC[n] + self.hasTD[n]
+            n = n + 1
 
         # historical bytes
-        self.historicalBytes=self.bytes[offset+1:offset+1+self.K]
+        self.historicalBytes = self.bytes[offset + 1:offset + 1 + self.K]
 
         # checksum
-        self.hasChecksum = (len(self.bytes)==offset+1+self.K+1)
+        self.hasChecksum = (len(self.bytes) == offset + 1 + self.K + 1)
         if self.hasChecksum:
-            self.TCK=self.bytes[-1]
-            checksum=0
-            for b in self.bytes[1:]: checksum = checksum ^ b
-            self.checksumOK = (checksum==0)
+            self.TCK = self.bytes[-1]
+            checksum = 0
+            for b in self.bytes[1:]:
+                checksum = checksum ^ b
+            self.checksumOK = (checksum == 0)
         else:
             self.TCK = None
 
-
         # clock-rate conversion factor
         if self.hasTA[0]:
-            self.FI = self.TA[0]>>4 & 0x0f
+            self.FI = self.TA[0] >> 4 & 0x0f
         else:
             self.FI = None
 
@@ -137,7 +137,7 @@ class ATR:
 
         # maximum programming current factor
         if self.hasTB[0]:
-            self.II = self.TB[0]>>5 & 0x03
+            self.II = self.TB[0] >> 5 & 0x03
         else:
             self.II = None
 
@@ -150,32 +150,31 @@ class ATR:
         # extra guard time
         self.N = self.TC[0]
 
-
-    def getChecksum( self ):
+    def getChecksum(self):
         """Return the checksum of the ATR. Checksum is mandatory only for T=1."""
         return self.TCK
 
-    def getHistoricalBytes( self ):
+    def getHistoricalBytes(self):
         """Return historical bytes."""
         return self.historicalBytes
 
-    def getHistoricalBytesCount( self ):
+    def getHistoricalBytesCount(self):
         """Return count of historical bytes."""
-        return len( self.historicalBytes )
+        return len(self.historicalBytes)
 
-    def getInterfaceBytesCount( self ):
+    def getInterfaceBytesCount(self):
         """Return count of interface bytes."""
         return self.interfaceBytesCount
 
-    def getTA1( self ):
+    def getTA1(self):
         """Return TA1 byte."""
         return self.TA[0]
 
-    def getTB1( self ):
+    def getTB1(self):
         """Return TB1 byte."""
         return self.TB[0]
 
-    def getTC1( self ):
+    def getTC1(self):
         """Return TC1 byte."""
         return self.TC[0]
 
@@ -183,76 +182,76 @@ class ATR:
         """Return TD1 byte."""
         return self.TD[0]
 
-    def getBitRateFactor( self ):
+    def getBitRateFactor(self):
         """Return bit rate factor."""
-        if self.DI!=None:
-            return ATR.bitratefactor[ self.DI ]
+        if self.DI != None:
+            return ATR.bitratefactor[self.DI]
         else:
             return 1
 
-    def getClockRateConversion( self ):
+    def getClockRateConversion(self):
         """Return clock rate conversion."""
-        if self.FI!=None:
-            return ATR.clockrateconversion[ self.FI ]
+        if self.FI != None:
+            return ATR.clockrateconversion[self.FI]
         else:
             return 372
 
-    def getProgrammingCurrent( self ):
+    def getProgrammingCurrent(self):
         """Return maximum programming current."""
-        if self.II!=None:
-            return ATR.currenttable[ self.II ]
+        if self.II != None:
+            return ATR.currenttable[self.II]
         else:
             return 50
 
-    def getProgrammingVoltage( self ):
+    def getProgrammingVoltage(self):
         """Return programming voltage."""
-        if self.PI1!=None:
-            return 5*(1+self.PI1)
+        if self.PI1 != None:
+            return 5 * (1 + self.PI1)
         else:
             return 5
 
-    def getGuardTime( self ):
+    def getGuardTime(self):
         """Return extra guard time."""
         return self.N
 
-    def getSupportedProtocols( self ):
+    def getSupportedProtocols(self):
         """Returns a dictionnary of supported protocols."""
-        protocols={}
+        protocols = {}
         for td in self.TD:
-            if td!=None:
+            if td != None:
                 strprotocol = "T=%d" % (td & 0x0F)
-                protocols[strprotocol]=True
+                protocols[strprotocol] = True
         if not self.hasTD[0]:
-            protocols['T=0']=True
+            protocols['T=0'] = True
         return protocols
 
-    def isT0Supported( self ):
+    def isT0Supported(self):
         """Return True if T=0 is supported."""
-        protocols=self.getSupportedProtocols()
-        return protocols.has_key( 'T=0' )
+        protocols = self.getSupportedProtocols()
+        return protocols.has_key('T=0')
 
-    def isT1Supported( self ):
+    def isT1Supported(self):
         """Return True if T=1 is supported."""
-        protocols=self.getSupportedProtocols()
-        return protocols.has_key( 'T=1' )
+        protocols = self.getSupportedProtocols()
+        return protocols.has_key('T=1')
 
-    def isT15Supported( self ):
+    def isT15Supported(self):
         """Return True if T=15 is supported."""
-        protocols=self.getSupportedProtocols()
-        return protocols.has_key( 'T=15' )
+        protocols = self.getSupportedProtocols()
+        return protocols.has_key('T=15')
 
-    def dump( self ):
+    def dump(self):
         """Dump the details of an ATR."""
 
-        for i in range( 0, len(self.TA) ):
-            if self.TA[i]!=None:
-                print "TA%d: %x" % (i+1,self.TA[i])
-            if self.TB[i]!=None:
-                print "TB%d: %x" % (i+1,self.TB[i])
-            if self.TC[i]!=None:
-                print "TC%d: %x" % (i+1,self.TC[i])
-            if self.TD[i]!=None:
-                print "TD%d: %x" % (i+1,self.TD[i])
+        for i in range(0, len(self.TA)):
+            if self.TA[i] != None:
+                print "TA%d: %x" % (i + 1, self.TA[i])
+            if self.TB[i] != None:
+                print "TB%d: %x" % (i + 1, self.TB[i])
+            if self.TC[i] != None:
+                print "TC%d: %x" % (i + 1, self.TC[i])
+            if self.TD[i] != None:
+                print "TD%d: %x" % (i + 1, self.TD[i])
 
         print 'supported protocols', self.getSupportedProtocols()
         print 'T=0 supported', self.isT0Supported()
@@ -271,26 +270,24 @@ class ATR:
         print 'nb of interface bytes:', self.getInterfaceBytesCount()
         print 'nb of historical bytes:', self.getHistoricalBytesCount()
 
-
-    def __str__( self ):
+    def __str__(self):
         """Returns a string representation of the ATR as a strem of bytes."""
-        return reduce( lambda a, b: a+"%-0.2X " % ((b+256)%256), self.bytes, '' )
+        return reduce(lambda a, b: a + "%-0.2X " % ((b + 256) % 256), self.bytes, '')
 
 
 if __name__ == '__main__':
     """Small sample illustrating the use of ATR."""
 
-    atrs = [ [ 0x3F, 0x65, 0x25, 0x00, 0x2C, 0x09, 0x69, 0x90, 0x00 ],
-             [ 0x3F, 0x65, 0x25, 0x08, 0x93, 0x04, 0x6C, 0x90, 0x00 ],
-             [ 0x3B, 0x16, 0x94, 0x7C, 0x03, 0x01, 0x00, 0x00, 0x0D ],
-             [ 0x3B, 0x65, 0x00, 0x00, 0x9C, 0x11, 0x01, 0x01, 0x03 ],
-             [ 0x3B, 0xE3, 0x00, 0xFF, 0x81, 0x31, 0x52, 0x45, 0xA1, 0xA2, 0xA3, 0x1B],
-             [ 0x3B, 0xE5, 0x00, 0x00, 0x81, 0x21, 0x45, 0x9C, 0x10, 0x01, 0x00, 0x80, 0x0D ]
-           ]
+    atrs = [[0x3F, 0x65, 0x25, 0x00, 0x2C, 0x09, 0x69, 0x90, 0x00],
+             [0x3F, 0x65, 0x25, 0x08, 0x93, 0x04, 0x6C, 0x90, 0x00],
+             [0x3B, 0x16, 0x94, 0x7C, 0x03, 0x01, 0x00, 0x00, 0x0D],
+             [0x3B, 0x65, 0x00, 0x00, 0x9C, 0x11, 0x01, 0x01, 0x03],
+             [0x3B, 0xE3, 0x00, 0xFF, 0x81, 0x31, 0x52, 0x45, 0xA1, 0xA2, 0xA3, 0x1B],
+             [0x3B, 0xE5, 0x00, 0x00, 0x81, 0x21, 0x45, 0x9C, 0x10, 0x01, 0x00, 0x80, 0x0D]]
 
     for atr in atrs:
-        a=ATR( atr )
-        print 80*'-'
+        a = ATR(atr)
+        print 80 * '-'
         print a
         a.dump()
-        print reduce( lambda a, b: a+"%-0.2X " % ((b+256)%256), a.getHistoricalBytes(), '' )
+        print reduce(lambda a, b: a + "%-0.2X " % ((b + 256) % 256), a.getHistoricalBytes(), '')
