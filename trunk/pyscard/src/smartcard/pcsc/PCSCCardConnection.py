@@ -28,10 +28,11 @@ from smartcard.Observer import Observable
 
 from smartcard.scard import *
 
-def translateprotocolmask( protocol ):
+
+def translateprotocolmask(protocol):
     """Translate CardConnection protocol mask into PCSC protocol mask."""
     pcscprotocol = 0
-    if None!=protocol:
+    if None != protocol:
         if CardConnection.T0_protocol & protocol:
             pcscprotocol |= SCARD_PROTOCOL_T0
         if CardConnection.T1_protocol & protocol:
@@ -42,80 +43,86 @@ def translateprotocolmask( protocol ):
             pcscprotocol |= SCARD_PROTOCOL_T15
     return pcscprotocol
 
-def translateprotocolheader( protocol ):
+
+def translateprotocolheader(protocol):
     """Translate protocol into PCSC protocol header."""
     pcscprotocol = 0
-    if None!=protocol:
-        if CardConnection.T0_protocol==protocol:
+    if None != protocol:
+        if CardConnection.T0_protocol == protocol:
             pcscprotocol = SCARD_PCI_T0
-        if CardConnection.T1_protocol==protocol:
+        if CardConnection.T1_protocol == protocol:
             pcscprotocol = SCARD_PCI_T1
-        if CardConnection.RAW_protocol==protocol:
+        if CardConnection.RAW_protocol == protocol:
             pcscprotocol = SCARD_PCI_RAW
     return pcscprotocol
 
-dictProtocolHeader = { SCARD_PCI_T0:'T0', SCARD_PCI_T1:'T1', SCARD_PCI_RAW:'RAW' }
-dictProtocol = { SCARD_PROTOCOL_T0:'T0', SCARD_PROTOCOL_T1:'T1', SCARD_PROTOCOL_RAW:'RAW',
-                 SCARD_PROTOCOL_T15:'T15', SCARD_PROTOCOL_T0|SCARD_PROTOCOL_T1:'T0 or T1' }
+dictProtocolHeader = {SCARD_PCI_T0: 'T0', SCARD_PCI_T1: 'T1',
+    SCARD_PCI_RAW: 'RAW'}
+dictProtocol = {SCARD_PROTOCOL_T0: 'T0', SCARD_PROTOCOL_T1: 'T1',
+    SCARD_PROTOCOL_RAW: 'RAW', SCARD_PROTOCOL_T15: 'T15',
+    SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1: 'T0 or T1'}
 
-class PCSCCardConnection( CardConnection ):
-    """PCSCCard connection class. Handles connection with a card thru a PCSC reader."""
 
-    def __init__( self, reader ):
+class PCSCCardConnection(CardConnection):
+    """PCSCCard connection class. Handles connection with a card thru a
+    PCSC reader."""
+
+    def __init__(self, reader):
         """Construct a new PCSC card connection.
 
         reader: the reader in which the smartcard to connect to is located.
         """
-        CardConnection.__init__( self, reader )
+        CardConnection.__init__(self, reader)
         self.hcard = None
-        hresult, self.hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
-        if hresult!=0:
-            raise CardConnectionException( 'Failed to establish context : ' + SCardGetErrorMessage(hresult) )
+        hresult, self.hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+        if hresult != 0:
+            raise CardConnectionException('Failed to establish context : ' + SCardGetErrorMessage(hresult))
 
-    def __del__( self ):
+    def __del__(self):
         """Destructor. Clean PCSC connection resources."""
         # race condition: module CardConnection
         # can disappear before __del__ is called
         self.disconnect()
-        hresult = SCardReleaseContext( self.hcontext )
-        if hresult!=0:
-            raise CardConnectionException( 'Failed to release context: ' + SCardGetErrorMessage(hresult) )
-        CardConnection.__del__( self )
+        hresult = SCardReleaseContext(self.hcontext)
+        if hresult != 0:
+            raise CardConnectionException('Failed to release context: ' + SCardGetErrorMessage(hresult))
+        CardConnection.__del__(self)
 
-    def connect( self, protocol=None, mode=None, disposition=None ):
+    def connect(self, protocol=None, mode=None, disposition=None):
         """Connect to the card.
-        
-        If protocol is not specified, connect with the default connection protocol.
-        
+
+        If protocol is not specified, connect with the default
+        connection protocol.
+
         If mode is not specified, connect with SCARD_SHARE_SHARED."""
-        CardConnection.connect( self, protocol )
-        pcscprotocol = translateprotocolmask( protocol )
-        if 0==pcscprotocol:
+        CardConnection.connect(self, protocol)
+        pcscprotocol = translateprotocolmask(protocol)
+        if 0 == pcscprotocol:
             pcscprotocol = self.getProtocol()
 
-        if mode==None:
+        if mode == None:
             mode = SCARD_SHARE_SHARED
 
         # store the way to dispose the card
-        if disposition==None:
+        if disposition == None:
             disposition = SCARD_UNPOWER_CARD
         self.disposition = disposition
 
         hresult, self.hcard, dwActiveProtocol = SCardConnect(
-            self.hcontext, str(self.reader), mode, pcscprotocol )
-        if hresult!=0:
-            self.hcard=None
-            if SCARD_W_REMOVED_CARD==hresult:
-                raise NoCardException( 'Unable to connect: ' + SCardGetErrorMessage(hresult) )
+            self.hcontext, str(self.reader), mode, pcscprotocol)
+        if hresult != 0:
+            self.hcard = None
+            if SCARD_W_REMOVED_CARD == hresult:
+                raise NoCardException('Unable to connect: ' + SCardGetErrorMessage(hresult))
             else:
-                raise CardConnectionException( 'Unable to connect with protocol: ' + dictProtocol[pcscprotocol] + '. ' + SCardGetErrorMessage(hresult) )
+                raise CardConnectionException('Unable to connect with protocol: ' + dictProtocol[pcscprotocol] + '. ' + SCardGetErrorMessage(hresult))
         protocol = 0
         for p in dictProtocol:
             if p == dwActiveProtocol:
                 protocol = eval("CardConnection.%s_protocol" % dictProtocol[p])
         PCSCCardConnection.setProtocol(self, protocol)
 
-    def disconnect( self ):
+    def disconnect(self):
         """Disconnect from the card."""
 
         # when __del__() is invoked in response to a module being deleted,
@@ -123,26 +130,26 @@ class PCSCCardConnection( CardConnection ):
         # by the __del__() method may already have been deleted.
         # this causes CardConnection.disconnect to except with a TypeError
         try:
-            CardConnection.disconnect( self )
+            CardConnection.disconnect(self)
         except TypeError:
             pass
-        if None!=self.hcard:
-            hresult = SCardDisconnect( self.hcard, self.disposition )
-            if hresult!=0:
-                raise CardConnectionException( 'Failed to disconnect: ' + SCardGetErrorMessage(hresult) )
+        if None != self.hcard:
+            hresult = SCardDisconnect(self.hcard, self.disposition)
+            if hresult != 0:
+                raise CardConnectionException('Failed to disconnect: ' + SCardGetErrorMessage(hresult))
             self.hcard = None
 
-    def getATR( self ):
+    def getATR(self):
         """Return card ATR"""
-        CardConnection.getATR( self )
-        if None==self.hcard:
-            raise CardConnectionException( 'Card not connected' )
-        hresult, reader, state, protocol, atr = SCardStatus( self.hcard )
-        if hresult!=0:
-            raise CardConnectionException( 'Failed to get status: ' + SCardGetErrorMessage(hresult) )
+        CardConnection.getATR(self)
+        if None == self.hcard:
+            raise CardConnectionException('Card not connected')
+        hresult, reader, state, protocol, atr = SCardStatus(self.hcard)
+        if hresult != 0:
+            raise CardConnectionException('Failed to get status: ' + SCardGetErrorMessage(hresult))
         return atr
 
-    def doTransmit( self, bytes, protocol=None ):
+    def doTransmit(self, bytes, protocol=None):
         """Transmit an apdu to the card and return response apdu.
 
         bytes:      command apdu to transmit (list of bytes)
@@ -155,25 +162,25 @@ class PCSCCardConnection( CardConnection ):
                     sw2 is status word 2, e.g. 0x1A
                     response are the response bytes excluding status words
         """
-        if None==protocol:
+        if None == protocol:
             protocol = self.getProtocol()
-        CardConnection.doTransmit( self, bytes, protocol )
-        pcscprotocolheader = translateprotocolheader( protocol )
-        if 0==pcscprotocolheader:
-            raise CardConnectionException( 'Invalid protocol in transmit: must be CardConnection.T0_protocol, CardConnection.T1_protocol, or CardConnection.RAW_protocol' )
-        if None==self.hcard:
-            raise CardConnectionException( 'Card not connected' )
-        hresult, response = SCardTransmit( self.hcard, pcscprotocolheader, bytes )
-        if hresult!=0:
-            raise CardConnectionException( 'Failed to transmit with protocol ' + dictProtocolHeader[pcscprotocolheader] + '. ' + SCardGetErrorMessage(hresult) )
+        CardConnection.doTransmit(self, bytes, protocol)
+        pcscprotocolheader = translateprotocolheader(protocol)
+        if 0 == pcscprotocolheader:
+            raise CardConnectionException('Invalid protocol in transmit: must be CardConnection.T0_protocol, CardConnection.T1_protocol, or CardConnection.RAW_protocol')
+        if None == self.hcard:
+            raise CardConnectionException('Card not connected')
+        hresult, response = SCardTransmit(self.hcard, pcscprotocolheader, bytes)
+        if hresult != 0:
+            raise CardConnectionException('Failed to transmit with protocol ' + dictProtocolHeader[pcscprotocolheader] + '. ' + SCardGetErrorMessage(hresult))
 
-        sw1=(response[-2]+256)%256
-        sw2=(response[-1]+256)%256
+        sw1 = (response[-2] + 256) % 256
+        sw2 = (response[-1] + 256) % 256
 
-        data = map(lambda x: (x+256)%256, response[:-2])
+        data = map(lambda x: (x + 256) % 256, response[:-2])
         return data, sw1, sw2
 
-    def doControl( self, controlCode, bytes=[] ):
+    def doControl(self, controlCode, bytes=[]):
         """Transmit a control command to the reader and return response.
 
         controlCode: control command
@@ -182,12 +189,12 @@ class PCSCCardConnection( CardConnection ):
 
         return:      response are the response bytes (if any)
         """
-        CardConnection.doControl( self, controlCode, bytes )
-        hresult, response = SCardControl( self.hcard, controlCode, bytes )
-        if hresult!=0:
-            raise CardConnectionException( 'Failed to control ' + SCardGetErrorMessage(hresult) )
+        CardConnection.doControl(self, controlCode, bytes)
+        hresult, response = SCardControl(self.hcard, controlCode, bytes)
+        if hresult != 0:
+            raise CardConnectionException('Failed to control ' + SCardGetErrorMessage(hresult))
 
-        data = map(lambda x: (x+256)%256, response)
+        data = map(lambda x: (x + 256) % 256, response)
         return data
 
 if __name__ == '__main__':
@@ -197,6 +204,6 @@ if __name__ == '__main__':
     from smartcard.pcsc.PCSCReader import readers
     cc = readers()[0].createConnection()
     cc.connect()
-    print "%r %x %x" % cc.transmit( SELECT + DF_TELECOM )
+    print "%r %x %x" % cc.transmit(SELECT + DF_TELECOM)
 
-    print cc.control( 0, [] )
+    print cc.control(0, [])
