@@ -26,45 +26,47 @@ from smartcard.reader.Reader import Reader
 from smartcard.System import readers
 from smartcard.util import toHexString
 
+
 class Card:
     """Card class."""
-    def __init__( self, reader, atr ):
+
+    def __init__(self, reader, atr):
         """Card constructor.
         reader: reader in which the card is inserted
         atr: ATR of the card"""
-        self.reader=reader
-        self.atr=atr
+        self.reader = reader
+        self.atr = atr
 
-    def __repr__( self ):
-        """Return a string representing the Card (atr and reader concatenation)."""
-        return toHexString( self.atr ) + ' / ' + str(self.reader)
+    def __repr__(self):
+        """Return a string representing the Card (atr and reader
+        concatenation)."""
+        return toHexString(self.atr) + ' / ' + str(self.reader)
 
-
-    def __eq__( self, other ):
+    def __eq__(self, other):
         """Return True if self==other (same reader and same atr).
            Return False otherwise."""
-        if isinstance( other, Card ):
-            return (self.atr==other.atr and `self.reader`==`other.reader`)
+        if isinstance(other, Card):
+            return (self.atr == other.atr and `self.reader` == `other.reader`)
         else:
             return False
 
-    def __ne__( self, other ):
-        """Return True if self!=other (same reader and same atr).Returns False otherwise."""
-        return not self.__eq__( other )
+    def __ne__(self, other):
+        """Return True if self!=other (same reader and same atr).Returns
+        False otherwise."""
+        return not self.__eq__(other)
 
-
-    def createConnection( self ):
+    def createConnection(self):
         """Return a CardConnection to the Card object."""
-        readerobj=None
-        if isinstance( self.reader, Reader ):
-            readerobj=self.reader
-        elif type(self.reader)==str:
+        readerobj = None
+        if isinstance(self.reader, Reader):
+            readerobj = self.reader
+        elif type(self.reader) == str:
             for reader in readers():
-                if self.reader==str(reader):
+                if self.reader == str(reader):
                     readerobj = reader
 
         if readerobj:
             return readerobj.createConnection()
         else:
-            #raise CardConnectionException( 'not a valid reader: ' + str(self.reader) )
+            #raise CardConnectionException('not a valid reader: ' + str(self.reader))
             return None
