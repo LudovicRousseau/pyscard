@@ -26,53 +26,57 @@ from sys import exc_info
 
 
 class ErrorCheckingChain:
-    """The error checking chain is a list of response apdu status word (sw1, sw2)
-    error check strategies. Each strategy in the chain is called until an error is
-    detected. A smartcard.sw.SWException exception is raised when an error is
-    detected. No exception is raised if no error is detected.
+    """The error checking chain is a list of response apdu status word
+    (sw1, sw2) error check strategies. Each strategy in the chain is
+    called until an error is detected. A smartcard.sw.SWException
+    exception is raised when an error is detected. No exception is
+    raised if no error is detected.
 
-    Implementation derived from Bruce Eckel, Thinking in Python. The ErrorCheckingChain
-    implements the Chain Of Responsibility design pattern.
+    Implementation derived from Bruce Eckel, Thinking in Python. The
+    ErrorCheckingChain implements the Chain Of Responsibility design
+    pattern.
     """
-    def __init__( self, chain, strategy ):
+
+    def __init__(self, chain, strategy):
         """constructor. Appends a strategy to the ErrorCheckingChain chain."""
         self.strategy = strategy
         self.chain = chain
         self.chain.append(self)
-        self.excludes=[]
+        self.excludes = []
 
-    def next( self ):
+    def next(self):
         """Returns next error checking strategy."""
         # Where this link is in the chain:
         location = self.chain.index(self)
         if not self.end():
             return self.chain[location + 1]
 
-    def addFilterException( self, exClass ):
+    def addFilterException(self, exClass):
         """Add an exception filter to the error checking chain.
 
-        exClass:    the exception to exclude, e.g. smartcard.sw.SWExceptions.WarningProcessingException
-        A filtered exception will not be raised when the sw1,sw2 conditions that would raise
-        the excption are met.
+        exClass:    the exception to exclude, e.g.
+        smartcard.sw.SWExceptions.WarningProcessingException A filtered
+        exception will not be raised when the sw1,sw2 conditions that
+        would raise the excption are met.
         """
-        self.excludes.append( exClass )
+
+        self.excludes.append(exClass)
         if self.end():
             return
-        self.next().addFilterException( exClass )
+        self.next().addFilterException(exClass)
 
-    def end( self ):
+    def end(self):
         """Returns True if this is the end of the error checking strategy chain."""
         return (self.chain.index(self) + 1 >= len(self.chain))
 
-
-    def __call__( self, data, sw1, sw2 ):
+    def __call__(self, data, sw1, sw2):
         """Called to test data, sw1 and sw2 for error on the chain."""
         try:
-            self.strategy( data, sw1, sw2 )
+            self.strategy(data, sw1, sw2)
         except:
             # if exception is filtered, return
             for exception in self.excludes:
-                if exception==exc_info()[0]:
+                if exception == exc_info()[0]:
                     return
             # otherwise reraise exception
             raise
@@ -80,4 +84,4 @@ class ErrorCheckingChain:
         # if not done, call next strategy
         if self.end():
             return
-        return self.next()( data, sw1, sw2 )
+        return self.next()(data, sw1, sw2)

@@ -24,6 +24,7 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
+
 class SWException:
     """Base class for status word exceptions.
 
@@ -31,37 +32,47 @@ class SWException:
     in the sw1 and sw2 bytes of the response apdu.
 
     """
-    def __init__( self, data, sw1, sw2, message="" ):
+
+    def __init__(self, data, sw1, sw2, message=""):
         self.message = message
         """response apdu data"""
         self.data = data
         """response apdu sw1"""
-        self.sw1=sw1
+        self.sw1 = sw1
         """response apdu sw2"""
-        self.sw2=sw2
-    def __str__(self):
-        return repr( 'Status word exception: ' + self.message + '!' )
+        self.sw2 = sw2
 
-class WarningProcessingException( SWException ):
+    def __str__(self):
+        return repr('Status word exception: ' + self.message + '!')
+
+
+class WarningProcessingException(SWException):
     """Raised when a warning processing is detected from sw1, sw2.
     Examples of warning processing exception: sw1=62 or sw=63 (ISO7816-4)."""
-    def __init__( self, data, sw1, sw2, message="" ):
-        SWException.__init__( self, data, sw1, sw2, "warning processing - " + message )
 
-class ExecutionErrorException( SWException ):
+    def __init__(self, data, sw1, sw2, message=""):
+        SWException.__init__(self, data, sw1, sw2, "warning processing - " + message)
+
+
+class ExecutionErrorException(SWException):
     """Raised when an execution error is detected from sw1, sw2.
     Examples of execution error: sw1=64 or sw=65 (ISO7816-4)."""
-    def __init__( self, data, sw1, sw2, message="" ):
-        SWException.__init__( self, data, sw1, sw2, "execution error - " + message )
 
-class SecurityRelatedException( SWException ):
+    def __init__(self, data, sw1, sw2, message=""):
+        SWException.__init__(self, data, sw1, sw2, "execution error - " + message)
+
+
+class SecurityRelatedException(SWException):
     """Raised when a security issue is detected from sw1, sw2.
     Examples of security issue: sw1=66 (ISO7816-4)."""
-    def __init__( self, data, sw1, sw2, message="" ):
-        SWException.__init__( self, data, sw1, sw2, "security issue - " + message )
 
-class CheckingErrorException( SWException ):
+    def __init__(self, data, sw1, sw2, message=""):
+        SWException.__init__(self, data, sw1, sw2, "security issue - " + message)
+
+
+class CheckingErrorException(SWException):
     """Raised when a checking error is detected from sw1, sw2.
     Examples of checking error: sw1=67 to 6F (ISO781604)."""
-    def __init__( self, data, sw1, sw2, message="" ):
-        SWException.__init__( self, data, sw1, sw2, "checking error - " + message )
+
+    def __init__(self, data, sw1, sw2, message=""):
+        SWException.__init__(self, data, sw1, sw2, "checking error - " + message)
