@@ -30,70 +30,72 @@ from smartcard.wx.SimpleSCardAppEventObserver import SimpleSCardAppEventObserver
 
 ID_TEXT = 10000
 
-class SamplePanel( wx.Panel, SimpleSCardAppEventObserver ):
+
+class SamplePanel(wx.Panel, SimpleSCardAppEventObserver):
     '''A simple panel that displays activated cards and readers.
     The panel implements the SimpleSCardAppEventObserver, and has
     a chance to react on reader and card activation/deactivation.'''
-    def __init__( self, parent ):
-        wx.Panel.__init__( self, parent, -1 )
 
-        sizer = wx.FlexGridSizer( 0, 3, 0, 0 )
-        sizer.AddGrowableCol( 1 )
-        sizer.AddGrowableRow( 1 )
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent, -1)
 
-        sizer.Add( [ 20, 20 ] , 0, wx.ALIGN_CENTER|wx.ALL, 5 )
-        sizer.Add( [ 20, 20 ] , 0, wx.ALIGN_CENTER|wx.ALL, 5 )
-        sizer.Add( [ 20, 20 ] , 0, wx.ALIGN_CENTER|wx.ALL, 5 )
-        sizer.Add( [ 20, 20 ] , 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+        sizer = wx.FlexGridSizer(0, 3, 0, 0)
+        sizer.AddGrowableCol(1)
+        sizer.AddGrowableRow(1)
 
-        self.feedbacktext = wx.StaticText( self, ID_TEXT, "", wx.DefaultPosition, wx.DefaultSize, 0 )
-        sizer.Add( self.feedbacktext, 0, wx.ALIGN_LEFT|wx.ALL, 5 )
+        sizer.Add([20, 20], 0, wx.ALIGN_CENTER | wx.ALL, 5)
+        sizer.Add([20, 20], 0, wx.ALIGN_CENTER | wx.ALL, 5)
+        sizer.Add([20, 20], 0, wx.ALIGN_CENTER | wx.ALL, 5)
+        sizer.Add([20, 20], 0, wx.ALIGN_CENTER | wx.ALL, 5)
 
-        sizer.Add( [ 20, 20 ] , 0, wx.ALIGN_CENTER|wx.ALL, 5 )
-        sizer.Add( [ 20, 20 ] , 0, wx.ALIGN_CENTER|wx.ALL, 5 )
-        sizer.Add( [ 20, 20 ] , 0, wx.ALIGN_CENTER|wx.ALL, 5 )
-        sizer.Add( [ 20, 20 ] , 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+        self.feedbacktext = wx.StaticText(self, ID_TEXT, "", wx.DefaultPosition, wx.DefaultSize, 0)
+        sizer.Add(self.feedbacktext, 0, wx.ALIGN_LEFT | wx.ALL, 5)
+
+        sizer.Add([20, 20], 0, wx.ALIGN_CENTER | wx.ALL, 5)
+        sizer.Add([20, 20], 0, wx.ALIGN_CENTER | wx.ALL, 5)
+        sizer.Add([20, 20], 0, wx.ALIGN_CENTER | wx.ALL, 5)
+        sizer.Add([20, 20], 0, wx.ALIGN_CENTER | wx.ALL, 5)
 
         self.SetSizer(sizer)
         self.SetAutoLayout(True)
 
     # callbacks from SimpleSCardAppEventObserver interface
-    def OnActivateCard( self, card ):
+    def OnActivateCard(self, card):
         """Called when a card is activated by double-clicking on the card or reader tree control or toolbar.
         In this sample, we just connect to the card on the first activation."""
-        SimpleSCardAppEventObserver.OnActivateCard( self, card )
-        self.feedbacktext.SetLabel( 'Activated card: ' + `card` )
+        SimpleSCardAppEventObserver.OnActivateCard(self, card)
+        self.feedbacktext.SetLabel('Activated card: ' + `card`)
 
-    def OnActivateReader( self, reader ):
+    def OnActivateReader(self, reader):
         """Called when a reader is activated by double-clicking on the reader tree control or toolbar."""
-        SimpleSCardAppEventObserver.OnActivateReader( self, reader )
-        self.feedbacktext.SetLabel( 'Activated reader: ' + `reader` )
+        SimpleSCardAppEventObserver.OnActivateReader(self, reader)
+        self.feedbacktext.SetLabel('Activated reader: ' + `reader`)
 
-    def OnDeactivateCard( self, card ):
+    def OnDeactivateCard(self, card):
         """Called when a card is deactivated in the reader tree control or toolbar."""
-        SimpleSCardAppEventObserver.OnActivateCard( self, card )
-        self.feedbacktext.SetLabel( 'Deactivated card: ' + `card` )
+        SimpleSCardAppEventObserver.OnActivateCard(self, card)
+        self.feedbacktext.SetLabel('Deactivated card: ' + `card`)
 
-    def OnSelectCard( self, card ):
+    def OnSelectCard(self, card):
         """Called when a card is selected by clicking on the card or reader tree control or toolbar."""
-        SimpleSCardAppEventObserver.OnSelectCard( self, card )
-        self.feedbacktext.SetLabel( 'Selected card: ' + `card` )
+        SimpleSCardAppEventObserver.OnSelectCard(self, card)
+        self.feedbacktext.SetLabel('Selected card: ' + `card`)
 
-    def OnSelectReader( self, reader ):
+    def OnSelectReader(self, reader):
         """Called when a reader is selected by clicking on the reader tree control or toolbar."""
-        SimpleSCardAppEventObserver.OnSelectReader( self, reader )
-        self.feedbacktext.SetLabel( 'Selected reader: ' + `reader` )
+        SimpleSCardAppEventObserver.OnSelectReader(self, reader)
+        self.feedbacktext.SetLabel('Selected reader: ' + `reader`)
 
 
-def main( argv ):
+def main(argv):
     app = SimpleSCardApp(
         appname='A simple card monitoring tool',
         apppanel=SamplePanel,
         appstyle=TR_SMARTCARD | TR_READER,
-        appicon=os.path.join( os.path.dirname( __file__ ), 'images', 'mysmartcard.ico' ),
-        size=(800, 600) )
+        appicon=os.path.join(os.path.dirname(__file__), 'images', 'mysmartcard.ico'),
+        size=(800, 600))
     app.MainLoop()
 
 if __name__ == "__main__":
     import sys
-    main( sys.argv )
+    main(sys.argv)
