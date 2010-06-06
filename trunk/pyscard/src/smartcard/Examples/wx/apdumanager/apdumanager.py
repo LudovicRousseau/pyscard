@@ -29,15 +29,16 @@ from smartcard.wx.SimpleSCardApp import *
 
 from SampleAPDUManagerPanel import SampleAPDUManagerPanel
 
-def main( argv ):
+
+def main(argv):
     app = SimpleSCardApp(
         appname='A tool to send apdu to a card',
         apppanel=SampleAPDUManagerPanel,
         appstyle=TR_SMARTCARD | TR_READER | PANEL_APDUTRACER,
-        appicon=os.path.join( os.path.dirname( __file__ ), 'images', 'mysmartcard.ico' ),
-        size=(800, 600) )
+        appicon=os.path.join(os.path.dirname(__file__), 'images', 'mysmartcard.ico'),
+        size=(800, 600))
     app.MainLoop()
 
 if __name__ == "__main__":
     import sys
-    main( sys.argv )
+    main(sys.argv)
