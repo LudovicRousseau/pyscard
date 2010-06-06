@@ -32,17 +32,19 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from smartcard.ClassLoader import get_class
 
+
 class ReaderFactory:
     """Class to create readers from reader type id."""
 
     factories = {}
-    def addFactory( id, ReaderFactory ):
+
+    def addFactory(id, ReaderFactory):
         """Static method to add a ReaderFactory associated to a reader id."""
         ReaderFactory.factories.put[id] = ReaderFactory
     addFactory = staticmethod(addFactory)
 
     # A Template Method:
-    def createReader( clazz, readername ):
+    def createReader(clazz, readername):
         """Static method to create a reader from a reader clazz.
 
         module:     the python module that contains the reader class
@@ -50,6 +52,6 @@ class ReaderFactory:
         readername: the reader name
         """
         if not ReaderFactory.factories.has_key(clazz):
-            ReaderFactory.factories[clazz] = get_class( clazz ).Factory()
-        return ReaderFactory.factories[clazz].create( readername )
+            ReaderFactory.factories[clazz] = get_class(clazz).Factory()
+        return ReaderFactory.factories[clazz].create(readername)
     createReader = staticmethod(createReader)
