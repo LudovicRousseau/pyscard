@@ -22,33 +22,35 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
+
 class SimpleSCardAppEventObserver:
     """This interface defines the event handlers called by the SimpleSCardApp."""
-    def __init__( self ):
+
+    def __init__(self):
         self.selectedcard = None
         self.selectedreader = None
 
     # callbacks from SimpleCardAppFrame controls
-    def OnActivateCard( self, card ):
+    def OnActivateCard(self, card):
         """Called when a card is activated in the reader tree control or toolbar."""
         self.selectedcard = card
 
-    def OnActivateReader( self, reader ):
+    def OnActivateReader(self, reader):
         """Called when a reader is activated in the reader tree control or toolbar."""
         self.selectedreader = reader
 
-    def OnDeactivateCard( self, card ):
+    def OnDeactivateCard(self, card):
         """Called when a card is deactivated in the reader tree control or toolbar."""
         pass
 
-    def OnDeselectCard( self, card ):
+    def OnDeselectCard(self, card):
         """Called when a card is selected in the reader tree control or toolbar."""
         self.selectedcard = None
 
-    def OnSelectCard( self, card ):
+    def OnSelectCard(self, card):
         """Called when a card is selected in the reader tree control or toolbar."""
         self.selectedcard = card
 
-    def OnSelectReader( self, reader ):
+    def OnSelectReader(self, reader):
         """Called when a reader is selected in the reader tree control or toolbar."""
         self.selectedreader = reader

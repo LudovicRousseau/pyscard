@@ -27,60 +27,63 @@ import  wx
 from smartcard.ReaderMonitoring import ReaderMonitor, ReaderObserver
 from smartcard.wx import ICO_SMARTCARD, ICO_READER
 
-class ReaderComboBox( wx.ComboBox, ReaderObserver ):
-    def __init__( self, parent ):
+
+class ReaderComboBox(wx.ComboBox, ReaderObserver):
+
+    def __init__(self, parent):
         """Constructor. Registers as ReaderObserver to get
         notifications of reader insertion/removal."""
-        wx.ComboBox.__init__( self, parent, wx.NewId(),
-                        size=(170,-1), style=wx.CB_DROPDOWN | wx.CB_SORT ,
-                        choices=[] )
+        wx.ComboBox.__init__(self, parent, wx.NewId(),
+                        size=(170, -1), style=wx.CB_DROPDOWN | wx.CB_SORT,
+                        choices=[])
 
         # register as a ReaderObserver; we will ge notified of added/removed readers
         self.readermonitor = ReaderMonitor()
-        self.readermonitor.addObserver( self )
+        self.readermonitor.addObserver(self)
 
-    def update( self, observable, (addedreaders, removedreaders) ):
+    def update(self, observable, (addedreaders, removedreaders)):
         """Toolbar ReaderObserver callback that is notified when
         readers are added or removed."""
         for reader in addedreaders:
-            item = self.Append( str(reader) )
-            self.SetClientData( item, reader )
+            item = self.Append(str(reader))
+            self.SetClientData(item, reader)
         for reader in removedreaders:
-            item = self.FindString( str(reader) )
+            item = self.FindString(str(reader))
             if wx.NOT_FOUND != item:
-                self.Delete( item )
+                self.Delete(item)
         selection = self.GetSelection()
         #if wx.NOT_FOUND == selection:
-        #    self.SetSelection( 0 )
+        #    self.SetSelection(0)
 
 
-class ReaderToolbar( wx.ToolBar ):
+class ReaderToolbar(wx.ToolBar):
     """ReaderToolbar. Contains controls to select a reader from a listbox
     and connect to the cards."""
-    def __init__( self, parent ):
+
+    def __init__(self, parent):
         """Constructor, creating the reader toolbar."""
-        wx.ToolBar.__init__( self,
+        wx.ToolBar.__init__(self,
                              parent,
                              pos=wx.DefaultPosition,
                              size=wx.DefaultSize,
                              style=wx.SIMPLE_BORDER | wx.TB_HORIZONTAL | wx.TB_FLAT | wx.TB_TEXT,
-                             name='Reader Toolbar' )
+                             name='Reader Toolbar')
 
         # create bitmaps for toolbar
-        tsize = (16,16)
-        if None!=ICO_READER:
-            bmpReader = wx.Bitmap( ICO_READER, wx.BITMAP_TYPE_ICO )
+        tsize = (16, 16)
+        if None != ICO_READER:
+            bmpReader = wx.Bitmap(ICO_READER, wx.BITMAP_TYPE_ICO)
         else:
-            bmpReader = wx.ArtProvider_GetBitmap( wx.ART_HELP_BOOK, wx.ART_OTHER, isz )
-        if None!=ICO_SMARTCARD:
-            bmpCard = wx.Bitmap( ICO_SMARTCARD, wx.BITMAP_TYPE_ICO )
+            bmpReader = wx.ArtProvider_GetBitmap(wx.ART_HELP_BOOK, wx.ART_OTHER, isz)
+        if None != ICO_SMARTCARD:
+            bmpCard = wx.Bitmap(ICO_SMARTCARD, wx.BITMAP_TYPE_ICO)
         else:
-            bmpCard = wx.ArtProvider_GetBitmap( wx.ART_HELP_BOOK, wx.ART_OTHER, isz )
-        self.readercombobox = ReaderComboBox( self )
+            bmpCard = wx.ArtProvider_GetBitmap(wx.ART_HELP_BOOK, wx.ART_OTHER, isz)
+        self.readercombobox = ReaderComboBox(self)
 
         # create and add controls
-        self.AddSimpleTool( 10, bmpReader, "Select smart card reader", "Select smart card reader")
-        self.AddControl( self.readercombobox )
+        self.AddSimpleTool(10, bmpReader, "Select smart card reader", "Select smart card reader")
+        self.AddControl(self.readercombobox)
         self.AddSeparator()
         self.AddSimpleTool(20, bmpCard, "Connect to smartcard", "Connect to smart card")
         self.AddSeparator()

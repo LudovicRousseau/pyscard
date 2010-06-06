@@ -30,35 +30,37 @@ import string
 import wx
 
 # a regexp to match ATRs and APDUs
-hexbyte="[0-9a-fA-F]{1,2}"
-apduregexp = re.compile( "((%s)[ ]*)*" % hexbyte )
+hexbyte = "[0-9a-fA-F]{1,2}"
+apduregexp = re.compile("((%s)[ ]*)*" % hexbyte)
 
-class APDUHexValidator( wx.PyValidator ):
+
+class APDUHexValidator(wx.PyValidator):
     '''A wxValidator that matches APDU in hexadecimal such as:
         A4 A0 00 00 02
         A4A0000002'''
-    def __init__(self ):
+
+    def __init__(self):
         wx.PyValidator.__init__(self)
-        self.Bind( wx.EVT_CHAR, self.OnChar )
+        self.Bind(wx.EVT_CHAR, self.OnChar)
 
     def Clone(self):
         return APDUHexValidator()
 
-    def Validate( self, win ):
+    def Validate(self, win):
         tc = self.GetWindow()
         val = tc.GetValue()
 
-        if not apduregexp.match( value ):
+        if not apduregexp.match(value):
             return False
 
         return True
 
-    def OnChar( self, event ):
+    def OnChar(self, event):
         key = event.GetKeyCode()
 
-        if wx.WXK_SPACE==key or chr(key) in string.hexdigits:
-            value = event.GetEventObject().GetValue()+chr(key)
-            if apduregexp.match( value ):
+        if wx.WXK_SPACE == key or chr(key) in string.hexdigits:
+            value = event.GetEventObject().GetValue() + chr(key)
+            if apduregexp.match(value):
                 event.Skip()
             return
 
