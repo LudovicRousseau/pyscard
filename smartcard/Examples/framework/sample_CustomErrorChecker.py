@@ -32,16 +32,16 @@ from smartcard.sw.ErrorChecker import ErrorChecker
 from smartcard.sw.SWExceptions import SWException
 
 
-
-class MyErrorChecker( ErrorChecker ):
+class MyErrorChecker(ErrorChecker):
     """Our custom error checker that will except if 0x61<sw1<0x70."""
-    def __call__( self, data, sw1, sw2 ):
+
+    def __call__(self, data, sw1, sw2):
         print sw1, sw2
-        if 0x61<sw1 and 0x70>sw1:
-            raise SWException( data, sw1, sw2 )
+        if 0x61 < sw1 and 0x70 > sw1:
+            raise SWException(data, sw1, sw2)
 
 # define the apdus used in this script
-GET_RESPONSE = [0XA0, 0XC0, 00, 00 ]
+GET_RESPONSE = [0XA0, 0XC0, 00, 00]
 SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
 DF_TELECOM = [0x7F, 0x10]
 
@@ -52,17 +52,17 @@ if __name__ == '__main__':
 
     # request any card
     cardtype = AnyCardType()
-    cardrequest = CardRequest( timeout=10, cardType=cardtype )
+    cardrequest = CardRequest(timeout=10, cardType=cardtype)
     cardservice = cardrequest.waitforcard()
 
     # our error checking chain
-    errorchain=[]
-    errorchain=[ ErrorCheckingChain( [], MyErrorChecker() ) ]
-    cardservice.connection.setErrorCheckingChain( errorchain )
+    errorchain = []
+    errorchain = [ErrorCheckingChain([], MyErrorChecker())]
+    cardservice.connection.setErrorCheckingChain(errorchain)
 
     # attach the console tracer
-    observer=ConsoleCardConnectionObserver()
-    cardservice.connection.addObserver( observer )
+    observer = ConsoleCardConnectionObserver()
+    cardservice.connection.addObserver(observer)
 
     # send a few apdus; exceptions will occur upon errors
     cardservice.connection.connect()
@@ -70,18 +70,18 @@ if __name__ == '__main__':
     try:
         SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
         DF_TELECOM = [0x7F, 0x10]
-        apdu = SELECT+DF_TELECOM
-        response, sw1, sw2 = cardservice.connection.transmit( apdu )
+        apdu = SELECT + DF_TELECOM
+        response, sw1, sw2 = cardservice.connection.transmit(apdu)
         if sw1 == 0x9F:
-            GET_RESPONSE = [0XA0, 0XC0, 00, 00 ]
+            GET_RESPONSE = [0XA0, 0XC0, 00, 00]
             apdu = GET_RESPONSE + [sw2]
-            response, sw1, sw2 = cardservice.connection.transmit( apdu )
+            response, sw1, sw2 = cardservice.connection.transmit(apdu)
     except SWException, e:
-        print e, "%x %x" % (e.sw1, e.sw2 )
+        print e, "%x %x" % (e.sw1, e.sw2)
 
         cardservice.connection.disconnect()
 
     import sys
-    if 'win32'==sys.platform:
+    if 'win32' == sys.platform:
         print 'press Enter to continue'
         sys.stdin.read(1)
