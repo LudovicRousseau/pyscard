@@ -40,7 +40,8 @@ class BaseSCardException:
 
     def __str__(self):
         """Returns a string representation of the exception."""
-        return "scard exception!"
+        return repr("scard exception: "  +
+            smartcard.scard.SCardGetErrorMessage(self.hresult))
 
 class EstablishContextException(BaseSCardException):
     """Raised when scard failed to establish context with PCSC."""
