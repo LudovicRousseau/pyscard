@@ -26,24 +26,24 @@ from smartcard.sw.ErrorChecker import ErrorChecker
 import smartcard.sw.SWExceptions
 
 iso7816_4SW1 = {
-    0x62:smartcard.sw.SWExceptions.WarningProcessingException,
-    0x63:smartcard.sw.SWExceptions.WarningProcessingException,
-    0x64:smartcard.sw.SWExceptions.ExecutionErrorException,
-    0x65:smartcard.sw.SWExceptions.ExecutionErrorException,
-    0x66:smartcard.sw.SWExceptions.SecurityRelatedException,
-    0x67:smartcard.sw.SWExceptions.CheckingErrorException,
-    0x68:smartcard.sw.SWExceptions.CheckingErrorException,
-    0x69:smartcard.sw.SWExceptions.CheckingErrorException,
-    0x6A:smartcard.sw.SWExceptions.CheckingErrorException,
-    0x6B:smartcard.sw.SWExceptions.CheckingErrorException,
-    0x6C:smartcard.sw.SWExceptions.CheckingErrorException,
-    0x6D:smartcard.sw.SWExceptions.CheckingErrorException,
-    0x6E:smartcard.sw.SWExceptions.CheckingErrorException,
-    0x6F:smartcard.sw.SWExceptions.CheckingErrorException,
+    0x62: smartcard.sw.SWExceptions.WarningProcessingException,
+    0x63: smartcard.sw.SWExceptions.WarningProcessingException,
+    0x64: smartcard.sw.SWExceptions.ExecutionErrorException,
+    0x65: smartcard.sw.SWExceptions.ExecutionErrorException,
+    0x66: smartcard.sw.SWExceptions.SecurityRelatedException,
+    0x67: smartcard.sw.SWExceptions.CheckingErrorException,
+    0x68: smartcard.sw.SWExceptions.CheckingErrorException,
+    0x69: smartcard.sw.SWExceptions.CheckingErrorException,
+    0x6A: smartcard.sw.SWExceptions.CheckingErrorException,
+    0x6B: smartcard.sw.SWExceptions.CheckingErrorException,
+    0x6C: smartcard.sw.SWExceptions.CheckingErrorException,
+    0x6D: smartcard.sw.SWExceptions.CheckingErrorException,
+    0x6E: smartcard.sw.SWExceptions.CheckingErrorException,
+    0x6F: smartcard.sw.SWExceptions.CheckingErrorException,
 }
 
 
-class ISO7816_4_SW1ErrorChecker( ErrorChecker ):
+class ISO7816_4_SW1ErrorChecker(ErrorChecker):
     """ISO7816-4 error checker based on status word sw1 only.
 
     This error checker raises the following exceptions:
@@ -63,22 +63,23 @@ class ISO7816_4_SW1ErrorChecker( ErrorChecker ):
     6e  any   CheckingErrorException
     6f  any   CheckingErrorException
     """
-    def __call__( self, data, sw1, sw2 ):
+
+    def __call__(self, data, sw1, sw2):
         """Called to test data, sw1 and sw2 for error.
 
         data:       apdu response data
         sw1, sw2:   apdu data status words
         """
-        if iso7816_4SW1.has_key( sw1 ):
-            exception=iso7816_4SW1[sw1]
-            raise exception( data, sw1, sw2 )
+        if iso7816_4SW1.has_key(sw1):
+            exception = iso7816_4SW1[sw1]
+            raise exception(data, sw1, sw2)
 
 
 if __name__ == '__main__':
     """Small sample illustrating the use of ISO7816_4_SW1ErrorChecker."""
-    ecs=ISO7816_4_SW1ErrorChecker()
-    ecs( [], 0x90, 0x00 )
+    ecs = ISO7816_4_SW1ErrorChecker()
+    ecs([], 0x90, 0x00)
     try:
-        ecs( [], 0x66, 0x80 )
+        ecs([], 0x66, 0x80)
     except smartcard.sw.SWExceptions.SecurityRelatedException, e:
         print e, "%x %x" % (e.sw1, e.sw2)

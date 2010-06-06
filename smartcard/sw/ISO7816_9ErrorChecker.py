@@ -26,24 +26,24 @@ from smartcard.sw.ErrorChecker import ErrorChecker
 import smartcard.sw.SWExceptions
 
 iso7816_9SW = {
-    0x62:( smartcard.sw.SWExceptions.WarningProcessingException,
-           { 0x82:"End of file/record reached" } ),
+    0x62: (smartcard.sw.SWExceptions.WarningProcessingException,
+           {0x82: "End of file/record reached"}),
 
-    0x64:( smartcard.sw.SWExceptions.ExecutionErrorException,
-           { 0x00:"Execution error" } ),
+    0x64: (smartcard.sw.SWExceptions.ExecutionErrorException,
+           {0x00: "Execution error"}),
 
-    0x69:( smartcard.sw.SWExceptions.CheckingErrorException,
-           { 0x82:"Security status not satisfied" } ),
+    0x69: (smartcard.sw.SWExceptions.CheckingErrorException,
+           {0x82: "Security status not satisfied"}),
 
-    0x6A:( smartcard.sw.SWExceptions.CheckingErrorException,
-           { 0x80:"Incorrect parameters in data field",
-             0x84:"Not enough memory space",
-             0x89:"File already exists",
-             0x8A:"DF name already exists" } ),
+    0x6A: (smartcard.sw.SWExceptions.CheckingErrorException,
+           {0x80: "Incorrect parameters in data field",
+            0x84: "Not enough memory space",
+            0x89: "File already exists",
+            0x8A: "DF name already exists"}),
 }
 
 
-class ISO7816_9ErrorChecker( ErrorChecker ):
+class ISO7816_9ErrorChecker(ErrorChecker):
     """ISO7816-8 error checker.
 
     This error checker raises the following exceptions:
@@ -67,32 +67,34 @@ class ISO7816_9ErrorChecker( ErrorChecker ):
     64  any except 00
 
 
-    Use another checker in the error checking chain, e.g., the ISO7816_4SW1ErrorChecker or
-    ISO7816_4ErrorChecker, to raise exceptions on these undefined values.
+    Use another checker in the error checking chain, e.g., the
+    ISO7816_4SW1ErrorChecker or ISO7816_4ErrorChecker, to raise
+    exceptions on these undefined values.
     """
-    def __call__( self, data, sw1, sw2 ):
+
+    def __call__(self, data, sw1, sw2):
         """Called to test data, sw1 and sw2 for error.
 
         data:       apdu response data
         sw1, sw2:   apdu data status words
 
         Derived classes must raise a smartcard.sw.SWException upon error."""
-        if iso7816_9SW.has_key( sw1 ):
+        if iso7816_9SW.has_key(sw1):
             exception, sw2dir = iso7816_9SW[sw1]
-            if type(sw2dir)==type({}):
+            if type(sw2dir) == type({}):
                 try:
                     message = sw2dir[sw2]
-                    raise exception( data, sw1, sw2, message )
+                    raise exception(data, sw1, sw2, message)
                 except KeyError:
                     pass
 
 
 if __name__ == '__main__':
     """Small sample illustrating the use of ISO7816_9ErrorChecker."""
-    ecs=ISO7816_9ErrorChecker()
-    ecs( [], 0x90, 0x00 )
-    ecs( [], 0x6a, 0x81 )
+    ecs = ISO7816_9ErrorChecker()
+    ecs([], 0x90, 0x00)
+    ecs([], 0x6a, 0x81)
     try:
-        ecs( [], 0x6A, 0x8A )
+        ecs([], 0x6A, 0x8A)
     except smartcard.sw.SWExceptions.CheckingErrorException, e:
         print e, "%x %x" % (e.sw1, e.sw2)

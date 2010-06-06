@@ -26,47 +26,47 @@ from smartcard.sw.ErrorChecker import ErrorChecker
 import smartcard.sw.SWExceptions
 
 op21_SW = {
-    0x62:( smartcard.sw.SWExceptions.WarningProcessingException,
-           { 0x83:"Card life cycle is CARD_LOCKED" } ),
+    0x62: (smartcard.sw.SWExceptions.WarningProcessingException,
+           {0x83: "Card life cycle is CARD_LOCKED"}),
 
-    0x63:( smartcard.sw.SWExceptions.WarningProcessingException,
-           { 0x00:"Authentication failed" } ),
+    0x63: (smartcard.sw.SWExceptions.WarningProcessingException,
+           {0x00: "Authentication failed"}),
 
-    0x64:( smartcard.sw.SWExceptions.ExecutionErrorException,
-           { 0x00:"Execution error" } ),
+    0x64: (smartcard.sw.SWExceptions.ExecutionErrorException,
+           {0x00: "Execution error"}),
 
-    0x65:( smartcard.sw.SWExceptions.ExecutionErrorException,
-           { 0x81:"Memory failure" } ),
+    0x65: (smartcard.sw.SWExceptions.ExecutionErrorException,
+           {0x81: "Memory failure"}),
 
-    0x67:( smartcard.sw.SWExceptions.CheckingErrorException,
-           { 0x00:"Wrong length in Lc" } ),
+    0x67: (smartcard.sw.SWExceptions.CheckingErrorException,
+           {0x00: "Wrong length in Lc"}),
 
-    0x69:( smartcard.sw.SWExceptions.CheckingErrorException,
-           { 0x82:"Security status not satisfied",
-             0x85:"Conditions of use not satisfied" } ),
+    0x69: (smartcard.sw.SWExceptions.CheckingErrorException,
+           {0x82: "Security status not satisfied",
+            0x85: "Conditions of use not satisfied"}),
 
-    0x6A:( smartcard.sw.SWExceptions.CheckingErrorException,
-           { 0x80:"Incorrect values in command data",
-             0x81:"Function not supported",
-             0x82:"Application not found",
-             0x84:"Not enough memory space",
-             0x86:"Incorrect parameters P1-P2",
-             0x88:"Referenced data not found", } ),
+    0x6A: (smartcard.sw.SWExceptions.CheckingErrorException,
+           {0x80: "Incorrect values in command data",
+            0x81: "Function not supported",
+            0x82: "Application not found",
+            0x84: "Not enough memory space",
+            0x86: "Incorrect parameters P1-P2",
+            0x88: "Referenced data not found"}),
 
-    0x6D:( smartcard.sw.SWExceptions.CheckingErrorException,
-           { 0x00:"Instruction not supported" } ),
+    0x6D: (smartcard.sw.SWExceptions.CheckingErrorException,
+           {0x00: "Instruction not supported"}),
 
-    0x6E:( smartcard.sw.SWExceptions.CheckingErrorException,
-           { 0x00:"Class not supported" } ),
+    0x6E: (smartcard.sw.SWExceptions.CheckingErrorException,
+           {0x00: "Class not supported"}),
 
-    0x94:( smartcard.sw.SWExceptions.CheckingErrorException,
-           { 0x84:"Algorithm not supported",
-             0x85:"Invalid key check value" } ),
+    0x94: (smartcard.sw.SWExceptions.CheckingErrorException,
+           {0x84: "Algorithm not supported",
+            0x85: "Invalid key check value"}),
 
 }
 
 
-class op21_ErrorChecker( ErrorChecker ):
+class op21_ErrorChecker(ErrorChecker):
     """Open platform 2.1 error checker.
 
     This error checker raises the following exceptions:
@@ -96,31 +96,33 @@ class op21_ErrorChecker( ErrorChecker ):
     64  any except 00
 
 
-    Use another checker in the error checking chain to raise exceptions on these undefined values.
+    Use another checker in the error checking chain to raise exceptions
+    on these undefined values.
     """
-    def __call__( self, data, sw1, sw2 ):
+
+    def __call__(self, data, sw1, sw2):
         """Called to test data, sw1 and sw2 for error.
 
         data:       apdu response data
         sw1, sw2:   apdu data status words
 
         Derived classes must raise a smartcard.sw.SWException upon error."""
-        if op21_SW.has_key( sw1 ):
+        if op21_SW.has_key(sw1):
             exception, sw2dir = op21_SW[sw1]
-            if type(sw2dir)==type({}):
+            if type(sw2dir) == type({}):
                 try:
                     message = sw2dir[sw2]
-                    raise exception( data, sw1, sw2, message )
+                    raise exception(data, sw1, sw2, message)
                 except KeyError:
                     pass
 
 
 if __name__ == '__main__':
     """Small sample illustrating the use of op21_ErrorChecker."""
-    ecs=op21_ErrorChecker()
-    ecs( [], 0x90, 0x00 )
-    ecs( [], 0x94, 0x81 )
+    ecs = op21_ErrorChecker()
+    ecs([], 0x90, 0x00)
+    ecs([], 0x94, 0x81)
     try:
-        ecs( [], 0x94, 0x84 )
+        ecs([], 0x94, 0x84)
     except smartcard.sw.SWExceptions.CheckingErrorException, e:
         print e, "%x %x" % (e.sw1, e.sw2)
