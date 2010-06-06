@@ -36,7 +36,7 @@ from smartcard.sw.SWExceptions import SWException, WarningProcessingException
 
 
 # define the apdus used in this script
-GET_RESPONSE = [0XA0, 0XC0, 00, 00 ]
+GET_RESPONSE = [0XA0, 0XC0, 00, 00]
 SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
 DF_TELECOM = [0x7F, 0x10]
 
@@ -48,34 +48,34 @@ if __name__ == '__main__':
 
     # request any card type
     cardtype = AnyCardType()
-    cardrequest = CardRequest( timeout=10, cardType=cardtype )
+    cardrequest = CardRequest(timeout=10, cardType=cardtype)
     cardservice = cardrequest.waitforcard()
 
     # use ISO7816-4 and ISO7816-8 error checking strategy
     # first check iso7816_8 errors, then iso7816_4 errors
-    errorchain=[]
-    errorchain=[ ErrorCheckingChain( errorchain, ISO7816_9ErrorChecker() ) ]
-    errorchain=[ ErrorCheckingChain( errorchain, ISO7816_8ErrorChecker() ) ]
-    errorchain=[ ErrorCheckingChain( errorchain, ISO7816_4ErrorChecker() ) ]
-    cardservice.connection.setErrorCheckingChain( errorchain )
+    errorchain = []
+    errorchain = [ErrorCheckingChain(errorchain, ISO7816_9ErrorChecker())]
+    errorchain = [ErrorCheckingChain(errorchain, ISO7816_8ErrorChecker())]
+    errorchain = [ErrorCheckingChain(errorchain, ISO7816_4ErrorChecker())]
+    cardservice.connection.setErrorCheckingChain(errorchain)
 
     # filter Warning Processing Exceptions (sw1 = 0x62 or 0x63)
-    cardservice.connection.addSWExceptionToFilter( WarningProcessingException )
+    cardservice.connection.addSWExceptionToFilter(WarningProcessingException)
 
     # attach the console tracer
-    observer=ConsoleCardConnectionObserver()
-    cardservice.connection.addObserver( observer )
+    observer = ConsoleCardConnectionObserver()
+    cardservice.connection.addObserver(observer)
 
     # connect to the card and perform a few transmits
     cardservice.connection.connect()
 
     try:
-        apdu = SELECT+DF_TELECOM
-        response, sw1, sw2 = cardservice.connection.transmit( apdu )
+        apdu = SELECT + DF_TELECOM
+        response, sw1, sw2 = cardservice.connection.transmit(apdu)
 
         if sw1 == 0x9F:
             apdu = GET_RESPONSE + [sw2]
-            response, sw1, sw2 = cardservice.connection.transmit( apdu )
+            response, sw1, sw2 = cardservice.connection.transmit(apdu)
 
     except SWException, e:
         print str(e)
@@ -83,6 +83,6 @@ if __name__ == '__main__':
     cardservice.connection.disconnect()
 
     import sys
-    if 'win32'==sys.platform:
+    if 'win32' == sys.platform:
         print 'press Enter to continue'
         sys.stdin.read(1)

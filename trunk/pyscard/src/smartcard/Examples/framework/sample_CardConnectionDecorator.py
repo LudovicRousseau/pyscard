@@ -35,74 +35,78 @@ from smartcard.util import toHexString
 # shortly how several decorators can be added to the
 # card connection
 
-class SecureChannelConnection( CardConnectionDecorator ):
+
+class SecureChannelConnection(CardConnectionDecorator):
     '''This decorator is a mockup of secure channel connection.
     It merely pretends to cypher/uncypher upon apdu transmission.'''
-    def __init__( self, cardconnection ):
-        CardConnectionDecorator.__init__( self, cardconnection )
 
-    def cypher( self, bytes ):
+    def __init__(self, cardconnection):
+        CardConnectionDecorator.__init__(self, cardconnection)
+
+    def cypher(self, bytes):
         '''Cypher mock-up; you would include the secure channel logics here.'''
-        print 'cyphering', toHexString( bytes )
+        print 'cyphering', toHexString(bytes)
         return bytes
 
-    def uncypher( self, data ):
+    def uncypher(self, data):
         '''Uncypher mock-up; you would include the secure channel logics here.'''
-        print 'uncyphering', toHexString( data )
+        print 'uncyphering', toHexString(data)
         return data
 
-    def transmit( self, bytes, protocol=None ):
+    def transmit(self, bytes, protocol=None):
         """Cypher/uncypher APDUs before transmission"""
-        cypheredbytes = self.cypher( bytes )
-        data, sw1, sw2 = CardConnectionDecorator.transmit( self, cypheredbytes, protocol )
-        if []!=data:
-            data = self.uncypher( data )
+        cypheredbytes = self.cypher(bytes)
+        data, sw1, sw2 = CardConnectionDecorator.transmit(self, cypheredbytes, protocol)
+        if [] != data:
+            data = self.uncypher(data)
         return data, sw1, sw2
 
-class FakeATRConnection( CardConnectionDecorator ):
+
+class FakeATRConnection(CardConnectionDecorator):
     '''This decorator changes the fist byte of the ATR. This is just an example
     to show that decorators can be nested.'''
-    def __init__( self, cardconnection ):
-        CardConnectionDecorator.__init__( self, cardconnection )
 
-    def getATR( self ):
+    def __init__(self, cardconnection):
+        CardConnectionDecorator.__init__(self, cardconnection)
+
+    def getATR(self):
         """Replace first BYTE of ATR by 3F"""
-        atr = CardConnectionDecorator.getATR( self )
-        return [ 0x3f ] + atr[1:]
+        atr = CardConnectionDecorator.getATR(self)
+        return [0x3f] + atr[1:]
 
 
 # define the apdus used in this script
-GET_RESPONSE = [0XA0, 0XC0, 00, 00 ]
+GET_RESPONSE = [0XA0, 0XC0, 00, 00]
 SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
 DF_TELECOM = [0x7F, 0x10]
 
 
 # request any card type
 cardtype = AnyCardType()
-cardrequest = CardRequest( timeout=1.5, cardType=cardtype )
+cardrequest = CardRequest(timeout=1.5, cardType=cardtype)
 cardservice = cardrequest.waitforcard()
 
 # attach the console tracer
-observer=ConsoleCardConnectionObserver()
-cardservice.connection.addObserver( observer )
+observer = ConsoleCardConnectionObserver()
+cardservice.connection.addObserver(observer)
 
 # attach our decorator
-cardservice.connection = FakeATRConnection( SecureChannelConnection( cardservice.connection ) )
+cardservice.connection = FakeATRConnection(SecureChannelConnection(cardservice.connection))
 
 # connect to the card and perform a few transmits
 cardservice.connection.connect()
 
-print 'ATR', toHexString( cardservice.connection.getATR() )
+print 'ATR', toHexString(cardservice.connection.getATR())
 
-apdu = SELECT+DF_TELECOM
-response, sw1, sw2 = cardservice.connection.transmit( apdu )
+apdu = SELECT + DF_TELECOM
+response, sw1, sw2 = cardservice.connection.transmit(apdu)
 
 if sw1 == 0x9F:
     apdu = GET_RESPONSE + [sw2]
-    response, sw1, sw2 = cardservice.connection.transmit( apdu )
+    response, sw1, sw2 = cardservice.connection.transmit(apdu)
 
 
 import sys
-if 'win32'==sys.platform:
+if 'win32' == sys.platform:
     print 'press Enter to continue'
     sys.stdin.read(1)

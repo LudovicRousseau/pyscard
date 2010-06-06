@@ -30,30 +30,30 @@ from smartcard.CardMonitoring import CardMonitor, CardObserver
 from smartcard.util import *
 
 # replace by your favourite apdu
-SELECT_DF_TELECOM = [0xA0, 0xA4, 0x00, 0x00, 0x02, 0x7F, 0x10 ]
+SELECT_DF_TELECOM = [0xA0, 0xA4, 0x00, 0x00, 0x02, 0x7F, 0x10]
 
-# a card observer that connects to new cards and performs a transaction, e.g. SELECT DF_TELECOM
-class transmitobserver( CardObserver ):
-    """A card observer that is notified when cards are inserted/removed from the system,
-    connects to cards and SELECT DF_TELECOM
-    """
-    def __init__( self ):
-        self.cards=[]
 
-    def update( self, observable, (addedcards, removedcards) ):
+class transmitobserver(CardObserver):
+    """A card observer that is notified when cards are inserted/removed
+    from the system, connects to cards and SELECT DF_TELECOM """
+
+    def __init__(self):
+        self.cards = []
+
+    def update(self, observable, (addedcards, removedcards)):
         for card in addedcards:
             if card not in self.cards:
-                self.cards+=[card]
-                print "+Inserted: ", toHexString( card.atr )
+                self.cards += [card]
+                print "+Inserted: ", toHexString(card.atr)
                 card.connection = card.createConnection()
                 card.connection.connect()
-                response, sw1, sw2 = card.connection.transmit( SELECT_DF_TELECOM )
+                response, sw1, sw2 = card.connection.transmit(SELECT_DF_TELECOM)
                 print "%.2x %.2x" % (sw1, sw2)
 
         for card in removedcards:
-            print "-Removed: ", toHexString( card.atr )
+            print "-Removed: ", toHexString(card.atr)
             if card in self.cards:
-                self.cards.remove( card )
+                self.cards.remove(card)
 
 try:
     print "Insert or remove a smartcard in the system."
@@ -61,7 +61,7 @@ try:
     print ""
     cardmonitor = CardMonitor()
     cardobserver = transmitobserver()
-    cardmonitor.addObserver( cardobserver )
+    cardmonitor.addObserver(cardobserver)
 
     sleep(100)
 

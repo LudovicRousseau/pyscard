@@ -27,26 +27,28 @@ from smartcard.CardType import CardType
 from smartcard.CardRequest import CardRequest
 from smartcard.util import toHexString
 
+
+class DCCardType(CardType):
 # define our custom CardType
 # this card type defines direct convention card (first atr byte equal to 0x3b)
-class DCCardType(CardType):
-    def matches( self, atr, reader=None ):
-        return atr[0]==0x3B
+
+    def matches(self, atr, reader=None):
+        return atr[0] == 0x3B
 
 
 # request a direct convention card
 cardtype = DCCardType()
-cardrequest = CardRequest( timeout=1, cardType=cardtype )
+cardrequest = CardRequest(timeout=1, cardType=cardtype)
 cardservice = cardrequest.waitforcard()
 
 
 # connect and print atr and reader
 cardservice.connection.connect()
-print toHexString( cardservice.connection.getATR() )
+print toHexString(cardservice.connection.getATR())
 print cardservice.connection.getReader()
 
 
 import sys
-if 'win32'==sys.platform:
+if 'win32' == sys.platform:
     print 'press Enter to continue'
     sys.stdin.read(1)
