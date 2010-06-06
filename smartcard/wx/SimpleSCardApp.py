@@ -33,22 +33,24 @@ TB_READER = 0x008
 PANEL_APDUTRACER = 0x010
 TR_DEFAULT = TR_SMARTCARD
 
-class SimpleSCardApp( wx.App ):
+
+class SimpleSCardApp(wx.App):
     """The SimpleSCardApp class represents the smart card application.
     SimpleSCardApp is a subclass of wx.App.
     """
-    def __init__( self,
+
+    def __init__(self,
                   appname='',
                   apppanel=None,
                   appstyle=TR_DEFAULT,
                   appicon=None,
-                  pos=(-1,-1),
-                  size=(-1,-1) ):
+                  pos=(-1, -1),
+                  size=(-1, -1)):
         """Constructor for simple smart card application.
         appname: the application name
         apppanel: the application panel to display in the application frame
         appicon: the application icon file; the default is no icon
-        appstyle: a combination of the following styles (bitwise or | )
+        appstyle: a combination of the following styles (bitwise or |)
                   TR_SMARTCARD: display a smartcard tree panel
                   TR_READER: display a reader tree panel
                   TB_SMARTCARD: display a smartcard toolbar
@@ -63,7 +65,7 @@ class SimpleSCardApp( wx.App ):
             appname = 'A simple smartcard application',
             apppanel = testpanel.MyPanel,
             appstyle = TR_READER | TR_SMARTCARD,
-            appicon = 'resources\mysmartcard.ico' )
+            appicon = 'resources\mysmartcard.ico')
         """
         self.appname = appname
         self.apppanel = apppanel
@@ -71,7 +73,7 @@ class SimpleSCardApp( wx.App ):
         self.appicon = appicon
         self.pos = pos
         self.size = size
-        wx.App.__init__( self, False )
+        wx.App.__init__(self, False)
 
     def OnInit(self):
         """Create and display application frame."""
@@ -81,8 +83,8 @@ class SimpleSCardApp( wx.App ):
             self.appstyle,
             self.appicon,
             self.pos,
-            self.size )
-        self.frame.Show( True )
-        self.SetTopWindow( self.frame )
+            self.size)
+        self.frame.Show(True)
+        self.SetTopWindow(self.frame)
 
         return True
