@@ -46,6 +46,18 @@ class BaseSCardException:
             smartcard.scard.SCardGetErrorMessage(self.hresult))
 
 
+class AddReaderToGroupException(BaseSCardException):
+    """Raised when scard fails to add a new reader to a PCSC reader group."""
+
+    def __init__( self, hresult, readername="", groupname="" ):
+        BaseSCardException.__init__( self, hresult )
+        self.readername = readername
+        self.groupname = groupname
+
+    def __str__(self):
+        return repr('Failure to add reader: ' + self.readername + ' to group: ' + self.groupname + ' ' +
+            smartcard.scard.SCardGetErrorMessage(self.hresult))
+
 class EstablishContextException(BaseSCardException):
     """Raised when scard failed to establish context with PCSC."""
 
@@ -63,11 +75,15 @@ class ListReadersException(BaseSCardException):
             smartcard.scard.SCardGetErrorMessage(self.hresult))
 
 
-class EstablishContextException(BaseSCardException):
-    """Raised when scard failed to establish a PCSC context."""
+class IntroduceReaderException(BaseSCardException):
+    """Raised when scard fails to introduce a new reader to PCSC."""
+
+    def __init__( self, hresult, readername="" ):
+        BaseSCardException.__init__( self, hresult )
+        self.readername = readername
 
     def __str__(self):
-        return repr('Failure to establish context: ' +
+        return repr('Failure to introduce a new reader: ' + self.readername + ' ' +
             smartcard.scard.SCardGetErrorMessage(self.hresult))
 
 
@@ -76,6 +92,18 @@ class ReleaseContextException(BaseSCardException):
 
     def __str__(self):
         return repr('Failure to release context: ' +
+            smartcard.scard.SCardGetErrorMessage(self.hresult))
+
+class RemoveReaderFromGroupException(BaseSCardException):
+    """Raised when scard fails to remove a reader from a PCSC reader group."""
+
+    def __init__( self, hresult, readername="", groupname="" ):
+        BaseSCardException.__init__( self, hresult )
+        self.readername = readername
+        self.groupname = groupname
+
+    def __str__(self):
+        return repr('Failure to remove reader: ' + self.readername + ' from group: ' + self.groupname + ' ' +
             smartcard.scard.SCardGetErrorMessage(self.hresult))
 
 if __name__ == "__main__":

@@ -67,10 +67,10 @@ class PCSCReader(Reader):
         try:
             hresult = SCardIntroduceReader(hcontext, self.name, self.name)
             if 0 != hresult and SCARD_E_DUPLICATE_READER != hresult:
-                raise error, 'Unable to introduce reader: ' + self.name + ' : ' + SCardGetErrorMessage(hresult)
+                raise IntroduceReaderException(hresult,self.name)
             hresult = SCardAddReaderToGroup(hcontext, self.name, groupname)
             if 0 != hresult:
-                raise error, 'Unable to add reader to group: ' + SCardGetErrorMessage(hresult)
+                raise AddReaderToGroupException(hresult,self.name,groupname)
         finally:
             hresult = SCardReleaseContext(hcontext)
             if 0 != hresult:
@@ -85,7 +85,7 @@ class PCSCReader(Reader):
         try:
             hresult = SCardRemoveReaderFromGroup(hcontext, self.name, groupname)
             if 0 != hresult:
-                raise error, 'Unable to add reader to group: ' + SCardGetErrorMessage(hresult)
+                raise RemoveReaderFromGroupException(hresult,self.name,groupname)
         finally:
             hresult = SCardReleaseContext(hcontext)
             if 0 != hresult:
