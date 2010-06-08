@@ -55,7 +55,8 @@ class AddReaderToGroupException(BaseSCardException):
         self.groupname = groupname
 
     def __str__(self):
-        return repr('Failure to add reader: ' + self.readername + ' to group: ' + self.groupname + ' ' +
+        return repr('Failure to add reader: ' + self.readername +
+            ' to group: ' + self.groupname + ' ' +
             smartcard.scard.SCardGetErrorMessage(self.hresult))
 
 
@@ -84,8 +85,8 @@ class IntroduceReaderException(BaseSCardException):
         self.readername = readername
 
     def __str__(self):
-        return repr('Failure to introduce a new reader: ' + self.readername + ' ' +
-            smartcard.scard.SCardGetErrorMessage(self.hresult))
+        return repr('Failure to introduce a new reader: ' + self.readername
+            + ' ' + smartcard.scard.SCardGetErrorMessage(self.hresult))
 
 
 class ReleaseContextException(BaseSCardException):
@@ -105,7 +106,8 @@ class RemoveReaderFromGroupException(BaseSCardException):
         self.groupname = groupname
 
     def __str__(self):
-        return repr('Failure to remove reader: ' + self.readername + ' from group: ' + self.groupname + ' ' +
+        return repr('Failure to remove reader: ' + self.readername +
+            ' from group: ' + self.groupname + ' ' +
             smartcard.scard.SCardGetErrorMessage(self.hresult))
 
 if __name__ == "__main__":
