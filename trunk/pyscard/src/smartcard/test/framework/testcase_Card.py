@@ -58,16 +58,16 @@ class testcase_Card(unittest.TestCase):
         DF_TELECOM = [0x7F, 0x10]
 
         for reader in readers():
-            card = Card( reader, expectedATRinReader[str(reader)] )
+            card = Card(reader, expectedATRinReader[str(reader)])
             cc = card.createConnection()
-            if []!=expectedATRinReader[str(reader)]:
+            if [] != expectedATRinReader[str(reader)]:
                 cc.connect()
-                response, sw1, sw2 = cc.transmit( SELECT + DF_TELECOM )
-                expectedSWs={ "9f 1a":1, "9f 20":2, "6e 0":3 }
-                self.assertEquals( [], response )
-                self.assert_( expectedSWs.has_key( "%x %x" % (sw1, sw2 ) ) or "9f"== "%x" % sw1 )
+                response, sw1, sw2 = cc.transmit(SELECT + DF_TELECOM)
+                expectedSWs = {"9f 1a": 1, "9f 20": 2, "6e 0": 3}
+                self.assertEquals([], response)
+                self.assert_(expectedSWs.has_key("%x %x" % (sw1, sw2)) or "9f" == "%x" % sw1)
             else:
-                self.assertRaises( NoCardException, cc.connect )
+                self.assertRaises(NoCardException, cc.connect)
 
     def testcase_Card_FromReaderStrings(self):
         """Create a Card from reader strings and test that the response
@@ -76,33 +76,34 @@ class testcase_Card(unittest.TestCase):
         DF_TELECOM = [0x7F, 0x10]
 
         for reader in readers():
-            card = Card( str(reader), expectedATRinReader[str(reader)] )
+            card = Card(str(reader), expectedATRinReader[str(reader)])
             cc = card.createConnection()
-            if []!=expectedATRinReader[str(reader)]:
+            if [] != expectedATRinReader[str(reader)]:
                 cc.connect()
-                response, sw1, sw2 = cc.transmit( SELECT + DF_TELECOM )
-                expectedSWs={ "9f 1a":1, "9f 20":2, "6e 0":3 }
-                self.assertEquals( [], response )
-                self.assert_( expectedSWs.has_key( "%x %x" % (sw1, sw2 ) ) or "9f"== "%x" % sw1 )
+                response, sw1, sw2 = cc.transmit(SELECT + DF_TELECOM)
+                expectedSWs = {"9f 1a": 1, "9f 20": 2, "6e 0": 3}
+                self.assertEquals([], response)
+                self.assert_(expectedSWs.has_key("%x %x" % (sw1, sw2)) or "9f" == "%x" % sw1)
             else:
-                self.assertRaises( NoCardException, cc.connect )
+                self.assertRaises(NoCardException, cc.connect)
 
     def testcase_Card_Eq_NotEq(self):
         """Test == and != for Cards."""
         for reader in readers():
-            card = Card( str(reader), expectedATRinReader[str(reader)] )
-            cardcopy = Card( str(reader), expectedATRinReader[str(reader)] )
-            self.assertEquals( True, card==cardcopy )
-            self.assertEquals( True, not card!=cardcopy )
+            card = Card(str(reader), expectedATRinReader[str(reader)])
+            cardcopy = Card(str(reader), expectedATRinReader[str(reader)])
+            self.assertEquals(True, card == cardcopy)
+            self.assertEquals(True, not card != cardcopy)
 
         for reader in readers():
-            card = Card( str(reader), expectedATRinReader[str(reader)] )
-            cardcopy = Card( str(reader), [0,0] )
-            self.assertEquals( True, card!=cardcopy )
-            self.assertEquals( True, not card==cardcopy )
+            card = Card(str(reader), expectedATRinReader[str(reader)])
+            cardcopy = Card(str(reader), [0, 0])
+            self.assertEquals(True, card != cardcopy)
+            self.assertEquals(True, not card == cardcopy)
+
 
 def suite():
-    suite1 = unittest.makeSuite( testcase_CardConnection )
+    suite1 = unittest.makeSuite(testcase_CardConnection)
     return unittest.TestSuite((suite1))
 
 
