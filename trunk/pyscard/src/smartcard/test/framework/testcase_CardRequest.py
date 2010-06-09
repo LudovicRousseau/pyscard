@@ -58,75 +58,73 @@ class testcase_CardRequest(unittest.TestCase):
         """Test smartcard.AnyCardType."""
 
         for atr in expectedATRs:
-            if []!=atr:
-                ct = ATRCardType( atr )
-                cr=CardRequest( timeout=10, cardType=ct )
+            if [] != atr:
+                ct = ATRCardType(atr)
+                cr = CardRequest(timeout=10, cardType=ct)
                 cs = cr.waitforcard()
                 cs.connection.connect()
-                self.assertEquals( atr, cs.connection.getATR() )
-                self.assertEquals( cs.connection.getReader(), expectedReaderForATR[toHexString(atr)] )
+                self.assertEquals(atr, cs.connection.getATR())
+                self.assertEquals(cs.connection.getReader(), expectedReaderForATR[toHexString(atr)])
                 cs.connection.disconnect()
 
     def testcase_CardRequestAnyCardTypeInSelectedReader(self):
         """Test smartcard.AnyCardType."""
 
         for reader in expectedReaders:
-            atr=expectedATRinReader[reader]
-            if []!=atr:
+            atr = expectedATRinReader[reader]
+            if [] != atr:
                 ct = AnyCardType()
-                cr=CardRequest( timeout=10.6, readers=[reader], cardType=ct )
+                cr = CardRequest(timeout=10.6, readers=[reader], cardType=ct)
                 cs = cr.waitforcard()
                 cs.connection.connect()
-                self.assertEquals( atr, cs.connection.getATR() )
-                self.assertEquals( cs.connection.getReader(), expectedReaderForATR[toHexString(atr)] )
+                self.assertEquals(atr, cs.connection.getATR())
+                self.assertEquals(cs.connection.getReader(), expectedReaderForATR[toHexString(atr)])
 
     def testcase_CardRequestATRCardTypeTimeout(self):
         """Test smartcard.AnyCardType."""
 
         for reader in expectedReaders:
-            atr=expectedATRinReader[reader][:-1]
-            ct = ATRCardType( atr )
-            cr=CardRequest( timeout=1, readers=[reader], cardType=ct )
-            self.assertRaises( CardRequestTimeoutException, cr.waitforcard )
+            atr = expectedATRinReader[reader][:-1]
+            ct = ATRCardType(atr)
+            cr = CardRequest(timeout=1, readers=[reader], cardType=ct)
+            self.assertRaises(CardRequestTimeoutException, cr.waitforcard)
 
     def testcase_CardRequestATRCardTypeTimeoutAnyReader(self):
         """Test smartcard.AnyCardType."""
 
         readers = smartcard.System.readers()
-        atr=expectedATRs[0][:-1]
-        ct = ATRCardType( atr )
-        cr=CardRequest( timeout=1.5, readers=readers, cardType=ct )
-        self.assertRaises( CardRequestTimeoutException, cr.waitforcard )
-
+        atr = expectedATRs[0][:-1]
+        ct = ATRCardType(atr)
+        cr = CardRequest(timeout=1.5, readers=readers, cardType=ct)
+        self.assertRaises(CardRequestTimeoutException, cr.waitforcard)
 
     def testcase_CardRequestAnyCardTypeAnyReaderPassThru(self):
         """Test smartcard.AnyCardType."""
 
         for reader in expectedReaders:
-            atr=expectedATRinReader[reader]
-            if []!=atr:
+            atr = expectedATRinReader[reader]
+            if [] != atr:
                 ct = AnyCardType()
                 cardservice = smartcard.PassThruCardService.PassThruCardService
-                cr=CardRequest( timeout=10.6, readers=[reader], cardType=ct, cardServiceClass=cardservice )
+                cr = CardRequest(timeout=10.6, readers=[reader], cardType=ct, cardServiceClass=cardservice)
                 cs = cr.waitforcard()
                 cs.connection.connect()
-                self.assertEquals( cs.__class__, smartcard.PassThruCardService.PassThruCardService )
-                self.assertEquals( atr, cs.connection.getATR() )
-                self.assertEquals( cs.connection.getReader(), expectedReaderForATR[toHexString(atr)] )
-
+                self.assertEquals(cs.__class__, smartcard.PassThruCardService.PassThruCardService)
+                self.assertEquals(atr, cs.connection.getATR())
+                self.assertEquals(cs.connection.getReader(), expectedReaderForATR[toHexString(atr)])
 
     def testcase_CardRequestAnyCardTypeInSelectedReaderNewCard(self):
         """Test smartcard.AnyCardType."""
 
         for reader in expectedReaders:
-            atr=expectedATRinReader[reader]
+            atr = expectedATRinReader[reader]
             ct = AnyCardType()
-            cr=CardRequest( newcardonly=True, timeout=1, readers=[reader], cardType=ct )
-            self.assertRaises( CardRequestTimeoutException, cr.waitforcard )
+            cr = CardRequest(newcardonly=True, timeout=1, readers=[reader], cardType=ct)
+            self.assertRaises(CardRequestTimeoutException, cr.waitforcard)
 
 
 def suite():
-    suite1 = unittest.makeSuite( testcase_CardRequest )
+    suite1 = unittest.makeSuite(testcase_CardRequest)
     return unittest.TestSuite((suite1))
 
 
