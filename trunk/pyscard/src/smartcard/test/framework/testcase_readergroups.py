@@ -32,118 +32,118 @@ from smartcard.reader.ReaderGroups import readergroups
 from smartcard.scard import resourceManager
 
 
-if 'winscard'==resourceManager:
+if 'winscard' == resourceManager:
+
     class testcase_readergroups(unittest.TestCase):
         """Test smartcard framework readersgroups."""
 
-        pinpadgroup='Pinpad$Readers'
-        biogroup='Biometric$Readers'
+        pinpadgroup = 'Pinpad$Readers'
+        biogroup = 'Biometric$Readers'
 
         def testcase_readergroup_add(self):
             """tests groups=groups+[newgroups]"""
 
             # take a snapshot of current groups
-            groupssnapshot=list( readergroups() )
-            groups=readergroups()
+            groupssnapshot = list(readergroups())
+            groups = readergroups()
 
             # add pinpad group
-            groups=groups+[self.pinpadgroup]
-            self.assertEquals( groups, groupssnapshot+[self.pinpadgroup] )
+            groups = groups + [self.pinpadgroup]
+            self.assertEquals(groups, groupssnapshot + [self.pinpadgroup])
 
             # add pinpad a second time and biometric once
-            groups=groups+[self.biogroup,self.pinpadgroup]
-            self.assertEquals( groups, groupssnapshot+[self.pinpadgroup, self.biogroup] )
+            groups = groups + [self.biogroup, self.pinpadgroup]
+            self.assertEquals(groups, groupssnapshot + [self.pinpadgroup, self.biogroup])
 
             # clean-up
-            groups.remove( self.biogroup )
-            groups.remove( self.pinpadgroup )
+            groups.remove(self.biogroup)
+            groups.remove(self.pinpadgroup)
 
         def testcase_readergroup_iadd(self):
             """test groups+=[newgroups]"""
 
             # take a snapshot of current groups
-            groupssnapshot=list( readergroups() )
-            groups=readergroups()
+            groupssnapshot = list(readergroups())
+            groups = readergroups()
 
             # add pinpad group
-            groups+=[self.pinpadgroup]
-            self.assertEquals( groups, groupssnapshot+[self.pinpadgroup] )
+            groups += [self.pinpadgroup]
+            self.assertEquals(groups, groupssnapshot + [self.pinpadgroup])
 
             # add pinpad a second time and biometric once
-            groups+=[self.biogroup,self.pinpadgroup]
-            self.assertEquals( groups, groupssnapshot+[self.pinpadgroup, self.biogroup] )
+            groups += [self.biogroup, self.pinpadgroup]
+            self.assertEquals(groups, groupssnapshot + [self.pinpadgroup, self.biogroup])
 
             # clean-up
-            groups.remove( self.biogroup )
-            groups.remove( self.pinpadgroup )
-
+            groups.remove(self.biogroup)
+            groups.remove(self.pinpadgroup)
 
         def testcase_readergroup_radd(self):
             """test groups=[newgroups]+groups"""
 
             # take a snapshot of current groups
-            groupssnapshot=list( readergroups() )
-            groups=readergroups()
+            groupssnapshot = list(readergroups())
+            groups = readergroups()
 
             # add pinpad group
-            zgroups=[self.pinpadgroup]+groups
-            self.assertEquals( groups, groupssnapshot )
-            self.assertEquals( zgroups, groupssnapshot+[self.pinpadgroup] )
-            self.assert_( isinstance( zgroups, type([]) ) )
-            self.assert_( isinstance( groups, type(readergroups()) ) )
+            zgroups = [self.pinpadgroup] + groups
+            self.assertEquals(groups, groupssnapshot)
+            self.assertEquals(zgroups, groupssnapshot + [self.pinpadgroup])
+            self.assert_(isinstance(zgroups, type([])))
+            self.assert_(isinstance(groups, type(readergroups())))
 
             # add pinpad a tiwce and biometric once
-            zgroups=[self.pinpadgroup,self.biogroup,self.pinpadgroup]+groups
-            self.assertEquals( groups, groupssnapshot )
-            self.assertEquals( zgroups, groupssnapshot+[self.pinpadgroup,self.biogroup] )
-            self.assert_( isinstance( zgroups, type([]) ) )
-            self.assert_( isinstance( groups, type(readergroups()) ) )
+            zgroups = [self.pinpadgroup, self.biogroup, self.pinpadgroup] + groups
+            self.assertEquals(groups, groupssnapshot)
+            self.assertEquals(zgroups, groupssnapshot + [self.pinpadgroup, self.biogroup])
+            self.assert_(isinstance(zgroups, type([])))
+            self.assert_(isinstance(groups, type(readergroups())))
 
         def testcase_readergroup_append(self):
             """test groups.append(newgroups)"""
 
             # take a snapshot of current groups
-            groupssnapshot=list( readergroups() )
-            groups=readergroups()
+            groupssnapshot = list(readergroups())
+            groups = readergroups()
 
             # add pinpad group
-            groups.append(self.pinpadgroup )
-            self.assertEquals( groups, groupssnapshot+[self.pinpadgroup] )
+            groups.append(self.pinpadgroup)
+            self.assertEquals(groups, groupssnapshot + [self.pinpadgroup])
 
             # add pinpad a second time
-            groups.append(self.pinpadgroup )
-            self.assertEquals( groups, groupssnapshot+[self.pinpadgroup] )
+            groups.append(self.pinpadgroup)
+            self.assertEquals(groups, groupssnapshot + [self.pinpadgroup])
 
             # add biometric once
-            groups.append( self.biogroup )
-            self.assertEquals( groups, groupssnapshot+[self.pinpadgroup, self.biogroup] )
+            groups.append(self.biogroup)
+            self.assertEquals(groups, groupssnapshot + [self.pinpadgroup, self.biogroup])
 
             # clean-up
-            groups.remove( self.biogroup )
-            groups.remove( self.pinpadgroup )
+            groups.remove(self.biogroup)
+            groups.remove(self.pinpadgroup)
 
         def testcase_readergroup_insert(self):
             """test groups.insert(i,newgroups)"""
 
             # take a snapshot of current groups
-            groupssnapshot=list( readergroups() )
-            groups=readergroups()
+            groupssnapshot = list(readergroups())
+            groups = readergroups()
 
             # add pinpad group
-            groups.insert(0,self.pinpadgroup )
-            self.assertEquals( groups, groupssnapshot+[self.pinpadgroup] )
+            groups.insert(0, self.pinpadgroup)
+            self.assertEquals(groups, groupssnapshot + [self.pinpadgroup])
 
             # add pinpad a second time
-            groups.insert(1,self.pinpadgroup )
-            self.assertEquals( groups, groupssnapshot+[self.pinpadgroup] )
+            groups.insert(1, self.pinpadgroup)
+            self.assertEquals(groups, groupssnapshot + [self.pinpadgroup])
 
             # add biometric once
-            groups.insert( 1, self.biogroup )
-            self.assertEquals( groups, groupssnapshot+[self.pinpadgroup, self.biogroup] )
+            groups.insert(1, self.biogroup)
+            self.assertEquals(groups, groupssnapshot + [self.pinpadgroup, self.biogroup])
 
             # clean-up
-            groups.remove( self.biogroup )
-            groups.remove( self.pinpadgroup )
+            groups.remove(self.biogroup)
+            groups.remove(self.pinpadgroup)
 
     def suite():
         suite1 = unittest.makeSuite(testcase_readergroups)
