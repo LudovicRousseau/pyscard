@@ -62,15 +62,15 @@ def checklocalconfig():
     #for atr in expectedATRs: print `toHexString(atr)`
     f.write(`expectedATRs` + '\n')
 
-    f.write('expectedATRinReader = {} \n')
-    f.write('for i in xrange(len(expectedReaders)): \n')
-    f.write('\t' + 'expectedATRinReader[expectedReaders[i]]=expectedATRs[i] \n')
+    f.write('expectedATRinReader = {}\n')
+    f.write('for i in xrange(len(expectedReaders)):\n')
+    f.write('    expectedATRinReader[expectedReaders[i]] = expectedATRs[i]\n')
 
-    f.write('expectedReaderForATR = {} \n')
-    f.write('for i in xrange(len(expectedReaders)): \n')
-    f.write('\t' + 'expectedReaderForATR[toHexString(expectedATRs[i])]=expectedReaders[i] \n')
+    f.write('expectedReaderForATR = {}\n')
+    f.write('for i in xrange(len(expectedReaders)):\n')
+    f.write('    expectedReaderForATR[toHexString(expectedATRs[i])] = expectedReaders[i]\n')
 
-    f.write('expectedReaderGroups = [ \'SCard$DefaultReaders\' ] \n')
+    f.write('expectedReaderGroups = [\'SCard$DefaultReaders\']\n')
 
     f.close()
 
