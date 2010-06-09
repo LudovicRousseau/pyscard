@@ -31,44 +31,46 @@ from smartcard.System import readers
 from smartcard.Exceptions import NoCardException
 from smartcard.util import toHexString
 
+
 def getATR(reader):
     cc = reader.createConnection()
     cc.connect()
-    atr=cc.getATR()
+    atr = cc.getATR()
     cc.disconnect()
     return atr
 
+
 def checklocalconfig():
     try:
-        f=open('local_config.py', 'r')
+        f = open('local_config.py', 'r')
     except IOError:
         print 'local_config.py not found; generating local_config.py...'
 
     # generate local configuration
-    f=open('local_config.py', 'w+')
+    f = open('local_config.py', 'w+')
 
-    f.write( 'from smartcard.util import toHexString\n' )
-    f.write( 'expectedReaders = ' )
-    f.write( str(readers()) + '\n')
+    f.write('from smartcard.util import toHexString\n')
+    f.write('expectedReaders = ')
+    f.write(str(readers()) + '\n')
     expectedATRs = []
     for reader in readers():
         try:
-            expectedATRs.append( getATR( reader ) )
+            expectedATRs.append(getATR(reader))
         except NoCardException:
-            expectedATRs.append( [] )
-    f.write( 'expectedATRs = ' )
+            expectedATRs.append([])
+    f.write('expectedATRs = ')
     #for atr in expectedATRs: print `toHexString(atr)`
-    f.write( `expectedATRs` + '\n' )
+    f.write(`expectedATRs` + '\n')
 
-    f.write( 'expectedATRinReader = {} \n')
-    f.write( 'for i in xrange(len(expectedReaders)): \n')
-    f.write( '\t' + 'expectedATRinReader[expectedReaders[i]]=expectedATRs[i] \n')
+    f.write('expectedATRinReader = {} \n')
+    f.write('for i in xrange(len(expectedReaders)): \n')
+    f.write('\t' + 'expectedATRinReader[expectedReaders[i]]=expectedATRs[i] \n')
 
-    f.write( 'expectedReaderForATR = {} \n')
-    f.write( 'for i in xrange(len(expectedReaders)): \n')
-    f.write( '\t' + 'expectedReaderForATR[toHexString(expectedATRs[i])]=expectedReaders[i] \n')
+    f.write('expectedReaderForATR = {} \n')
+    f.write('for i in xrange(len(expectedReaders)): \n')
+    f.write('\t' + 'expectedReaderForATR[toHexString(expectedATRs[i])]=expectedReaders[i] \n')
 
-    f.write( 'expectedReaderGroups = [ \'SCard$DefaultReaders\' ] \n')
+    f.write('expectedReaderGroups = [ \'SCard$DefaultReaders\' ] \n')
 
     f.close()
 
