@@ -10,9 +10,11 @@ http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/223972
 import sys
 import types
 
+
 def get_mod(modulePath):
     """Import a module."""
     return __import__(modulePath, globals(), locals(), [''])
+
 
 def get_func(fullFuncName):
     """Retrieve a function object from a full dotted-package name."""
@@ -31,6 +33,7 @@ def get_func(fullFuncName):
     # Return a reference to the function itself,
     # not the results of the function.
     return aFunc
+
 
 def get_class(fullClassName, parentClass=None):
     """Load a module and retrieve a class (NOT an instance).
