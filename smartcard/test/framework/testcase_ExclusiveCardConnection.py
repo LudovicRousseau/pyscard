@@ -34,7 +34,7 @@ import time
 import unittest
 
 # define the apdus used in this script
-GET_RESPONSE = [0XA0, 0XC0, 00, 00 ]
+GET_RESPONSE = [0XA0, 0XC0, 00, 00]
 SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
 DF_TELECOM = [0x7F, 0x10]
 
@@ -46,29 +46,33 @@ from smartcard.CardType import AnyCardType
 from smartcard.ExclusiveTransmitCardConnection import ExclusiveTransmitCardConnection
 from smartcard.util import toHexString
 
-def signalEvent( evt ):
+
+def signalEvent(evt):
     '''A simple callback that signals an event.'''
     evt.set()
 
-class testthread( threading.Thread ):
-    '''A test thread that repetitevely sends APDUs to a card within a transaction.'''
-    def __init__(self, threadindex ):
+
+class testthread(threading.Thread):
+    '''A test thread that repetitevely sends APDUs to a card within a
+    transaction.'''
+
+    def __init__(self, threadindex):
         '''Connect to a card with an ExclusiveTransmitCardConnection.'''
         threading.Thread.__init__(self)
 
-        self.threadindex=threadindex
+        self.threadindex = threadindex
 
         # request any card type
         cardtype = AnyCardType()
-        cardrequest = CardRequest( timeout=5, cardType=cardtype )
+        cardrequest = CardRequest(timeout=5, cardType=cardtype)
         cardservice = cardrequest.waitforcard()
 
         # attach our decorator
-        cardservice.connection = ExclusiveTransmitCardConnection( cardservice.connection )
+        cardservice.connection = ExclusiveTransmitCardConnection(cardservice.connection)
 
         # uncomment to attach the console tracer
         #observer=ConsoleCardConnectionObserver()
-        #cardservice.connection.addObserver( observer )
+        #cardservice.connection.addObserver(observer)
 
         # connect to the card
         cardservice.connection.connect()
@@ -79,10 +83,9 @@ class testthread( threading.Thread ):
         self.evtStop = threading.Event()
 
         # this timer will set the event stop event in 30s
-        timer = threading.Timer( 30, signalEvent, [self.evtStop] )
+        timer = threading.Timer(30, signalEvent, [self.evtStop])
         timer.start()
-        self.countTransmitted=0
-
+        self.countTransmitted = 0
 
     def run(self):
         '''Transmit APDUS with a random interval to the card.'''
@@ -91,16 +94,16 @@ class testthread( threading.Thread ):
             try:
                 connection.lock()
 
-                apdu = SELECT+DF_TELECOM
-                response, sw1, sw2 = connection.transmit( apdu )
+                apdu = SELECT + DF_TELECOM
+                response, sw1, sw2 = connection.transmit(apdu)
 
-                if  0x90==(sw1 & 0xF0):
+                if  0x90 == (sw1 & 0xF0):
                     apdu = GET_RESPONSE + [sw2]
-                    response, sw1, sw2 = connection.transmit( apdu )
+                    response, sw1, sw2 = connection.transmit(apdu)
             finally:
                 connection.unlock()
-            self.countTransmitted=self.countTransmitted+1
-            time.sleep( float(random.uniform( 1, 3 ))*0.01)
+            self.countTransmitted = self.countTransmitted + 1
+            time.sleep(float(random.uniform(1, 3)) * 0.01)
 
 
 class testcase_cardmonitor(unittest.TestCase):
@@ -108,16 +111,17 @@ class testcase_cardmonitor(unittest.TestCase):
 
     def testcase_cardmonitorthread(self):
         threads = []
-        for i in range( 0, 4 ):
-            t = testthread( i )
-            threads.append( t )
+        for i in range(0, 4):
+            t = testthread(i)
+            threads.append(t)
         for t in threads:
             t.start()
         for t in threads:
             t.join()
         for t in threads:
-            if 0==1:
-                print 'Thread %d: transmitted %ld apdus.' % (t.threadindex, t.countTransmitted )
+            if 0 == 1:
+                print 'Thread %d: transmitted %ld apdus.' % (t.threadindex, t.countTransmitted)
+
 
 def suite():
     suite1 = unittest.makeSuite(testcase_cardmonitorthread)
