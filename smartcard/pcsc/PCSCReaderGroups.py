@@ -85,7 +85,7 @@ class pcscinnerreadergroups(innerreadergroups):
             raise error, 'Failed to establish context: ' + SCardGetErrorMessage(hresult)
         try:
             hresult = SCardForgetReaderGroup(hcontext, group)
-            if hresult!=0:
+            if hresult != 0:
                 raise error, 'Unable to forget reader group: ' + SCardGetErrorMessage(hresult)
         finally:
             hresult = SCardReleaseContext(hcontext)
