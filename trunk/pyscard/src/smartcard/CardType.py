@@ -25,23 +25,23 @@ from smartcard.System import readers
 from smartcard.util import toHexString
 
 
-class CardType: 
+class CardType:
     """Abstract base class for CardTypes.
 
     Known sub-classes: smartcard.CardType.AnyCardType
                        smartcard.CardType.ATRCardType."""
 
-    def __init__( self ):
+    def __init__(self):
         """CardType constructor."""
         pass
 
-    def matches( self, atr, reader=None ): 
+    def matches(self, atr, reader=None):
         """Returns true if atr and card connected match the CardType.
 
         atr:    the atr to chek for matching
         reader: the reader (optional); default is None
-        
-        The reader can be use in some sub-classes to do advanced 
+
+        The reader can be use in some sub-classes to do advanced
         matching that require connecting to the card."""
         pass
 
@@ -49,7 +49,7 @@ class CardType:
 class AnyCardType(CardType):
     """The AnyCardType matches any card."""
 
-    def matches( self, atr, reader=None ): 
+    def matches(self, atr, reader=None):
         """Always returns true, i.e. AnyCardType matches any card.
 
         atr:    the atr to chek for matching
@@ -60,46 +60,46 @@ class AnyCardType(CardType):
 class ATRCardType(CardType):
     """The ATRCardType defines a card from an ATR and a mask."""
 
-    def __init__( self, atr, mask=None ):
+    def __init__(self, atr, mask=None):
         """ATRCardType constructor.
         atr:    the ATR of the CardType
         mask:   an optional mask to be applied to the ATR for CardType matching
                 default is None
         """
-        self.atr=list(atr)
-        self.mask=mask
-        if None==mask:
-            self.maskedatr=self.atr
+        self.atr = list(atr)
+        self.mask = mask
+        if None == mask:
+            self.maskedatr = self.atr
         else:
-            if len(self.atr)!=len(self.mask):
-                raise InvalidATRMaskLengthException( toHexString(mask) )
-            self.maskedatr=map( lambda x, y: x & y, self.atr, self.mask ) 
+            if len(self.atr) != len(self.mask):
+                raise InvalidATRMaskLengthException(toHexString(mask))
+            self.maskedatr = map(lambda x, y: x & y, self.atr, self.mask)
 
-    def matches( self, atr, reader=None ): 
+    def matches(self, atr, reader=None):
         """Returns true if the atr matches the masked CardType atr.
-        
+
         atr:    the atr to chek for matching
         reader: the reader (optional); default is None
 
         When atr is compared to the CardType ATR, matches returns true if
-        and only if CardType.atr & CardType.mask = atr & CardType.mask, 
+        and only if CardType.atr & CardType.mask = atr & CardType.mask,
         where & is the bitwise logical AND."""
 
-        if len(atr)!=len(self.atr):
+        if len(atr) != len(self.atr):
             return not True
-        
-        if None!=self.mask:
-            maskedatr=map( lambda x, y: x & y, list(atr), self.mask ) 
-        else:
-            maskedatr=atr
-        return self.maskedatr==maskedatr
 
-    
+        if None != self.mask:
+            maskedatr = map(lambda x, y: x & y, list(atr), self.mask)
+        else:
+            maskedatr = atr
+        return self.maskedatr == maskedatr
+
+
 if __name__ == '__main__':
     """Small sample illustrating the use of CardType.py."""
-    r=readers()
+    r = readers()
     print r
     connection = r[0].createConnection()
     connection.connect()
-    atrct=ATRCardType(  [0x3B, 0x16, 0x94, 0x20, 0x02, 0x01, 0x00, 0x00, 0x0D] )
-    print atrct.matches( connection.getATR() )
+    atrct = ATRCardType([0x3B, 0x16, 0x94, 0x20, 0x02, 0x01, 0x00, 0x00, 0x0D])
+    print atrct.matches(connection.getATR())
