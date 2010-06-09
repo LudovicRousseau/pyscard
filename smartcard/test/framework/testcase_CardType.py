@@ -56,81 +56,79 @@ class testcase_CardType(unittest.TestCase):
 
         ct = AnyCardType()
         for reader in readers():
-            if []!=expectedATRinReader[str(reader)]:
+            if [] != expectedATRinReader[str(reader)]:
                 connection = reader.createConnection()
                 connection.connect()
-                self.assertEquals( True, ct.matches( connection.getATR() ) )
-                self.assertEquals( True, ct.matches( connection.getATR(), reader ) )
+                self.assertEquals(True, ct.matches(connection.getATR()))
+                self.assertEquals(True, ct.matches(connection.getATR(), reader))
                 connection.disconnect()
-
 
     def testcase_ATRCardTypeWithoutMask(self):
         """Test smartcard.ATRCardType without mask."""
 
         for reader in readers():
-            if []!=expectedATRinReader[str(reader)]:
-                ct = ATRCardType( expectedATRinReader[str(reader)] )
+            if [] != expectedATRinReader[str(reader)]:
+                ct = ATRCardType(expectedATRinReader[str(reader)])
                 connection = reader.createConnection()
                 connection.connect()
-                self.assertEquals( True, ct.matches( connection.getATR() ) )
-                self.assertEquals( True, ct.matches( connection.getATR(), reader ) )
+                self.assertEquals(True, ct.matches(connection.getATR()))
+                self.assertEquals(True, ct.matches(connection.getATR(), reader))
                 connection.disconnect()
 
     def testcase_ATRCardTypeMisMatchWithoutMask(self):
         """Test smartcard.ATRCardType mismatch without mask."""
 
         for reader in readers():
-            if []!=expectedATRinReader[str(reader)]:
-                atr = list( expectedATRinReader[str(reader)] )
+            if [] != expectedATRinReader[str(reader)]:
+                atr = list(expectedATRinReader[str(reader)])
                 # change the last byte of the expected atr
-                atr[-1]= 0xFF
-                ct = ATRCardType( atr )
+                atr[-1] = 0xFF
+                ct = ATRCardType(atr)
                 connection = reader.createConnection()
                 connection.connect()
-                self.assertEquals( False, ct.matches( connection.getATR() ) )
-                self.assertEquals( False, ct.matches( connection.getATR(), reader ) )
+                self.assertEquals(False, ct.matches(connection.getATR()))
+                self.assertEquals(False, ct.matches(connection.getATR(), reader))
                 connection.disconnect()
-
 
     def testcase_ATRCardTypeWithMask(self):
         """Test smartcard.ATRCardType with mask."""
 
         for reader in readers():
-            if []!=expectedATRinReader[str(reader)]:
-                mask=map( lambda x: 0xFF, expectedATRinReader[str(reader)] )
+            if [] != expectedATRinReader[str(reader)]:
+                mask = map(lambda x: 0xFF, expectedATRinReader[str(reader)])
                 # don't look to the last byte
-                mask[-1]=0x00
-                ct = ATRCardType( expectedATRinReader[str(reader)], mask )
+                mask[-1] = 0x00
+                ct = ATRCardType(expectedATRinReader[str(reader)], mask)
                 connection = reader.createConnection()
                 connection.connect()
-                atr=connection.getATR()
+                atr = connection.getATR()
                 connection.disconnect()
                 # change a bit in the last byte
                 atr[-1] = atr[-1] ^ 0xFF
-                self.assertEquals( True, ct.matches( atr ) )
-                self.assertEquals( True, ct.matches( atr, reader ) )
+                self.assertEquals(True, ct.matches(atr))
+                self.assertEquals(True, ct.matches(atr, reader))
 
     def testcase_ATRCardTypeWithMaskMismatch(self):
         """Test smartcard.ATRCardType with mask and mismatch."""
 
         for reader in readers():
-            if []!=expectedATRinReader[str(reader)]:
-                mask=map( lambda x: 0xFF, expectedATRinReader[str(reader)] )
+            if [] != expectedATRinReader[str(reader)]:
+                mask = map(lambda x: 0xFF, expectedATRinReader[str(reader)])
                 # don't look to the last byte
-                mask[0]=mask[-1]=0x00
-                ct = ATRCardType( expectedATRinReader[str(reader)], mask )
+                mask[0] = mask[-1] = 0x00
+                ct = ATRCardType(expectedATRinReader[str(reader)], mask)
                 connection = reader.createConnection()
                 connection.connect()
-                atr=connection.getATR()
+                atr = connection.getATR()
                 connection.disconnect()
                 # change a bit in the :-2 byte
                 atr[-2] = atr[-2] ^ 0xFF
-                self.assertEquals( False, ct.matches( atr ) )
-                self.assertEquals( False, ct.matches( atr, reader ) )
+                self.assertEquals(False, ct.matches(atr))
+                self.assertEquals(False, ct.matches(atr, reader))
 
 
 def suite():
-    suite1 = unittest.makeSuite( testcase_CardType )
+    suite1 = unittest.makeSuite(testcase_CardType)
     return unittest.TestSuite((suite1))
 
 
