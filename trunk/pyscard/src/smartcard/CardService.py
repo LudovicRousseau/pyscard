@@ -39,7 +39,7 @@ class CardService:
     Known subclasses: smartcard.PassThruCardService
     """
 
-    def __init__( self, connection, cardname=None ):
+    def __init__(self, connection, cardname=None):
         """Construct a new card service and bind to a smart card in a reader.
 
         connection:     the CardConnection used to access the smart card
@@ -47,13 +47,13 @@ class CardService:
         self.connection = connection
         self.cardname = cardname
 
-    def __del__( self ):
+    def __del__(self):
         """Destructor. Disconnect card and destroy card service resources."""
         self.connection.disconnect()
 
-    def supports( cardname ):
+    def supports(cardname):
         pass
-    supports = staticmethod( supports )
+    supports = staticmethod(supports)
 
 
 if __name__ == '__main__':
@@ -62,8 +62,8 @@ if __name__ == '__main__':
     DF_TELECOM = [0x7F, 0x10]
     from smartcard.System import readers
     cc = readers()[0].createConnection()
-    cs = CardService( cc )
+    cs = CardService(cc)
     cs.connection.connect()
-    data, sw1, sw2 = cs.connection.transmit( SELECT + DF_TELECOM )
-    print "%X %X" % ( sw1, sw2 )
+    data, sw1, sw2 = cs.connection.transmit(SELECT + DF_TELECOM)
+    print "%X %X" % (sw1, sw2)
     cs.connection.disconnect()
