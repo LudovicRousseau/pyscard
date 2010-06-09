@@ -24,6 +24,7 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
+
 class ulist(list):
     """ulist ensures that all items are unique and provides an __onadditem__
     hook to perform custom action in subclasses."""
@@ -31,88 +32,92 @@ class ulist(list):
     #
     # override list methods
     #
+
     def __init__(self, initlist=None):
-        if initlist is not None and initlist!=[]:
-            list.__init__( self, [initlist[0]] )
+        if initlist is not None and initlist != []:
+            list.__init__(self, [initlist[0]])
             for item in initlist[1:]:
-                if not list.__contains__( self, item ):
-                    list.append( self, item )
+                if not list.__contains__(self, item):
+                    list.append(self, item)
         else:
-            list.__init__( self, initlist )
+            list.__init__(self, initlist)
 
     def __add__(self, other):
-        newother = self.__remove_duplicates( other )
-        self.__appendother__( newother )
-        return self.__class__( list(self)+list(newother) )
+        newother = self.__remove_duplicates(other)
+        self.__appendother__(newother)
+        return self.__class__(list(self) + list(newother))
 
     def __iadd__(self, other):
-        newother = self.__remove_duplicates( other )
-        self.__appendother__( newother )
-        list.__iadd__( self, newother )
+        newother = self.__remove_duplicates(other)
+        self.__appendother__(newother)
+        list.__iadd__(self, newother)
         return self
 
     def __radd__(self, other):
-        newother = self.__remove_duplicates( other )
-        return list.__add__( self, newother )
+        newother = self.__remove_duplicates(other)
+        return list.__add__(self, newother)
 
     def append(self, item):
-        if not list.__contains__( self, item ):
-            list.append( self, item )
-            self.__onadditem__( item )
+        if not list.__contains__(self, item):
+            list.append(self, item)
+            self.__onadditem__(item)
 
     def insert(self, i, item):
-        if not list.__contains__( self, item ):
-            list.insert( self, i, item )
-            self.__onadditem__( item )
+        if not list.__contains__(self, item):
+            list.insert(self, i, item)
+            self.__onadditem__(item)
 
     def pop(self, i=-1):
-        item = list.pop( self, i )
-        self.__onremoveitem__( item )
+        item = list.pop(self, i)
+        self.__onremoveitem__(item)
         return item
 
     def remove(self, item):
-        list.remove( self, item )
-        self.__onremoveitem__( item )
+        list.remove(self, item)
+        self.__onremoveitem__(item)
 
     #
     # non list methods
     #
-    def __remove_duplicates( self, _other ):
+
+    def __remove_duplicates(self, _other):
         """Remove from other items already in list."""
-        if     not isinstance( _other, type(self) ) \
-           and not isinstance( _other, type(list)) \
-           and not isinstance( _other, type([])):
-            other=[_other]
+        if     not isinstance(_other, type(self)) \
+           and not isinstance(_other, type(list)) \
+           and not isinstance(_other, type([])):
+            other = [_other]
         else:
-            other=list(_other)
+            other = list(_other)
 
 
         # remove items already in self
-        newother=[]
-        for i in range(0, len(other) ):
+        newother = []
+        for i in range(0, len(other)):
             item = other.pop(0)
-            if not list.__contains__( self, item ):
-                newother.append( item )
+            if not list.__contains__(self, item):
+                newother.append(item)
 
         # remove duplicate items in other
-        other=[]
-        if newother!=[]:
+        other = []
+        if newother != []:
             other.append(newother[0])
-            for i in range( 1, len( newother ) ):
+            for i in range(1, len(newother)):
                 item = newother.pop()
-                if not other.__contains__( item ):
-                    other.append( item )
+                if not other.__contains__(item):
+                    other.append(item)
         return other
 
-    def __appendother__( self, other ):
+    def __appendother__(self, other):
         """Append other to object."""
         for item in other:
-            self.__onadditem__( item )
+            self.__onadditem__(item)
 
-    def __onadditem__( self, item ):
-        """Called for each item added. Override in subclasses for adding custom action."""
+    def __onadditem__(self, item):
+        """Called for each item added. Override in subclasses for adding
+        custom action."""
         pass
 
-    def __onremoveitem__( self, item ):
-        """Called for each item removed. Override in subclasses for adding custom action."""
+    def __onremoveitem__(self, item):
+        """Called for each item removed. Override in subclasses for
+        adding custom action."""
         pass
