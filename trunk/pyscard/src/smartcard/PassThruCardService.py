@@ -29,22 +29,24 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from smartcard import CardService
 
+
 class PassThruCardService(CardService.CardService):
     """Pass-thru card service class."""
 
-    def __init__( self, connection, cardname=None ):
+    def __init__(self, connection, cardname=None):
         """Construct a pass-thru card service.
 
         connection:     the CardConnection used to access the smart card
         """
-        CardService.CardService.__init__( self, connection, cardname )
+        CardService.CardService.__init__(self, connection, cardname)
 
-
-    def supports( cardname ):
+    def supports(cardname):
         """Returns True if the cardname is supported by the card service.
-        The PassThruCardService supports all cardnames and always returns True."""
+        The PassThruCardService supports all cardnames and always
+        returns True."""
         return True
-    supports = staticmethod( supports )
+
+    supports = staticmethod(supports)
 
 if __name__ == '__main__':
     """Small sample illustrating the use of CardService."""
@@ -53,8 +55,8 @@ if __name__ == '__main__':
     from smartcard.System import readers
     from smartcard.CardConnection import CardConnection
     cc = readers()[0].createConnection()
-    cs = PassThruCardService( cc )
+    cs = PassThruCardService(cc)
     cs.connection.connect()
-    data, sw1, sw2 = cs.connection.transmit( SELECT + DF_TELECOM )
+    data, sw1, sw2 = cs.connection.transmit(SELECT + DF_TELECOM)
     print "%X %X" % (sw1, sw2)
     cs.connection.disconnect()
