@@ -49,35 +49,37 @@ from smartcard.ReaderMonitoring import ReaderMonitor, ReaderObserver
 
 
 # a simple reader observer that prints added/removed readers
-class printobserver( ReaderObserver ):
-    def __init__( self, obsindex, testcase ):
-        self.obsindex=obsindex
+class printobserver(ReaderObserver):
+
+    def __init__(self, obsindex, testcase):
+        self.obsindex = obsindex
         self.testcase = testcase
 
-    def update( self, observable, (addedreaders, removedreaders) ):
-        foundreaders={}
-        self.testcase.assertEquals( removedreaders, [] )
+    def update(self, observable, (addedreaders, removedreaders)):
+        foundreaders = {}
+        self.testcase.assertEquals(removedreaders, [])
         for reader in addedreaders:
-            foundreaders[str(reader)]=1
-        if {}!=foundreaders:
+            foundreaders[str(reader)] = 1
+        if {} != foundreaders:
             for reader in expectedReaders:
-                self.testcase.assert_( foundreaders.has_key( reader ) )
+                self.testcase.assert_(foundreaders.has_key(reader))
 
-class testthread( threading.Thread ):
-    def __init__(self, obsindex, testcase ):
+
+class testthread(threading.Thread):
+
+    def __init__(self, obsindex, testcase):
         threading.Thread.__init__(self)
         self.obsindex = obsindex
         self.testcase = testcase
         self.readermonitor = ReaderMonitor()
-        self.observer=None
+        self.observer = None
 
     def run(self):
         # create and register observer
-        self.observer = printobserver( self.obsindex, self.testcase )
-        self.readermonitor.addObserver( self.observer )
+        self.observer = printobserver(self.obsindex, self.testcase)
+        self.readermonitor.addObserver(self.observer)
         time.sleep(1)
         self.readermonitor.deleteObserver(self.observer)
-
 
 
 class testcase_readermonitor(unittest.TestCase):
@@ -85,13 +87,14 @@ class testcase_readermonitor(unittest.TestCase):
 
     def testcase_readermonitorthread(self):
         threads = []
-        for i in range( 0, 4 ):
-            t = testthread( i, self )
-            threads.append( t )
+        for i in range(0, 4):
+            t = testthread(i, self)
+            threads.append(t)
         for t in threads:
             t.start()
         for t in threads:
             t.join()
+
 
 def suite():
     suite1 = unittest.makeSuite(testcase_readermonitorthread)

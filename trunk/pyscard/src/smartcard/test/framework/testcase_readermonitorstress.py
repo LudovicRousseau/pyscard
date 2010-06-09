@@ -34,15 +34,17 @@ import unittest
 
 from smartcard.ReaderMonitoring import ReaderMonitor, ReaderObserver
 
-period=.1
+period = .1
 
 # stats on virtual reader insertion/removal
-insertedreaderstats={}
-removedreaderstats={}
+insertedreaderstats = {}
+removedreaderstats = {}
 
 # the virtual list of readers
-mutexvreaders=threading.RLock()
-virtualreaders=[]
+mutexvreaders = threading.RLock()
+virtualreaders = []
+
+
 def getReaders():
     '''Return virtual list of inserted readers.
     Replacement of smartcard.system.readers for testing purpose'''
@@ -62,78 +64,86 @@ readerEvent = threading.Event()
 readerEvent.clear()
 
 # test running time in seconds
-RUNNING_TIME=15
+RUNNING_TIME = 15
 
 # the count of registered observers
-OBS_COUNT=100
+OBS_COUNT = 100
 
-class readerInsertionThread( threading.Thread ):
+
+class readerInsertionThread(threading.Thread):
     '''Simulate reader insertion every 2 to 4 periods.'''
-    def __init__( self ):
-        threading.Thread.__init__( self )
-    def run( self ):
+
+    def __init__(self):
+        threading.Thread.__init__(self)
+
+    def run(self):
         while not exitEvent.isSet():
-            time.sleep( random.uniform( 2*period, 4*period ) )
+            time.sleep(random.uniform(2 * period, 4 * period))
             readerEvent.wait()
-            newreader=random.choice( 'abcdefghijklmnopqrstuvwxyz' )
+            newreader = random.choice('abcdefghijklmnopqrstuvwxyz')
             try:
                 mutexvreaders.acquire()
                 if newreader not in virtualreaders:
-                    virtualreaders.append( newreader )
+                    virtualreaders.append(newreader)
                     if insertedreaderstats.has_key(newreader):
-                        insertedreaderstats[newreader]+=1 
+                        insertedreaderstats[newreader] += 1
                     else:
-                        insertedreaderstats[newreader]=1
+                        insertedreaderstats[newreader] = 1
             finally:
                 readerEvent.clear()
                 mutexvreaders.release()
 
 
-class readerRemovalThread( threading.Thread ):
+class readerRemovalThread(threading.Thread):
     '''Simulate reader removal every 5 to 6 periods.'''
-    def __init__(self ):
+
+    def __init__(self):
         threading.Thread.__init__(self)
+
     def run(self):
         while not exitEvent.isSet():
-            time.sleep( random.uniform( 5*period, 6*period ) )
+            time.sleep(random.uniform(5 * period, 6 * period))
             readerEvent.wait()
             try:
                 mutexvreaders.acquire()
                 if virtualreaders:
-                    oldreader=random.choice( virtualreaders )
+                    oldreader = random.choice(virtualreaders)
                     virtualreaders.remove(oldreader)
                     if removedreaderstats.has_key(oldreader):
-                        removedreaderstats[oldreader]+=1 
+                        removedreaderstats[oldreader] += 1
                     else:
-                        removedreaderstats[oldreader]=1
+                        removedreaderstats[oldreader] = 1
             finally:
                 readerEvent.clear()
                 mutexvreaders.release()
 
 
-class countobserver( ReaderObserver ):
+class countobserver(ReaderObserver):
     '''A simple reader observer that counts added/removed readers.'''
-    def __init__( self, obsindex ):
-        self.obsindex=obsindex
-        self.insertedreaderstats={}
-        self.removedreaderstats={}
-        self.countnotified=0
-    def update( self, observable, (addedreaders, removedreaders) ):
-        self.countnotified+=1
+
+    def __init__(self, obsindex):
+        self.obsindex = obsindex
+        self.insertedreaderstats = {}
+        self.removedreaderstats = {}
+        self.countnotified = 0
+
+    def update(self, observable, (addedreaders, removedreaders)):
+        self.countnotified += 1
         for newreader in addedreaders:
             if self.insertedreaderstats.has_key(newreader):
-                self.insertedreaderstats[newreader]+=1 
+                self.insertedreaderstats[newreader] += 1
             else:
-                self.insertedreaderstats[newreader]=1
+                self.insertedreaderstats[newreader] = 1
         for oldreader in removedreaders:
             if self.removedreaderstats.has_key(oldreader):
-                self.removedreaderstats[oldreader]+=1 
+                self.removedreaderstats[oldreader] += 1
             else:
-                self.removedreaderstats[oldreader]=1
+                self.removedreaderstats[oldreader] = 1
 
 
-class testcase_readermonitorstress( unittest.TestCase ):
+class testcase_readermonitorstress(unittest.TestCase):
     '''Test smartcard framework reader monitoring'''
+
     def testcase_readermonitorthread(self):
 
         # create thread that simulates reader insertion
@@ -142,12 +152,12 @@ class testcase_readermonitorstress( unittest.TestCase ):
         # create thread that simulates reader removal
         removalthread = readerRemovalThread()
 
-        readermonitor = ReaderMonitor( readerProc=getReaders, period=period )
-        observers=[]
-        for i in range( 0, OBS_COUNT ):
-            observer = countobserver( i )
-            readermonitor.addObserver( observer )
-            observers.append( observer )
+        readermonitor = ReaderMonitor(readerProc=getReaders, period=period)
+        observers = []
+        for i in range(0, OBS_COUNT):
+            observer = countobserver(i)
+            readermonitor.addObserver(observer)
+            observers.append(observer)
 
         # signal threads to start
         insertionthread.start()
@@ -155,13 +165,13 @@ class testcase_readermonitorstress( unittest.TestCase ):
 
         # let reader insertion/removal threads run for a while
         # then signal threads to end
-        time.sleep( RUNNING_TIME )
+        time.sleep(RUNNING_TIME)
         exitEvent.set()
 
         # wait until all threads ended
         removalthread.join()
         insertionthread.join()
-        time.sleep( 2*period )
+        time.sleep(2 * period)
 
         for observer in observers:
             #print observer.obsindex, observer.insertedreaderstats==insertedreaderstats, observer.countnotified
@@ -170,9 +180,8 @@ class testcase_readermonitorstress( unittest.TestCase ):
             #print insertedreaderstats
             #print observer.removedreaderstats
             #print removedreaderstats
-            self.assertEquals( observer.insertedreaderstats, insertedreaderstats )
-            self.assertEquals( observer.removedreaderstats, removedreaderstats )
-
+            self.assertEquals(observer.insertedreaderstats, insertedreaderstats)
+            self.assertEquals(observer.removedreaderstats, removedreaderstats)
 
 
 def suite():
