@@ -29,33 +29,37 @@ from smartcard.scard import SCardGetErrorMessage
 from smartcard.pcsc import PCSCCardConnection
 import smartcard.pcsc
 
-class ExclusiveConnectCardConnection( CardConnectionDecorator ):
-    '''This decorator uses exclusive access to the card during connection to prevent other
-    processes to connect to this card.'''
-    def __init__( self, cardconnection ):
-        CardConnectionDecorator.__init__( self, cardconnection )
 
-    def connect( self, protocol=None, mode=None, disposition=None ):
+class ExclusiveConnectCardConnection(CardConnectionDecorator):
+    '''This decorator uses exclusive access to the card during
+    connection to prevent other processes to connect to this card.'''
+
+    def __init__(self, cardconnection):
+        CardConnectionDecorator.__init__(self, cardconnection)
+
+    def connect(self, protocol=None, mode=None, disposition=None):
         '''Disconnect and reconnect in exclusive mode PCSCCardconnections.'''
-        CardConnectionDecorator.connect( self, protocol, mode, disposition )
-        component=self.component
+        CardConnectionDecorator.connect(self, protocol, mode, disposition)
+        component = self.component
         while True:
-            if isinstance( component, smartcard.pcsc.PCSCCardConnection.PCSCCardConnection ):
-                pcscprotocol = PCSCCardConnection.translateprotocolmask( protocol )
-                if 0==pcscprotocol:
+            if isinstance(component, smartcard.pcsc.PCSCCardConnection.PCSCCardConnection):
+                pcscprotocol = PCSCCardConnection.translateprotocolmask(protocol)
+                if 0 == pcscprotocol:
                     pcscprotocol = component.getProtocol()
 
-                if None!=component.hcard:
-                    hresult = SCardDisconnect( component.hcard, SCARD_LEAVE_CARD )
-                    if hresult!=0:
-                        raise CardConnectionException( 'Failed to disconnect: ' + SCardGetErrorMessage(hresult) )
+                if None != component.hcard:
+                    hresult = SCardDisconnect(component.hcard, SCARD_LEAVE_CARD)
+                    if hresult != 0:
+                        raise CardConnectionException('Failed to disconnect: '
+                            + SCardGetErrorMessage(hresult))
                 hresult, component.hcard, dwActiveProtocol = SCardConnect(
-                    component.hcontext, str(component.reader), SCARD_SHARE_EXCLUSIVE, pcscprotocol )
-                if hresult!=0:
-                    raise CardConnectionException( 'Failed to connect with SCARD_SHARE_EXCLUSIVE' + SCardGetErrorMessage(hresult) )
+                    component.hcontext, str(component.reader),
+                    SCARD_SHARE_EXCLUSIVE, pcscprotocol)
+                if hresult != 0:
+                    raise CardConnectionException('Failed to connect with SCARD_SHARE_EXCLUSIVE' + SCardGetErrorMessage(hresult))
                 # print 'reconnected exclusive'
                 break
-            if hasattr( component, 'component' ):
-                component=component.component
+            if hasattr(component, 'component'):
+                component = component.component
             else:
                 break
