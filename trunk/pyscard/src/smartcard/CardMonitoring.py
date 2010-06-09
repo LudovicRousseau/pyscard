@@ -40,7 +40,8 @@ from smartcard.Observer import Observable
 from smartcard.CardType import AnyCardType
 from smartcard.CardRequest import CardRequest
 
-_START_ON_DEMAND_=False
+_START_ON_DEMAND_ = False
+
 
 # CardObserver interface
 class CardObserver(Observer):
@@ -48,9 +49,11 @@ class CardObserver(Observer):
     CardObserver is a base abstract class for objects that are to be notified
     upon smartcard reader insertion/removal.
     """
+
     def __init__(self):
         pass
-    def update( self, observable, (addedcards, removedcards) ):
+
+    def update(self, observable, (addedcards, removedcards)):
         """Called upon reader insertion/removal.
 
         observable:
@@ -58,6 +61,7 @@ class CardObserver(Observer):
         removedcards: list of removed readers causing notification
         """
         pass
+
 
 class CardMonitor:
     """Class that monitors smart card insertion/removal.
@@ -73,45 +77,46 @@ class CardMonitor:
     there is only one CardMonitor.
     """
 
-    class __CardMonitorSingleton( Observable ):
+    class __CardMonitorSingleton(Observable):
         """The real smartcard monitor class.
 
         A single instance of this class is created
         by the public CardMonitor class.
         """
-        def __init__( self ):
+
+        def __init__(self):
             Observable.__init__(self)
             if _START_ON_DEMAND_:
-                self.rmthread=None
+                self.rmthread = None
             else:
-                self.rmthread = CardMonitoringThread( self )
+                self.rmthread = CardMonitoringThread(self)
 
-        def addObserver( self, observer ):
+        def addObserver(self, observer):
             """Add an observer.
 
             We only start the card monitoring thread when
             there are observers.
             """
-            Observable.addObserver( self, observer )
+            Observable.addObserver(self, observer)
             if _START_ON_DEMAND_:
-                if self.countObservers()>0 and self.rmthread==None:
-                    self.rmthread = CardMonitoringThread( self )
+                if self.countObservers() > 0 and self.rmthread == None:
+                    self.rmthread = CardMonitoringThread(self)
             else:
-                observer.update( self, (self.rmthread.cards, [] ) )
+                observer.update(self, (self.rmthread.cards, []))
 
-        def deleteObserver( self, observer ):
+        def deleteObserver(self, observer):
             """Remove an observer.
 
             We delete the CardMonitoringThread reference when there
             are no more observers.
             """
-            Observable.deleteObserver( self, observer )
+            Observable.deleteObserver(self, observer)
             if _START_ON_DEMAND_:
-                if self.countObservers()==0:
-                    if self.rmthread!=None:
-                        self.rmthread=None
+                if self.countObservers() == 0:
+                    if self.rmthread != None:
+                        self.rmthread = None
 
-        def __str__( self ):
+        def __str__(self):
             return 'CardMonitor'
 
     # the singleton
@@ -121,8 +126,8 @@ class CardMonitor:
         if not CardMonitor.instance:
             CardMonitor.instance = CardMonitor.__CardMonitorSingleton()
 
-    def __getattr__( self, name ):
-        return getattr( self.instance, name )
+    def __getattr__(self, name):
+        return getattr(self.instance, name)
 
 
 class CardMonitoringThread:
@@ -130,15 +135,16 @@ class CardMonitoringThread:
     This thread waits for card insertion.
     """
 
-    class __CardMonitoringThreadSingleton( Thread ):
+    class __CardMonitoringThreadSingleton(Thread):
         """The real card monitoring thread class.
 
         A single instance of this class is created
         by the public CardMonitoringThread class.
         """
+
         def __init__(self, observable):
             Thread.__init__(self)
-            self.observable=observable
+            self.observable = observable
             self.stopEvent = Event()
             self.stopEvent.clear()
             self.cards = []
@@ -149,31 +155,32 @@ class CardMonitoringThread:
             """Runs until stopEvent is notified, and notify
             observers of all card insertion/removal.
             """
-            self.cardrequest = CardRequest( timeout=0.1 )
-            while self.stopEvent.isSet()!=1:
+            self.cardrequest = CardRequest(timeout=0.1)
+            while self.stopEvent.isSet() != 1:
                 try:
                     currentcards = self.cardrequest.waitforcardevent()
 
-                    addedcards=[]
+                    addedcards = []
                     for card in currentcards:
-                        if not self.cards.__contains__( card ):
-                            addedcards.append( card )
+                        if not self.cards.__contains__(card):
+                            addedcards.append(card)
 
-                    removedcards=[]
+                    removedcards = []
                     for card in self.cards:
-                        if not currentcards.__contains__( card ):
-                            removedcards.append( card )
+                        if not currentcards.__contains__(card):
+                            removedcards.append(card)
 
-                    if addedcards!=[] or removedcards!=[]:
-                        self.cards=currentcards
+                    if addedcards != [] or removedcards != []:
+                        self.cards = currentcards
                         self.observable.setChanged()
-                        self.observable.notifyObservers( (addedcards, removedcards) )
+                        self.observable.notifyObservers((addedcards, removedcards))
 
-                # when CardMonitoringThread.__del__() is invoked in response to shutdown,
-                # e.g., when execution of the program is done, other globals referenced
-                # by the __del__() method may already have been deleted.
-                # this causes ReaderMonitoringThread.run() to except with a TypeError
-                # or AttributeError
+                # when CardMonitoringThread.__del__() is invoked in
+                # response to shutdown, e.g., when execution of the
+                # program is done, other globals referenced by the
+                # __del__() method may already have been deleted.
+                # this causes ReaderMonitoringThread.run() to except
+                # with a TypeError or AttributeError
                 except TypeError:
                     pass
                 except AttributeError:
@@ -197,16 +204,15 @@ class CardMonitoringThread:
 
     def __init__(self, observable):
         if not CardMonitoringThread.instance:
-            CardMonitoringThread.instance = CardMonitoringThread.__CardMonitoringThreadSingleton( observable )
+            CardMonitoringThread.instance = CardMonitoringThread.__CardMonitoringThreadSingleton(observable)
             CardMonitoringThread.instance.start()
 
-
-    def __getattr__( self, name ):
+    def __getattr__(self, name):
         if self.instance:
-            return getattr( self.instance, name )
+            return getattr(self.instance, name)
 
-    # commented to avoid bad clean-up sequence of python where __del__ is called when
-    # some objects it uses are already gargabe collected
+    # commented to avoid bad clean-up sequence of python where __del__
+    # is called when some objects it uses are already gargabe collected
     #def __del__(self):
     #    if CardMonitoringThread.instance!=None:
     #        CardMonitoringThread.instance.stop()
@@ -218,24 +224,26 @@ if __name__ == "__main__":
     print 'insert or remove cards in the next 10 seconds'
 
     # a simple card observer that prints added/removed cards
-    class printobserver( CardObserver ):
-        def __init__( self, obsindex ):
-            self.obsindex=obsindex
+    class printobserver(CardObserver):
 
-        def update( self, observable, (addedcards, removedcards) ):
+        def __init__(self, obsindex):
+            self.obsindex = obsindex
+
+        def update(self, observable, (addedcards, removedcards)):
             print "%d - added:   " % self.obsindex, addedcards
             print "%d - removed: " % self.obsindex, removedcards
 
-    class testthread( Thread ):
-        def __init__(self, obsindex ):
+    class testthread(Thread):
+
+        def __init__(self, obsindex):
             Thread.__init__(self)
             self.readermonitor = CardMonitor()
             self.obsindex = obsindex
-            self.observer=None
+            self.observer = None
 
         def run(self):
             # create and register observer
-            self.observer = printobserver( self.obsindex )
+            self.observer = printobserver(self.obsindex)
             self.readermonitor.addObserver(self.observer)
             sleep(10)
             self.readermonitor.deleteObserver(self.observer)
