@@ -29,50 +29,52 @@ from smartcard.scard import SCardGetErrorMessage
 from smartcard.pcsc import PCSCCardConnection
 import smartcard.pcsc
 
-class ExclusiveTransmitCardConnection( CardConnectionDecorator ):
-    '''This decorator uses SCardBeginTransaction/SCardEndTransaction
-    to preserve other processes of threads to access the card during transmit().'''
-    def __init__( self, cardconnection ):
-        CardConnectionDecorator.__init__( self, cardconnection )
 
-    def lock( self ):
+class ExclusiveTransmitCardConnection(CardConnectionDecorator):
+    '''This decorator uses SCardBeginTransaction/SCardEndTransaction to
+    preserve other processes of threads to access the card during
+    transmit().'''
+
+    def __init__(self, cardconnection):
+        CardConnectionDecorator.__init__(self, cardconnection)
+
+    def lock(self):
         '''Lock card with SCardBeginTransaction.'''
 
-        component=self.component
+        component = self.component
         while True:
-            if isinstance( component, smartcard.pcsc.PCSCCardConnection.PCSCCardConnection ):
-                hresult = SCardBeginTransaction( component.hcard )
-                if 0!=hresult:
-                    raise CardConnectionException( 'Failed to lock with SCardBeginTransaction' + SCardGetErrorMessage(hresult) )
+            if isinstance(component, smartcard.pcsc.PCSCCardConnection.PCSCCardConnection):
+                hresult = SCardBeginTransaction(component.hcard)
+                if 0 != hresult:
+                    raise CardConnectionException('Failed to lock with SCardBeginTransaction' + SCardGetErrorMessage(hresult))
                 else:
                     #print 'locked'
                     pass
                 break
-            if hasattr( component, 'component' ):
-                component=component.component
+            if hasattr(component, 'component'):
+                component = component.component
             else:
                 break
 
-    def unlock( self ):
+    def unlock(self):
         '''Unlock card with SCardEndTransaction.'''
-        component=self.component
+        component = self.component
         while True:
-            if isinstance( component, smartcard.pcsc.PCSCCardConnection.PCSCCardConnection ):
-                hresult = SCardEndTransaction( component.hcard, SCARD_LEAVE_CARD )
-                if 0!=hresult:
-                    raise CardConnectionException( 'Failed to unlock with SCardEndTransaction' + SCardGetErrorMessage(hresult) )
+            if isinstance(component, smartcard.pcsc.PCSCCardConnection.PCSCCardConnection):
+                hresult = SCardEndTransaction(component.hcard, SCARD_LEAVE_CARD)
+                if 0 != hresult:
+                    raise CardConnectionException('Failed to unlock with SCardEndTransaction' + SCardGetErrorMessage(hresult))
                 else:
                     #print 'unlocked'
                     pass
                 break
-            if hasattr( component, 'component' ):
-                component=component.component
+            if hasattr(component, 'component'):
+                component = component.component
             else:
                 break
 
-
-    def transmit( self, bytes, protocol=None ):
+    def transmit(self, bytes, protocol=None):
         '''Gain exclusive access to card during APDU transmission for if this
         decorator decorates a PCSCCardConnection.'''
-        data, sw1, sw2 = CardConnectionDecorator.transmit( self, bytes, protocol )
+        data, sw1, sw2 = CardConnectionDecorator.transmit(self, bytes, protocol)
         return data, sw1, sw2
