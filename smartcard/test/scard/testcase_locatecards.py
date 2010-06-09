@@ -45,65 +45,66 @@ except:
 
 class testcase_locatecards(unittest.TestCase):
     """Test scard API for ATR retrieval with SCardLocateCards"""
+
     def setUp(self):
-        hresult, self.hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
+        hresult, self.hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
         self.assertEquals(hresult, 0)
 
     def tearDown(self):
-        hresult = SCardReleaseContext( self.hcontext )
+        hresult = SCardReleaseContext(self.hcontext)
         self.assertEquals(hresult, 0)
 
     def test_locateCards(self):
-        hresult, readers = SCardListReaders( self.hcontext, [] )
+        hresult, readers = SCardListReaders(self.hcontext, [])
         self.assertEquals(hresult, 0)
 
-        foundReaders={}
+        foundReaders = {}
         for reader in readers:
-            foundReaders[reader]=1
+            foundReaders[reader] = 1
         for reader in expectedReaders:
-            self.assert_( foundReaders.has_key( reader ) )
+            self.assert_(foundReaders.has_key(reader))
 
-        if 'winscard'==resourceManager:
-            hresult, cards = SCardListCards( self.hcontext, [], [] )
+        if 'winscard' == resourceManager:
+            hresult, cards = SCardListCards(self.hcontext, [], [])
             self.assertEquals(hresult, 0)
 
             readerstates = []
             for i in xrange(len(readers)):
-                readerstates += [ (readers[i], SCARD_STATE_UNAWARE ) ]
+                readerstates += [(readers[i], SCARD_STATE_UNAWARE)]
 
-            hresult, newstates = SCardLocateCards( self.hcontext, cards, readerstates )
+            hresult, newstates = SCardLocateCards(self.hcontext, cards, readerstates)
             self.assertEquals(hresult, 0)
 
-            dictexpectedreaders={}
+            dictexpectedreaders = {}
             for reader in expectedReaders:
-                dictexpectedreaders[reader]=1
+                dictexpectedreaders[reader] = 1
             for reader, eventstate, atr in newstates:
-                if dictexpectedreaders.has_key( reader ) and []!=expectedATRinReader[reader]:
-                    self.assertEquals( expectedATRinReader[reader], atr )
-                    self.assert_( eventstate & SCARD_STATE_PRESENT )
-                    self.assert_( eventstate & SCARD_STATE_CHANGED )
+                if dictexpectedreaders.has_key(reader) and [] != expectedATRinReader[reader]:
+                    self.assertEquals(expectedATRinReader[reader], atr)
+                    self.assert_(eventstate & SCARD_STATE_PRESENT)
+                    self.assert_(eventstate & SCARD_STATE_CHANGED)
 
             # 10ms delay, so that time-out always occurs
-            hresult, newstates = SCardGetStatusChange( self.hcontext, 10, newstates )
-            self.assertEquals( hresult, SCARD_E_TIMEOUT )
-            self.assertEquals( SCardGetErrorMessage(hresult), 'The user-specified timeout value has expired. ' )
+            hresult, newstates = SCardGetStatusChange(self.hcontext, 10, newstates)
+            self.assertEquals(hresult, SCARD_E_TIMEOUT)
+            self.assertEquals(SCardGetErrorMessage(hresult), 'The user-specified timeout value has expired. ')
 
-        elif 'pcsclite'==resourceManager:
+        elif 'pcsclite' == resourceManager:
             readerstates = []
             for i in xrange(len(readers)):
-                readerstates += [ (readers[i], SCARD_STATE_UNAWARE ) ]
+                readerstates += [(readers[i], SCARD_STATE_UNAWARE)]
 
-            hresult, newstates = SCardGetStatusChange( self.hcontext, 0, readerstates )
+            hresult, newstates = SCardGetStatusChange(self.hcontext, 0, readerstates)
             self.assertEquals(hresult, 0)
 
-            dictexpectedreaders={}
+            dictexpectedreaders = {}
             for reader in expectedReaders:
-                dictexpectedreaders[reader]=1
+                dictexpectedreaders[reader] = 1
             for reader, eventstate, atr in newstates:
-                if dictexpectedreaders.has_key( reader ) and []!=expectedATRinReader[reader]:
-                    self.assertEquals( expectedATRinReader[reader], atr )
-                    self.assert_( eventstate & SCARD_STATE_PRESENT )
-                    self.assert_( eventstate & SCARD_STATE_CHANGED )
+                if dictexpectedreaders.has_key(reader) and [] != expectedATRinReader[reader]:
+                    self.assertEquals(expectedATRinReader[reader], atr)
+                    self.assert_(eventstate & SCARD_STATE_PRESENT)
+                    self.assert_(eventstate & SCARD_STATE_CHANGED)
 
 
 def suite():
