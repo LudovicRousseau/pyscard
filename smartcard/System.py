@@ -27,7 +27,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 import smartcard.pcsc.PCSCReader
 import smartcard.pcsc.PCSCReaderGroups
 
-def readers( groups=[] ):
+
+def readers(groups=[]):
     """Returns the list of smartcard readers in groups.
 
     If group is not specified, returns the list of all smartcard readers.
@@ -37,12 +38,14 @@ def readers( groups=[] ):
     r=smartcard.readers(['SCard$DefaultReaders', 'MyReaderGroup'])
     """
 
-    return smartcard.pcsc.PCSCReader.readers( groups )
+    return smartcard.pcsc.PCSCReader.readers(groups)
+
 
 def readergroups():
     """Returns the list of reader groups."""
 
     return smartcard.pcsc.PCSCReaderGroups.PCSCReaderGroups()
+
 
 # for legacy only
 def listReaders():
@@ -50,9 +53,9 @@ def listReaders():
 
     Deprecated - Use smartcard.System.readers() instead.
     """
-    zreaders=[]
+    zreaders = []
     for reader in readers():
-        zreaders.append( str(reader) )
+        zreaders.append(str(reader))
     return zreaders
 
 
