@@ -52,14 +52,15 @@ class testcase_ATR(unittest.TestCase):
     def testcase_ATRconfig(self):
         # we have at list 2 readers (one is the simulator), e.g.
         # two potential ATRs
-        self.assert_( len(expectedATRs) > 1 )
+        self.assert_(len(expectedATRs) > 1)
 
         # we have at least two non empty ATRs
-        count=0
+        count = 0
         for atr in expectedATRs:
-            if atr!=[]:
-                count+=1
-        self.assert_( count>1 )
+            if atr != []:
+                count += 1
+        self.assert_(count > 1)
+
 
 def suite():
     suite1 = unittest.makeSuite(testcase_ATR)
