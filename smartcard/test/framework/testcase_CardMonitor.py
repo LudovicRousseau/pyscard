@@ -50,32 +50,35 @@ from smartcard.util import toHexString
 
 
 # a simple card observer that prints inserted/removed cards
-class printobserver( CardObserver ):
-    def __init__( self, obsindex, testcase ):
-        self.obsindex=obsindex
+class printobserver(CardObserver):
+
+    def __init__(self, obsindex, testcase):
+        self.obsindex = obsindex
         self.testcase = testcase
 
-    def update( self, observable, (addedcards, removedcards) ):
-        foundcards={}
-        self.testcase.assertEquals( removedcards, [] )
+    def update(self, observable, (addedcards, removedcards)):
+        foundcards = {}
+        self.testcase.assertEquals(removedcards, [])
         for card in addedcards:
-            foundcards[toHexString(card.atr)]=1
+            foundcards[toHexString(card.atr)] = 1
         for atr in expectedATRs:
-            if []!=atr and {}!=foundcards:
-                self.testcase.assert_( foundcards.has_key( toHexString(atr) ) )
+            if [] != atr and {} != foundcards:
+                self.testcase.assert_(foundcards.has_key(toHexString(atr)))
 
-class testthread( threading.Thread ):
-    def __init__(self, obsindex, testcase ):
+
+class testthread(threading.Thread):
+
+    def __init__(self, obsindex, testcase):
         threading.Thread.__init__(self)
         self.obsindex = obsindex
         self.testcase = testcase
         self.cardmonitor = CardMonitor()
-        self.observer=None
+        self.observer = None
 
     def run(self):
         # create and register observer
-        self.observer = printobserver( self.obsindex, self.testcase )
-        self.cardmonitor.addObserver( self.observer )
+        self.observer = printobserver(self.obsindex, self.testcase)
+        self.cardmonitor.addObserver(self.observer)
         time.sleep(1)
         self.cardmonitor.deleteObserver(self.observer)
 
@@ -85,13 +88,14 @@ class testcase_cardmonitor(unittest.TestCase):
 
     def testcase_cardmonitorthread(self):
         threads = []
-        for i in range( 0, 4 ):
-            t = testthread( i, self )
-            threads.append( t )
+        for i in range(0, 4):
+            t = testthread(i, self)
+            threads.append(t)
         for t in threads:
             t.start()
         for t in threads:
             t.join()
+
 
 def suite():
     suite1 = unittest.makeSuite(testcase_cardmonitorthread)
