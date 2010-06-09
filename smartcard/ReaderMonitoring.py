@@ -45,9 +45,11 @@ class ReaderObserver(Observer):
     ReaderObserver is a base abstract class for objects that are to be notified
     upon smartcard reader insertion/removal.
     """
+
     def __init__(self):
         pass
-    def update( self, observable, (addedreaders, removedreaders) ):
+
+    def update(self, observable, (addedreaders, removedreaders)):
         """Called upon reader insertion/removal.
 
         observable:
@@ -56,7 +58,8 @@ class ReaderObserver(Observer):
         """
         pass
 
-class ReaderMonitor( Observable ):
+
+class ReaderMonitor(Observable):
     """Class that monitors reader insertion/removal.
     and notify observers
 
@@ -70,47 +73,50 @@ class ReaderMonitor( Observable ):
     the shared state pattern logics.
     """
 
-
     __shared_state = {}
 
-    def __init__( self, startOnDemand=True, readerProc=smartcard.System.readers, period=1 ):
+    def __init__(self, startOnDemand=True, readerProc=smartcard.System.readers,
+        period=1):
         self.__dict__ = self.__shared_state
-        Observable.__init__( self )
+        Observable.__init__(self)
         self.startOnDemand = startOnDemand
         self.readerProc = readerProc
         self.period = period
         if self.startOnDemand:
-            self.rmthread=None
+            self.rmthread = None
         else:
-            self.rmthread = ReaderMonitoringThread( self, self.readerProc, self.period )
+            self.rmthread = ReaderMonitoringThread(self, self.readerProc,
+                self.period)
             self.rmthread.start()
 
-    def addObserver( self, observer ):
+    def addObserver(self, observer):
         """Add an observer."""
-        Observable.addObserver( self, observer )
+        Observable.addObserver(self, observer)
 
-        # If self.startOnDemand is True, the reader monitoring 
+        # If self.startOnDemand is True, the reader monitoring
         # thread only runs when there are observers.
         if self.startOnDemand:
-            if 0<self.countObservers():
+            if 0 < self.countObservers():
                 if not self.rmthread:
-                    self.rmthread = ReaderMonitoringThread( self, self.readerProc, self.period )
+                    self.rmthread = ReaderMonitoringThread(self,
+                        self.readerProc, self.period)
 
                     # start reader monitoring thread in another thread to
                     # avoid a deadlock; addObserver and notifyObservers called
-                    # in the ReaderMonitoringThread run() method are synchronized
+                    # in the ReaderMonitoringThread run() method are
+                    # synchronized
                     import thread
-                    thread.start_new_thread( self.rmthread.start, () )
+                    thread.start_new_thread(self.rmthread.start, ())
         else:
-            observer.update( self, (self.rmthread.readers, []) )
+            observer.update(self, (self.rmthread.readers, []))
 
-    def deleteObserver( self, observer ):
+    def deleteObserver(self, observer):
         """Remove an observer."""
-        Observable.deleteObserver( self, observer )
-        # If self.startOnDemand is True, the reader monitoring 
+        Observable.deleteObserver(self, observer)
+        # If self.startOnDemand is True, the reader monitoring
         # thread is stopped when there are no more observers.
         if self.startOnDemand:
-            if 0==self.countObservers():
+            if 0 == self.countObservers():
                 self.rmthread.stop()
                 del self.rmthread
                 self.rmthread = None
@@ -118,7 +124,7 @@ class ReaderMonitor( Observable ):
     def __str__(self):
         return self.__class__.__name__
 
-synchronize( ReaderMonitor,
+synchronize(ReaderMonitor,
   "addObserver deleteObserver deleteObservers " +
   "setChanged clearChanged hasChanged " +
   "countObservers")
@@ -130,20 +136,20 @@ class ReaderMonitoringThread(Thread):
     reader insertion event is available in pcsc.
     """
 
-
     __shared_state = {}
-    def __init__( self, observable, readerProc, period ):
+
+    def __init__(self, observable, readerProc, period):
         self.__dict__ = self.__shared_state
-        Thread.__init__( self )
+        Thread.__init__(self)
         self.observable = observable
         self.stopEvent = Event()
         self.stopEvent.clear()
         self.readers = []
-        self.setDaemon( True )
-        self.setName( 'smartcard.ReaderMonitoringThread' )
+        self.setDaemon(True)
+        self.setName('smartcard.ReaderMonitoringThread')
         self.readerProc = readerProc
         self.period = period
- 
+
     def run(self):
         """Runs until stopEvent is notified, and notify
         observers of all reader insertion/removal.
@@ -151,27 +157,28 @@ class ReaderMonitoringThread(Thread):
         while not self.stopEvent.isSet():
             try:
                 # no need to monitor if no observers
-                if 0<self.observable.countObservers():
+                if 0 < self.observable.countObservers():
                     currentReaders = self.readerProc()
                     addedReaders = []
                     removedReaders = []
 
-                    if currentReaders!=self.readers:
+                    if currentReaders != self.readers:
                         for reader in currentReaders:
                             if not reader in self.readers:
                                 addedReaders.append(reader)
                         for reader in self.readers:
                             if not reader in currentReaders:
                                 removedReaders.append(reader)
-        
+
                         if addedReaders or removedReaders:
                             # Notify observers
-                            self.readers=[]
+                            self.readers = []
                             for r in currentReaders:
                                 self.readers.append(r)
                             self.observable.setChanged()
-                            self.observable.notifyObservers((addedReaders, removedReaders))
-    
+                            self.observable.notifyObservers((addedReaders,
+                                removedReaders))
+
                 # wait every second on stopEvent
                 self.stopEvent.wait(self.period)
 
@@ -191,24 +198,26 @@ if __name__ == "__main__":
     print 'insert or remove readers in the next 20 seconds'
 
     # a simple reader observer that prints added/removed readers
-    class printobserver( ReaderObserver ):
-        def __init__( self, obsindex ):
-            self.obsindex=obsindex
+    class printobserver(ReaderObserver):
 
-        def update( self, observable, (addedreaders, removedreaders) ):
+        def __init__(self, obsindex):
+            self.obsindex = obsindex
+
+        def update(self, observable, (addedreaders, removedreaders)):
             print "%d - added:   " % self.obsindex, addedreaders
             print "%d - removed: " % self.obsindex, removedreaders
 
-    class testthread( Thread ):
-        def __init__(self, obsindex ):
+    class testthread(Thread):
+
+        def __init__(self, obsindex):
             Thread.__init__(self)
             self.readermonitor = ReaderMonitor()
             self.obsindex = obsindex
-            self.observer=None
+            self.observer = None
 
         def run(self):
             # create and register observer
-            self.observer = printobserver( self.obsindex )
+            self.observer = printobserver(self.obsindex)
             self.readermonitor.addObserver(self.observer)
             sleep(20)
             self.readermonitor.deleteObserver(self.observer)
