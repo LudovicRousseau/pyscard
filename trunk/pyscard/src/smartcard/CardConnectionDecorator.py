@@ -1,6 +1,6 @@
-"""The CardConnectionDecorator is a Decorator around the CardConnection abstract class,
-and allows dynamic addition of features to the CardConnection, e.g. implementing a
-secure channel..
+"""The CardConnectionDecorator is a Decorator around the CardConnection
+abstract class, and allows dynamic addition of features to the
+CardConnection, e.g. implementing a secure channel..
 
 __author__ = "http://www.gemalto.com"
 
@@ -26,60 +26,61 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from smartcard.CardConnection import CardConnection
 
-class CardConnectionDecorator( CardConnection ):
+
+class CardConnectionDecorator(CardConnection):
     """Card connection decorator class."""
 
-    def __init__( self, cardConnectionComponent ):
+    def __init__(self, cardConnectionComponent):
         """Construct a new card connection decorator.
 
         CardConnectionComponent: CardConnection component to decorate
         """
         self.component = cardConnectionComponent
 
-    def addSWExceptionToFilter( self, exClass ):
+    def addSWExceptionToFilter(self, exClass):
         """call inner component addSWExceptionToFilter"""
-        self.component.addSWExceptionToFilter( exClass )
+        self.component.addSWExceptionToFilter(exClass)
 
     def addObserver(self, observer):
         """call inner component addObserver"""
-        self.component.addObserver( observer )
+        self.component.addObserver(observer)
 
     def deleteObserver(self, observer):
         """call inner component deleteObserver"""
-        self.component.deleteObserver( observer )
+        self.component.deleteObserver(observer)
 
-    def connect( self, protocol=None, mode=None, disposition=None ):
+    def connect(self, protocol=None, mode=None, disposition=None):
         """call inner component connect"""
-        self.component.connect( protocol, mode, disposition )
+        self.component.connect(protocol, mode, disposition)
 
-    def disconnect( self ):
+    def disconnect(self):
         """call inner component disconnect"""
         self.component.disconnect()
 
-    def getATR( self ):
+    def getATR(self):
         """call inner component getATR"""
         return self.component.getATR()
 
-    def getProtocol( self ):
+    def getProtocol(self):
         """call inner component getProtocol"""
         return self.component.getProtocol()
 
-    def getReader( self ):
+    def getReader(self):
         """call inner component getReader"""
         return self.component.getReader()
 
-    def setErrorCheckingChain( self, errorcheckingchain ):
+    def setErrorCheckingChain(self, errorcheckingchain):
         """call inner component setErrorCheckingChain"""
-        self.component.setErrorCheckingChain( errorcheckingchain )
+        self.component.setErrorCheckingChain(errorcheckingchain)
 
-    def setProtocol( self, protocol ):
+    def setProtocol(self, protocol):
         """call inner component setProtocol"""
-        return self.component.setProtocol( protocol )
+        return self.component.setProtocol(protocol)
 
-    def transmit( self, bytes, protocol=None ):
+    def transmit(self, bytes, protocol=None):
         """call inner component transmit"""
-        return self.component.transmit( bytes, protocol )
+        return self.component.transmit(bytes, protocol)
 
-    def control( self, controlCode, bytes=[] ):
+    def control(self, controlCode, bytes=[]):
         """call inner component control"""
-        return self.component.control( controlCode, bytes )
+        return self.component.control(controlCode, bytes)
