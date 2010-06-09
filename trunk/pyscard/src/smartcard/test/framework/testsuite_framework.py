@@ -30,6 +30,7 @@ import unittest
 sys.path += ['..']
 import configcheck
 
+
 def suite():
     modules_to_test = (
         'testcase_ATR',
@@ -51,7 +52,7 @@ def suite():
         )
     testsuite_framework = unittest.TestSuite()
     for module in map(__import__, modules_to_test):
-        testsuite_framework.addTest( unittest.findTestCases(module) )
+        testsuite_framework.addTest(unittest.findTestCases(module))
     return testsuite_framework
 
 if __name__ == '__main__':
