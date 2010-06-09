@@ -28,6 +28,7 @@ from smartcard.CardConnection import CardConnection
 from smartcard.PassThruCardService import PassThruCardService
 from smartcard.System import readers
 
+
 class Session:
     """The Session object enables programmers to transmit APDU to smartcards.
 
@@ -45,38 +46,39 @@ class Session:
     """
 
     def __init__(self, readerName=None, cardServiceClass=None):
-        """Session constructor. Initializes a smart card session and connect to the card.
+        """Session constructor. Initializes a smart card session and
+        connect to the card.
 
         readerName:         reader to connect to; default is first PCSC reader
-        cardServiceClass:   card service to bind the session to; default is None
+        cardServiceClass:   card service to bind the session to; default
+                            is None
         """
 
         # if reader name not given, select first reader
-        if readerName==None:
-            if len( readers() ) > 0:
-                self.reader=readers()[0]
-                self.readerName=`self.reader`
+        if readerName == None:
+            if len(readers()) > 0:
+                self.reader = readers()[0]
+                self.readerName = `self.reader`
             else:
                 raise NoReadersException()
 
         # otherwise select reader from name
         else:
-            self.readerName=readerName
+            self.readerName = readerName
             for reader in readers():
-                if readerName==str(reader):
-                    self.reader=reader
-                    self.readerName=`self.reader`
+                if readerName == str(reader):
+                    self.reader = reader
+                    self.readerName = `self.reader`
 
         try:
             self.reader
         except AttributeError:
-            raise InvalidReaderException( self.readerName )
+            raise InvalidReaderException(self.readerName)
 
         # open card connection and bind PassThruCardService
         cc = self.reader.createConnection()
-        self.cs = PassThruCardService( cc )
+        self.cs = PassThruCardService(cc)
         self.cs.connection.connect()
-
 
     def close(self):
         """Close the smartcard session.
@@ -89,16 +91,16 @@ class Session:
 
         command:    list of APDU bytes, e.g. [0xA0, 0xA4, 0x00, 0x00, 0x02]
 
-        returns a tuple (response, sw1, sw2 ) where
+        returns a tuple (response, sw1, sw2) where
                 response is the APDU response
                 sw1, sw2 are the two status words
         """
 
-        response, sw1, sw2 = self.cs.connection.transmit( command )
+        response, sw1, sw2 = self.cs.connection.transmit(command)
 
-        if len(response)>2:
-            response.append( sw1 )
-            response.append( sw2 )
+        if len(response) > 2:
+            response.append(sw1)
+            response.append(sw2)
         return response, sw1, sw2
 
     def getATR(self):
