@@ -14,7 +14,9 @@ Known subclasses:
 
 from smartcard.Synchronization import *
 
+
 class Observer:
+
     def update(observable, arg):
         '''Called when the observed object is
         modified. You call an Observable object's
@@ -22,7 +24,9 @@ class Observer:
         object's observers of the change.'''
         pass
 
+
 class Observable(Synchronization):
+
     def __init__(self):
         self.obs = []
         self.changed = 0
@@ -58,12 +62,16 @@ class Observable(Synchronization):
 
     def deleteObservers(self):
             self.obs = []
+
     def setChanged(self):
             self.changed = 1
+
     def clearChanged(self):
             self.changed = 0
+
     def hasChanged(self):
             return self.changed
+
     def countObservers(self):
             return len(self.obs)
 
