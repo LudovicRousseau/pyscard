@@ -34,25 +34,27 @@ import sys
 
 class testcase_geterrormessage(unittest.TestCase):
     """Test scard API for ATR retrieval with SCardLocateCards"""
+
     def setUp(self):
-        hresult, self.hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
+        hresult, self.hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
         self.assertEquals(hresult, 0)
 
     def tearDown(self):
-        hresult = SCardReleaseContext( self.hcontext )
+        hresult = SCardReleaseContext(self.hcontext)
         self.assertEquals(hresult, 0)
 
     def test_getErrorMessage(self):
-        hresult, readers = SCardListReaders( self.hcontext, [] )
+        hresult, readers = SCardListReaders(self.hcontext, [])
         self.assertEquals(hresult, 0)
 
-        hresult = SCardReleaseContext( 123L )
-        if 'win32'==sys.platform:
-            self.assertEquals( (SCARD_E_INVALID_HANDLE==hresult or ERROR_INVALID_HANDLE==hresult), True )
+        hresult = SCardReleaseContext(123L)
+        if 'win32' == sys.platform:
+            self.assertEquals((SCARD_E_INVALID_HANDLE == hresult or ERROR_INVALID_HANDLE == hresult), True)
         else:
-            self.assertEquals( (SCARD_E_INVALID_HANDLE==hresult), True )
-        self.assertEquals( ( SCardGetErrorMessage(hresult).rstrip()=='Invalid handle.'.rstrip() or
-                             SCardGetErrorMessage(hresult).rstrip()=='The handle is invalid.'.rstrip() ), True )
+            self.assertEquals((SCARD_E_INVALID_HANDLE == hresult), True)
+        self.assertEquals((SCardGetErrorMessage(hresult).rstrip() == 'Invalid handle.'.rstrip() or
+             SCardGetErrorMessage(hresult).rstrip() == 'The handle is invalid.'.rstrip()), True)
+
 
 def suite():
     suite1 = unittest.makeSuite(testcase_geterrormessage)
