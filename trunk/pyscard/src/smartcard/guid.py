@@ -27,21 +27,24 @@ from struct import unpack
 
 # guid is ulong+ushort+ushort+uchar[8]; we need a map because bytes
 # are swappted for the first three
-map={ 0:3, 1:2, 2:1, 3:0, 4:5, 5:4, 6:7, 7:6, 8:8, 9:9, 10:10, 11:11, 12:12, 13:13, 14:14, 15:15 }
+map = {0: 3, 1: 2, 2: 1, 3: 0, 4: 5, 5: 4, 6: 7, 7: 6, 8: 8, 9: 9,
+    10: 10, 11: 11, 12: 12, 13: 13, 14: 14, 15: 15}
 
-def strToGUID( s ):
+
+def  strToGUID(s):
     """Converts a GUID string into a list of bytes."""
-    l=[]
-    for i in unpack( 'x' + '2s'*4 + 'x' + '2s2sx'*3 + '2s'*6 + 'x', s ):
-        l += [ int( i, 16) ]
-    zr=[]
+    l = []
+    for i in unpack('x' + '2s' * 4 + 'x' + '2s2sx' * 3 + '2s' * 6 + 'x', s):
+        l += [int(i, 16)]
+    zr = []
     for i in xrange(len(l)):
         zr.append(l[map[i]])
     return zr
 
-def GUIDToStr( g ):
+
+def GUIDToStr(g):
     """Converts a GUID sequence of bytes into a string."""
-    zr=[]
+    zr = []
     for i in xrange(len(g)):
         zr.append(g[map[i]])
     return "{%2X%2X%2X%2X-%2X%2X-%2X%2X-%2X%2X-%2X%2X%2X%2X%2X%2X}" % tuple(zr)
