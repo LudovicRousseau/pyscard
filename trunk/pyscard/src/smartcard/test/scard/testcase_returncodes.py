@@ -34,8 +34,9 @@ import sys
 
 class testcase_returncodes(unittest.TestCase):
     """Test scard API for return codes """
+
     def test_getReturnCodes(self):
-        errors = ( 
+        errors = (
             SCARD_S_SUCCESS,
             SCARD_F_INTERNAL_ERROR,
             SCARD_E_CANCELLED,
@@ -99,6 +100,7 @@ class testcase_returncodes(unittest.TestCase):
             )
         #for e in errors:
         #    print hex((e+0x100000000) & 0xFFFFFFFF)
+
 
 def suite():
     suite1 = unittest.makeSuite(testcase_returncodes)

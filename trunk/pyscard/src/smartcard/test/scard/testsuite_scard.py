@@ -31,6 +31,7 @@ import unittest
 sys.path += ['..']
 import configcheck
 
+
 def suite():
     modules_to_test = (
         'testcase_getatr',
@@ -40,7 +41,7 @@ def suite():
         'testcase_locatecards',
         'testcase_readergroups',
         'testcase_returncodes',
-        'testcase_transaction' )
+        'testcase_transaction')
     testsuite_scard = unittest.TestSuite()
     for module in map(__import__, modules_to_test):
         testsuite_scard.addTest(unittest.findTestCases(module))

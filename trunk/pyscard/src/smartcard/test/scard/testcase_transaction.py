@@ -43,54 +43,52 @@ except:
     sys.exit()
 
 
-
 class testcase_transaction(unittest.TestCase):
     """Test scard API for SCardBegin/EndTransaction"""
+
     def setUp(self):
-        hresult, self.hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
+        hresult, self.hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
         self.assertEquals(hresult, 0)
-        hresult, self.readers = SCardListReaders( self.hcontext, [] )
+        hresult, self.readers = SCardListReaders(self.hcontext, [])
         self.assertEquals(hresult, 0)
 
     def tearDown(self):
-        hresult = SCardReleaseContext( self.hcontext )
+        hresult = SCardReleaseContext(self.hcontext)
         self.assertEquals(hresult, 0)
 
-
     def _transaction(self, r):
-        if r<len(expectedATRs) and []!=expectedATRs[r]:
+        if r < len(expectedATRs) and [] != expectedATRs[r]:
             hresult, hcard, dwActiveProtocol = SCardConnect(
                 self.hcontext, self.readers[r], SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1)
             self.assertEquals(hresult, 0)
 
             try:
-                hresult = SCardBeginTransaction( hcard )
+                hresult = SCardBeginTransaction(hcard)
                 self.assertEquals(hresult, 0)
 
-                hresult, reader, state, protocol, atr = SCardStatus( hcard )
+                hresult, reader, state, protocol, atr = SCardStatus(hcard)
                 self.assertEquals(hresult, 0)
-                self.assertEquals( reader, expectedReaders[r] )
-                self.assertEquals( atr, expectedATRs[r] )
+                self.assertEquals(reader, expectedReaders[r])
+                self.assertEquals(atr, expectedATRs[r])
 
-                hresult = SCardEndTransaction( hcard, SCARD_LEAVE_CARD )
+                hresult = SCardEndTransaction(hcard, SCARD_LEAVE_CARD)
                 self.assertEquals(hresult, 0)
 
             finally:
-                hresult = SCardDisconnect( hcard, SCARD_UNPOWER_CARD )
+                hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
                 self.assertEquals(hresult, 0)
 
-
     def test_transaction_reader0(self):
-        testcase_transaction._transaction(self,0)
+        testcase_transaction._transaction(self, 0)
 
     def test_transaction_reader1(self):
-        testcase_transaction._transaction(self,1)
+        testcase_transaction._transaction(self, 1)
 
     def test_transaction_reader2(self):
-        testcase_transaction._transaction(self,2)
+        testcase_transaction._transaction(self, 2)
 
     def test_transaction_reader3(self):
-        testcase_transaction._transaction(self,3)
+        testcase_transaction._transaction(self, 3)
 
 
 def suite():
