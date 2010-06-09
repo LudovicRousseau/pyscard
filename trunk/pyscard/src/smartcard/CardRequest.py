@@ -24,43 +24,49 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from smartcard.pcsc.PCSCCardRequest import PCSCCardRequest
 
+
 class CardRequest:
     """A CardRequest is used for waitForCard() invocations and specifies what
     kind of smart card an application is waited for.
     """
 
-    def __init__( self, newcardonly=False, readers=None, cardType=None, cardServiceClass=None, timeout=1 ):
+    def __init__(self, newcardonly=False, readers=None, cardType=None,
+        cardServiceClass=None, timeout=1):
         """Construct new CardRequest.
 
         newcardonly:        if True, request a new card
-                            default is False, i.e. accepts cards already inserted
+                            default is False, i.e. accepts cards already
+                            inserted
 
-        readers:            the list of readers to consider for requesting a card
-                            default is to consider all readers
+        readers:            the list of readers to consider for
+                            requesting a card default is to consider all
+                            readers
 
-        cardType:           the smartcard.CardType.CardType to wait for; default is
-                            smartcard.CardType.AnyCardType, i.e. the request will
-                            succeed with any card
+        cardType:           the smartcard.CardType.CardType to wait for;
+                            default is smartcard.CardType.AnyCardType,
+                            i.e. the request will succeed with any card
 
-        cardServiceClass:   the specific card service class to create and bind to the card
-                            default is to create and bind a smartcard.PassThruCardService
+        cardServiceClass:   the specific card service class to create
+                            and bind to the card default is to create
+                            and bind a smartcard.PassThruCardService
 
-        timeout:            the time in seconds we are ready to wait for connecting to the
-                            requested card.
-                            default is to wait one second
-                            to wait forever, set timeout to None
+        timeout:            the time in seconds we are ready to wait for
+                            connecting to the requested card.  default
+                            is to wait one second to wait forever, set
+                            timeout to None
         """
-        self.pcsccardrequest=PCSCCardRequest( newcardonly, readers, cardType, cardServiceClass, timeout )
+        self.pcsccardrequest = PCSCCardRequest(newcardonly, readers,
+            cardType, cardServiceClass, timeout)
 
-    def getReaders( self ):
+    def getReaders(self):
         """Returns the list or readers on which to wait for cards."""
         return self.pcsccardrequest.getReaders()
 
-    def waitforcard( self ):
+    def waitforcard(self):
         """Wait for card insertion and returns a card service."""
         return self.pcsccardrequest.waitforcard()
 
-    def waitforcardevent( self ):
+    def waitforcardevent(self):
         """Wait for card insertion or removal."""
         return self.pcsccardrequest.waitforcardevent()
 
@@ -70,7 +76,7 @@ if __name__ == '__main__':
 
     from smartcard.util import toHexString
     print 'Insert a new card within 10 seconds'
-    cr=CardRequest( timeout=10, newcardonly=True )
+    cr = CardRequest(timeout=10, newcardonly=True)
     cs = cr.waitforcard()
     cs.connection.connect()
     print cs.connection.getReader(), toHexString(cs.connection.getATR())
