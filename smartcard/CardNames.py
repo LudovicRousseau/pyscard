@@ -31,76 +31,79 @@ from pickle import dumps, loads, HIGHEST_PROTOCOL
 from smartcard.Synchronization import Synchronization, synchronize
 from smartcard.util import toBytes
 
-class __CardNames__(Synchronization): 
+
+class __CardNames__(Synchronization):
     """__CardNames__ inner class.
 
     Stores card names and card types into a bsddb hash database.
 
-    The smartcard.CardNames.CardNames singleton manages the creation 
+    The smartcard.CardNames.CardNames singleton manages the creation
     of the unique instance of this class.
     """
 
-    def __init__( self ):
+    def __init__(self):
         Synchronization.__init__(self)
-        carddb_dir=environ['ALLUSERSPROFILE']
-        carddb_file='cardnames.bdb'
-        carddb_file=join( carddb_dir, carddb_file )
-        self.db=hashopen( carddb_file, 'w' )
-    
+        carddb_dir = environ['ALLUSERSPROFILE']
+        carddb_file = 'cardnames.bdb'
+        carddb_file = join(carddb_dir, carddb_file)
+        self.db = hashopen(carddb_file, 'w')
+
     def __del__(self):
         self.db.sync()
         self.db.close()
 
-    def add( self, cardname, cardtype ):
-        self.db[cardname]=dumps(cardtype, HIGHEST_PROTOCOL )
+    def add(self, cardname, cardtype):
+        self.db[cardname] = dumps(cardtype, HIGHEST_PROTOCOL)
         self.db.sync()
 
-    def delete( self, cardname ):
+    def delete(self, cardname):
         try:
             del self.db[cardname]
         except DBNotFoundError:
             pass
 
-    def dump( self ):
+    def dump(self):
         for k, v in self.db.iteritems():
             print k, `loads(v)`
 
-    def find( self, atr, reader=None ):
+    def find(self, atr, reader=None):
         for k, v in self.db.iteritems():
-            if loads(v).matches( atr, reader ):
+            if loads(v).matches(atr, reader):
                 return k
-                
 
-synchronize( __CardNames__, "add delete dump find" )
+synchronize(__CardNames__, "add delete dump find")
+
 
 class CardNames:
-    """The CardNames organizes cards by a unique name and an associated smartcard.CardType.CardType."""
+    """The CardNames organizes cards by a unique name and an associated
+    smartcard.CardType.CardType."""
 
     """The single instance of __CardNames__"""
     instance = None
 
-    """Constructor: create a single instance of __readergroups on first call"""
-    def __init__(self ):
-        if None==CardNames.instance:
+    def __init__(self):
+        """Constructor: create a single instance of __readergroups on
+        first call"""
+        if None == CardNames.instance:
             CardNames.instance = __CardNames__()
 
-    """All operators redirected to inner class."""
     def __getattr__(self, name):
+        """All operators redirected to inner class."""
         return getattr(self.instance, name)
 
 
 if __name__ == '__main__':
     from smartcard.CardType import ATRCardType
-    
+
     # define a card by its ATR
-    ct = ATRCardType( [0x3B, 0x16, 0x94, 0x20, 0x02, 0x01, 0x00, 0x00, 0x0D] )
-    
+    ct = ATRCardType([0x3B, 0x16, 0x94, 0x20, 0x02, 0x01, 0x00, 0x00, 0x0D])
+
     # create CardName
-    cn=CardNames()
-    cn.add( "Palmera Protect V2", ct )
+    cn = CardNames()
+    cn.add("Palmera Protect V2", ct)
     cn.dump()
-    print cn.find( [0x3B, 0x16, 0x94, 0x20, 0x02, 0x01, 0x00, 0x00, 0x0D] )
-    print cn.find( [0x3B, 0x16, 0x94, 0x20, 0x02, 0x01, 0x00, 0x00] )
-    cn.delete( "Palmera Protect V2" )
+    print cn.find([0x3B, 0x16, 0x94, 0x20, 0x02, 0x01, 0x00, 0x00, 0x0D])
+    print cn.find([0x3B, 0x16, 0x94, 0x20, 0x02, 0x01, 0x00, 0x00])
+    cn.delete("Palmera Protect V2")
     print '---------'
     cn.dump()
