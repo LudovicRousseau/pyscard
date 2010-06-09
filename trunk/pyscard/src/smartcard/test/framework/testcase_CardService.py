@@ -56,18 +56,18 @@ class testcase_CardService(unittest.TestCase):
         DF_TELECOM = [0x7F, 0x10]
 
         for reader in readers():
-            if []!=expectedATRinReader[str(reader)]:
+            if [] != expectedATRinReader[str(reader)]:
                 cc = reader.createConnection()
-                cs = CardService( cc )
+                cs = CardService(cc)
                 cs.connection.connect()
-                response, sw1, sw2 = cs.connection.transmit( SELECT + DF_TELECOM )
-                expectedSWs={ "9f 1a":1, "6e 0":2, "9f 20":3, "9f 22":4 }
-                self.assertEquals( [], response )
-                self.assert_( expectedSWs.has_key( "%x %x" % (sw1, sw2 ) ) or "9f"== "%x" % sw1 )
+                response, sw1, sw2 = cs.connection.transmit(SELECT + DF_TELECOM)
+                expectedSWs = {"9f 1a": 1, "6e 0": 2, "9f 20": 3, "9f 22": 4}
+                self.assertEquals([], response)
+                self.assert_(expectedSWs.has_key("%x %x" % (sw1, sw2)) or "9f" == "%x" % sw1)
 
 
 def suite():
-    suite1 = unittest.makeSuite( testcase_CardService )
+    suite1 = unittest.makeSuite(testcase_CardService)
     return unittest.TestSuite((suite1))
 
 
