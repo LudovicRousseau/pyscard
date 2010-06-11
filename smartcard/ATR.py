@@ -22,6 +22,7 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
+from smartcard.Exceptions import SmartcardException
 
 class ATR:
     """ATR class."""
@@ -38,7 +39,7 @@ class ATR:
     def __checksyncbyte__(self):
         """Check validity of TS."""
         if not 0x3b == self.bytes[0] and not 0x03f == self.bytes[0]:
-            raise 'invalid TS', "0x%-0.2x" % self.bytes[0]
+            raise SmartcardException( 'invalid TS' + " 0x%-0.2x" % self.bytes[0] )
 
     def __initInstance__(self):
         """Parse ATR and initialize members:
