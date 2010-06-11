@@ -24,11 +24,14 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from smartcard.Exceptions import SmartcardException
 
+
 class ATR:
     """ATR class."""
 
-    clockrateconversion = [372, 372, 558, 744, 1116, 1488, 1860, 'RFU', 'RFU', 512, 768, 1024, 1536, 2048, 'RFU', 'RFU', 'RFU']
-    bitratefactor = ['RFU', 1, 2, 4, 8, 16, 32, 'RFU', 12, 20, 'RFU', 'RFU', 'RFU', 'RFU', 'RFU', 'RFU']
+    clockrateconversion = [372, 372, 558, 744, 1116, 1488, 1860, 'RFU',
+        'RFU', 512, 768, 1024, 1536, 2048, 'RFU', 'RFU', 'RFU']
+    bitratefactor = ['RFU', 1, 2, 4, 8, 16, 32, 'RFU', 12, 20, 'RFU',
+        'RFU', 'RFU', 'RFU', 'RFU', 'RFU']
     currenttable = [25, 50, 100, 'RFU']
 
     def __init__(self, bytes):
@@ -39,14 +42,16 @@ class ATR:
     def __checksyncbyte__(self):
         """Check validity of TS."""
         if not 0x3b == self.bytes[0] and not 0x03f == self.bytes[0]:
-            raise SmartcardException( 'invalid TS' + " 0x%-0.2x" % self.bytes[0] )
+            raise SmartcardException("invalid TS 0x%-0.2x" % self.bytes[0])
 
     def __initInstance__(self):
         """Parse ATR and initialize members:
             TS: initial character
             T0: format character
             TA[n], TB[n], TC[n], TD[n], for n=0,1,...: protocol parameters
-                note: protocol parameters indices start at 0, e.g. TA[0], TA[1] correspond to the ISO standard TA1, TA2 parameters
+                note: protocol parameters indices start at 0, e.g.
+                TA[0], TA[1] correspond to the ISO standard TA1, TA2
+                parameters
             historicalBytes: the ATR T1, T2, ..., TK historical bytes
             TCK: checksum byte (only for protocols different from T=0)
             FI: clock rate conversion factor
@@ -152,7 +157,8 @@ class ATR:
         self.N = self.TC[0]
 
     def getChecksum(self):
-        """Return the checksum of the ATR. Checksum is mandatory only for T=1."""
+        """Return the checksum of the ATR. Checksum is mandatory only
+        for T=1."""
         return self.TCK
 
     def getHistoricalBytes(self):
@@ -283,8 +289,10 @@ if __name__ == '__main__':
              [0x3F, 0x65, 0x25, 0x08, 0x93, 0x04, 0x6C, 0x90, 0x00],
              [0x3B, 0x16, 0x94, 0x7C, 0x03, 0x01, 0x00, 0x00, 0x0D],
              [0x3B, 0x65, 0x00, 0x00, 0x9C, 0x11, 0x01, 0x01, 0x03],
-             [0x3B, 0xE3, 0x00, 0xFF, 0x81, 0x31, 0x52, 0x45, 0xA1, 0xA2, 0xA3, 0x1B],
-             [0x3B, 0xE5, 0x00, 0x00, 0x81, 0x21, 0x45, 0x9C, 0x10, 0x01, 0x00, 0x80, 0x0D]]
+             [0x3B, 0xE3, 0x00, 0xFF, 0x81, 0x31, 0x52, 0x45, 0xA1,
+                0xA2, 0xA3, 0x1B],
+             [0x3B, 0xE5, 0x00, 0x00, 0x81, 0x21, 0x45, 0x9C, 0x10,
+                0x01, 0x00, 0x80, 0x0D]]
 
     for atr in atrs:
         a = ATR(atr)
