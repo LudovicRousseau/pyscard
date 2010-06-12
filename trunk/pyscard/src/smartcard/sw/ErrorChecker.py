@@ -26,21 +26,21 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 class ErrorChecker:
     """Base class for status word error checking strategies.
 
-    Error checking strategies are chained into an ErrorCheckingChain to
+    Error checking strategies are chained into an L{ErrorCheckingChain} to
     implement a Chain of Responsibility. Each strategy in the chain is
     called until an error is  detected. The strategy raises a
-    smartcard.sw.SWException exception when an error is detected.
+    L{smartcard.sw.SWException} exception when an error is detected.
 
     Implementation derived from Bruce Eckel, Thinking in Python. The
-    ErrorCheckingChain implements the Chain Of Responsibility design
+    L{ErrorCheckingChain} implements the Chain Of Responsibility design
     pattern.
     """
 
     def __call__(data, sw1, sw2):
         """Called to test data, sw1 and sw2 for error.
 
-        data:       apdu response data
-        sw1, sw2:   apdu data status words
+        @param data:       apdu response data
+        @param sw1, sw2:   apdu data status words
 
-        Derived classes must raise a smartcard.sw.SWException upon error."""
+        Derived classes must raise a L{smartcard.sw.SWException} upon error."""
         pass
