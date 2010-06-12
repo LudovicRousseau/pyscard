@@ -103,31 +103,29 @@ class ISO7816_4ErrorChecker(ErrorChecker):
     """ISO7816-4 error checking strategy.
 
     This strategy raises the following exceptions:
-    sw1 sw2
-    62  00 81 82 83 84 FF   WarningProcessingException
-    63  00 81 C0->CF        WarningProcessingException
-    64  00                  ExecutionErrorException
-    67  00                  CheckingErrorException
-    68  81 82               CheckingErrorException
-    69  81->88  99? c1?     CheckingErrorException
-    6a  80->88              CheckingErrorException
-    6b  00                  CheckingErrorException
-    6d  00                  CheckingErrorException
-    6e  00                  CheckingErrorException
-    6f  00                  CheckingErrorException
+    - sw1 sw2
+    - 62  00 81 82 83 84 FF   WarningProcessingException
+    - 63  00 81 C0->CF        WarningProcessingException
+    - 64  00                  ExecutionErrorException
+    - 67  00                  CheckingErrorException
+    - 68  81 82               CheckingErrorException
+    - 69  81->88  99? c1?     CheckingErrorException
+    - 6a  80->88              CheckingErrorException
+    - 6b  00                  CheckingErrorException
+    - 6d  00                  CheckingErrorException
+    - 6e  00                  CheckingErrorException
+    - 6f  00                  CheckingErrorException
 
     This checker does not raise exceptions on undefined sw1 values, e.g.:
-
-    sw1 sw2
-    65  any
-    66  any
-    6c  any
+    - sw1 sw2
+    - 65  any
+    - 66  any
+    - 6c  any
 
     and on undefined sw2 values, e.g.:
-
-    sw1 sw2
-    62  80 85
-    6b  any except 00
+    - sw1 sw2
+    - 62  80 85
+    - 6b  any except 00
 
 
     Use another checker in the error checking chain, e.g., the
@@ -138,10 +136,10 @@ class ISO7816_4ErrorChecker(ErrorChecker):
     def __call__(self, data, sw1, sw2):
         """Called to test data, sw1 and sw2 for error.
 
-        data:       apdu response data
-        sw1, sw2:   apdu data status words
+        @param data:       apdu response data
+        @param sw1, sw2:   apdu data status words
 
-        Derived classes must raise a smartcard.sw.SWException upon error."""
+        Derived classes must raise a L{smartcard.sw.SWException} upon error."""
         if iso7816_4SW.has_key(sw1):
             exception, sw2dir = iso7816_4SW[sw1]
             if type(sw2dir) == type({}):

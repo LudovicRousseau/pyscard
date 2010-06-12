@@ -47,28 +47,28 @@ class ISO7816_4_SW1ErrorChecker(ErrorChecker):
     """ISO7816-4 error checker based on status word sw1 only.
 
     This error checker raises the following exceptions:
-    sw1 sw2
-    62  any   WarningProcessingException
-    63  any   WarningProcessingException
-    64  any   ExecutionErrorException
-    65  any   ExecutionErrorException
-    66  any   SecurityRelatedException
-    67  any   CheckingErrorException
-    68  any   CheckingErrorException
-    69  any   CheckingErrorException
-    6a  any   CheckingErrorException
-    6b  any   CheckingErrorException
-    6c  any   CheckingErrorException
-    6d  any   CheckingErrorException
-    6e  any   CheckingErrorException
-    6f  any   CheckingErrorException
+    - sw1 sw2
+    - 62  any   WarningProcessingException
+    - 63  any   WarningProcessingException
+    - 64  any   ExecutionErrorException
+    - 65  any   ExecutionErrorException
+    - 66  any   SecurityRelatedException
+    - 67  any   CheckingErrorException
+    - 68  any   CheckingErrorException
+    - 69  any   CheckingErrorException
+    - 6a  any   CheckingErrorException
+    - 6b  any   CheckingErrorException
+    - 6c  any   CheckingErrorException
+    - 6d  any   CheckingErrorException
+    - 6e  any   CheckingErrorException
+    - 6f  any   CheckingErrorException
     """
 
     def __call__(self, data, sw1, sw2):
         """Called to test data, sw1 and sw2 for error.
 
-        data:       apdu response data
-        sw1, sw2:   apdu data status words
+        @param data:       apdu response data
+        @param sw1, sw2:   apdu data status words
         """
         if iso7816_4SW1.has_key(sw1):
             exception = iso7816_4SW1[sw1]
