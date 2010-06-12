@@ -1,6 +1,7 @@
 /*==============================================================================
 Copyright 2001-2010 gemalto
 Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
+Author: Ludovic Rousseau, mailto:ludovic.rousseau@free.fr
 
 This file is part of pyscard.
 
@@ -29,12 +30,12 @@ framework that provides a higher level interface.
 You should avoid using the smartcard.scard package directly, and use the
 pyscard directly because:
 
-. smartcard.scard being a C wrapper, the code tends to look like C code
-written in python syntax
+ - smartcard.scard being a C wrapper, the code tends to look like C code
+   written in python syntax
 
-. the smartcard package provides higher level abstractions (e.g.  CardType,
-CardConnection), and makes programming easier since it is totally written
-in Python
+ - the smartcard package provides higher level abstractions (e.g.
+   CardType, CardConnection), and makes programming easier since it is
+   totally written in Python
 
 You can still use the smartcard.scard package if you want to write your
 own framework, or if you want to perform quick-and-dirty port of C
@@ -53,87 +54,91 @@ PCSC-lite library.
 On Windows using the smart card base components, the smartcard.scard
 module provides mapping for the following API functions:
 
-SCardAddReaderToGroup
-SCardBeginTransaction
-SCardCancel
-SCardConnect
-SCardControl
-SCardDisconnect
-SCardEndTransaction
-SCardEstablishContext
-SCardForgetCardType
-SCardForgetReader
-SCardForgetReaderGroup
-SCardGetAttrib
-SCardGetCardTypeProviderName
-SCardGetErrorMessage
-SCardGetStatusChange
-SCardIntroduceCardType
-SCardIntroduceReader
-SCardIntroduceReaderGroup
-SCardIsValidContext
-SCardListInterfaces
-SCardListCards
-SCardListReaders
-SCardListReaderGroups
-SCardLocateCards
-SCardReconnect
-SCardReleaseContext
-SCardRemoveReaderFromGroup
-SCardSetAttrib
-SCardStatus
-SCardTransmit
+ - SCardAddReaderToGroup
+ - SCardBeginTransaction
+ - SCardCancel
+ - SCardConnect
+ - SCardControl
+ - SCardDisconnect
+ - SCardEndTransaction
+ - SCardEstablishContext
+ - SCardForgetCardType
+ - SCardForgetReader
+ - SCardForgetReaderGroup
+ - SCardGetAttrib
+ - SCardGetCardTypeProviderName
+ - SCardGetErrorMessage
+ - SCardGetStatusChange
+ - SCardIntroduceCardType
+ - SCardIntroduceReader
+ - SCardIntroduceReaderGroup
+ - SCardIsValidContext
+ - SCardListInterfaces
+ - SCardListCards
+ - SCardListReaders
+ - SCardListReaderGroups
+ - SCardLocateCards
+ - SCardReconnect
+ - SCardReleaseContext
+ - SCardRemoveReaderFromGroup
+ - SCardSetAttrib
+ - SCardStatus
+ - SCardTransmit
 
-On linux or Mac OS X Leopard with PCSC lite, the smartcard.scard module provides mapping for the following API functions:
+On linux or Mac OS X Leopard with PCSC lite, the smartcard.scard module
+provides mapping for the following API functions:
 
-SCardBeginTransaction
-SCardCancel
-SCardConnect
-SCardControl
-SCardDisconnect
-SCardEndTransaction
-SCardEstablishContext
-SCardGetAttrib
-SCardGetStatusChange
-SCardIsValidContext
-SCardListReaders
-SCardListReaderGroups
-SCardReconnect
-SCardReleaseContext
-SCardSetAttrib
-SCardStatus
-SCardTransmit
+ - SCardBeginTransaction
+ - SCardCancel
+ - SCardConnect
+ - SCardControl
+ - SCardDisconnect
+ - SCardEndTransaction
+ - SCardEstablishContext
+ - SCardGetAttrib
+ - SCardGetStatusChange
+ - SCardIsValidContext
+ - SCardListReaders
+ - SCardListReaderGroups
+ - SCardReconnect
+ - SCardReleaseContext
+ - SCardSetAttrib
+ - SCardStatus
+ - SCardTransmit
 
-On Mac OS X Tiger with PCSC lite, the smartcard.scard module provides mapping for the following API functions:
+On Mac OS X Tiger with PCSC lite, the smartcard.scard module provides
+mapping for the following API functions:
 
-SCardBeginTransaction
-SCardCancel
-SCardConnect
-SCardControl
-SCardDisconnect
-SCardEndTransaction
-SCardEstablishContext
-SCardGetStatusChange
-SCardListReaders
-SCardListReaderGroups
-SCardReconnect
-SCardReleaseContext
-SCardStatus
-SCardTransmit
+ - SCardBeginTransaction
+ - SCardCancel
+ - SCardConnect
+ - SCardControl
+ - SCardDisconnect
+ - SCardEndTransaction
+ - SCardEstablishContext
+ - SCardGetStatusChange
+ - SCardListReaders
+ - SCardListReaderGroups
+ - SCardReconnect
+ - SCardReleaseContext
+ - SCardStatus
+ - SCardTransmit
 
-The following PCSC smart card functions are not wrapped by the scard module on any platform:
+The following PCSC smart card functions are not wrapped by the scard
+module on any platform:
 
-GetOpenCardName
-SCardFreeMemory
-SCardGetProviderId
-SCardSetCartTypeProviderName
-SCardUIDlgSelectCard
+ - GetOpenCardName
+ - SCardFreeMemory
+ - SCardGetProviderId
+ - SCardSetCartTypeProviderName
+ - SCardUIDlgSelectCard
 
-Comments, bugs, improvements welcome.
+Comments, bug reports, improvements welcome.
 
 -------------------------------------------------------------------------------
 Copyright 2001-2010 gemalto
-Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
+@Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
+@Author: Ludovic Rousseau, mailto:ludovic.rousseau@free.fr
 
 This file is part of pyscard.
 
@@ -154,9 +159,9 @@ Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 "
 %enddef
 
-%module( docstring=DOCSTRING, package="smartcard.scard") scard
+%module(docstring=DOCSTRING, package="smartcard.scard") scard
 
-%feature("autodoc", "3" );
+%feature("autodoc", "3");
 
 %{
 #ifdef WIN32
@@ -212,30 +217,30 @@ typedef STRING PROVIDERNAME_t;
 SCARDRETCODE _AddReaderToGroup(
   SCARDCONTEXT hcontext,
   char* szReaderName,
-  char* szGroupName )
+  char* szGroupName)
 {
     return (mySCardAddReaderToGroupA)(
                          hcontext,
                          szReaderName,
-                         szGroupName );
+                         szGroupName);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _ForgetCardType( SCARDCONTEXT hcontext, char* pszCardName )
+SCARDRETCODE _ForgetCardType(SCARDCONTEXT hcontext, char* pszCardName)
 {
-    return (mySCardForgetCardTypeA)( hcontext, pszCardName );
+    return (mySCardForgetCardTypeA)(hcontext, pszCardName);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _ForgetReader( SCARDCONTEXT hcontext, char* szReaderName )
+SCARDRETCODE _ForgetReader(SCARDCONTEXT hcontext, char* szReaderName)
 {
-    return (mySCardForgetReaderA)( hcontext, szReaderName );
+    return (mySCardForgetReaderA)(hcontext, szReaderName);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _ForgetReaderGroup( SCARDCONTEXT hcontext, char* szGroupName )
+SCARDRETCODE _ForgetReaderGroup(SCARDCONTEXT hcontext, char* szGroupName)
 {
-    return (mySCardForgetReaderGroupA)( hcontext, szGroupName );
+    return (mySCardForgetReaderGroupA)(hcontext, szGroupName);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -243,7 +248,7 @@ SCARDRETCODE _GetCardTypeProviderName(
     SCARDCONTEXT hcontext,
     char* pszCardName,
     SCARDDWORDARG dwProviderId,
-    PROVIDERNAME_t* psl )
+    PROVIDERNAME_t* psl)
 {
     long lRetCode;
     unsigned long cchProviderName=SCARD_AUTOALLOCATE;
@@ -255,7 +260,7 @@ SCARDRETCODE _GetCardTypeProviderName(
 
     lRetCode=(mySCardGetCardTypeProviderNameA)(
         hcontext, pszCardName, dwProviderId,
-        (LPTSTR)&psl->sz, &cchProviderName );
+        (LPTSTR)&psl->sz, &cchProviderName);
 
     return lRetCode;
 };
@@ -278,23 +283,23 @@ SCARDRETCODE _IntroduceCardType(
                 rgguidInterfaces ? rgguidInterfaces->cGuids : 0,
                 pbAtr->ab,
                 pbAtrMask->ab,
-                pbAtr->cBytes );
+                pbAtr->cBytes);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _IntroduceReader( SCARDCONTEXT hcontext, char* szReaderName, char* szDeviceName )
+SCARDRETCODE _IntroduceReader(SCARDCONTEXT hcontext, char* szReaderName, char* szDeviceName)
 {
-    return (mySCardIntroduceReaderA)( hcontext, szReaderName, szDeviceName );
+    return (mySCardIntroduceReaderA)(hcontext, szReaderName, szDeviceName);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _IntroduceReaderGroup( SCARDCONTEXT hcontext, char* szGroupName )
+SCARDRETCODE _IntroduceReaderGroup(SCARDCONTEXT hcontext, char* szGroupName)
 {
-    return (mySCardIntroduceReaderGroupA)( hcontext, szGroupName );
+    return (mySCardIntroduceReaderGroupA)(hcontext, szGroupName);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _ListCards( SCARDCONTEXT hcontext, BYTELIST* pbl, GUIDLIST* guidlist, STRINGLIST* pmszCards )
+SCARDRETCODE _ListCards(SCARDCONTEXT hcontext, BYTELIST* pbl, GUIDLIST* guidlist, STRINGLIST* pmszCards)
 {
     // autoallocate memory; will be freed on output typemap
     unsigned long cchCards=SCARD_AUTOALLOCATE;
@@ -302,14 +307,14 @@ SCARDRETCODE _ListCards( SCARDCONTEXT hcontext, BYTELIST* pbl, GUIDLIST* guidlis
     pmszCards->ac=NULL;
     pmszCards->hcontext=hcontext;
 
-    //SCardHelper_PrintByteList( pbl );
+    //SCardHelper_PrintByteList(pbl);
     return (mySCardListCardsA)(
         hcontext,
         pbl->ab,
         (NULL==guidlist) ? NULL : guidlist->aguid,
         (NULL==guidlist) ? 0 : guidlist->cGuids,
         (LPTSTR)&pmszCards->ac,
-        &cchCards );
+        &cchCards);
 };
 
 
@@ -327,8 +332,8 @@ SCARDRETCODE _ListInterfaces(
     pgl->aguid = NULL;
 
     lRetCode = (mySCardListInterfacesA)(hcontext, pszCard, (LPGUID)&pgl->aguid,
-        &pgl->cGuids );
-    if( lRetCode!=SCARD_S_SUCCESS )
+        &pgl->cGuids);
+    if (lRetCode!=SCARD_S_SUCCESS)
     {
         pgl->cGuids=0;
     }
@@ -348,19 +353,19 @@ SCARDRETCODE _LocateCards(
                 hcontext,
                 pcstr,
                 prl->ars,
-                prl->cRStates );
+                prl->cRStates);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 SCARDRETCODE _RemoveReaderFromGroup(
   SCARDCONTEXT hcontext,
   char* szReaderName,
-  char* szGroupName )
+  char* szGroupName)
 {
     return (mySCardRemoveReaderFromGroupA)(
                          hcontext,
                          szReaderName,
-                         szGroupName );
+                         szGroupName);
 }
 
 #endif // WIN32
@@ -371,21 +376,21 @@ SCARDRETCODE _RemoveReaderFromGroup(
 //
 #ifndef __TIGER__
 ///////////////////////////////////////////////////////////////////////////////
-static SCARDRETCODE _IsValidContext( SCARDCONTEXT hcontext )
+static SCARDRETCODE _IsValidContext(SCARDCONTEXT hcontext)
 {
-    return (mySCardIsValidContext)( hcontext );
+    return (mySCardIsValidContext)(hcontext);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-static SCARDRETCODE _GetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* pbl )
+static SCARDRETCODE _GetAttrib(SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* pbl)
 {
     long lRetCode;
 
     pbl->cBytes = 0;
     pbl->ab = NULL;
 
-    lRetCode = (mySCardGetAttrib)( hcard, dwAttrId, pbl->ab, &pbl->cBytes );
-    if( (lRetCode!=SCARD_S_SUCCESS) || (pbl->cBytes<1) )
+    lRetCode = (mySCardGetAttrib)(hcard, dwAttrId, pbl->ab, &pbl->cBytes);
+    if ((lRetCode!=SCARD_S_SUCCESS) || (pbl->cBytes<1))
     {
         return lRetCode;
     }
@@ -396,16 +401,16 @@ static SCARDRETCODE _GetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTEL
         return SCARD_E_NO_MEMORY;
     }
 
-    lRetCode = (mySCardGetAttrib)( hcard, dwAttrId, pbl->ab, &pbl->cBytes );
+    lRetCode = (mySCardGetAttrib)(hcard, dwAttrId, pbl->ab, &pbl->cBytes);
     return lRetCode;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-static SCARDRETCODE _SetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* pbl )
+static SCARDRETCODE _SetAttrib(SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* pbl)
 {
     long lRetCode;
 
-    lRetCode = (mySCardSetAttrib)( hcard, dwAttrId, pbl->ab, pbl->cBytes );
+    lRetCode = (mySCardSetAttrib)(hcard, dwAttrId, pbl->ab, pbl->cBytes);
     return lRetCode;
 }
 #endif // !__TIGER__
@@ -421,7 +426,7 @@ static SCARDRETCODE _SetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTEL
       SCARDHANDLE hcard,
       BYTELIST* pblSendBuffer,
       BYTELIST* pblRecvBuffer
-    )
+   )
     {
         SCARDRETCODE lRet;
 
@@ -433,7 +438,7 @@ static SCARDRETCODE _SetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTEL
                     pblSendBuffer->ab,
                     pblSendBuffer->cBytes,
                     pblRecvBuffer->ab,
-                    &pblRecvBuffer->cBytes );
+                    &pblRecvBuffer->cBytes);
         return lRet;
     }
 #else // !__TIGER__
@@ -443,7 +448,7 @@ static SCARDRETCODE _SetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTEL
       SCARDDWORDARG controlCode,
       BYTELIST* pblSendBuffer,
       BYTELIST* pblRecvBuffer
-    )
+   )
     {
         SCARDRETCODE lRet;
 
@@ -457,21 +462,21 @@ static SCARDRETCODE _SetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTEL
                     pblSendBuffer->cBytes,
                     pblRecvBuffer->ab,
                     pblRecvBuffer->cBytes,
-                    &pblRecvBuffer->cBytes );
+                    &pblRecvBuffer->cBytes);
         return lRet;
     }
 #endif // __TIGER__
 
 ///////////////////////////////////////////////////////////////////////////////
-static SCARDRETCODE _BeginTransaction( SCARDHANDLE hcard )
+static SCARDRETCODE _BeginTransaction(SCARDHANDLE hcard)
 {
-    return (mySCardBeginTransaction)( hcard );
+    return (mySCardBeginTransaction)(hcard);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-static SCARDRETCODE _Cancel( SCARDCONTEXT hcontext )
+static SCARDRETCODE _Cancel(SCARDCONTEXT hcontext)
 {
-    return (mySCardCancel)( hcontext );
+    return (mySCardCancel)(hcontext);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -492,38 +497,38 @@ static SCARDRETCODE _Connect(
             dwShareMode,
             dwPreferredProtocols,
             phCard,
-            pdwActiveProtocol );
+            pdwActiveProtocol);
 
     return lRet;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-static SCARDRETCODE _Disconnect( SCARDHANDLE hcard, SCARDDWORDARG dwDisposition )
+static SCARDRETCODE _Disconnect(SCARDHANDLE hcard, SCARDDWORDARG dwDisposition)
 {
-    return (mySCardDisconnect)( hcard, dwDisposition );
+    return (mySCardDisconnect)(hcard, dwDisposition);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-static SCARDRETCODE _EndTransaction( SCARDHANDLE hcard, SCARDDWORDARG dwDisposition )
+static SCARDRETCODE _EndTransaction(SCARDHANDLE hcard, SCARDDWORDARG dwDisposition)
 {
-    return (mySCardEndTransaction)( hcard, dwDisposition );
+    return (mySCardEndTransaction)(hcard, dwDisposition);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-static SCARDRETCODE _EstablishContext( SCARDDWORDARG dwScope, SCARDCONTEXT* phContext )
+static SCARDRETCODE _EstablishContext(SCARDDWORDARG dwScope, SCARDCONTEXT* phContext)
 {
     long lRet;
-    lRet = (mySCardEstablishContext)( dwScope, NULL, NULL, phContext );
+    lRet = (mySCardEstablishContext)(dwScope, NULL, NULL, phContext);
 
     #ifdef __TIGER__
         // SCardReleaseContext on Mac OS X Tiger fails if SCardConnect is not called with an established
         // context, even on a dummy reader
-        if( SCARD_S_SUCCESS==lRet )
+        if (SCARD_S_SUCCESS==lRet)
         {
             SCARDHANDLE hcard;
             SCARDDWORDARG dwarg;
-            (mySCardConnectA)( *phContext, "dummy-reader", SCARD_SHARE_SHARED,
-                SCARD_PROTOCOL_ANY, &hcard, &dwarg );
+            (mySCardConnectA)(*phContext, "dummy-reader", SCARD_SHARE_SHARED,
+                SCARD_PROTOCOL_ANY, &hcard, &dwarg);
         }
     #endif // __TIGER__
 
@@ -534,32 +539,32 @@ static SCARDRETCODE _EstablishContext( SCARDDWORDARG dwScope, SCARDCONTEXT* phCo
 static SCARDRETCODE _GetStatusChange(
     SCARDCONTEXT hcontext,
     SCARDDWORDARG dwTimeout,
-    READERSTATELIST* prsl )
+    READERSTATELIST* prsl)
 {
     SCARDRETCODE hresult;
     int i;
 
     // bad reader state list
-    if( NULL==prsl )
+    if (NULL==prsl)
     {
         return SCARD_E_INVALID_PARAMETER;
     }
 
 
     // remove changed bit
-    for( i=0; i<prsl->cRStates; i++ )
+    for(i=0; i<prsl->cRStates; i++)
     {
         // remove changed bit
         prsl->ars[i].dwCurrentState = prsl->ars[i].dwCurrentState & (0xFFFFFFFF ^ SCARD_STATE_CHANGED);
     }
 
-    hresult = (mySCardGetStatusChangeA)( hcontext, dwTimeout, prsl->ars,
-        prsl->cRStates );
+    hresult = (mySCardGetStatusChangeA)(hcontext, dwTimeout, prsl->ars,
+        prsl->cRStates);
 
-    //printf( "\n%.8lx ", hresult );
-    //for( i=0; i<prsl->cRStates; i++ )
+    //printf("\n%.8lx ", hresult);
+    //for(i=0; i<prsl->cRStates; i++)
     //{
-    //    printf( "%.8lx %.8lx ", prsl->ars[i].dwCurrentState, prsl->ars[i].dwEventState );
+    //    printf("%.8lx %.8lx ", prsl->ars[i].dwCurrentState, prsl->ars[i].dwEventState);
     //}
 
     return hresult;
@@ -569,7 +574,7 @@ static SCARDRETCODE _GetStatusChange(
 static SCARDRETCODE _ListReaders(
     SCARDCONTEXT hcontext,
     STRINGLIST* pmszGroups,
-    STRINGLIST* pmszReaders )
+    STRINGLIST* pmszReaders)
 {
     LPCTSTR mszGroups;
     SCARDDWORDARG cchReaders;
@@ -591,8 +596,8 @@ static SCARDRETCODE _ListReaders(
         pmszReaders->ac=NULL;
         pmszReaders->hcontext=hcontext;
 
-        return (mySCardListReadersA)( hcontext, mszGroups,
-            (LPTSTR)&pmszReaders->ac, &cchReaders );
+        return (mySCardListReadersA)(hcontext, mszGroups,
+            (LPTSTR)&pmszReaders->ac, &cchReaders);
     #endif //AUTOALLOCATE
 
     // no autoallocate on pcsc-lite; do a first call to get length
@@ -604,31 +609,31 @@ static SCARDRETCODE _ListReaders(
         pmszReaders->ac=NULL;
         cchReaders=0;
 
-        lRetCode = (mySCardListReadersA)( hcontext, mszGroups, NULL,
-            &cchReaders );
+        lRetCode = (mySCardListReadersA)(hcontext, mszGroups, NULL,
+            &cchReaders);
 
-        if ( SCARD_S_SUCCESS!=lRetCode )
+        if (SCARD_S_SUCCESS!=lRetCode)
         {
             return lRetCode;
         }
 
-        if( 0==cchReaders )
+        if (0==cchReaders)
         {
             return SCARD_S_SUCCESS;
         }
 
-        pmszReaders->ac=mem_Malloc( cchReaders*sizeof( char ) );
-        if ( NULL==pmszReaders->ac )
+        pmszReaders->ac=mem_Malloc(cchReaders*sizeof(char));
+        if (NULL==pmszReaders->ac)
         {
             return SCARD_E_NO_MEMORY;
         }
 
-        return (mySCardListReadersA)( hcontext, mszGroups, (LPTSTR)pmszReaders->ac, &cchReaders );
+        return (mySCardListReadersA)(hcontext, mszGroups, (LPTSTR)pmszReaders->ac, &cchReaders);
     #endif // !NOAUTOALLOCATE
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-static SCARDRETCODE _ListReaderGroups( SCARDCONTEXT hcontext, STRINGLIST* pmszReaderGroups )
+static SCARDRETCODE _ListReaderGroups(SCARDCONTEXT hcontext, STRINGLIST* pmszReaderGroups)
 {
     DWORD cchReaderGroups;
     LONG lRetCode;
@@ -638,8 +643,8 @@ static SCARDRETCODE _ListReaderGroups( SCARDCONTEXT hcontext, STRINGLIST* pmszRe
         pmszReaderGroups->ac=NULL;
         pmszReaderGroups->hcontext=hcontext;
 
-        return (mySCardListReaderGroupsA)( hcontext,
-            (LPTSTR)&pmszReaderGroups->ac, &cchReaderGroups );
+        return (mySCardListReaderGroupsA)(hcontext,
+            (LPTSTR)&pmszReaderGroups->ac, &cchReaderGroups);
     #endif // NOAUTOALLOCATE
 
     // no autoallocate on pcsc-lite; do a first call to get length
@@ -651,25 +656,25 @@ static SCARDRETCODE _ListReaderGroups( SCARDCONTEXT hcontext, STRINGLIST* pmszRe
         pmszReaderGroups->hcontext=0;
         cchReaderGroups = 0;
         pmszReaderGroups->ac=NULL;
-        lRetCode = (mySCardListReaderGroupsA)( hcontext,
-            (LPTSTR)pmszReaderGroups->ac, &cchReaderGroups );
-        if ( SCARD_S_SUCCESS!=lRetCode )
+        lRetCode = (mySCardListReaderGroupsA)(hcontext,
+            (LPTSTR)pmszReaderGroups->ac, &cchReaderGroups);
+        if (SCARD_S_SUCCESS!=lRetCode)
         {
             return lRetCode;
         }
 
-        if( 0==cchReaderGroups )
+        if (0==cchReaderGroups)
         {
             return SCARD_S_SUCCESS;
         }
 
-        pmszReaderGroups->ac=mem_Malloc( cchReaderGroups*sizeof( char ) );
-        if ( NULL==pmszReaderGroups->ac )
+        pmszReaderGroups->ac=mem_Malloc(cchReaderGroups*sizeof(char));
+        if (NULL==pmszReaderGroups->ac)
         {
             return SCARD_E_NO_MEMORY;
         }
 
-        return (mySCardListReaderGroupsA)( hcontext, (LPTSTR)pmszReaderGroups->ac, &cchReaderGroups );
+        return (mySCardListReaderGroupsA)(hcontext, (LPTSTR)pmszReaderGroups->ac, &cchReaderGroups);
     #endif // !NOAUTOALLOCATE
 };
 
@@ -688,14 +693,14 @@ static SCARDRETCODE _Reconnect(
                                dwShareMode,
                                dwPreferredProtocols,
                                dwInitialization,
-                               pdwActiveProtocol );
+                               pdwActiveProtocol);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-static SCARDRETCODE _ReleaseContext( SCARDCONTEXT hcontext )
+static SCARDRETCODE _ReleaseContext(SCARDCONTEXT hcontext)
 {
     SCARDRETCODE lRet;
-    lRet = (mySCardReleaseContext)( hcontext );
+    lRet = (mySCardReleaseContext)(hcontext);
     return lRet;
 }
 
@@ -715,7 +720,7 @@ static SCARDRETCODE _Status(
     for(;;)
     {
         pbl->ab = (unsigned char*)mem_Malloc(dwAtrLen*sizeof(unsigned char));
-        if( pbl->ab == NULL )
+        if (pbl->ab == NULL)
         {
             lRetCode=SCARD_E_NO_MEMORY;
             break;
@@ -723,7 +728,7 @@ static SCARDRETCODE _Status(
         pbl->cBytes = dwAtrLen;
         pszReaderName->sz = mem_Malloc(dwReaderLen*sizeof(char));
         pszReaderName->hcontext = 0;
-        if( NULL == pszReaderName->sz )
+        if (NULL == pszReaderName->sz)
         {
             lRetCode=SCARD_E_NO_MEMORY;
             break;
@@ -735,7 +740,7 @@ static SCARDRETCODE _Status(
             pdwState,
             pdwProtocol,
             pbl->ab,
-            &pbl->cBytes );
+            &pbl->cBytes);
         break;
     }
 
@@ -782,19 +787,19 @@ static SCARDRETCODE _Transmit(
                 pblSendBuffer->cBytes,
                 NULL,
                 pblRecvBuffer->ab,
-                &pblRecvBuffer->cBytes );
+                &pblRecvBuffer->cBytes);
 
     return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-static long _SCARD_CTL_CODE( long code )
+static long _SCARD_CTL_CODE(long code)
 {
     return SCARD_CTL_CODE(code);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-static ERRORSTRING* _GetErrorMessage( long lErrCode )
+static ERRORSTRING* _GetErrorMessage(long lErrCode)
 {
     #ifdef WIN32
     #define _NO_SERVICE_MSG "The Smart card resource manager is not running."
@@ -806,20 +811,20 @@ static ERRORSTRING* _GetErrorMessage( long lErrCode )
             FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_MAX_WIDTH_MASK,
             NULL,
             lErrCode,
-            MAKELANGID( LANG_NEUTRAL, SUBLANG_DEFAULT ),
+            MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
             (LPTSTR)&ppszError,
             0,
-            NULL );
+            NULL);
 
-        if( 0L==dwRetCode )
+        if (0L==dwRetCode)
         {
             ppszError=NULL;
-            if( SCARD_E_NO_SERVICE==lErrCode )
+            if (SCARD_E_NO_SERVICE==lErrCode)
             {
-                ppszError=(LPVOID)LocalAlloc( LPTR, sizeof( _NO_SERVICE_MSG )+1 );
-                if(NULL!=ppszError)
+                ppszError=(LPVOID)LocalAlloc(LPTR, sizeof(_NO_SERVICE_MSG)+1);
+                if (NULL!=ppszError)
                 {
-                    strncpy( ppszError, _NO_SERVICE_MSG, sizeof( _NO_SERVICE_MSG )+1 );
+                    strncpy(ppszError, _NO_SERVICE_MSG, sizeof(_NO_SERVICE_MSG)+1);
                 }
             }
         }
@@ -827,7 +832,7 @@ static ERRORSTRING* _GetErrorMessage( long lErrCode )
         return ppszError;
     #endif // WIN32
     #ifdef PCSCLITE
-        return (ERRORSTRING*)myPcscStringifyError( lErrCode );
+        return (ERRORSTRING*)myPcscStringifyError(lErrCode);
     #endif // PCSCLITE
 }
 
@@ -907,11 +912,11 @@ from smartcard.scard import *
     newgroup = 'SCard$MyOwnGroup'
     reader = 'SchlumbergerSema Reflex USB v.2 0'
     readeralias = 'SchlumbergerSema Reflex USB v.2 0 alias'
-    hresult = SCardIntroduceReader( hcontext, readeralias, reader] )
-    if hresult!=0:
+    hresult = SCardIntroduceReader(hcontext, readeralias, reader])
+    if hresult != SCARD_S_SUCCESS:
         raise error, 'Unable to introduce reader: ' + SCardGetErrorMessage(hresult)
 
-    hresult = SCardAddReaderToGroup( hcontext, readeralias, newgroup )
+    hresult = SCardAddReaderToGroup(hcontext, readeralias, newgroup)
     if hresult!=0:
         raise error, 'Unable to add reader to group: ' + SCardGetErrorMessage(hresult)
 
@@ -922,11 +927,11 @@ from smartcard.scard import *
 %rename(SCardAddReaderToGroup) _AddReaderToGroup(
   SCARDCONTEXT hcontext,
   char* szReaderName,
-  char* szGroupName );
+  char* szGroupName);
 SCARDRETCODE _AddReaderToGroup(
   SCARDCONTEXT hcontext,
   char* szReaderName,
-  char* szGroupName );
+  char* szGroupName);
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_FORGETCARDTYPE
@@ -937,16 +942,16 @@ Windows only, not supported by PCSC lite wrapper.
 
 from smartcard.scard import *
 ... establish context ...
-hresult = SCardForgetCardType( hcontext, 'myCardName' )
-if hresult!=SCARD_S_SUCCESS:
+hresult = SCardForgetCardType(hcontext, 'myCardName')
+if hresult != SCARD_S_SUCCESS:
     raise error, 'Failed to remove card type: ' + SCardGetErrorMessage(hresult)
 ...
 
 "
 %enddef
 %feature("docstring") DOCSTRING_FORGETCARDTYPE;
-%rename(SCardForgetCardType) _ForgetCardType( SCARDCONTEXT hcontext, char* szCardName );
-SCARDRETCODE _ForgetCardType( SCARDCONTEXT hcontext, char* szCardName );
+%rename(SCardForgetCardType) _ForgetCardType(SCARDCONTEXT hcontext, char* szCardName);
+SCARDRETCODE _ForgetCardType(SCARDCONTEXT hcontext, char* szCardName);
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_FORGETREADER
@@ -959,15 +964,15 @@ Windows only, not supported by PCSC lite wrapper.
 from smartcard.scard import *
 ... establish context ...
 ...
-hresult = SCardForgetReader( hcontext, dummyreader )
-if hresult!=0:
+hresult = SCardForgetReader(hcontext, dummyreader)
+if hresult != SCARD_S_SUCCESS:
     raise error, 'Failed to forget readers ' + SCardGetErrorMessage(hresult)
 ...
 "
 %enddef
 %feature("docstring") DOCSTRING_FORGETREADER;
-%rename(SCardForgetReader) _ForgetReader( SCARDCONTEXT hcontext, char* szReaderName );
-SCARDRETCODE _ForgetReader( SCARDCONTEXT hcontext, char* szReaderName );
+%rename(SCardForgetReader) _ForgetReader(SCARDCONTEXT hcontext, char* szReaderName);
+SCARDRETCODE _ForgetReader(SCARDCONTEXT hcontext, char* szReaderName);
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_FORGETREADERGROUP
@@ -982,35 +987,35 @@ Windows only, not supported by PCSC lite wrapper.
 from smartcard.scard import *
 ... establish context ...
 ...
-hresult = SCardForgetReaderGroup( hcontext, newgroup )
-if hresult!=0:
+hresult = SCardForgetReaderGroup(hcontext, newgroup)
+if hresult != SCARD_S_SUCCESS:
     raise error, 'Unable to forget reader group: ' + SCardGetErrorMessage(hresult)
 ...
 "
 %enddef
 %feature("docstring") DOCSTRING_FORGETREADERGROUP;
-%rename(SCardForgetReaderGroup) _ForgetReaderGroup( SCARDCONTEXT hcontext, char* szGroupName );
-SCARDRETCODE _ForgetReaderGroup( SCARDCONTEXT hcontext, char* szGroupName );
+%rename(SCardForgetReaderGroup) _ForgetReaderGroup(SCARDCONTEXT hcontext, char* szGroupName);
+SCARDRETCODE _ForgetReaderGroup(SCARDCONTEXT hcontext, char* szGroupName);
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_GETCARDTYPEPROVIDERNAME
 "
-Returns the name of the module (dynamic link library) containing the provider for a
-given card name and provider type.
+Returns the name of the module (dynamic link library) containing the
+provider for a given card name and provider type.
 
 Windows only, not supported by PCSC lite wrapper.
 
 from smartcard.scard import *
 ... establish context ...
-hresult, cards = SCardListCards( hcontext, [], [] )
-if hresult!=SCARD_S_SUCCESS:
+hresult, cards = SCardListCards(hcontext, [], [])
+if hresult != SCARD_S_SUCCESS:
     raise error, 'Failure to list cards: ' + SCardGetErrorMessage(hresult)
 for i in cards:
-    hresult, providername = SCardGetCardTypeProviderName( hcontext, i, SCARD_PROVIDER_PRIMARY )
-    if hresult==0:
+    hresult, providername = SCardGetCardTypeProviderName(hcontext, i, SCARD_PROVIDER_PRIMARY)
+    if hresult == SCARD_S_SUCCESS:
          print providername
-    hresult, providername = SCardGetCardTypeProviderName( hcontext, i, SCARD_PROVIDER_CSP )
-    if hresult==0:
+    hresult, providername = SCardGetCardTypeProviderName(hcontext, i, SCARD_PROVIDER_CSP)
+    if hresult == SCARD_S_SUCCESS:
          print providername
 ...
 "
@@ -1041,15 +1046,15 @@ from smartcard.scard import *
 ...
 znewcardName = 'dummy-card'
 znewcardATR = [0x3B, 0x77, 0x94, 0x00, 0x00, 0x82, 0x30, 0x00, 0x13, 0x6C, 0x9F, 0x22]
-znewcardMask= [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
+znewcardMask = [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
 znewcardPrimGuid = smartcard.guid.strToGUID('{128F3806-4F70-4ccf-977A-60C390664840}')
 znewcardSecGuid = smartcard.guid.strToGUID('{EB7F69EA-BA20-47d0-8C50-11CFDEB63BBE}')
 ...
-       hresult = SCardIntroduceCardType( hcontext, znewcardName, znewcardPrimGuid,
-                                         znewcardPrimGuid + znewcardSecGuid, znewcardATR, znewcardMask )
-       if hresult!=0:
-           raise error, 'Failed to introduce card type: ' + SCardGetErrorMessage(hresult)
-if hresult!=SCARD_S_SUCCESS:
+hresult = SCardIntroduceCardType(hcontext, znewcardName,
+    znewcardPrimGuid, znewcardPrimGuid + znewcardSecGuid,
+    znewcardATR, znewcardMask)
+
+if hresult != SCARD_S_SUCCESS:
     raise error, 'Failed to introduce card type: ' + SCardGetErrorMessage(hresult)
 ...
 "
@@ -1082,15 +1087,15 @@ Windows only, not supported by PCSC lite wrapper.
 from smartcard.scard import *
 ...
 dummyreader = readers[0] + ' dummy'
-hresult = SCardIntroduceReader( hcontext, dummyreader, readers[0] )
-if hresult!=0:
+hresult = SCardIntroduceReader(hcontext, dummyreader, readers[0])
+if hresult != SCARD_S_SUCCESS:
     raise error, 'Unable to introduce reader: ' + dummyreader + ' : ' + SCardGetErrorMessage(hresult)
 ...
 "
 %enddef
 %feature("docstring") DOCSTRING_INTRODUCEREADER;
-%rename(SCardIntroduceReader) _IntroduceReader( SCARDCONTEXT hcontext, char* szReaderName, char* szDeviceName );
-SCARDRETCODE _IntroduceReader( SCARDCONTEXT hcontext, char* szReaderName, char* szDeviceName );
+%rename(SCardIntroduceReader) _IntroduceReader(SCARDCONTEXT hcontext, char* szReaderName, char* szDeviceName);
+SCARDRETCODE _IntroduceReader(SCARDCONTEXT hcontext, char* szReaderName, char* szDeviceName);
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_INTRODUCEREADERGROUP
@@ -1102,18 +1107,18 @@ a reader to the smart card database.
 Windows only, not supported by PCSC lite wrapper.
 
 from smartcard.scard import *
-hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
-hresult = SCardIntroduceReaderGroup( hcontext, 'SCard$MyOwnGroup' )
-if hresult!=SCARD_S_SUCCESS:
+hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+hresult = SCardIntroduceReaderGroup(hcontext, 'SCard$MyOwnGroup')
+if hresult != SCARD_S_SUCCESS:
     raise error, 'Unable to introduce reader group: ' + SCardGetErrorMessage(hresult)
-hresult = SCardAddReaderToGroup( hcontext, 'SchlumbergerSema Reflex USB v.2 0', 'SCard$MyOwnGroup' )
-if hresult!=SCARD_S_SUCCESS:
+hresult = SCardAddReaderToGroup(hcontext, 'SchlumbergerSema Reflex USB v.2 0', 'SCard$MyOwnGroup')
+if hresult != SCARD_S_SUCCESS:
     raise error, 'Unable to add reader to group: ' + SCardGetErrorMessage(hresult)
 "
 %enddef
 %feature("docstring") DOCSTRING_INTRODUCEREADERGROUP;
-%rename(SCardIntroduceReaderGroup) _IntroduceReaderGroup( SCARDCONTEXT hcontext, char* szGroupName );
-SCARDRETCODE _IntroduceReaderGroup( SCARDCONTEXT hcontext, char* szGroupName );
+%rename(SCardIntroduceReaderGroup) _IntroduceReaderGroup(SCARDCONTEXT hcontext, char* szGroupName);
+SCARDRETCODE _IntroduceReaderGroup(SCARDCONTEXT hcontext, char* szGroupName);
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_LISTINTERFACES
@@ -1125,16 +1130,16 @@ and receives the list of interfaces supported by the card
 Windows only, not supported by PCSC lite wrapper.
 
 from smartcard.scard import *
-hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
-hresult, interfaces = SCardListInterfaces( hcontext, 'Schlumberger Cryptoflex 8k v2' )
-if hresult!=SCARD_S_SUCCESS:
+hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+hresult, interfaces = SCardListInterfaces(hcontext, 'Schlumberger Cryptoflex 8k v2')
+if hresult != SCARD_S_SUCCESS:
     raise error, 'Failed to list interfaces: ' + SCardGetErrorMessage(hresult)
 ...
 "
 %enddef
 %feature("docstring") DOCSTRING_LISTINTERFACES;
-%rename(SCardListInterfaces) _ListInterfaces( SCARDCONTEXT hcontext, char* szCardName, GUIDLIST* GUIDINTERFACES );
-SCARDRETCODE _ListInterfaces( SCARDCONTEXT hcontext, char* szCardName, GUIDLIST* GUIDINTERFACES );
+%rename(SCardListInterfaces) _ListInterfaces(SCARDCONTEXT hcontext, char* szCardName, GUIDLIST* GUIDINTERFACES);
+SCARDRETCODE _ListInterfaces(SCARDCONTEXT hcontext, char* szCardName, GUIDLIST* GUIDINTERFACES);
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_LISTCARDS
@@ -1150,11 +1155,11 @@ Windows only, not supported by PCSC lite wrapper.
 from smartcard.scard import *
 ...
 slbCryptoFlex8kv2ATR = [ 0x3B, 0x95, 0x15, 0x40, 0x00, 0x68, 0x01, 0x02, 0x00, 0x00  ]
-hresult, card = SCardListCards( hcontext, slbCryptoFlex8kv2ATR, [] )
-if hresult!=SCARD_S_SUCCESS:
+hresult, card = SCardListCards(hcontext, slbCryptoFlex8kv2ATR, [])
+if hresult ! =SCARD_S_SUCCESS:
     raise error, 'Failure to locate Schlumberger Cryptoflex 8k v2 card: ' + SCardGetErrorMessage(hresult)
-hresult, cards = SCardListCards( hcontext, [], [] )
-if hresult!=SCARD_S_SUCCESS:
+hresult, cards = SCardListCards(hcontext, [], [])
+if hresult != SCARD_S_SUCCESS:
     raise error, 'Failure to list cards: ' + SCardGetErrorMessage(hresult)
 print 'Cards: ', cards
 ...
@@ -1165,12 +1170,12 @@ print 'Cards: ', cards
     SCARDCONTEXT hcontext,
     BYTELIST* ATR,
     GUIDLIST* PROVIDERLIST,
-    STRINGLIST* MATCHINGCARDS );
+    STRINGLIST* MATCHINGCARDS);
 SCARDRETCODE _ListCards(
     SCARDCONTEXT hcontext,
     BYTELIST* ATR,
     GUIDLIST* PROVIDERLIST,
-    STRINGLIST* MATCHINGCARDS );
+    STRINGLIST* MATCHINGCARDS);
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_LOCATECARDS
@@ -1182,13 +1187,13 @@ mszCards, returning immediately with the result.
 Windows only, not supported by PCSC lite wrapper.
 
 from smartcard.scard import *
-hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
-hresult, readers = SCardListReaders( hcontext, [] )
+hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+hresult, readers = SCardListReaders(hcontext, [])
 readerstates = []
-cards = [ 'Schlumberger Cryptoflex 4k', 'Schlumberger Cryptoflex 8k', 'Schlumberger Cryptoflex 8k v2' ]
+cards = ['Schlumberger Cryptoflex 4k', 'Schlumberger Cryptoflex 8k', 'Schlumberger Cryptoflex 8k v2']
 for i in xrange(len(readers)):
-    readerstates += [ (readers[i], SCARD_STATE_UNAWARE ) ]
-hresult, newstates = SCardLocateCards( hcontext, cards, readerstates )
+    readerstates += [(readers[i], SCARD_STATE_UNAWARE)]
+hresult, newstates = SCardLocateCards(hcontext, cards, readerstates)
 for i in newstates:
     reader, eventstate, atr = i
     print reader,
@@ -1208,11 +1213,11 @@ for i in newstates:
 %rename(SCardLocateCards) _LocateCards(
     SCARDCONTEXT hcontext,
     STRINGLIST* CARDSTOLOCATE,
-    READERSTATELIST *prsl );
+    READERSTATELIST *prsl);
 SCARDRETCODE _LocateCards(
     SCARDCONTEXT hcontext,
     STRINGLIST* CARDSTOLOCATE,
-    READERSTATELIST *prsl );
+    READERSTATELIST *prsl);
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_REMOVEREADERFROMGROUP
@@ -1224,9 +1229,9 @@ affect on the reader.
 Windows only, not supported by PCSC lite wrapper.
 
 from smartcard.scard import *
-hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
-hresult = SCardRemoveReaderFromGroup( hcontext, 'SchlumbergerSema Reflex USB v.2 0', 'SCard$MyOwnGroup' )
-if hresult!=SCARD_S_SUCCESS:
+hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+hresult = SCardRemoveReaderFromGroup(hcontext, 'SchlumbergerSema Reflex USB v.2 0', 'SCard$MyOwnGroup')
+if hresult != SCARD_S_SUCCESS:
     raise error, 'Unable to remove reader from group: ' + SCardGetErrorMessage(hresult)
 ...
 "
@@ -1235,11 +1240,11 @@ if hresult!=SCARD_S_SUCCESS:
 %rename(SCardRemoveReaderFromGroup) _RemoveReaderFromGroup(
   SCARDCONTEXT hcontext,
   char* szReaderName,
-  char* szGroupName );
+  char* szGroupName);
 SCARDRETCODE _RemoveReaderFromGroup(
   SCARDCONTEXT hcontext,
   char* szReaderName,
-  char* szGroupName );
+  char* szGroupName);
 
 #endif // WIN32
 
@@ -1259,16 +1264,16 @@ SCARDRETCODE _RemoveReaderFromGroup(
     service has been shut down.
 
     from smartcard.scard import *
-    hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
-    hresult = SCardIsValidContext( hcontext )
-    if hresult!=SCARD_S_SUCCESS:
+    hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+    hresult = SCardIsValidContext(hcontext)
+    if hresult != SCARD_S_SUCCESS:
         raise error, 'Invalid context: ' + SCardGetErrorMessage(hresult)
     ...
     "
     %enddef
     %feature("docstring") DOCSTRING_ISVALIDCONTEXT;
-    %rename(SCardIsValidContext) _IsValidContext( SCARDCONTEXT hcontext );
-    SCARDRETCODE _IsValidContext( SCARDCONTEXT hcontext );
+    %rename(SCardIsValidContext) _IsValidContext(SCARDCONTEXT hcontext);
+    SCARDRETCODE _IsValidContext(SCARDCONTEXT hcontext);
 
     ///////////////////////////////////////////////////////////////////////////////
     %define DOCSTRING_GETATTRIB
@@ -1375,23 +1380,24 @@ SCARDRETCODE _RemoveReaderFromGroup(
 
     from smartcard.scard import *
     ... establish context and connect to card ...
-    hresult, attrib = SCardGetAttrib( hcard, SCARD_ATTR_ATR_STRING )
-    if hresult==SCARD_S_SUCCESS:
+    hresult, attrib = SCardGetAttrib(hcard, SCARD_ATTR_ATR_STRING)
+    if hresult == SCARD_S_SUCCESS:
         for j in attrib:
              print '0x%.2X' % attrib,
     ...
     "
     %enddef
     %feature("docstring") DOCSTRING_GETATTRIB;
-    %rename(SCardGetAttrib) _GetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* ATTRIBUTES );
-    SCARDRETCODE _GetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* ATTRIBUTES );
+    %rename(SCardGetAttrib) _GetAttrib(SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* ATTRIBUTES);
+    SCARDRETCODE _GetAttrib(SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* ATTRIBUTES);
 
     ///////////////////////////////////////////////////////////////////////////////
     %define DOCSTRING_SETATTRIB
     "
 
-    This function sets an attribute from the IFD Handler. Not all attributes are supported by all readers nor can
-    they be set at all times.
+    This function sets an attribute from the IFD Handler. Not all
+    attributes are supported by all readers nor can they be set at all
+    times.
 
     For PCSC lite, the list of possible attributes is:
 
@@ -1492,15 +1498,15 @@ SCARDRETCODE _RemoveReaderFromGroup(
 
     from smartcard.scard import *
     ... establish context and connect to card ...
-    hresult, attrib = SCardSetAttrib( hcard, SCARD_ATTR_VENDOR_NAME, ['G', 'e', 'm', 'a', 'l', 't', 'o'] )
-    if hresult!=SCARD_S_SUCCESS:
+    hresult, attrib = SCardSetAttrib(hcard, SCARD_ATTR_VENDOR_NAME, ['G', 'e', 'm', 'a', 'l', 't', 'o'])
+    if hresult != SCARD_S_SUCCESS:
          print 'Failed to set attribute'
     ...
     "
     %enddef
     %feature("docstring") DOCSTRING_SETATTRIB;
-    %rename(SCardSetAttrib) _SetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* ATTRIBUTESIN );
-    SCARDRETCODE _SetAttrib( SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* ATTRIBUTESIN );
+    %rename(SCardSetAttrib) _SetAttrib(SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* ATTRIBUTESIN);
+    SCARDRETCODE _SetAttrib(SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* ATTRIBUTESIN);
 
 #endif // !__TIGER__
 
@@ -1512,16 +1518,16 @@ SCARDRETCODE _RemoveReaderFromGroup(
     ///////////////////////////////////////////////////////////////////////////////
     %define DOCSTRING_CONTROL
     "
-    This function sends a control command to the reader connected to by SCardConnect().
-    It returns a result and the control response.
+    This function sends a control command to the reader connected to by
+    SCardConnect().  It returns a result and the control response.
 
     from smartcard.scard import *
-    hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
+    hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
     hresult, hcard, dwActiveProtocol = SCardConnect(
-         hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 )
+         hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
     CMD = [ 42, 0x12, 0x34]
-    hresult, response = SCardControl( hcard, CMD )
-    if hresult!=SCARD_S_SUCCESS:
+    hresult, response = SCardControl(hcard, CMD)
+    if hresult != SCARD_S_SUCCESS:
         raise error, 'Failed to control: ' + SCardGetErrorMessage(hresult)
     "
     %enddef
@@ -1530,27 +1536,27 @@ SCARDRETCODE _RemoveReaderFromGroup(
       SCARDHANDLE hcard,
       BYTELIST* INBUFFER,
       BYTELIST* OUTBUFFER
-    );
+   );
     SCARDRETCODE _Control(
       SCARDHANDLE hcard,
       BYTELIST* INBUFFER,
       BYTELIST* OUTBUFFER
-    );
+   );
 #else // !__TIGER__
     ///////////////////////////////////////////////////////////////////////////////
     %define DOCSTRING_CONTROL
     "
-    This function sends a control command to the reader connected to by SCardConnect().
-    It returns a result and the control response.
+    This function sends a control command to the reader connected to by
+    SCardConnect().  It returns a result and the control response.
 
 
     from smartcard.scard import *
-    hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
+    hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
     hresult, hcard, dwActiveProtocol = SCardConnect(
-         hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 )
+         hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
     CMD = [0x12, 0x34]
-    hresult, response = SCardControl( hcard, 42, CMD )
-    if hresult!=SCARD_S_SUCCESS:
+    hresult, response = SCardControl(hcard, 42, CMD)
+    if hresult != SCARD_S_SUCCESS:
         raise error, 'Failed to control: ' + SCardGetErrorMessage(hresult)
     "
     %enddef
@@ -1560,13 +1566,13 @@ SCARDRETCODE _RemoveReaderFromGroup(
       SCARDDWORDARG dwControlCode,
       BYTELIST* INBUFFER,
       BYTELIST* OUTBUFFER
-    );
+   );
     SCARDRETCODE _Control(
       SCARDHANDLE hcard,
       SCARDDWORDARG dwControlCode,
       BYTELIST* INBUFFER,
       BYTELIST* OUTBUFFER
-    );
+   );
 #endif // __TIGER__
 
 
@@ -1583,34 +1589,35 @@ SCARD_SHARE_EXCLUSIVE there will be no action taken.
 from smartcard.scard import *
 ... establish context ...
 hresult, hcard, dwActiveProtocol = SCardConnect(
-    hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 )
+    hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
 if hresult!=SCARD_S_SUCCESS:
     raise error, 'unable to connect: ' + SCardGetErrorMessage(hresult)
-hresult = SCardBeginTransaction( hcard )
-if hresult!=SCARD_S_SUCCESS:
+hresult = SCardBeginTransaction(hcard)
+if hresult != SCARD_S_SUCCESS:
     raise error, 'failed to begin transaction: ' + SCardGetErrorMessage(hresult)
 ...
 "
 %enddef
 %feature("docstring") DOCSTRING_BEGINTRANSACTION;
-%rename(SCardBeginTransaction) _BeginTransaction( SCARDHANDLE hcard );
-SCARDRETCODE _BeginTransaction( SCARDHANDLE hcard );
+%rename(SCardBeginTransaction) _BeginTransaction(SCARDHANDLE hcard);
+SCARDRETCODE _BeginTransaction(SCARDHANDLE hcard);
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_CANCEL
 "
-This function cancels all pending blocking requests on the ScardGetStatusChange() function.
+This function cancels all pending blocking requests on the
+ScardGetStatusChange() function.
 
 from smartcard.scard import *
 ... establish context ...
-hresult = SCardCancel( hcard )
-if hresult!=SCARD_S_SUCCESS:
+hresult = SCardCancel(hcard)
+if hresult != SCARD_S_SUCCESS:
     raise error, 'failed to cancel pending actions: ' + SCardGetErrorMessage(hresult)
 ..."
 %enddef
 %feature("docstring") DOCSTRING_CANCEL;
-%rename(SCardCancel) _Cancel( SCARDCONTEXT hcontext );
-SCARDRETCODE _Cancel( SCARDCONTEXT hcontext );
+%rename(SCardCancel) _Cancel(SCARDCONTEXT hcontext);
+SCARDRETCODE _Cancel(SCARDCONTEXT hcontext);
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_CONNECT
@@ -1634,12 +1641,12 @@ SCARD_PROTOCOL_RAW              Use with memory type cards
 
 from smartcard.scard import *
 ... establish context ...
-hresult, readers = SCardListReaders( hcontext, 'NULL' )
-if hresult!=SCARD_S_SUCCESS:
+hresult, readers = SCardListReaders(hcontext, 'NULL')
+if hresult != SCARD_S_SUCCESS:
     raise error, 'Failed to list readers:: ' + SCardGetErrorMessage(hresult)
 hresult, hcard, dwActiveProtocol = SCardConnect(
-    hcontext, readers[0], SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 )
-if hresult!=SCARD_S_SUCCESS:
+    hcontext, readers[0], SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
+if hresult != SCARD_S_SUCCESS:
     raise error, 'unable to connect: ' + SCardGetErrorMessage(hresult)
 ...
 "
@@ -1676,15 +1683,15 @@ SCARD_EJECT_CARD        Eject the card
 
 from smartcard.scard import *
 ... establish context and connect to card ...
-hresult = SCardDisconnect( hcard, SCARD_UNPOWER_CARD )
-if hresult!=SCARD_S_SUCCESS:
+hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
+if hresult != SCARD_S_SUCCESS:
     raise error, 'failed to disconnect: ' + SCardGetErrorMessage(hresult)
 ...
 "
 %enddef
 %feature("docstring") DOCSTRING_DISCONNECT;
-%rename(SCardDisconnect) _Disconnect( SCARDHANDLE hcard, SCARDDWORDARG dwDisposition );
-SCARDRETCODE _Disconnect( SCARDHANDLE hcard, SCARDDWORDARG dwDisposition );
+%rename(SCardDisconnect) _Disconnect(SCARDHANDLE hcard, SCARDDWORDARG dwDisposition);
+SCARDRETCODE _Disconnect(SCARDHANDLE hcard, SCARDDWORDARG dwDisposition);
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_ENDTRANSACTION
@@ -1703,14 +1710,14 @@ SCARD_EJECT_CARD        Eject the card
 
 from smartcard.scard import *
 ... establish context, connect to card, begin transaction ...
-hresult = SCardEndTransaction( hcard, SCARD_LEAVE_CARD )
-if hresult!=SCARD_S_SUCCESS:
+hresult = SCardEndTransaction(hcard, SCARD_LEAVE_CARD)
+if hresult != SCARD_S_SUCCESS:
     raise error, 'failed to end transaction: ' + SCardGetErrorMessage(hresult)
 "
 %enddef
 %feature("docstring") DOCSTRING_ENDTRANSACTION;
-%rename(SCardEndTransaction) _EndTransaction( SCARDHANDLE hcard, SCARDDWORDARG dwDisposition );
-SCARDRETCODE _EndTransaction( SCARDHANDLE hcard, SCARDDWORDARG dwDisposition );
+%rename(SCardEndTransaction) _EndTransaction(SCARDHANDLE hcard, SCARDDWORDARG dwDisposition);
+SCARDRETCODE _EndTransaction(SCARDHANDLE hcard, SCARDDWORDARG dwDisposition);
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_ESTABLISHCONTEXT
@@ -1726,14 +1733,14 @@ SCARD_SCOPE_SYSTEM      Operations performed within the scope of the system
 
 
 from smartcard.scard import *
-hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
-if hresult!=SCARD_S_SUCCESS:
+hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+if hresult != SCARD_S_SUCCESS:
     raise error, 'Failed to establish context: ' + SCardGetErrorMessage(hresult)
 "
 %enddef
 %feature("docstring") DOCSTRING_ESTABLISHCONTEXT;
-%rename(SCardEstablishContext) _EstablishContext( SCARDDWORDARG dwScope, SCARDCONTEXT* phcontext );
-SCARDRETCODE _EstablishContext( SCARDDWORDARG dwScope, SCARDCONTEXT* phcontext );
+%rename(SCardEstablishContext) _EstablishContext(SCARDDWORDARG dwScope, SCARDCONTEXT* phcontext);
+SCARDRETCODE _EstablishContext(SCARDDWORDARG dwScope, SCARDCONTEXT* phcontext);
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1741,7 +1748,7 @@ SCARDRETCODE _EstablishContext( SCARDDWORDARG dwScope, SCARDCONTEXT* phcontext )
 "
 
 This function receives a structure or list of tuples containing reader
-states. A READERSTATE hast three fields ( readername, state, atr ).
+states. A READERSTATE hast three fields (readername, state, atr).
 It then blocks for a change in state to occur on any of the OR'd
 values contained in the current state for a maximum blocking time of
 dwTimeout or forever if INFINITE is used.  The new event state will be
@@ -1763,15 +1770,15 @@ SCARD_STATE_MUTE            There is an unresponsive card in the reader
 
 
 from smartcard.scard import *
-hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
-hresult, readers = SCardListReaders( hcontext, [] )
+hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+hresult, readers = SCardListReaders(hcontext, [])
 readerstates = []
 cards = [ 'Schlumberger Cryptoflex 4k', 'Schlumberger Cryptoflex 8k', 'Schlumberger Cryptoflex 8k v2' ]
 for i in xrange(len(readers)):
-    readerstates += [ (readers[i], SCARD_STATE_UNAWARE ) ]
-hresult, newstates = SCardLocateCards( hcontext, cards, readerstates )
+    readerstates += [ (readers[i], SCARD_STATE_UNAWARE) ]
+hresult, newstates = SCardLocateCards(hcontext, cards, readerstates)
 print '----- Please insert or remove a card ------------'
-hresult, newstates = SCardGetStatusChange( hcontext, INFINITE, newstates )
+hresult, newstates = SCardGetStatusChange(hcontext, INFINITE, newstates)
 for i in newstates
      reader, eventstate, atr = i
     if eventstate & SCARD_STATE_ATRMATCH:
@@ -1794,15 +1801,16 @@ SCARDRETCODE _GetStatusChange(
 %define DOCSTRING_LISTREADERS
 "
 This function returns a list of currently available readers on the system.
-A list of group can be provided in input to list readers in a given group only.
+A list of group can be provided in input to list readers in a given
+group only.
 
 from smartcard.scard import *
-hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
-hresult, readers = SCardListReaders( hcontext, [] )
-if hresult!=SCARD_S_SUCCESS:
+hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+hresult, readers = SCardListReaders(hcontext, [])
+if hresult != SCARD_S_SUCCESS:
     raise error, 'Failed to list readers: ' + SCardGetErrorMessage(hresult)
 print 'PCSC Readers: ', readers
-hresult, readers = SCardListReaders( hcontext, ['SCard$T1ProtocolReaders', 'SCard$MyOwnGroup']
+hresult, readers = SCardListReaders(hcontext, ['SCard$T1ProtocolReaders', 'SCard$MyOwnGroup']
 ...
 "
 %enddef
@@ -1810,29 +1818,30 @@ hresult, readers = SCardListReaders( hcontext, ['SCard$T1ProtocolReaders', 'SCar
 %rename(SCardListReaders) _ListReaders(
     SCARDCONTEXT hcontext,
     STRINGLIST* READERGROUPSIN,
-    STRINGLIST* READERSFOUND );
+    STRINGLIST* READERSFOUND);
 SCARDRETCODE _ListReaders(
     SCARDCONTEXT hcontext,
     STRINGLIST* READERGROUPSIN,
-    STRINGLIST* READERSFOUND );
+    STRINGLIST* READERSFOUND);
 
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_LISTREADERGROUPS
 "
-This function returns a list of currently available reader groups on the system.
+This function returns a list of currently available reader groups on the
+system.
 
 from smartcard.scard import *
-hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
-hresult, readerGroups = SCardListReaderGroups( hcontext )
-if hresult!=SCARD_S_SUCCESS:
+hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+hresult, readerGroups = SCardListReaderGroups(hcontext)
+if hresult != SCARD_S_SUCCESS:
     raise error, 'Unable to list reader groups: ' + SCardGetErrorMessage(hresult)
 print 'PCSC Reader groups: ', readerGroups
 "
 %enddef
 %feature("docstring") DOCSTRING_LISTREADERGROUPS;
-%rename(SCardListReaderGroups) _ListReaderGroups( SCARDCONTEXT hcontext, STRINGLIST* READERGROUPSOUT );
-SCARDRETCODE _ListReaderGroups( SCARDCONTEXT hcontext, STRINGLIST* READERGROUPSOUT );
+%rename(SCardListReaderGroups) _ListReaderGroups(SCARDCONTEXT hcontext, STRINGLIST* READERGROUPSOUT);
+SCARDRETCODE _ListReaderGroups(SCARDCONTEXT hcontext, STRINGLIST* READERGROUPSOUT);
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_RECONNECT
@@ -1865,11 +1874,11 @@ SCARD_EJECT_CARD            Eject the card
 
 
 from smartcard.scard import *
-hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
+hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
 hresult, hcard, dwActiveProtocol = SCardConnect(
-    hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 )
-hresult, activeProtocol = SCardReconnect( hcard, SCARD_SHARE_EXCLUSIVE,
-    SCARD_PROTOCOL_T0, SCARD_RESET_CARD )
+    hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
+hresult, activeProtocol = SCardReconnect(hcard, SCARD_SHARE_EXCLUSIVE,
+    SCARD_PROTOCOL_T0, SCARD_RESET_CARD)
 ...
 "
 %enddef
@@ -1895,8 +1904,8 @@ SCARDRETCODE _Reconnect(
 "
 %enddef
 %feature("docstring") DOCSTRING_RELEASECONTEXT;
-%rename(SCardReleaseContext) _ReleaseContext( SCARDCONTEXT hcontext );
-SCARDRETCODE _ReleaseContext( SCARDCONTEXT hcontext );
+%rename(SCardReleaseContext) _ReleaseContext(SCARDCONTEXT hcontext);
+SCARDRETCODE _ReleaseContext(SCARDCONTEXT hcontext);
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_STATUS
@@ -1920,11 +1929,11 @@ SCARD_PROTOCOL_T1       Use the T=1 protocol
 
 
 from smartcard.scard import *
-hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
+hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
 hresult, hcard, dwActiveProtocol = SCardConnect(
-         hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 )
-hresult, reader, state, protocol, atr = SCardStatus( hcard )
-if hresult!=SCARD_S_SUCCESS:
+         hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
+hresult, reader, state, protocol, atr = SCardStatus(hcard)
+if hresult != SCARD_S_SUCCESS:
     raise error, 'failed to get status: ' + SCardGetErrorMessage(hresult)
 print 'Reader: ', reader
 print 'State: ', state
@@ -1955,7 +1964,8 @@ SCARDRETCODE _Status(
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_TRANSMIT
 "
-This function sends an APDU to the smart card contained in the reader connected to by SCardConnect().
+This function sends an APDU to the smart card contained in the reader
+connected to by SCardConnect().
 It returns a result and the card APDU response.
 
 Value of pioSendPci     Meaning
@@ -1964,13 +1974,13 @@ SCARD_PCI_T1            Pre-defined T=1 PCI structure
 
 
 from smartcard.scard import *
-hresult, hcontext = SCardEstablishContext( SCARD_SCOPE_USER )
+hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
 hresult, hcard, dwActiveProtocol = SCardConnect(
-     hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 )
+     hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
 SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
 DF_TELECOM = [0x7F, 0x10]
-hresult, response = SCardTransmit( hcard, SCARD_PCI_T0, SELECT + DF_TELECOM )
-if hresult!=SCARD_S_SUCCESS:
+hresult, response = SCardTransmit(hcard, SCARD_PCI_T0, SELECT + DF_TELECOM)
+if hresult != SCARD_S_SUCCESS:
     raise error, 'Failed to transmit: ' + SCardGetErrorMessage(hresult)
 "
 %enddef
@@ -2000,8 +2010,8 @@ CM_IOCTL_GET_FEATURE_REQUEST = SCARD_CTL_CODE(3400)
 "
 %enddef
 %feature("docstring") DOCSTRING_SCARD_CTL_CODE;
-%rename(SCARD_CTL_CODE) _SCARD_CTL_CODE( long code );
-long _SCARD_CTL_CODE( long code );
+%rename(SCARD_CTL_CODE) _SCARD_CTL_CODE(long code);
+long _SCARD_CTL_CODE(long code);
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_GETERRORMESSAGE
@@ -2010,15 +2020,15 @@ This function return a human readable text for the given PC/SC error code.
 
 from smartcard.scard import *
 ...
-hresult, response = SCardTransmit( hcard, SCARD_PCI_T0, SELECT + DF_TELECOM )
-if hresult!=SCARD_S_SUCCESS:
+hresult, response = SCardTransmit(hcard, SCARD_PCI_T0, SELECT + DF_TELECOM)
+if hresult != SCARD_S_SUCCESS:
     raise error, 'Failed to transmit: ' + SCardGetErrorMessage(hresult)
 ...
 "
 %enddef
 %feature("docstring") DOCSTRING_GETERRORMESSAGE;
-%rename(SCardGetErrorMessage) _GetErrorMessage( long lErrCode );
-ERRORSTRING* _GetErrorMessage( long lErrCode );
+%rename(SCardGetErrorMessage) _GetErrorMessage(long lErrCode);
+ERRORSTRING* _GetErrorMessage(long lErrCode);
 
 
 %inline
@@ -2055,15 +2065,15 @@ ERRORSTRING* _GetErrorMessage( long lErrCode );
 #ifdef PCSCLITEyy
 %pythoncode %{
 
-def SCardListCards( hcontext, atr, guidlist ):
-    return ( SCARD_S_SUCCESS, [] )
+def SCardListCards(hcontext, atr, guidlist):
+    return (SCARD_S_SUCCESS, [])
 
-def SCardLocateCards( hcontext, cardnames, readerstates ):
+def SCardLocateCards(hcontext, cardnames, readerstates):
     newreaderstates=[]
     for state in readerstates:
-        newreaderstates.append( (state[0], state[1], [] ) )
+        newreaderstates.append((state[0], state[1], []))
 
-    return ( SCARD_S_SUCCESS, newreaderstates )
+    return (SCARD_S_SUCCESS, newreaderstates)
 %}
 #endif
 
