@@ -45,25 +45,23 @@ class PCSCCardRequest(AbstractCardRequest):
     def __init__(self, newcardonly=False, readers=None, cardType=None, cardServiceClass=None, timeout=1):
         """Construct new PCSCCardRequest.
 
-        newcardonly:        if True, request a new card
-                            default is False, i.e. accepts cards already
-                            inserted
+        @param newcardonly: if True, request a new card default is
+        False, i.e. accepts cards already inserted
 
-        readers:            the list of readers to consider for requesting
-                            a card default is to consider all readers
+        @param readers: the list of readers to consider for requesting a
+        card default is to consider all readers
 
-        cardTypeClass:      the CardType class to wait for; default is
-                            AnyCardType, i.e.  the request will returns
-                            with new or already inserted cards
+        @param cardTypeClass: the CardType class to wait for; default is
+        AnyCardType, i.e.  the request will returns with new or already
+        inserted cards
 
-        cardServiceClass:   the specific card service class to create and
-                            bind to the card default is to create and
-                            bind a PassThruCardService
+        @param cardServiceClass: the specific card service class to
+        create and bind to the card default is to create and bind a
+        PassThruCardService
 
-        timeout:            the time in seconds we are ready to wait for
-                            connecting to the requested card.  default
-                            is to wait one second to wait forever, set
-                            timeout to None
+        @param timeout: the time in seconds we are ready to wait for
+        connecting to the requested card.  default is to wait one second
+        to wait forever, set timeout to None
         """
         AbstractCardRequest.__init__(self, newcardonly, readers, cardType, cardServiceClass, timeout)
 

@@ -101,9 +101,10 @@ for k in Properties.keys():
 def getFeatureRequest(cardConnection):
     """ Get the list of Part10 features supported by the reader.
 
-    cardConnection: CardConnection object
+    @param cardConnection: L{CardConnection} object
 
-    return: a list of list [[tag1, value1], [tag2, value2]]
+    @rtype: list
+    @return: a list of list [[tag1, value1], [tag2, value2]]
     """
     response = cardConnection.control(CM_IOCTL_GET_FEATURE_REQUEST, [])
     features = []
@@ -121,10 +122,10 @@ def getFeatureRequest(cardConnection):
 def hasFeature(featureList, feature):
     """ return the controlCode for a feature or None
 
-    feature:     feature to look for
-    featureList: feature list as returned by getFeatureRequest()
+    @param feature:     feature to look for
+    @param featureList: feature list as returned by L{getFeatureRequest()}
 
-    return: feature value or None
+    @return: feature value or None
     """
     for f in featureList:
         if f[0] == feature or Features[f[0]] == feature:
@@ -134,11 +135,12 @@ def hasFeature(featureList, feature):
 def getPinProperties(cardConnection, featureList=None, controlCode=None):
     """ return the PIN_PROPERTIES structure
 
-    cardConnection: CardConnection object
-    featureList: feature list as returned by getFeatureRequest()
-    controlCode: control code for FEATURE_IFD_PIN_PROPERTIES
+    @param cardConnection: L{CardConnection} object
+    @param featureList: feature list as returned by L{getFeatureRequest()}
+    @param controlCode: control code for L{FEATURE_IFD_PIN_PROPERTIES}
 
-    return: a dict """
+    @rtype: dict
+    @return: a dict """
     if controlCode is None:
         if featureList is None:
             featureList = getFeatureRequest(cardConnection)
@@ -161,11 +163,12 @@ def getPinProperties(cardConnection, featureList=None, controlCode=None):
 def getTlvProperties(cardConnection, featureList=None, controlCode=None):
     """ return the GET_TLV_PROPERTIES structure
 
-    cardConnection: CardConnection object
-    featureList: feature list as returned by getFeatureRequest()
-    controlCode: control code for FEATURE_GET_TLV_PROPERTIES
+    @param cardConnection: L{CardConnection} object
+    @param featureList: feature list as returned by L{getFeatureRequest()}
+    @param controlCode: control code for L{FEATURE_GET_TLV_PROPERTIES}
 
-    return: a dict """
+    @rtype: dict
+    @return: a dict """
     if controlCode is None:
         if featureList is None:
             featureList = getFeatureRequest(cardConnection)
