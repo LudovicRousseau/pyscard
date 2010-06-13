@@ -86,9 +86,8 @@ try:
             raise error, 'failed to release context: ' + SCardGetErrorMessage(hresult)
         print 'Released context.'
 
-except error:
-    import sys
-    print sys.exc_info()[0], ':', sys.exc_info()[1]
+except error, e:
+    print e
 
 import sys
 if 'win32' == sys.platform:

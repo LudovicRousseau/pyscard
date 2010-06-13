@@ -105,9 +105,8 @@ if 'winscard' == resourceManager:
                 raise error, 'Failed to release context: ' + SCardGetErrorMessage(hresult)
             print 'Released context.'
 
-    except error:
-        import sys
-        print sys.exc_info()[0], ':', sys.exc_info()[1]
+    except error, e:
+        print e
 
 elif 'pcsclite' == resourceManager:
     print 'SCardLocateCards not supported by pcsc lite'
