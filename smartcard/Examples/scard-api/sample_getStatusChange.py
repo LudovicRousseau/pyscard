@@ -100,6 +100,5 @@ try:
         print 'press Enter to continue'
         sys.stdin.read(1)
 
-except error:
-    import sys
-    print sys.exc_info()[0], ':', sys.exc_info()[1]
+except error, e:
+    print e
