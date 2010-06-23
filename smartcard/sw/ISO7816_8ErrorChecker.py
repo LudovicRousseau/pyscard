@@ -69,7 +69,7 @@ iso7816_8SW = {
     0x6A: (smartcard.sw.SWExceptions.CheckingErrorException,
            {0x81: "Function not supported",
             0x82: "File not found",
-            x86: "Incorrect parameters P1-P2",
+            0x86: "Incorrect parameters P1-P2",
             0x88: "Referenced data not found"}),
 }
 
