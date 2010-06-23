@@ -23,7 +23,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 from smartcard.CardConnectionDecorator import CardConnectionDecorator
-from smartcard.reader.ReaderFactory import ReaderFactory
 from smartcard.reader.Reader import Reader
 from smartcard.pcsc.PCSCContext import PCSCContext
 from smartcard.pcsc.PCSCCardConnection import PCSCCardConnection
@@ -99,16 +98,16 @@ class PCSCReader(Reader):
 
     class Factory:
 
-        def create(self, readername):
+        def create(readername):
             return PCSCReader(readername)
+        create = staticmethod(create)
 
     def readers(groups=[]):
         creaders = []
         hcontext = PCSCContext().getContext()
 
         for reader in __PCSCreaders__(hcontext, groups):
-            creaders.append(ReaderFactory.createReader(
-                'smartcard.pcsc.PCSCReader.PCSCReader', reader))
+            creaders.append(PCSCReader.Factory.create(reader))
         return creaders
     readers = staticmethod(readers)
 
