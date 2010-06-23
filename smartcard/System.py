@@ -38,7 +38,7 @@ def readers(groups=[]):
     r=smartcard.readers(['SCard$DefaultReaders', 'MyReaderGroup'])
     """
 
-    return smartcard.pcsc.PCSCReader.readers(groups)
+    return smartcard.pcsc.PCSCReader.PCSCReader.readers(groups)
 
 
 def readergroups():

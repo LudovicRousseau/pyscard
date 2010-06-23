@@ -83,9 +83,11 @@ class PCSCReader(Reader):
         if 0 != hresult:
             raise EstablishContextException(hresult)
         try:
-            hresult = SCardRemoveReaderFromGroup(hcontext, self.name, groupname)
+            hresult = SCardRemoveReaderFromGroup(hcontext, self.name,
+                groupname)
             if 0 != hresult:
-                raise RemoveReaderFromGroupException(hresult, self.name, groupname)
+                raise RemoveReaderFromGroupException(hresult, self.name,
+                    groupname)
         finally:
             hresult = SCardReleaseContext(hcontext)
             if 0 != hresult:
@@ -100,21 +102,29 @@ class PCSCReader(Reader):
         def create(self, readername):
             return PCSCReader(readername)
 
+    def readers(groups=[]):
+        creaders = []
+        hcontext = PCSCContext().getContext()
 
-def readers(groups=[]):
-    creaders = []
-    hcontext = PCSCContext().getContext()
-
-    for reader in __PCSCreaders__(hcontext, groups):
-        creaders.append(ReaderFactory.createReader('smartcard.pcsc.PCSCReader.PCSCReader', reader))
-    return creaders
+        for reader in __PCSCreaders__(hcontext, groups):
+            creaders.append(ReaderFactory.createReader(
+                'smartcard.pcsc.PCSCReader.PCSCReader', reader))
+        return creaders
+    readers = staticmethod(readers)
 
 if __name__ == '__main__':
+    from smartcard.util import *
     SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
     DF_TELECOM = [0x7F, 0x10]
 
-    creaders = readers()
-    cc = creaders[0].createConnection()
-    cc.connect()
-    data, sw1, sw2 = cc.transmit(SELECT + DF_TELECOM)
-    print "%X %X" % (sw1, sw2)
+    creaders = PCSCReader.readers()
+    for reader in creaders:
+        try:
+            print reader.name
+            connection = reader.createConnection()
+            connection.connect()
+            print toHexString(connection.getATR())
+            data, sw1, sw2 = connection.transmit(SELECT + DF_TELECOM)
+            print "%X %X" % (sw1, sw2)
+        except NoCardException, x:
+            print 'no card in reader'
