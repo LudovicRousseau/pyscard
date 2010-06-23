@@ -28,7 +28,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 import smartcard.scard
 
 
-class BaseSCardException:
+class BaseSCardException(Exception):
     """Base class for scard (aka PCSC) exceptions.
 
     scard exceptions are raised by the scard module, i.e.
