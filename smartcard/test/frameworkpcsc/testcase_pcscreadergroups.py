@@ -43,7 +43,7 @@ except:
 
 
 from smartcard.pcsc.PCSCReaderGroups import PCSCReaderGroups
-from smartcard.pcsc.PCSCReader import readers
+from smartcard.pcsc.PCSCReader import PCSCReader
 from smartcard.scard import resourceManager
 
 if 'winscard' == resourceManager:
@@ -130,25 +130,25 @@ if 'winscard' == resourceManager:
             groups = PCSCReaderGroups()
             newgroup = 'Pinpad$Readers'
             groups.insert(0, newgroup)
-            for r in readers('SCard$DefaultReaders'):
+            for r in PCSCReader.readers('SCard$DefaultReaders'):
                 r.addtoreadergroup(newgroup)
-            self.assertEquals(readers('SCard$DefaultReaders'), readers(newgroup))
+            self.assertEquals(PCSCReader.readers('SCard$DefaultReaders'), PCSCReader.readers(newgroup))
             groups.pop(0)
-            self.assertEquals([], readers(newgroup))
+            self.assertEquals([], PCSCReader.readers(newgroup))
 
         def testcase_removereaderfromgroup(self):
             """Test for removing readers from group"""
             groups = PCSCReaderGroups()
             newgroup = 'Pinpad$Readers'
             groups.insert(0, newgroup)
-            for r in readers('SCard$DefaultReaders'):
+            for r in PCSCReader.readers('SCard$DefaultReaders'):
                 r.addtoreadergroup(newgroup)
-            self.assertEquals(readers('SCard$DefaultReaders'), readers(newgroup))
-            for r in readers('SCard$DefaultReaders'):
+            self.assertEquals(PCSCReader.readers('SCard$DefaultReaders'), PCSCReader.readers(newgroup))
+            for r in PCSCReader.readers('SCard$DefaultReaders'):
                 r.removefromreadergroup(newgroup)
-            self.assertEquals([], readers(newgroup))
+            self.assertEquals([], PCSCReader.readers(newgroup))
             groups.pop(0)
-            self.assertEquals([], readers(newgroup))
+            self.assertEquals([], PCSCReader.readers(newgroup))
 
     def suite():
         suite1 = unittest.makeSuite(testcase_readergroups)
