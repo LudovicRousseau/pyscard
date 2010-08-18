@@ -1,7 +1,11 @@
-1.6.12 (July 2010)
+1.6.12 (August 2010)
 ===================
         * comply with PEP 8 (Ludovic Rousseau)
         * comply with PEP 352 (Jean-Daniel Aussel)
+        * support of pcsclite 1.6 and deprecated LPSCARD_READERSTATE_A (Ludovic Rousseau)
+        * support of py2exe scripts for wxWindows examples (Jean-Daniel Aussel)
+        * partial support of remote pcsc readers with pyro (Jean-Daniel Aussel)
+
 
 1.6.10 (May 2010)
 ===================
