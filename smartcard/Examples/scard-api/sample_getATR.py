@@ -59,7 +59,7 @@ try:
                     if hresult != SCARD_S_SUCCESS:
                         print 'failed to get status: ' + SCardGetErrorMessage(hresult)
                     print 'Reader:', reader
-                    print 'State:', state
+                    print 'State:', hex(state)
                     print 'Protocol:', protocol
                     print 'ATR:', smartcard.util.toHexString(atr, smartcard.util.HEX)
 
