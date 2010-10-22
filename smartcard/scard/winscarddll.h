@@ -348,7 +348,6 @@ extern PCSCSTRINGIFYERROR              myPcscStringifyError;
 
 extern SCARDBEGINTRANSACTION           mySCardBeginTransaction;
 extern SCARDCANCEL                     mySCardCancel;
-extern SCARDCANCELTRANSACTION          mySCardCancelTransaction;
 extern SCARDCONNECTA                   mySCardConnectA;
 extern SCARDCONTROL                    mySCardControl;
 extern SCARDDISCONNECT                 mySCardDisconnect;

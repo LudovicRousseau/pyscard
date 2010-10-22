@@ -463,15 +463,6 @@ WINAPI _defaultSCARDCANCEL(
 }
 
 static WINSCARDAPI SCARDRETCODE
-WINAPI _defaultSCARDCANCELTRANSACTION(
-    IN      SCARDHANDLE hCard)
-{
-	(void)hCard;
-
-    return SCARD_E_NO_SERVICE;
-}
-
-static WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDCONNECTA(
     IN      SCARDCONTEXT hContext,
     IN      LPCTSTR szReader,
@@ -651,7 +642,6 @@ WINAPI _defaultSCARDTRANSMIT(
 
 SCARDBEGINTRANSACTION           mySCardBeginTransaction             = _defaultSCARDBEGINTRANSACTION;
 SCARDCANCEL                     mySCardCancel                       = _defaultSCARDCANCEL;
-SCARDCANCELTRANSACTION          mySCardCancelTransaction            = _defaultSCARDCANCELTRANSACTION;
 SCARDCONNECTA                   mySCardConnectA                     = _defaultSCARDCONNECTA;
 SCARDCONTROL                    mySCardControl                      = _defaultSCARDCONTROL;
 SCARDDISCONNECT                 mySCardDisconnect                   = _defaultSCARDDISCONNECT;
@@ -695,7 +685,6 @@ long winscard_init(void)
                 GETPROCADDRESS( SCARDACCESSSTARTEDEVENT         , SCardAccessStartedEvent );
                 GETPROCADDRESS( SCARDBEGINTRANSACTION           , SCardBeginTransaction );
                 GETPROCADDRESS( SCARDCANCEL                     , SCardCancel );
-                GETPROCADDRESS( SCARDCANCELTRANSACTION          , SCardCancelTransaction );
                 GETPROCADDRESS( SCARDCONNECTA                   , SCardConnectA );
                 GETPROCADDRESS( SCARDCONTROL                    , SCardControl );
                 GETPROCADDRESS( SCARDDISCONNECT                 , SCardDisconnect );
@@ -769,7 +758,6 @@ long winscard_init(void)
                 lRetCode=SCARD_S_SUCCESS;
                 GETPROCADDRESS( SCARDBEGINTRANSACTION  , SCardBeginTransaction  , SCardBeginTransaction  );
                 GETPROCADDRESS( SCARDCANCEL            , SCardCancel            , SCardCancel );
-                GETPROCADDRESS( SCARDCANCELTRANSACTION , SCardCancelTransaction , SCardCancelTransaction );
                 GETPROCADDRESS( SCARDCONNECTA          , SCardConnectA          , SCardConnect           );
                 GETPROCADDRESS( SCARDDISCONNECT        , SCardDisconnect        , SCardDisconnect        );
                 GETPROCADDRESS( SCARDENDTRANSACTION    , SCardEndTransaction    , SCardEndTransaction    );
