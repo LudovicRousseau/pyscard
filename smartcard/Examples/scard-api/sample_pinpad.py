@@ -27,6 +27,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from smartcard.scard import *
 from smartcard.util import toASCIIBytes
+from smartcard.pcsc.PCSCExceptions import *
 
 
 def can_do_verify_pin(hCard):
@@ -44,7 +45,7 @@ def parse_get_feature_request(hCard, feature):
     CM_IOCTL_GET_FEATURE_REQUEST = SCARD_CTL_CODE(3400)
     hresult, response = SCardControl(hcard, CM_IOCTL_GET_FEATURE_REQUEST, [])
     if hresult != SCARD_S_SUCCESS:
-        raise error, 'SCardControl failed: ' + SCardGetErrorMessage(hresult)
+        raise BaseSCardException(hresult)
     print response
     while len(response) > 0:
         tag = response[0]
@@ -57,7 +58,7 @@ def verifypin(hCard, control=None):
     if None == control:
         control = can_do_verify_pin(hCard)
         if None == control:
-            raise error, "Not a pinpad"
+            raise Exception("Not a pinpad")
 
     command = [0x00,  # bTimerOut
             0x00,  # bTimerOut2
@@ -76,23 +77,23 @@ def verifypin(hCard, control=None):
             ]
     hresult, response = SCardControl(hcard, control, command)
     if hresult != SCARD_S_SUCCESS:
-        raise error, 'SCardControl failed: ' + SCardGetErrorMessage(hresult)
+        raise BaseSCardException(hresult)
     return hresult, response
 
 try:
     hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
     if hresult != SCARD_S_SUCCESS:
-        raise error, 'Failed to establish context: ' + SCardGetErrorMessage(hresult)
+        raise EstablishContextException(hresult)
     print 'Context established!'
 
     try:
         hresult, readers = SCardListReaders(hcontext, [])
         if hresult != SCARD_S_SUCCESS:
-            raise error, 'Failed to list readers: ' + SCardGetErrorMessage(hresult)
+            raise ListReadersException(hresult)
         print 'PCSC Readers:', readers
 
         if len(readers) < 1:
-            raise error, 'No smart card readers'
+            raise Exception("No smart card readers")
 
         for zreader in readers:
 
@@ -103,7 +104,7 @@ try:
                     hcontext, zreader, SCARD_SHARE_SHARED,
                     SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1)
                 if hresult != SCARD_S_SUCCESS:
-                    raise error, 'Unable to connect: ' + SCardGetErrorMessage(hresult)
+                    raise BaseSCardException(hresult)
                 print 'Connected with active protocol', dwActiveProtocol
 
                 try:
@@ -111,7 +112,7 @@ try:
                         0x00, 0x00, 0x18, 0xFF]
                     hresult, response = SCardTransmit(hcard, dwActiveProtocol, SELECT)
                     if hresult != SCARD_S_SUCCESS:
-                        raise error, 'Failed to transmit: ' + SCardGetErrorMessage(hresult)
+                        raise BaseSCardException(hresult)
 
                     cmd_verify = can_do_verify_pin(hcard)
                     if (cmd_verify):
@@ -126,7 +127,7 @@ try:
                 finally:
                     hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
                     if hresult != SCARD_S_SUCCESS:
-                        raise error, 'Failed to disconnect: ' + SCardGetErrorMessage(hresult)
+                        raise BaseSCardException(hresult)
                     print 'Disconnected'
 
             except error, (message):
@@ -135,7 +136,7 @@ try:
     finally:
         hresult = SCardReleaseContext(hcontext)
         if hresult != SCARD_S_SUCCESS:
-            raise error, 'Failed to release context: ' + SCardGetErrorMessage(hresult)
+            raise ReleaseContextException(hresult)
         print 'Released context.'
 
 except error, e:
