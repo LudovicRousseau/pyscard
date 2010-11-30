@@ -46,9 +46,9 @@ def parse_get_feature_request(hCard, feature):
     if hresult != SCARD_S_SUCCESS:
         raise error, 'SCardControl failed: ' + SCardGetErrorMessage(hresult)
     print response
-    while (len(response) > 0):
+    while len(response) > 0:
         tag = response[0]
-        if (feature == tag):
+        if feature == tag:
             return (((((response[2] << 8) + response[3]) << 8) + response[4]) << 8) + response[5]
         response = response[6:]
 
@@ -56,7 +56,7 @@ def parse_get_feature_request(hCard, feature):
 def verifypin(hCard, control=None):
     if None == control:
         control = can_do_verify_pin(hCard)
-        if (None == control):
+        if None == control:
             raise error, "Not a pinpad"
 
     command = [0x00,  # bTimerOut
@@ -121,7 +121,7 @@ try:
                     if (cmd_modify):
                         print "can do modify pin: 0x%08X" % cmd_modify
 
-                    (hresult, response) = verifypin(hcard, cmd_verify)
+                    hresult, response = verifypin(hcard, cmd_verify)
                     print 'Control:', response
                 finally:
                     hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
