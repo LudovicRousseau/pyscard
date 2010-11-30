@@ -58,7 +58,23 @@ def verifypin(hCard, control=None):
         control = can_do_verify_pin(hCard)
         if (None == control):
             raise error, "Not a pinpad"
-    hresult, response = SCardControl(hcard, control, [])
+
+    command = [0x00,  # bTimerOut
+            0x00,  # bTimerOut2
+            0x82,  # bmFormatString
+            0x04,  # bmPINBlockString
+            0x00,  # bmPINLengthFormat
+            0x08, 0x04,  # wPINMaxExtraDigit
+            0x02,  # bEntryValidationCondition
+            0x01,  # bNumberMessage
+            0x04, 0x09,  # wLangId
+            0x00,  # bMsgIndex
+            0x00, 0x00, 0x00,  # bTeoPrologue
+            13, 0, 0, 0,  # ulDataLength
+            0x00, 0x20, 0x00, 0x00, 0x08, 0x30, 0x30, 0x30, 0x30, 0x30,
+            0x30, 0x30, 0x30  # abData
+            ]
+    hresult, response = SCardControl(hcard, control, command)
     if hresult != SCARD_S_SUCCESS:
         raise error, 'SCardControl failed: ' + SCardGetErrorMessage(hresult)
     return hresult, response
@@ -84,12 +100,19 @@ try:
 
             try:
                 hresult, hcard, dwActiveProtocol = SCardConnect(
-                    hcontext, zreader, SCARD_SHARE_DIRECT, SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1)
+                    hcontext, zreader, SCARD_SHARE_SHARED,
+                    SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1)
                 if hresult != SCARD_S_SUCCESS:
                     raise error, 'Unable to connect: ' + SCardGetErrorMessage(hresult)
                 print 'Connected with active protocol', dwActiveProtocol
 
                 try:
+                    SELECT = [0x00, 0xA4, 0x04, 0x00, 0x06, 0xA0, 0x00,
+                        0x00, 0x00, 0x18, 0xFF]
+                    hresult, response = SCardTransmit(hcard, dwActiveProtocol, SELECT)
+                    if hresult != SCARD_S_SUCCESS:
+                        raise error, 'Failed to transmit: ' + SCardGetErrorMessage(hresult)
+
                     cmd_verify = can_do_verify_pin(hcard)
                     if (cmd_verify):
                         print "can do verify pin: 0x%08X" % cmd_verify
@@ -99,10 +122,7 @@ try:
                         print "can do modify pin: 0x%08X" % cmd_modify
 
                     (hresult, response) = verifypin(hcard, cmd_verify)
-                    r = ""
-                    for i in xrange(len(response)):
-                        r += "%c" % response[i]
-                    print 'Control:', r
+                    print 'Control:', response
                 finally:
                     hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
                     if hresult != SCARD_S_SUCCESS:
