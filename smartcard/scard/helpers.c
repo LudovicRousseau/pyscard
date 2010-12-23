@@ -187,7 +187,7 @@ BYTELIST* SCardHelper_PyByteListToBYTELIST(PyObject* source)
 build a Python byte list from a BYTELIST
 ==============================================================================*/
 {
-    int cBytes, x;
+    Py_ssize_t cBytes, x;
     BYTELIST* pbl;
 
 
@@ -232,7 +232,7 @@ build a Python byte list from a BYTELIST
         pbl->ab=NULL;
     }
     pbl->bAllocated=TRUE;
-    pbl->cBytes=cBytes;
+    pbl->cBytes=(SCARDDWORDARG)cBytes;
 
 
     for( x=0; x<cBytes; x++ )
@@ -375,7 +375,7 @@ GUIDLIST* SCardHelper_PyGuidListToGUIDLIST(PyObject* source)
 build a Python byte list from a GUIDLIST
 ==============================================================================*/
 {
-    int cBytes, cGuids, x;
+    Py_ssize_t cBytes, cGuids, x;
     //int iGuid, iByte;
     GUIDLIST* pgl;
     unsigned char* p;
@@ -421,7 +421,7 @@ build a Python byte list from a GUIDLIST
         return NULL;
     }
     pgl->bAllocated=TRUE;
-    pgl->cGuids=cGuids;
+    pgl->cGuids=(unsigned long)cGuids;
     pgl->hcontext=(unsigned long)NULL;
 
     // allocate GUIDs in GUID list
@@ -579,7 +579,7 @@ build a READERSTATELIST from a Python list of reader states
         return NULL;
     }
 
-    cRStates = PyList_Size(source);
+    cRStates = (SCARDDWORDARG)PyList_Size(source);
     for( x=0; x<cRStates; x++)
     {
         PyObject* o = PyList_GetItem( source, x );
@@ -983,7 +983,7 @@ Build a STRING from a Python string; the string is allocated and
 will have to be freed externally to the wrapper
 ==============================================================================*/
 {
-    unsigned long ulLength;
+    size_t ulLength;
     STRING* pstr=NULL;
 
     for(;;)
@@ -1128,7 +1128,7 @@ STRINGLIST* SCardHelper_PyStringListToStringList(PyObject* source)
 build a Python string list from a STRINGLIST
 ==============================================================================*/
 {
-    int cStrings, cChars, x;
+    Py_ssize_t cStrings, cChars, x;
     STRINGLIST* psl;
     char* p;
 
