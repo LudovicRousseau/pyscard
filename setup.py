@@ -43,6 +43,15 @@ if 'win32' == get_platform():
     platform_extra_compile_args = []
     platform_extra_link_args = []
 
+elif 'win-amd64' == get_platform():
+    platform__cc_defines = [('WIN32', '100')]
+    platform_swig_opts = ['-DWIN32']
+    platform_sources = ['smartcard/scard/scard.rc']
+    platform_libraries = ['winscard']
+    platform_include_dirs = []
+    platform_extra_compile_args = []
+    platform_extra_link_args = []
+
 #
 # Mac OS X Tiger has python 2.3 preinstalled
 # get_platform() returns a string similar to 'darwin-8.11.1-i386' with
