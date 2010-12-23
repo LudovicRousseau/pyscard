@@ -10,7 +10,7 @@ The code to instanciate the reader Factory() has
 been updated to dynamically load the module with
 Robert Brewer ClassLoader.py.
 
-Copyright 2001-2010 gemalto
+Copyright 2001-2011 gemalto
 Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
 
 This file is part of pyscard.
