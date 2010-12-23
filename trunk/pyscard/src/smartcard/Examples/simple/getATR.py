@@ -4,7 +4,7 @@ Sample script that displays the ATR of inserted cards.
 
 __author__ = "http://www.gemalto.com"
 
-Copyright 2001-2010 gemalto
+Copyright 2001-2011 gemalto
 Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
 Copyright 2010 Ludovic Rousseau
 Author: Ludovic Rousseau, mailto:ludovic.rousseau@free.fr

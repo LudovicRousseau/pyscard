@@ -1,3 +1,7 @@
+1.6.14 (January 2011)
+===================
+        * added support for windows 64bit amd64 (Jean-Daniel Aussel)
+
 1.6.12 (August 2010)
 ===================
         * comply with PEP 8 (Ludovic Rousseau)
