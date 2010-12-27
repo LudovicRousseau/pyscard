@@ -727,7 +727,7 @@ builds a Python SCARDCONTEXT from a C SCARDCONTEXT
     #ifdef PCSCLITE
         oScardContext = PyLong_FromLong( (long)source );
     #else // !PCSCLITE
-        oScardContext = PyLong_FromUnsignedLong( (unsigned long)source );
+        oScardContext = PyLong_FromVoidPtr( (void*)source );
     #endif // PCSCLITE
 
     // append list to target
@@ -773,7 +773,7 @@ build a SCARDCONTEXT from a python SCARDCONTEXT
     #ifdef PCSCLITE
         scRet = PyLong_AsLong( source );
     #else // !PCSCLITE
-        scRet = PyLong_AsUnsignedLong( source );
+        scRet = PyLong_AsVoidPtr( source );
     #endif // PCSCLITE
 
     return scRet;
@@ -797,7 +797,7 @@ builds a Python SCARDHANDLE from a C SCARDHANDLE
     #ifdef PCSCLITE
         oScardHandle = PyLong_FromLong( (long)source );
     #else // !PCSCLITE
-        oScardHandle = PyLong_FromUnsignedLong( (unsigned long)source );
+        oScardHandle = PyLong_FromVoidPtr( (void*)source );
     #endif // PCSCLITE
 
     // append list to target
@@ -843,7 +843,7 @@ build a SCARDHANDLE from a python SCARDHANDLE
     #ifdef PCSCLITE
         scRet = PyLong_AsLong( source );
     #else // !PCSCLITE
-        scRet = PyLong_AsUnsignedLong( source );
+        scRet = PyLong_AsVoidPtr( source );
     #endif // PCSCLITE
 
     return scRet;
@@ -860,24 +860,24 @@ void SCardHelper_AppendSCardDwordArgToPyObject(
 builds a Python SCARDDWORDARG from a C SCARDDWORDARG
 ==============================================================================*/
 {
-    PyObject* oScardContext;
+    PyObject* oScardDword;
 
-    // create SCARDCONTEXT
+    // create SCARDDWORDARG
     #ifdef PCSCLITE
-        oScardContext = PyLong_FromLong( (long)source );
+        oScardDword = PyLong_FromLong( (long)source );
     #else // !PCSCLITE
-        oScardContext = PyLong_FromUnsignedLong( (unsigned long)source );
+        oScardDword = PyLong_FromUnsignedLong( (unsigned long)source );
     #endif // PCSCLITE
 
     // append list to target
     if( !*ptarget )
     {
-        *ptarget = oScardContext;
+        *ptarget = oScardDword;
     }
     else if( *ptarget == Py_None )
     {
         Py_DECREF(Py_None);
-        *ptarget = oScardContext;
+        *ptarget = oScardDword;
     }
     else
     {
@@ -888,8 +888,8 @@ builds a Python SCARDDWORDARG from a C SCARDDWORDARG
             PyList_Append(*ptarget,o2);
             Py_XDECREF(o2);
         }
-        PyList_Append(*ptarget,oScardContext);
-        Py_XDECREF(oScardContext);
+        PyList_Append(*ptarget,oScardDword);
+        Py_XDECREF(oScardDword);
     }
 }
 
