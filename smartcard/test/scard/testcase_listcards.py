@@ -28,6 +28,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 
 import unittest
+import platform
 from smartcard.scard import *
 import smartcard.guid
 
@@ -75,14 +76,21 @@ if 'winscard' == resourceManager:
             hresult = SCardForgetCardType(self.hcontext, self.dummycardname)
             self.assertEquals(hresult, 0)
 
-        # locate Cryptoflex 8k v2
+        # locate a known card
         # Cryptoflex 8k v2 is present in standard Windows 2000
         def test_listcryptoflexbyatr(self):
-            slbCryptoFlex8kv2ATR = [0x3B, 0x95, 0x15, 0x40, 0x00, 0x68, 0x01, 0x02, 0x00, 0x00]
-            slbCryptoFlex8kv2Name = ['Schlumberger Cryptoflex 8K v2']
-            hresult, card = SCardListCards(self.hcontext, slbCryptoFlex8kv2ATR, [])
-            self.assertEquals(hresult, 0)
-            self.assertEquals(card, slbCryptoFlex8kv2Name)
+            if 'Windows-7-6.1.7600'==platform.platform():
+                dmyATR = [0x3B, 0x75, 0x94, 0x00, 0x00, 0x62, 0x02, 0x02, 0x01, 0x01]
+                dmyName = ['dummycard']
+                hresult, card = SCardListCards(self.hcontext, dmyATR, [])
+                self.assertEquals(hresult, 0)
+                self.assertEquals(card, dmyName)
+            else:
+                slbCryptoFlex8kv2ATR = [0x3B, 0x95, 0x15, 0x40, 0x00, 0x68, 0x01, 0x02, 0x00, 0x00]
+                slbCryptoFlex8kv2Name = ['Schlumberger Cryptoflex 8K v2']
+                hresult, card = SCardListCards(self.hcontext, slbCryptoFlex8kv2ATR, [])
+                self.assertEquals(hresult, 0)
+                self.assertEquals(card, slbCryptoFlex8kv2Name)
 
         # locate dummy card by interface
         def test_listdummycardbyguid(self):
@@ -104,12 +112,16 @@ if 'winscard' == resourceManager:
         # locate all cards and interfaces in the system
         def test_listallcards(self):
 
-            # dummycard has been introduced in the test setup and
-            # will be removed in the test teardown. Other cards are
-            # the cards present by default on Windows 2000
-            expectedCards = ['dummycard', 'GemSAFE Smart Card (8K)',
-                'Schlumberger Cryptoflex 4K',
-                'Schlumberger Cryptoflex 8K', 'Schlumberger Cryptoflex 8K v2']
+            if 'Windows-7-6.1.7600'==platform.platform():
+                expectedCards = [ 'Identity Device (Microsoft Generic Profile)', 
+                                  'Identity Device (NIST SP 800-73 [PIV])' ]
+            else:
+                # dummycard has been introduced in the test setup and
+                # will be removed in the test teardown. Other cards are
+                # the cards present by default on Windows 2000
+                expectedCards = ['dummycard', 'GemSAFE Smart Card (8K)',
+                    'Schlumberger Cryptoflex 4K',
+                    'Schlumberger Cryptoflex 8K', 'Schlumberger Cryptoflex 8K v2']
             hresult, cards = SCardListCards(self.hcontext, [], [])
             self.assertEquals(hresult, 0)
             foundCards = {}
@@ -119,12 +131,18 @@ if 'winscard' == resourceManager:
                 self.assert_(foundCards.has_key(i))
 
             # dummycard has a primary provider, other cards have no primary provider
-            expectedPrimaryProviderResult = {
-                    'dummycard': [0, self.dummycardguid1],
-                    'GemSAFE': [2, None],
-                    'Schlumberger Cryptoflex 4k': [2, None],
-                    'Schlumberger Cryptoflex 8k': [2, None],
-                    'Schlumberger Cryptoflex 8k v2': [2, None]}
+            if 'Windows-7-6.1.7600'==platform.platform():
+                expectedPrimaryProviderResult = {
+                        'dummycard': [0, self.dummycardguid1],
+                        'Identity Device (Microsoft Generic Profile)': [2, None],
+                        'Identity Device (NIST SP 800-73 [PIV])': [2, None] }
+            else:
+                expectedPrimaryProviderResult = {
+                        'dummycard': [0, self.dummycardguid1],
+                        'GemSAFE': [2, None],
+                        'Schlumberger Cryptoflex 4k': [2, None],
+                        'Schlumberger Cryptoflex 8k': [2, None],
+                        'Schlumberger Cryptoflex 8k v2': [2, None]}
             for i in xrange(len(cards)):
                 hresult, providername = SCardGetCardTypeProviderName(
                     self.hcontext, cards[i], SCARD_PROVIDER_PRIMARY)
@@ -134,13 +152,18 @@ if 'winscard' == resourceManager:
                         self.assertEquals(providername, smartcard.guid.GUIDToStr(expectedPrimaryProviderResult[cards[i]][1]))
 
             # dummycard has no CSP, other cards have a CSP
-            #expectedProviderCSP = [2, 0, 0, 0, 0]
-            expectedProviderCSPResult = {
-                    'dummycard': [2, None],
-                    'GemSAFE': [0, 'Gemplus GemSAFE Card CSP v1.0'],
-                    'Schlumberger Cryptoflex 4k': [0, 'Schlumberger Cryptographic Service Provider'],
-                    'Schlumberger Cryptoflex 8k': [0, 'Schlumberger Cryptographic Service Provider'],
-                    'Schlumberger Cryptoflex 8k v2': [0, 'Schlumberger Cryptographic Service Provider']}
+            if 'Windows-7-6.1.7600'==platform.platform():
+                expectedProviderCSPResult = {
+                        'dummycard': [2, None],
+                        'Identity Device (Microsoft Generic Profile)': [0, 'Microsoft Base Smart Card Crypto Provider'],
+                        'Identity Device (NIST SP 800-73 [PIV])': [0, 'Microsoft Base Smart Card Crypto Provider'] }
+            else:
+                expectedProviderCSPResult = {
+                        'dummycard': [2, None],
+                        'GemSAFE': [0, 'Gemplus GemSAFE Card CSP v1.0'],
+                        'Schlumberger Cryptoflex 4k': [0, 'Schlumberger Cryptographic Service Provider'],
+                        'Schlumberger Cryptoflex 8k': [0, 'Schlumberger Cryptographic Service Provider'],
+                        'Schlumberger Cryptoflex 8k v2': [0, 'Schlumberger Cryptographic Service Provider']}
             for i in xrange(len(cards)):
                 hresult, providername = SCardGetCardTypeProviderName(
                     self.hcontext, cards[i], SCARD_PROVIDER_CSP)
