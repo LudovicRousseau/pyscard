@@ -97,7 +97,7 @@ typedef enum
         } ProtocolType ;
         %constant unsigned long SCARD_PROTOCOL_UNSET = SCARD_PROTOCOL_ANY ;
         %constant unsigned long SCARD_PROTOCOL_T15 = 0x00000008 ;
-        %constant unsigned long SCARD_PROTOCOL_UNDEFINED = SCARD_PROTOCOL_ANY ;
+        %constant unsigned long SCARD_PROTOCOL_UNDEFINED = 0 ;
         %constant unsigned long SCARD_PROTOCOL_OPTIMAL = SCARD_PROTOCOL_ANY ;
     #else //__APPLE__
         typedef enum
