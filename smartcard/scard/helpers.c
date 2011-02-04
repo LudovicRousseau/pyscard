@@ -1172,7 +1172,7 @@ build a Python string list from a STRINGLIST
             return NULL;
         }
 
-        for( x=0, cChars=0, p=psl->ac; x<cStrings; x++ )
+        for( x=0, p=psl->ac; x<cStrings; x++ )
         {
             PyObject* o = PyList_GetItem(source, x);
             strcpy( p, PyString_AsString(o) );
