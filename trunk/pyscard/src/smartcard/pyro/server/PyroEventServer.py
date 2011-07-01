@@ -32,40 +32,42 @@ import Pyro.naming
 import Pyro.nsc
 import Pyro.util
 
+
 class PyroEventServer(Thread):
     """Thread running the Pyro Event server.
     """
 
-    def __init__(self,args=[]):
+    def __init__(self, args=[]):
         """Initialize pyro event server with command line arguments.
         For a complete list of command line arguments, see pyro documentation
         for pyro-es start script."""
-        Thread.__init__( self )
-        self.setDaemon( True )
-        self.setName( 'smartcard.pyro.server.PyroEventServer' )
+        Thread.__init__(self)
+        self.setDaemon(True)
+        self.setName('smartcard.pyro.server.PyroEventServer')
         self.args = args
-        self.handler = signal.signal( signal.SIGINT, self )
+        self.handler = signal.signal(signal.SIGINT, self)
         self.starter = None
 
     def run(self):
-        """Starts Pyro naming server with command line arguments (see pyro documentation)
-        """
-        args=[]
-        for arg in self.args: args.append(arg)
+        """Starts Pyro naming server with command line arguments (see
+        pyro documentation) """
+        args = []
+        for arg in self.args:
+            args.append(arg)
         Args = Pyro.util.ArgParser()
-        Args.parse(args,'hkmrvxn:p:b:c:d:s:i:1:2:')
+        Args.parse(args, 'hkmrvxn:p:b:c:d:s:i:1:2:')
 
-        hostname = Args.getOpt('n',None)
-        identification = Args.getOpt('i',None)
+        hostname = Args.getOpt('n', None)
+        identification = Args.getOpt('i', None)
         port = None
         useNameServer = True
 
         if port:
-            port=int(port)
-        norange = (port==0)
+            port = int(port)
+        norange = (port == 0)
 
         self.starter = Pyro.EventService.Server.EventServiceStarter(identification=identification)
-        self.starter.start(hostname,port,useNameServer=useNameServer,norange=norange)
+        self.starter.start(hostname, port, useNameServer=useNameServer, norange=norange)
 
     def stop(self):
         """Shutdown pyro event server."""
@@ -75,7 +77,7 @@ class PyroEventServer(Thread):
         """wait until name server is started."""
         started = False
         while not started:
-            if self.starter!=None:
+            if self.starter != None:
                 started = self.starter.waitUntilStarted(0.5)
 
     def __call__(self, signame, sf):
@@ -84,7 +86,7 @@ class PyroEventServer(Thread):
         print 'PyroEventServer Ctrl+C handler'
         self.stop()
         time.sleep(1)
-        self.handler( signame, sf )
+        self.handler(signame, sf)
 
 
 if __name__ == '__main__':
@@ -99,5 +101,3 @@ if __name__ == '__main__':
     pn.listall()
     pe.stop()
     pn.stop()
-
-

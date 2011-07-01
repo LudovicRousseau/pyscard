@@ -31,62 +31,69 @@ import Pyro.naming
 import Pyro.nsc
 import Pyro.util
 
+
 class PyroNameServer(Thread):
     """Thread running the Pyro Name server.
     """
 
-    def __init__(self,args=[]):
+    def __init__(self, args=[]):
         """Initialize pyro name server with command line arguments.
         For a complete list of command line arguments, see pyro documentation
         for pyro-ns start script."""
-        Thread.__init__( self )
-        self.setDaemon( True )
-        self.setName( 'smartcard.pyro.server.PyroNameServer' )
+        Thread.__init__(self)
+        self.setDaemon(True)
+        self.setName('smartcard.pyro.server.PyroNameServer')
         self.args = args
-        self.handler = signal.signal( signal.SIGINT, self )
+        self.handler = signal.signal(signal.SIGINT, self)
 
-        _args=[]
-        for arg in self.args: _args.append(arg)
+        _args = []
+        for arg in self.args:
+            _args.append(arg)
         Args = Pyro.util.ArgParser()
-        Args.parse(_args,'hkmrvxn:p:b:c:d:s:i:1:2:')
-        self.host = Args.getOpt('n',None)
-        self.bcport = Args.getOpt('b',None)
-        self.bcaddr = Args.getOpt('c',None)
-        self.identification = Args.getOpt('i',None)
+        Args.parse(_args, 'hkmrvxn:p:b:c:d:s:i:1:2:')
+        self.host = Args.getOpt('n', None)
+        self.bcport = Args.getOpt('b', None)
+        self.bcaddr = Args.getOpt('c', None)
+        self.identification = Args.getOpt('i', None)
 
     def getShutdownArgs(self):
         """return command line arguments for shutting down the
         server; this command line is built from the name server
         startup arguments."""
         shutdownArgs = []
-        if self.host: shutdownArgs += [ '-h', self.host ]
-        if self.bcport: shutdownArgs += [ '-p', self.bcport ]
-        if self.bcaddr: shutdownArgs += [ '-c', self.bcaddr ]
-        if self.identification: shutdownArgs += [ '-i', self.identification ]
+        if self.host:
+            shutdownArgs += ['-h', self.host]
+        if self.bcport:
+            shutdownArgs += ['-p', self.bcport]
+        if self.bcaddr:
+            shutdownArgs += ['-c', self.bcaddr]
+        if self.identification:
+            shutdownArgs += ['-i', self.identification]
 
         return shutdownArgs
 
     def listall(self):
         """List pyro namespace."""
         args = self.getShutdownArgs() + ['listall']
-        Pyro.nsc.main( args )
+        Pyro.nsc.main(args)
 
     def ping(self):
         """Ping pyro naming server."""
         args = self.getShutdownArgs() + ['ping']
-        Pyro.nsc.main( args )
+        Pyro.nsc.main(args)
 
     def run(self):
         """Starts Pyro naming server with command line arguments (see pyro documentation)
         """
-        args=[]
-        for arg in self.args: args.append(arg)
-        Pyro.naming.main( args )
+        args = []
+        for arg in self.args:
+            args.append(arg)
+        Pyro.naming.main(args)
 
     def stop(self):
         """Shutdown pyro naming server."""
         args = self.getShutdownArgs() + ['shutdown']
-        Pyro.nsc.main( args )
+        Pyro.nsc.main(args)
         self.join()
 
     def waitStarted(self):
@@ -95,7 +102,7 @@ class PyroNameServer(Thread):
         while not ns:
             try:
                 time.sleep(3)
-                ns=Pyro.naming.NameServerLocator(identification=self.identification).getNS()
+                ns = Pyro.naming.NameServerLocator(identification=self.identification).getNS()
             except Pyro.errors.NamingError as er:
                 pass
 
@@ -105,14 +112,12 @@ class PyroNameServer(Thread):
         print 'PyroNameServer Ctrl+C handler'
         self.stop()
         time.sleep(1)
-        self.handler( signame, sf )
+        self.handler(signame, sf)
 
 
 if __name__ == '__main__':
     import sys
-    pt = PyroNameServer( sys.argv[1:] )
+    pt = PyroNameServer(sys.argv[1:])
     pt.start()
     pt.waitStarted()
     pt.stop()
-
-
