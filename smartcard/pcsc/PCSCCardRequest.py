@@ -106,7 +106,6 @@ class PCSCCardRequest(AbstractCardRequest):
         AbstractCardRequest.waitforcard(self)
         cardfound = False
 
-
         # for non infinite timeout, a timer will signal the end of the time-out by setting the evt event
         evt = threading.Event()
         if INFINITE == self.timeout:
@@ -212,7 +211,6 @@ class PCSCCardRequest(AbstractCardRequest):
                     readername, eventstate, atr = state
                     r, oldstate = readerstates[readername]
 
-
                     # the status can change on a card already inserted, e.g.
                     # unpowered, in use, ...
                     # if a new card is requested, clear the state changed bit if
@@ -278,7 +276,6 @@ class PCSCCardRequest(AbstractCardRequest):
             else:
                 hresult = 0
                 newstates = []
-
 
             # time-out
             if SCARD_E_TIMEOUT == hresult:
