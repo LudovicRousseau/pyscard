@@ -31,8 +31,10 @@ from smartcard.CardConnectionDecorator import CardConnectionDecorator
 from smartcard.Exceptions import CardConnectionException, NoCardException
 from smartcard.Observer import Observable
 
-class RemoteCardConnection(CardConnectionDecorator,Pyro.core.ObjBase):
-    """Remote connection class. Handles connection with a card inserted inside a remote PC."""
+
+class RemoteCardConnection(CardConnectionDecorator, Pyro.core.ObjBase):
+    """Remote connection class. Handles connection with a card inserted
+    inside a remote PC."""
 
     def __init__(self, cardConnectionComponent):
         """Construct a new remote card connection.
@@ -40,5 +42,4 @@ class RemoteCardConnection(CardConnectionDecorator,Pyro.core.ObjBase):
         connection: the reader connection
         """
         Pyro.core.ObjBase.__init__(self)
-        CardConnectionDecorator.__init__( self, cardConnectionComponent )
-
+        CardConnectionDecorator.__init__(self, cardConnectionComponent)
