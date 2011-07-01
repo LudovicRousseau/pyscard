@@ -98,8 +98,8 @@ else:
     platform_sources = []
     platform_libraries = ["python%d.%d" % sys.version_info[:2]]
     platform_include_dirs = ['/usr/include/PCSC']
-    platform_extra_compile_args = []    #['-ggdb', '-O0']
-    platform_extra_link_args = []   #['-ggdb']
+    platform_extra_compile_args = []    # ['-ggdb', '-O0']
+    platform_extra_link_args = []   # ['-ggdb']
 
 
 class _pyscardBuildExt(build_ext):
