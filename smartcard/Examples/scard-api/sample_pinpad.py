@@ -73,8 +73,7 @@ def verifypin(hCard, control=None):
             0x00, 0x00, 0x00,  # bTeoPrologue
             13, 0, 0, 0,  # ulDataLength
             0x00, 0x20, 0x00, 0x00, 0x08, 0x30, 0x30, 0x30, 0x30, 0x30,
-            0x30, 0x30, 0x30  # abData
-            ]
+            0x30, 0x30, 0x30]  # abData
     hresult, response = SCardControl(hcard, control, command)
     if hresult != SCARD_S_SUCCESS:
         raise BaseSCardException(hresult)
