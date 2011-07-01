@@ -89,7 +89,6 @@ class ulist(list):
         else:
             other = list(_other)
 
-
         # remove items already in self
         newother = []
         for i in range(0, len(other)):
