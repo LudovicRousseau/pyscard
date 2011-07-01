@@ -29,44 +29,46 @@ from smartcard.Exceptions import CardConnectionException, NoCardException
 from smartcard.reader.Reader import Reader
 from smartcard.reader.ReaderFactory import ReaderFactory
 
+
 class PyroReader(Reader):
     """Remote reader class."""
-    def __init__( self, readername ):
-        """Constructs a new Remote Reader client implementation from a Pyro URI."""
-        ns=Pyro.naming.NameServerLocator().getNS()
-        self.uri = ns.resolve(':pyscard.smartcard.readers.'+readername)
+    def __init__(self, readername):
+        """Constructs a new Remote Reader client implementation from a
+        Pyro URI."""
+        ns = Pyro.naming.NameServerLocator().getNS()
+        self.uri = ns.resolve(':pyscard.smartcard.readers.' + readername)
         self.reader = Pyro.core.getAttrProxyForURI(self.uri)
         self.name = self.reader.name
 
-    def addtoreadergroup( self, groupname ):
+    def addtoreadergroup(self, groupname):
         """Add reader to a reader group."""
-        self.reader.addtoreadergroup( groupname )
+        self.reader.addtoreadergroup(groupname)
 
-    def removefromreadergroup( self, groupname ):
+    def removefromreadergroup(self, groupname):
         """Remove a reader from a reader group"""
-        self.reader.removefromreadergroup( groupname )
+        self.reader.removefromreadergroup(groupname)
 
-    def createConnection( self ):
+    def createConnection(self):
         """Return a card connection thru a remote reader."""
         uri = self.reader.createConnection()
         return Pyro.core.getAttrProxyForURI(uri)
 
     class Factory:
         def create(readername):
-            return PyroReader( readername )
+            return PyroReader(readername)
         create = staticmethod(create)
 
     def readers(groups=[]):
         readernames = []
         try:
-            ns=Pyro.naming.NameServerLocator().getNS()
+            ns = Pyro.naming.NameServerLocator().getNS()
             readernames = ns.list(':pyscard.smartcard.readers')
         except Pyro.errors.NamingError:
             print 'Warning: pyro name server not found'
 
-        remotereaders=[]
+        remotereaders = []
         for readername in readernames:
-            remotereaders.append( PyroReader.Factory.create(readername[0]) )
+            remotereaders.append(PyroReader.Factory.create(readername[0]))
 
         return remotereaders
     readers = staticmethod(readers)
@@ -82,9 +84,8 @@ if __name__ == '__main__':
             print reader.name, ', uri: ', reader.uri
             connection = reader.createConnection()
             connection.connect()
-            print toHexString( connection.getATR() )
+            print toHexString(connection.getATR())
             data, sw1, sw2 = connection.transmit(SELECT + DF_TELECOM)
             print "%X %X" % (sw1, sw2)
-        except NoCardException,x:
+        except NoCardException, x:
             print 'no card in reader'
-
