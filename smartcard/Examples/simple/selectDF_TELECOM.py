@@ -44,7 +44,6 @@ try:
     cardrequest = CardRequest(timeout=10, cardType=cardtype)
     cardservice = cardrequest.waitforcard()
 
-
     # attach the console tracer
     observer = ConsoleCardConnectionObserver()
     cardservice.connection.addObserver(observer)
