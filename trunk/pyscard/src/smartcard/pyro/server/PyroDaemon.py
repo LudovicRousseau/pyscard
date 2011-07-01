@@ -29,6 +29,7 @@ import time
 import Pyro.core
 import Pyro.naming
 
+
 class PyroDaemon:
     """Singleton class to wrap the pyro daemon."""
 
@@ -40,8 +41,8 @@ class PyroDaemon:
         """
         def __init__(self):
             self.daemon = Pyro.core.Daemon()
-            self.handler = signal.signal( signal.SIGINT, self )
-            ns=Pyro.naming.NameServerLocator().getNS()
+            self.handler = signal.signal(signal.SIGINT, self)
+            ns = Pyro.naming.NameServerLocator().getNS()
             self.daemon.useNameServer(ns)
 
         def __call__(self, signame, sf):
@@ -50,12 +51,12 @@ class PyroDaemon:
             print 'PyroDaemon Ctrl+C handler'
             self.daemon.shutdown(True)
             time.sleep(1)
-            self.handler( signame, sf )
+            self.handler(signame, sf)
 
-        def connect(self,object,name=None):
-            return self.daemon.connect(object,name)
+        def connect(self, object, name=None):
+            return self.daemon.connect(object, name)
 
-        def disconnect(self,object):
+        def disconnect(self, object):
             return self.daemon.disconnect(object)
 
         def start(self):
@@ -69,8 +70,9 @@ class PyroDaemon:
         if not PyroDaemon.instance:
             PyroDaemon.instance = PyroDaemon._PyroDaemon()
 
-    def __getattr__( self, name ):
-        return getattr( self.instance, name )
+    def __getattr__(self, name):
+        return getattr(self.instance, name)
+
 
 class PyroDaemonThread(Thread):
     """Thread running the Pyro daemon server.
@@ -80,13 +82,11 @@ class PyroDaemonThread(Thread):
         """Initialize pyro event server with command line arguments.
         For a complete list of command line arguments, see pyro documentation
         for pyro-es start script."""
-        Thread.__init__( self )
-        self.setDaemon( True )
-        self.setName( 'smartcard.pyro.server.PyroDaemonThread' )
+        Thread.__init__(self)
+        self.setDaemon(True)
+        self.setName('smartcard.pyro.server.PyroDaemonThread')
         self.daemon = PyroDaemon()
 
     def run(self):
         """Starts Pyro daemon."""
         self.daemon.start()
-
-
