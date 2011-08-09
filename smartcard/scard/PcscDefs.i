@@ -56,16 +56,8 @@ typedef enum
     SCARD_STATE_MUTE
 } StateType ;
 
-#ifdef PCSCLITE
-    #ifdef __APPLE__
-        %constant unsigned long SCARD_STATE_UNPOWERED = 0x0400 ;
-    #else // __APPLE__
-        typedef enum
-        {
-            SCARD_STATE_UNPOWERED
-        } nonAppleStateType ;
-    #endif //!__APPLE_
-#endif //PCSCLITE
+// SCARD_STATE_UNPOWERED is not defined on Windows and old Mac OS X
+%constant unsigned long SCARD_STATE_UNPOWERED = 0x0400 ;
 
 // protocols
 #ifdef WIN32
