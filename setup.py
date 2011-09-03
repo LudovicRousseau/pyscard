@@ -71,7 +71,10 @@ elif 'darwin' in get_platform() or 'macosx-10.3' in get_platform() or 'macosx-10
 # Mac OS X Snow Leopard, python 2.6
 # PowerPC is no more supported, x86_64 is new
 #
-elif 'macosx-10.6' in get_platform():
+# Mac OS X Lion, python 2.7
+# x86_64 and i386
+#
+elif 'macosx-10.6' in get_platform() or 'macosx-10.7' in get_platform():
     platform__cc_defines = [('PCSCLITE', '1'), ('__APPLE__', '1'), ('__LEOPARD__', '1')]
     platform_swig_opts = ['-DPCSCLITE', '-D__APPLE__', '-D__LEOPARD__']
     platform_sources = []
