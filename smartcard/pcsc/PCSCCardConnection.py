@@ -23,7 +23,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 from smartcard.CardConnection import CardConnection
-from smartcard.Exceptions import CardConnectionException, NoCardException
+from smartcard.Exceptions import (CardConnectionException,
+    NoCardException, SmartcardException)
 from smartcard.Observer import Observable
 
 from smartcard.scard import *
@@ -192,7 +193,7 @@ class PCSCCardConnection(CardConnection):
         CardConnection.doControl(self, controlCode, bytes)
         hresult, response = SCardControl(self.hcard, controlCode, bytes)
         if hresult != 0:
-            raise CardConnectionException('Failed to control ' + SCardGetErrorMessage(hresult))
+            raise SmartcardException('Failed to control ' + SCardGetErrorMessage(hresult))
 
         data = map(lambda x: (x + 256) % 256, response)
         return data
@@ -207,7 +208,7 @@ class PCSCCardConnection(CardConnection):
         CardConnection.doGetAttrib(self, attribId)
         hresult, response = SCardGetAttrib(self.hcard, attribId)
         if hresult != 0:
-            raise CardConnectionException('Failed to getAttrib ' + SCardGetErrorMessage(hresult))
+            raise SmartcardException('Failed to getAttrib ' + SCardGetErrorMessage(hresult))
         return response
 
 
