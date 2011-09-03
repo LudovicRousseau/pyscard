@@ -174,3 +174,21 @@ class CardConnection(Observable):
 
         Subclasses must override this method for implementing control."""
         pass
+
+    def getAttrib(self, attribId):
+        """return the requested attribute
+
+        attribId: attribute id like SCARD_ATTR_VENDOR_NAME
+        """
+        Observable.setChanged(self)
+        Observable.notifyObservers(self, CardConnectionEvent('attrib', [attribId]))
+        data = self.doGetAttrib(attribId)
+        if None != self.errorcheckingchain:
+            self.errorcheckingchain[0](data)
+        return data
+
+    def doGetAttrib(self, attribId):
+        """Performs the command get attrib.
+
+        Subclasses must override this method for implementing get attrib."""
+        pass

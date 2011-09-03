@@ -197,6 +197,20 @@ class PCSCCardConnection(CardConnection):
         data = map(lambda x: (x + 256) % 256, response)
         return data
 
+    def doGetAttrib(self, attribId):
+        """get an attribute
+
+        attribId: Identifier for the attribute to get
+
+        return:   response are the attribute byte array
+        """
+        CardConnection.doGetAttrib(self, attribId)
+        hresult, response = SCardGetAttrib(self.hcard, attribId)
+        if hresult != 0:
+            raise CardConnectionException('Failed to getAttrib ' + SCardGetErrorMessage(hresult))
+        return response
+
+
 if __name__ == '__main__':
     """Small sample illustrating the use of CardConnection."""
     SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
