@@ -84,3 +84,7 @@ class CardConnectionDecorator(CardConnection):
     def control(self, controlCode, bytes=[]):
         """call inner component control"""
         return self.component.control(controlCode, bytes)
+
+    def getAttrib(self, attribId):
+        """call inner component getAttrib"""
+        return self.component.getAttrib(attribId)
