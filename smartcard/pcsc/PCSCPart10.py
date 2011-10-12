@@ -204,7 +204,10 @@ def getTlvProperties(cardConnection, featureList=None, controlCode=None):
             data = ((data[3] * 256 + data[2]) * 256 + data[1]) * 256 + data[0]
 
         # store the value in the dictionnary
-        d[Properties[tag]] = data
+        try:
+            d[Properties[tag]] = data
+        except KeyError:
+            d["UNKNOWN"] = data
 
         del tmp[0:2 + len]
 
