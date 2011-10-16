@@ -35,7 +35,7 @@ Mydata_files = [('images',
                   ICO_SMARTCARD, ICO_READER])]
 
 
-setup(windows = ['apdumanager.py'],
+setup(windows= ['apdumanager.py'],
     data_files = Mydata_files,
     options =
     {
