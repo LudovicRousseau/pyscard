@@ -179,10 +179,6 @@ your python distribution, e.g.
 Installation on Max OS X Leopard:
 ---------------------------------
 
-The Mac OS X Leopard support is experimental on pyscard 1.6.14. It was
-developed and tested on a i386 MacBook Pro. Please drop me a mail if you
-succeed on a ppc MacBook.
-
 Installing on Mac OS X Leopard from the binary distribution:
 ----------------------------------------------------
 
@@ -213,6 +209,40 @@ sudo python setup.py build_ext install
 This will build pyscard and install it in the site-packages directory of
 your python distribution, e.g.
 /System/Library/Frameworks/Python.framework/Versions/2.5/lib/python2.3/lib/site-packages/smartcard
+
+
+Installation on Max OS X Lion:
+------------------------------
+
+Installing on Mac OS X Lion from the binary distribution:
+---------------------------=====-------------------------
+
+1. download the binary distribution
+
+The binary distribution is an archive file, with a name similar to
+pyscard-1.6.14-py-2.7-macosx10.7.mpkg.
+
+2. Open the package and proceed with installation.
+
+Installing on Mac OS X Lion from the source distribution
+--------------------------------------------------------
+
+1. you will need swig 1.3.31 or later (http://www.swig.org); gcc and pcsc-lite
+are available out of the box on Max OS X Leopard
+
+2. download the source distribution
+
+The source distribution is available as pyscard-1.6.14.zip or
+pyscard-1.6.14.tar.gz.
+
+3. untar or unzip the source distribution
+
+4. from a terminal, type the following:
+
+sudo python setup.py build_ext install
+
+This will build pyscard and install it in the site-packages directory of
+your python distribution, e.g. /Library/Python/2.7/lib/site-packages/smartcard
 
 
 -------------------------------------------------------------------------------
