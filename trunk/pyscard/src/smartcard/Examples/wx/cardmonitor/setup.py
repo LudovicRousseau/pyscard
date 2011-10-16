@@ -35,9 +35,6 @@ Mydata_files = [('images',
                   ICO_SMARTCARD, ICO_READER])]
 
 setup(windows=['cardmonitor.py'],
-    data_files = Mydata_files,
-    options =
-    {
-        "py2exe": {"dll_excludes": ["MSVCP90.dll"]}
-    }
+    data_files=Mydata_files,
+    options={"py2exe": {"dll_excludes": ["MSVCP90.dll"]}}
 )
