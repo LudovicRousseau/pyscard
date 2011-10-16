@@ -48,7 +48,7 @@ class ReaderFactory:
         @param clazz:      the reader class name
         @param readername: the reader name
         """
-        if not ReaderFactory.factories.has_key(clazz):
+        if not clazz in ReaderFactory.factories:
             ReaderFactory.factories[clazz] = get_class(clazz).Factory()
         return ReaderFactory.factories[clazz].create(readername)
     createReader = staticmethod(createReader)
