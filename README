@@ -24,7 +24,7 @@ along with pyscard; if not, write to the Free Software Foundation, Inc.,
 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 -------------------------------------------------------------------------------
-Last update : pyscard 1.6.14 (January 2011)
+Last update : pyscard 1.6.14 (October 2011)
 -------------------------------------------------------------------------------
 
 pyscard is a python module adding smart cards support to python.
