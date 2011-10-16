@@ -58,14 +58,20 @@ elif 'win-amd64' == get_platform():
 # python 2.3
 # if python 2.5 is installed, get_platform() returns a string similar to
 # 'macosx-10.3-fat'
-elif 'darwin' in get_platform() or 'macosx-10.3' in get_platform() or 'macosx-10.4' in get_platform():
-    platform__cc_defines = [('PCSCLITE', '1'), ('__APPLE__', '1'), ('__TIGER__', '1')]
-    platform_swig_opts = ['-DPCSCLITE', '-D__APPLE__', '-D__TIGER__']
-    platform_sources = []
-    platform_libraries = []
-    platform_include_dirs = []
-    platform_extra_compile_args = ['-v', '-framework', 'PCSC', '-arch', 'i386', '-arch', 'ppc', '-ggdb', '-O0']
-    platform_extra_link_args = ['-arch', 'i386', '-arch', 'ppc', '-ggdb']
+elif 'darwin' in get_platform() \
+     or 'macosx-10.3' in get_platform() \
+     or 'macosx-10.4' in get_platform():
+        platform__cc_defines = [('PCSCLITE', '1'),
+                                ('__APPLE__', '1'),
+                                ('__TIGER__', '1')]
+        platform_swig_opts = ['-DPCSCLITE', '-D__APPLE__', '-D__TIGER__']
+        platform_sources = []
+        platform_libraries = []
+        platform_include_dirs = []
+        platform_extra_compile_args = ['-v', '-framework', 'PCSC',
+                                       '-arch', 'i386', '-arch',
+                                       'ppc', '-ggdb', '-O0']
+        platform_extra_link_args = ['-arch', 'i386', '-arch', 'ppc', '-ggdb']
 
 #
 # Mac OS X Snow Leopard, python 2.6
@@ -75,12 +81,15 @@ elif 'darwin' in get_platform() or 'macosx-10.3' in get_platform() or 'macosx-10
 # x86_64 and i386
 #
 elif 'macosx-10.6' in get_platform() or 'macosx-10.7' in get_platform():
-    platform__cc_defines = [('PCSCLITE', '1'), ('__APPLE__', '1'), ('__LEOPARD__', '1')]
+    platform__cc_defines = [('PCSCLITE', '1'),
+                            ('__APPLE__', '1'),
+                            ('__LEOPARD__', '1')]
     platform_swig_opts = ['-DPCSCLITE', '-D__APPLE__', '-D__LEOPARD__']
     platform_sources = []
     platform_libraries = []
     platform_include_dirs = []
-    platform_extra_compile_args = ['-v', '-arch', 'i386', '-arch', 'x86_64', '-ggdb']
+    platform_extra_compile_args = ['-v', '-arch', 'i386',
+                                   '-arch', 'x86_64', '-ggdb']
     platform_extra_link_args = ['-arch', 'i386', '-arch', 'x86_64', '-ggdb']
 
 #
@@ -88,12 +97,16 @@ elif 'macosx-10.6' in get_platform() or 'macosx-10.7' in get_platform():
 # get_platform() returns a string similar to 'macosx-10.5-i386'
 #
 elif 'macosx-10.' in get_platform():
-    platform__cc_defines = [('PCSCLITE', '1'), ('__APPLE__', '1'), ('__LEOPARD__', '1')]
+    platform__cc_defines = [('PCSCLITE', '1'),
+                            ('__APPLE__', '1'),
+                            ('__LEOPARD__', '1')]
     platform_swig_opts = ['-DPCSCLITE', '-D__APPLE__', '-D__LEOPARD__']
     platform_sources = []
     platform_libraries = []
     platform_include_dirs = []
-    platform_extra_compile_args = ['-v', '-framework', 'PCSC', '-arch', 'i386', '-arch', 'ppc', '-ggdb', '-O0']
+    platform_extra_compile_args = ['-v', '-framework', 'PCSC',
+                                   '-arch', 'i386',
+                                   '-arch', 'ppc', '-ggdb', '-O0']
     platform_extra_link_args = ['-arch', 'i386', '-arch', 'ppc', '-ggdb']
 else:
     platform__cc_defines = [('PCSCLITE', '1')]
@@ -106,7 +119,8 @@ else:
 
 
 class _pyscardBuildExt(build_ext):
-    '''Specialization of build_ext to enable swig_opts for python 2.3 distutils'''
+    '''Specialization of build_ext to enable swig_opts
+    for python 2.3 distutils'''
 if sys.version_info < (2, 4):
 
     # This copy of swig_sources is from Python 2.3.
@@ -195,14 +209,18 @@ kw = {'name': "pyscard",
       # the _scard.pyd extension to build
       'ext_modules': [Extension("smartcard.scard._scard",
                              define_macros=platform__cc_defines,
-                             include_dirs=['smartcard/scard/'] + platform_include_dirs,
+                             include_dirs=['smartcard/scard/'] \
+                                           + platform_include_dirs,
                              sources=["smartcard/scard/helpers.c",
                                       "smartcard/scard/winscarddll.c",
-                                      "smartcard/scard/scard.i"] + platform_sources,
+                                      "smartcard/scard/scard.i"] \
+                                      + platform_sources,
                              libraries=platform_libraries,
                              extra_compile_args=platform_extra_compile_args,
                              extra_link_args=platform_extra_link_args,
-                             swig_opts=['-outdir', 'smartcard/scard'] + platform_swig_opts)],
+                             swig_opts=['-outdir',
+                                        'smartcard/scard'] \
+                                        + platform_swig_opts)],
       'cmdclass': {'build_ext': _pyscardBuildExt},
      }
 

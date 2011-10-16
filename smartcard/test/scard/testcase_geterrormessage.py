@@ -49,11 +49,18 @@ class testcase_geterrormessage(unittest.TestCase):
 
         hresult = SCardReleaseContext(123L)
         if 'win32' == sys.platform:
-            self.assertEquals((SCARD_E_INVALID_HANDLE == hresult or ERROR_INVALID_HANDLE == hresult), True)
+            self.assertEquals((
+                SCARD_E_INVALID_HANDLE == hresult or \
+                ERROR_INVALID_HANDLE == hresult),
+                True)
         else:
             self.assertEquals((SCARD_E_INVALID_HANDLE == hresult), True)
-        self.assertEquals((SCardGetErrorMessage(hresult).rstrip() == 'Invalid handle.'.rstrip() or
-             SCardGetErrorMessage(hresult).rstrip() == 'The handle is invalid.'.rstrip()), True)
+        self.assertEquals((
+            SCardGetErrorMessage(hresult).rstrip() == \
+                'Invalid handle.'.rstrip() or \
+            SCardGetErrorMessage(hresult).rstrip() == \
+                'The handle is invalid.'.rstrip()),
+            True)
 
 
 def suite():

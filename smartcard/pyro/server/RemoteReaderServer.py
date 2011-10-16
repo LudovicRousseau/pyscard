@@ -27,7 +27,8 @@ try:
     import Pyro.core
     import Pyro.naming
 except:
-    print 'You need pyro (python remote objects) at http://www.xs4all.nl/~irmen/pyro3/'
+    print 'You need pyro (python remote objects) ' + \
+          'at http://www.xs4all.nl/~irmen/pyro3/'
     import sys
     sys.exit()
 

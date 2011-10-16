@@ -24,7 +24,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 
 class SimpleSCardAppEventObserver:
-    """This interface defines the event handlers called by the SimpleSCardApp."""
+    """This interface defines the event handlers
+    called by the SimpleSCardApp."""
 
     def __init__(self):
         self.selectedcard = None
@@ -32,25 +33,31 @@ class SimpleSCardAppEventObserver:
 
     # callbacks from SimpleCardAppFrame controls
     def OnActivateCard(self, card):
-        """Called when a card is activated in the reader tree control or toolbar."""
+        """Called when a card is activated in the reader
+        tree control or toolbar."""
         self.selectedcard = card
 
     def OnActivateReader(self, reader):
-        """Called when a reader is activated in the reader tree control or toolbar."""
+        """Called when a reader is activated in the reader
+        tree control or toolbar."""
         self.selectedreader = reader
 
     def OnDeactivateCard(self, card):
-        """Called when a card is deactivated in the reader tree control or toolbar."""
+        """Called when a card is deactivated in the reader
+        tree control or toolbar."""
         pass
 
     def OnDeselectCard(self, card):
-        """Called when a card is selected in the reader tree control or toolbar."""
+        """Called when a card is selected in the reader
+        tree control or toolbar."""
         self.selectedcard = None
 
     def OnSelectCard(self, card):
-        """Called when a card is selected in the reader tree control or toolbar."""
+        """Called when a card is selected in the reader
+        tree control or toolbar."""
         self.selectedcard = card
 
     def OnSelectReader(self, reader):
-        """Called when a reader is selected in the reader tree control or toolbar."""
+        """Called when a reader is selected in the reader
+        tree control or toolbar."""
         self.selectedreader = reader

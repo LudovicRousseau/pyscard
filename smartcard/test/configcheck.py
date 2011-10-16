@@ -68,7 +68,8 @@ def checklocalconfig():
 
     f.write('expectedReaderForATR = {}\n')
     f.write('for i in xrange(len(expectedReaders)):\n')
-    f.write('    expectedReaderForATR[toHexString(expectedATRs[i])] = expectedReaders[i]\n')
+    f.write('    expectedReaderForATR[toHexString(expectedATRs[i])] = ' + \
+                    'expectedReaders[i]\n')
 
     f.write('expectedReaderGroups = [\'SCard$DefaultReaders\']\n')
 

@@ -174,14 +174,10 @@ class testcase_readermonitorstress(unittest.TestCase):
         time.sleep(2 * period)
 
         for observer in observers:
-            #print observer.obsindex, observer.insertedreaderstats==insertedreaderstats, observer.countnotified
-            #print observer.obsindex, observer.removedreaderstats==removedreaderstats, observer.countnotified
-            #print observer.insertedreaderstats
-            #print insertedreaderstats
-            #print observer.removedreaderstats
-            #print removedreaderstats
-            self.assertEquals(observer.insertedreaderstats, insertedreaderstats)
-            self.assertEquals(observer.removedreaderstats, removedreaderstats)
+            self.assertEquals(
+                observer.insertedreaderstats, insertedreaderstats)
+            self.assertEquals(
+                observer.removedreaderstats, removedreaderstats)
 
 
 def suite():

@@ -38,7 +38,8 @@ import sys
 sys.path += ['..']
 
 try:
-    from local_config import expectedATRs, expectedReaders, expectedReaderGroups, expectedATRinReader
+    from local_config import expectedATRs, expectedReaders
+    from local_config import expectedReaderGroups, expectedATRinReader
 except:
     print 'execute test suite first to generate the local_config.py file'
     sys.exit()
@@ -60,7 +61,10 @@ class testcase_getAttrib(unittest.TestCase):
     def _getAttrib(self, r):
         if r < len(expectedATRs) and [] != expectedATRs[r]:
             hresult, hcard, dwActiveProtocol = SCardConnect(
-                self.hcontext, self.readers[r], SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1)
+                self.hcontext,
+                self.readers[r],
+                SCARD_SHARE_SHARED,
+                SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1)
             self.assertEquals(hresult, 0)
 
             try:
@@ -70,15 +74,20 @@ class testcase_getAttrib(unittest.TestCase):
                 self.assertEquals(atr, expectedATRs[r])
 
                 if 'SCARD_ATTR_ATR_STRING' in scard.__dict__:
-                    hresult, attrib = SCardGetAttrib(hcard, SCARD_ATTR_ATR_STRING)
+                    hresult, attrib = SCardGetAttrib(
+                        hcard, SCARD_ATTR_ATR_STRING)
                     self.assertEquals(hresult, 0)
                     self.assertEquals(expectedATRs[r], attrib)
 
                 if 'winscard' == resourceManager:
-                    hresult, attrib = SCardGetAttrib(hcard, SCARD_ATTR_DEVICE_SYSTEM_NAME_A)
+                    hresult, attrib = SCardGetAttrib(
+                        hcard, SCARD_ATTR_DEVICE_SYSTEM_NAME_A)
                     self.assertEquals(hresult, 0)
                     trimmedAttrib = attrib[:-1]
-                    self.assertEquals(expectedReaders[r], apply(struct.pack, ['<' + 'B' * len(trimmedAttrib)] + trimmedAttrib))
+                    self.assertEquals(
+                        expectedReaders[r],
+                        apply(struct.pack, ['<' + 'B' * len(trimmedAttrib)] + \
+                        trimmedAttrib))
 
             finally:
                 hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)

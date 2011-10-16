@@ -39,7 +39,11 @@ class APDUTracerPanel(wx.Panel, CardConnectionObserver):
         wx.Panel.__init__(self, parent, -1)
 
         boxsizer = wx.BoxSizer(wx.HORIZONTAL)
-        self.apdutextctrl = wx.TextCtrl(self, wxID_APDUTEXTCTRL, "", pos=wx.DefaultPosition, style=wx.TE_MULTILINE | wx.TE_READONLY)
+        self.apdutextctrl = wx.TextCtrl(
+            self, wxID_APDUTEXTCTRL,
+            "",
+            pos=wx.DefaultPosition,
+            style=wx.TE_MULTILINE | wx.TE_READONLY)
         boxsizer.Add(self.apdutextctrl, 1, wx.EXPAND | wx.ALL, 5)
         self.SetSizer(boxsizer)
         self.SetAutoLayout(True)
@@ -68,6 +72,7 @@ class APDUTracerPanel(wx.Panel, CardConnectionObserver):
             if [] == ccevent.args[0]:
                 apduline += "< %-2X %-2X" % tuple(ccevent.args[-2:])
             else:
-                apduline += "< " + toHexString(ccevent.args[0]) + "%-2X %-2X" % tuple(ccevent.args[-2:])
+                apduline += "< " + toHexString(ccevent.args[0]) + \
+                            "%-2X %-2X" % tuple(ccevent.args[-2:])
 
         self.apdutextctrl.AppendText(apduline + "\n")

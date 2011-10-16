@@ -50,7 +50,10 @@ def parse_get_feature_request(hCard, feature):
     while len(response) > 0:
         tag = response[0]
         if feature == tag:
-            return (((((response[2] << 8) + response[3]) << 8) + response[4]) << 8) + response[5]
+            return (((((response[2] << 8) + \
+                        response[3]) << 8) + \
+                        response[4]) << 8) + \
+                        response[5]
         response = response[6:]
 
 
@@ -109,7 +112,10 @@ try:
                 try:
                     SELECT = [0x00, 0xA4, 0x04, 0x00, 0x06, 0xA0, 0x00,
                         0x00, 0x00, 0x18, 0xFF]
-                    hresult, response = SCardTransmit(hcard, dwActiveProtocol, SELECT)
+                    hresult, response = SCardTransmit(
+                        hcard,
+                        dwActiveProtocol,
+                        SELECT)
                     if hresult != SCARD_S_SUCCESS:
                         raise BaseSCardException(hresult)
 

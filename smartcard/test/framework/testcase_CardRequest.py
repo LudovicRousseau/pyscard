@@ -37,7 +37,8 @@ import sys
 sys.path += ['..']
 
 try:
-    from local_config import expectedATRs, expectedReaders, expectedReaderGroups, expectedATRinReader, expectedReaderForATR
+    from local_config import expectedATRs, expectedReaders
+    from local_config import expectedReaderGroups, expectedATRinReader
 except:
     print 'execute test suite first to generate the local_config.py file'
     sys.exit()
@@ -64,7 +65,9 @@ class testcase_CardRequest(unittest.TestCase):
                 cs = cr.waitforcard()
                 cs.connection.connect()
                 self.assertEquals(atr, cs.connection.getATR())
-                self.assertEquals(cs.connection.getReader(), expectedReaderForATR[toHexString(atr)])
+                self.assertEquals(
+                    cs.connection.getReader(),
+                    expectedReaderForATR[toHexString(atr)])
                 cs.connection.disconnect()
 
     def testcase_CardRequestAnyCardTypeInSelectedReader(self):
@@ -78,7 +81,9 @@ class testcase_CardRequest(unittest.TestCase):
                 cs = cr.waitforcard()
                 cs.connection.connect()
                 self.assertEquals(atr, cs.connection.getATR())
-                self.assertEquals(cs.connection.getReader(), expectedReaderForATR[toHexString(atr)])
+                self.assertEquals(
+                    cs.connection.getReader(),
+                    expectedReaderForATR[toHexString(atr)])
 
     def testcase_CardRequestATRCardTypeTimeout(self):
         """Test smartcard.AnyCardType."""
@@ -106,12 +111,20 @@ class testcase_CardRequest(unittest.TestCase):
             if [] != atr:
                 ct = AnyCardType()
                 cardservice = smartcard.PassThruCardService.PassThruCardService
-                cr = CardRequest(timeout=10.6, readers=[reader], cardType=ct, cardServiceClass=cardservice)
+                cr = CardRequest(
+                    timeout=10.6,
+                    readers=[reader],
+                    cardType=ct,
+                    cardServiceClass=cardservice)
                 cs = cr.waitforcard()
                 cs.connection.connect()
-                self.assertEquals(cs.__class__, smartcard.PassThruCardService.PassThruCardService)
+                self.assertEquals(
+                    cs.__class__,
+                    smartcard.PassThruCardService.PassThruCardService)
                 self.assertEquals(atr, cs.connection.getATR())
-                self.assertEquals(cs.connection.getReader(), expectedReaderForATR[toHexString(atr)])
+                self.assertEquals(
+                    cs.connection.getReader(),
+                    expectedReaderForATR[toHexString(atr)])
 
     def testcase_CardRequestAnyCardTypeInSelectedReaderNewCard(self):
         """Test smartcard.AnyCardType."""
@@ -119,7 +132,8 @@ class testcase_CardRequest(unittest.TestCase):
         for reader in expectedReaders:
             atr = expectedATRinReader[reader]
             ct = AnyCardType()
-            cr = CardRequest(newcardonly=True, timeout=1, readers=[reader], cardType=ct)
+            cr = CardRequest(
+                newcardonly=True, timeout=1, readers=[reader], cardType=ct)
             self.assertRaises(CardRequestTimeoutException, cr.waitforcard)
 
 

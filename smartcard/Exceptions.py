@@ -49,7 +49,8 @@ class CardRequestTimeoutException(SmartcardException):
     """Raised when a CardRequest times out."""
 
     def __init__(self, *args):
-        SmartcardException.__init__(self, "Time-out during card request", *args)
+        SmartcardException.__init__(self,
+                                    "Time-out during card request", *args)
 
 
 class CardServiceException(SmartcardException):
@@ -61,7 +62,8 @@ class InvalidATRMaskLengthException(SmartcardException):
     """Raised when an ATR mask does not match an ATR length."""
 
     def __init__(self, *args):
-        SmartcardException.__init__(self, 'Invalid ATR mask length: ', *args)
+        SmartcardException.__init__(self,
+                                    'Invalid ATR mask length: ', *args)
 
 
 class InvalidReaderException(SmartcardException):
@@ -82,7 +84,10 @@ class NoCardException(SmartcardException):
     """Raised when no card in is present in reader."""
 
     def __init__(self, *args):
-        SmartcardException.__init__(self, 'Unable to connect to card or no card in reader', *args)
+        SmartcardException.__init__(
+            self,
+            'Unable to connect to card or no card in reader',
+            *args)
 
 
 class NoReadersException(SmartcardException):

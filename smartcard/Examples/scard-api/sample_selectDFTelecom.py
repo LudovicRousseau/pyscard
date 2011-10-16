@@ -36,13 +36,17 @@ GET_RESPONSE = [0xA0, 0xC0, 0x00, 0x00]
 try:
     hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
     if hresult != SCARD_S_SUCCESS:
-        raise error('Failed to establish context : ' + SCardGetErrorMessage(hresult))
+        raise error(
+            'Failed to establish context : ' + \
+            SCardGetErrorMessage(hresult))
     print 'Context established!'
 
     try:
         hresult, readers = SCardListReaders(hcontext, [])
         if hresult != SCARD_S_SUCCESS:
-            raise error('Failed to list readers: ' + SCardGetErrorMessage(hresult))
+            raise error(
+                'Failed to list readers: ' + \
+                SCardGetErrorMessage(hresult))
         print 'PCSC Readers:', readers
 
         if len(readers) < 1:
@@ -54,24 +58,42 @@ try:
 
             try:
                 hresult, hcard, dwActiveProtocol = SCardConnect(
-                    hcontext, zreader, SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1)
+                    hcontext,
+                    zreader,
+                    SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1)
                 if hresult != SCARD_S_SUCCESS:
-                    raise error('Unable to connect: ' + SCardGetErrorMessage(hresult))
+                    raise error(
+                        'Unable to connect: ' + \
+                        SCardGetErrorMessage(hresult))
                 print 'Connected with active protocol', dwActiveProtocol
 
                 try:
-                    hresult, response = SCardTransmit(hcard, dwActiveProtocol, SELECT + DF_TELECOM)
+                    hresult, response = SCardTransmit(
+                        hcard, dwActiveProtocol, SELECT + DF_TELECOM)
                     if hresult != SCARD_S_SUCCESS:
-                        raise error('Failed to transmit: ' + SCardGetErrorMessage(hresult))
-                    print 'Selected DF_TELECOM: ' + smartcard.util.toHexString(response, smartcard.util.HEX)
-                    hresult, response = SCardTransmit(hcard, dwActiveProtocol, GET_RESPONSE + [response[1]])
+                        raise error(
+                            'Failed to transmit: ' + \
+                            SCardGetErrorMessage(hresult))
+                    print 'Selected DF_TELECOM: ' + \
+                            smartcard.util.toHexString(
+                                response, smartcard.util.HEX)
+                    hresult, response = SCardTransmit(
+                        hcard,
+                        dwActiveProtocol,
+                        GET_RESPONSE + [response[1]])
                     if hresult != SCARD_S_SUCCESS:
-                        raise error('Failed to transmit: ' + SCardGetErrorMessage(hresult))
-                    print 'GET_RESPONSE after SELECT DF_TELECOM: ' + smartcard.util.toHexString(response, smartcard.util.HEX)
+                        raise error(
+                            'Failed to transmit: ' + \
+                            SCardGetErrorMessage(hresult))
+                    print 'GET_RESPONSE after SELECT DF_TELECOM: ' + \
+                            smartcard.util.toHexString(
+                                response, smartcard.util.HEX)
                 finally:
                     hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
                     if hresult != SCARD_S_SUCCESS:
-                        raise error('Failed to disconnect: ' + SCardGetErrorMessage(hresult))
+                        raise error(
+                            'Failed to disconnect: ' + \
+                            SCardGetErrorMessage(hresult))
                     print 'Disconnected'
 
             except error, (message):
@@ -80,7 +102,9 @@ try:
     finally:
         hresult = SCardReleaseContext(hcontext)
         if hresult != SCARD_S_SUCCESS:
-            raise error('Failed to release context: ' + SCardGetErrorMessage(hresult))
+            raise error(
+                'Failed to release context: ' + \
+                SCardGetErrorMessage(hresult))
         print 'Released context.'
 
 except error, e:

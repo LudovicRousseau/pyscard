@@ -46,7 +46,8 @@ class Card:
         """Return True if self==other (same reader and same atr).
            Return False otherwise."""
         if isinstance(other, Card):
-            return (self.atr == other.atr and repr(self.reader) == repr(other.reader))
+            return (self.atr == other.atr and
+                                repr(self.reader) == repr(other.reader))
         else:
             return False
 
@@ -68,5 +69,6 @@ class Card:
         if readerobj:
             return readerobj.createConnection()
         else:
-            #raise CardConnectionException('not a valid reader: ' + str(self.reader))
+            #raise CardConnectionException(
+            # 'not a valid reader: ' + str(self.reader))
             return None

@@ -31,19 +31,25 @@ from smartcard.scard import *
 if 'winscard' == resourceManager:
 
     znewcardName = 'dummy-card'
-    znewcardATR = [0x3B, 0x77, 0x94, 0x00, 0x00, 0x82, 0x30, 0x00, 0x13, 0x6C, 0x9F, 0x22]
-    znewcardMask = [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
+    znewcardATR = \
+      [0x3B, 0x77, 0x94, 0x00, 0x00, 0x82, 0x30, 0x00, 0x13, 0x6C, 0x9F, 0x22]
+    znewcardMask = \
+      [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
 
     try:
         hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
         if hresult != SCARD_S_SUCCESS:
-            raise scard.error, 'Failed to establish context: ' + SCardGetErrorMessage(hresult)
+            raise scard.error(
+                'Failed to establish context: ' + \
+                SCardGetErrorMessage(hresult))
         print 'Context established!'
 
         try:
             hresult, readers = SCardListReaders(hcontext, [])
             if hresult != SCARD_S_SUCCESS:
-                raise scard.error, 'Failed to list readers: ' + SCardGetErrorMessage(hresult)
+                raise scard.error(
+                    'Failed to list readers: ' + \
+                    SCardGetErrorMessage(hresult))
             print 'PCSC Readers:', readers
 
             # introduce a card (forget first in case it is already present)
@@ -55,7 +61,9 @@ if 'winscard' == resourceManager:
                 if hresult == ERROR_ALREADY_EXISTS:
                     print 'Card already exists'
                 else:
-                    raise error('Failed to introduce card type: ' + SCardGetErrorMessage(hresult))
+                    raise error(
+                        'Failed to introduce card type: ' + \
+                        SCardGetErrorMessage(hresult))
 
             hresult, cards = SCardListCards(hcontext, [], [])
             if hresult != SCARD_S_SUCCESS:
@@ -67,7 +75,10 @@ if 'winscard' == resourceManager:
                 readerstates += [(readers[i], SCARD_STATE_UNAWARE)]
             print readerstates
 
-            hresult, newstates = SCardLocateCards(hcontext, cards, readerstates)
+            hresult, newstates = SCardLocateCards(
+                hcontext,
+                cards,
+                readerstates)
             for i in newstates:
                 reader, eventstate, atr = i
                 print reader,
@@ -87,9 +98,9 @@ if 'winscard' == resourceManager:
                 if eventstate & SCARD_STATE_PRESENT:
                     print 'Card present in reader'
                 if eventstate & SCARD_STATE_EXCLUSIVE:
-                    print 'Card allocated for exclusive use by another application'
+                    print 'Card allocated for exclusive use'
                 if eventstate & SCARD_STATE_INUSE:
-                    print 'Card in used by another application but can be shared'
+                    print 'Card in use but can be shared'
                 if eventstate & SCARD_STATE_MUTE:
                     print 'Card is mute'
                 if eventstate & SCARD_STATE_CHANGED:
@@ -101,7 +112,9 @@ if 'winscard' == resourceManager:
             hresult = SCardForgetCardType(hcontext, znewcardName)
             hresult = SCardReleaseContext(hcontext)
             if hresult != SCARD_S_SUCCESS:
-                raise error('Failed to release context: ' + SCardGetErrorMessage(hresult))
+                raise error(
+                    'Failed to release context: ' + \
+                    SCardGetErrorMessage(hresult))
             print 'Released context.'
 
     except error, e:

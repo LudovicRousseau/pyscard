@@ -80,10 +80,12 @@ class testcase_readergroups(unittest.TestCase):
             self.assertEquals(hresult, 0)
 
             dummyreader = readers[0] + ' alias'
-            hresult = SCardIntroduceReader(self.hcontext, dummyreader, readers[0])
+            hresult = SCardIntroduceReader(
+                self.hcontext, dummyreader, readers[0])
             self.assertEquals(hresult, 0)
 
-            hresult = SCardAddReaderToGroup(self.hcontext, dummyreader, newgroup)
+            hresult = SCardAddReaderToGroup(
+                self.hcontext, dummyreader, newgroup)
             self.assertEquals(hresult, 0)
 
             hresult, readerGroups = SCardListReaderGroups(self.hcontext)
@@ -97,7 +99,8 @@ class testcase_readergroups(unittest.TestCase):
             self.assertEquals(newreaders[0], dummyreader)
 
             # remove reader from new group
-            hresult = SCardRemoveReaderFromGroup(self.hcontext, dummyreader, newgroup)
+            hresult = SCardRemoveReaderFromGroup(
+                self.hcontext, dummyreader, newgroup)
             self.assertEquals(hresult, 0)
 
             hresult, readerGroups = SCardListReaderGroups(self.hcontext)

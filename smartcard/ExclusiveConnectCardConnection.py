@@ -24,7 +24,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 from smartcard.CardConnection import CardConnection
 from smartcard.CardConnectionDecorator import CardConnectionDecorator
 from smartcard.Exceptions import CardConnectionException
-from smartcard.scard import SCardConnect, SCardDisconnect, SCARD_LEAVE_CARD, SCARD_SHARE_EXCLUSIVE
+from smartcard.scard import SCardConnect, SCardDisconnect
+from smartcard.scard import SCARD_LEAVE_CARD, SCARD_SHARE_EXCLUSIVE
 from smartcard.scard import SCardGetErrorMessage
 from smartcard.pcsc import PCSCCardConnection
 import smartcard.pcsc
@@ -42,13 +43,17 @@ class ExclusiveConnectCardConnection(CardConnectionDecorator):
         CardConnectionDecorator.connect(self, protocol, mode, disposition)
         component = self.component
         while True:
-            if isinstance(component, smartcard.pcsc.PCSCCardConnection.PCSCCardConnection):
-                pcscprotocol = PCSCCardConnection.translateprotocolmask(protocol)
+            if isinstance(
+                component,
+                smartcard.pcsc.PCSCCardConnection.PCSCCardConnection):
+                pcscprotocol = PCSCCardConnection.translateprotocolmask(
+                    protocol)
                 if 0 == pcscprotocol:
                     pcscprotocol = component.getProtocol()
 
                 if None != component.hcard:
-                    hresult = SCardDisconnect(component.hcard, SCARD_LEAVE_CARD)
+                    hresult = SCardDisconnect(component.hcard,
+                                              SCARD_LEAVE_CARD)
                     if hresult != 0:
                         raise CardConnectionException('Failed to disconnect: '
                             + SCardGetErrorMessage(hresult))
@@ -56,7 +61,9 @@ class ExclusiveConnectCardConnection(CardConnectionDecorator):
                     component.hcontext, str(component.reader),
                     SCARD_SHARE_EXCLUSIVE, pcscprotocol)
                 if hresult != 0:
-                    raise CardConnectionException('Failed to connect with SCARD_SHARE_EXCLUSIVE' + SCardGetErrorMessage(hresult))
+                    raise CardConnectionException(
+                        'Failed to connect with SCARD_SHARE_EXCLUSIVE' +\
+                        SCardGetErrorMessage(hresult))
                 # print 'reconnected exclusive'
                 break
             if hasattr(component, 'component'):

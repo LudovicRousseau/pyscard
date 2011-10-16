@@ -49,14 +49,16 @@ class SecureChannelConnection(CardConnectionDecorator):
         return bytes
 
     def uncypher(self, data):
-        '''Uncypher mock-up; you would include the secure channel logics here.'''
+        '''Uncypher mock-up;
+        you would include the secure channel logics here.'''
         print 'uncyphering', toHexString(data)
         return data
 
     def transmit(self, bytes, protocol=None):
         """Cypher/uncypher APDUs before transmission"""
         cypheredbytes = self.cypher(bytes)
-        data, sw1, sw2 = CardConnectionDecorator.transmit(self, cypheredbytes, protocol)
+        data, sw1, sw2 = CardConnectionDecorator.transmit(
+            self, cypheredbytes, protocol)
         if [] != data:
             data = self.uncypher(data)
         return data, sw1, sw2
@@ -91,7 +93,8 @@ observer = ConsoleCardConnectionObserver()
 cardservice.connection.addObserver(observer)
 
 # attach our decorator
-cardservice.connection = FakeATRConnection(SecureChannelConnection(cardservice.connection))
+cardservice.connection = FakeATRConnection(
+    SecureChannelConnection(cardservice.connection))
 
 # connect to the card and perform a few transmits
 cardservice.connection.connect()

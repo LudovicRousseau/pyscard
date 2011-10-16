@@ -37,7 +37,8 @@ import sys
 sys.path += ['..']
 
 try:
-    from local_config import expectedATRs, expectedReaders, expectedReaderGroups, expectedATRinReader
+    from local_config import expectedATRs, expectedReaders
+    from local_config import expectedReaderGroups, expectedATRinReader
 except:
     print 'execute test suite first to generate the local_config.py file'
     sys.exit()
@@ -72,36 +73,43 @@ class testcase_locatecards(unittest.TestCase):
             for i in xrange(len(readers)):
                 readerstates += [(readers[i], SCARD_STATE_UNAWARE)]
 
-            hresult, newstates = SCardLocateCards(self.hcontext, cards, readerstates)
+            hresult, newstates = SCardLocateCards(
+                self.hcontext, cards, readerstates)
             self.assertEquals(hresult, 0)
 
             dictexpectedreaders = {}
             for reader in expectedReaders:
                 dictexpectedreaders[reader] = 1
             for reader, eventstate, atr in newstates:
-                if reader in dictexpectedreaders and [] != expectedATRinReader[reader]:
+                if reader in dictexpectedreaders and \
+                    [] != expectedATRinReader[reader]:
                     self.assertEquals(expectedATRinReader[reader], atr)
                     self.assert_(eventstate & SCARD_STATE_PRESENT)
                     self.assert_(eventstate & SCARD_STATE_CHANGED)
 
             # 10ms delay, so that time-out always occurs
-            hresult, newstates = SCardGetStatusChange(self.hcontext, 10, newstates)
+            hresult, newstates = SCardGetStatusChange(
+                self.hcontext, 10, newstates)
             self.assertEquals(hresult, SCARD_E_TIMEOUT)
-            self.assertEquals(SCardGetErrorMessage(hresult), 'The user-specified timeout value has expired. ')
+            self.assertEquals(
+                SCardGetErrorMessage(hresult),
+                'The user-specified timeout value has expired. ')
 
         elif 'pcsclite' == resourceManager:
             readerstates = []
             for i in xrange(len(readers)):
                 readerstates += [(readers[i], SCARD_STATE_UNAWARE)]
 
-            hresult, newstates = SCardGetStatusChange(self.hcontext, 0, readerstates)
+            hresult, newstates = SCardGetStatusChange(
+                self.hcontext, 0, readerstates)
             self.assertEquals(hresult, 0)
 
             dictexpectedreaders = {}
             for reader in expectedReaders:
                 dictexpectedreaders[reader] = 1
             for reader, eventstate, atr in newstates:
-                if reader in dictexpectedreaders and [] != expectedATRinReader[reader]:
+                if reader in dictexpectedreaders and \
+                    [] != expectedATRinReader[reader]:
                     self.assertEquals(expectedATRinReader[reader], atr)
                     self.assert_(eventstate & SCARD_STATE_PRESENT)
                     self.assert_(eventstate & SCARD_STATE_CHANGED)

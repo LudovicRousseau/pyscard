@@ -35,7 +35,8 @@ class AbstractCardRequest:
 
     Known subclasses: smartcard.pcsc.PCSCCardRequest"""
 
-    def __init__(self, newcardonly=False, readers=None, cardType=None, cardServiceClass=None, timeout=1):
+    def __init__(self, newcardonly=False, readers=None,
+                 cardType=None, cardServiceClass=None, timeout=1):
         """Construct new CardRequest.
 
         newcardonly:        if True, request a new card; default is

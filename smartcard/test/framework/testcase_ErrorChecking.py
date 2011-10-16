@@ -47,7 +47,8 @@ import smartcard.sw.SWExceptions
 
 
 try:
-    from local_config import expectedATRs, expectedReaders, expectedReaderGroups, expectedATRinReader
+    from local_config import expectedATRs, expectedReaders
+    from local_config import expectedReaderGroups, expectedATRinReader
 except:
     print 'execute test suite first to generate the local_config.py file'
     sys.exit()
@@ -130,13 +131,20 @@ class testcase_ErrorChecking(unittest.TestCase):
         ecs = ISO7816_4ErrorChecker()
 
         tiso7816_4SW = {
-            0x62: (smartcard.sw.SWExceptions.WarningProcessingException, [0x00, 0x81, 0x82, 0x83, 0x84, 0xff]),
-            0x63: (smartcard.sw.SWExceptions.WarningProcessingException, [0x00, 0x81] + range(0xc0, 0xcf + 1)),
-            0x64: (smartcard.sw.SWExceptions.ExecutionErrorException, [0x00]),
-            0x67: (smartcard.sw.SWExceptions.CheckingErrorException, [0x00]),
-            0x68: (smartcard.sw.SWExceptions.CheckingErrorException, [0x81, 0x82]),
-            0x69: (smartcard.sw.SWExceptions.CheckingErrorException, range(0x81, 0x88 + 1)),
-            0x6A: (smartcard.sw.SWExceptions.CheckingErrorException, range(0x80, 0x88 + 1)),
+            0x62: (smartcard.sw.SWExceptions.WarningProcessingException,
+                    [0x00, 0x81, 0x82, 0x83, 0x84, 0xff]),
+            0x63: (smartcard.sw.SWExceptions.WarningProcessingException,
+                    [0x00, 0x81] + range(0xc0, 0xcf + 1)),
+            0x64: (smartcard.sw.SWExceptions.ExecutionErrorException,
+                    [0x00]),
+            0x67: (smartcard.sw.SWExceptions.CheckingErrorException,
+                    [0x00]),
+            0x68: (smartcard.sw.SWExceptions.CheckingErrorException,
+                    [0x81, 0x82]),
+            0x69: (smartcard.sw.SWExceptions.CheckingErrorException,
+                    range(0x81, 0x88 + 1)),
+            0x6A: (smartcard.sw.SWExceptions.CheckingErrorException,
+                    range(0x80, 0x88 + 1)),
             0x6B: (smartcard.sw.SWExceptions.CheckingErrorException, [0x00]),
             0x6D: (smartcard.sw.SWExceptions.CheckingErrorException, [0x00]),
             0x6E: (smartcard.sw.SWExceptions.CheckingErrorException, [0x00]),
@@ -158,13 +166,20 @@ class testcase_ErrorChecking(unittest.TestCase):
         ecs = ISO7816_8ErrorChecker()
 
         tiso7816_8SW = {
-            0x63: (smartcard.sw.SWExceptions.WarningProcessingException, [0x00] + range(0xc0, 0xcf + 1)),
-            0x65: (smartcard.sw.SWExceptions.ExecutionErrorException, [0x81]),
-            0x66: (smartcard.sw.SWExceptions.SecurityRelatedException, [0x00, 0x87, 0x88]),
-            0x67: (smartcard.sw.SWExceptions.CheckingErrorException, [0x00]),
-            0x68: (smartcard.sw.SWExceptions.CheckingErrorException, [0x83, 0x84]),
-            0x69: (smartcard.sw.SWExceptions.CheckingErrorException, range(0x82, 0x85 + 1)),
-            0x6A: (smartcard.sw.SWExceptions.CheckingErrorException, [0x81, 0x82, 0x86, 0x88]),
+            0x63: (smartcard.sw.SWExceptions.WarningProcessingException,
+                    [0x00] + range(0xc0, 0xcf + 1)),
+            0x65: (smartcard.sw.SWExceptions.ExecutionErrorException,
+                    [0x81]),
+            0x66: (smartcard.sw.SWExceptions.SecurityRelatedException,
+                    [0x00, 0x87, 0x88]),
+            0x67: (smartcard.sw.SWExceptions.CheckingErrorException,
+                    [0x00]),
+            0x68: (smartcard.sw.SWExceptions.CheckingErrorException,
+                    [0x83, 0x84]),
+            0x69: (smartcard.sw.SWExceptions.CheckingErrorException,
+                    range(0x82, 0x85 + 1)),
+            0x6A: (smartcard.sw.SWExceptions.CheckingErrorException,
+                    [0x81, 0x82, 0x86, 0x88]),
         }
 
         for sw1 in range(0x00, 0xff + 1):
@@ -182,10 +197,14 @@ class testcase_ErrorChecking(unittest.TestCase):
         ecs = ISO7816_9ErrorChecker()
 
         tiso7816_9SW = {
-            0x62: (smartcard.sw.SWExceptions.WarningProcessingException, [0x82]),
-            0x64: (smartcard.sw.SWExceptions.ExecutionErrorException, [0x00]),
-            0x69: (smartcard.sw.SWExceptions.CheckingErrorException, [0x82]),
-            0x6A: (smartcard.sw.SWExceptions.CheckingErrorException, [0x80, 0x84, 0x89, 0x8A]),
+            0x62: (smartcard.sw.SWExceptions.WarningProcessingException,
+                    [0x82]),
+            0x64: (smartcard.sw.SWExceptions.ExecutionErrorException,
+                    [0x00]),
+            0x69: (smartcard.sw.SWExceptions.CheckingErrorException, [
+                    0x82]),
+            0x6A: (smartcard.sw.SWExceptions.CheckingErrorException,
+                    [0x80, 0x84, 0x89, 0x8A]),
         }
 
         for sw1 in range(0x00, 0xff + 1):
@@ -203,16 +222,26 @@ class testcase_ErrorChecking(unittest.TestCase):
         ecs = op21_ErrorChecker()
 
         top21_SW = {
-            0x62: (smartcard.sw.SWExceptions.WarningProcessingException, [0x83]),
-            0x63: (smartcard.sw.SWExceptions.WarningProcessingException, [0x00]),
-            0x64: (smartcard.sw.SWExceptions.ExecutionErrorException, [0x00]),
-            0x65: (smartcard.sw.SWExceptions.ExecutionErrorException, [0x81]),
-            0x67: (smartcard.sw.SWExceptions.CheckingErrorException, [0x00]),
-            0x69: (smartcard.sw.SWExceptions.CheckingErrorException, [0x82, 0x85]),
-            0x6A: (smartcard.sw.SWExceptions.CheckingErrorException, [0x80, 0x81, 0x82, 0x84, 0x86, 0x88]),
-            0x6D: (smartcard.sw.SWExceptions.CheckingErrorException, [0x00]),
-            0x6E: (smartcard.sw.SWExceptions.CheckingErrorException, [0x00]),
-            0x94: (smartcard.sw.SWExceptions.CheckingErrorException, [0x84, 0x85]),
+            0x62: (smartcard.sw.SWExceptions.WarningProcessingException, [
+                    0x83]),
+            0x63: (smartcard.sw.SWExceptions.WarningProcessingException,
+                    [0x00]),
+            0x64: (smartcard.sw.SWExceptions.ExecutionErrorException, [
+                    0x00]),
+            0x65: (smartcard.sw.SWExceptions.ExecutionErrorException, [
+                    0x81]),
+            0x67: (smartcard.sw.SWExceptions.CheckingErrorException,
+                    [0x00]),
+            0x69: (smartcard.sw.SWExceptions.CheckingErrorException,
+                    [0x82, 0x85]),
+            0x6A: (smartcard.sw.SWExceptions.CheckingErrorException,
+                    [0x80, 0x81, 0x82, 0x84, 0x86, 0x88]),
+            0x6D: (smartcard.sw.SWExceptions.CheckingErrorException,
+                    [0x00]),
+            0x6E: (smartcard.sw.SWExceptions.CheckingErrorException,
+                    [0x00]),
+            0x94: (smartcard.sw.SWExceptions.CheckingErrorException,
+                    [0x84, 0x85]),
         }
 
         for sw1 in range(0x00, 0xff + 1):
@@ -234,7 +263,9 @@ class testcase_ErrorChecking(unittest.TestCase):
         # ISO7816-4 is answering first on the next, i.e
         # WarningProcessingException
         for sw2 in [0x00, 0x81] + range(0xc0, 0xcf + 1):
-            self.assertRaises(smartcard.sw.SWExceptions.WarningProcessingException, errorchain[0], [], 0x63, sw2)
+            self.assertRaises(
+                smartcard.sw.SWExceptions.WarningProcessingException,
+                errorchain[0], [], 0x63, sw2)
 
     def testcase_Test_ISO78164_ErrorCheckingChain(self):
         """Test error chain with Test checker followed by ISO7816-4 checker."""
@@ -250,21 +281,38 @@ class testcase_ErrorChecking(unittest.TestCase):
         """Test correct exception error message."""
         ecs = ISO7816_4ErrorChecker()
 
-        e = self.failUnlessRaises(smartcard.sw.SWExceptions.CheckingErrorException, ecs, [], 0x69, 0x85)
-        self.assertEquals(str(e), "'Status word exception: checking error - Conditions of use not satisfied!'")
+        e = self.failUnlessRaises(
+            smartcard.sw.SWExceptions.CheckingErrorException,
+            ecs,
+            [],
+            0x69,
+            0x85)
+        self.assertEquals(
+            str(e),
+            "'Status word exception: checking error - " + \
+             "Conditions of use not satisfied!'")
 
-        e = self.failUnlessRaises(smartcard.sw.SWExceptions.CheckingErrorException, ecs, [], 0x6b, 0x00)
-        self.assertEquals(str(e), "'Status word exception: checking error - Incorrect parameters P1-P2!'")
+        e = self.failUnlessRaises(
+            smartcard.sw.SWExceptions.CheckingErrorException,
+            ecs,
+            [],
+            0x6b,
+            0x00)
+        self.assertEquals(
+            str(e), "'Status word exception: checking error - " + \
+            "Incorrect parameters P1-P2!'")
 
     def testcase_ISO78164_Test_ErrorCheckingChain_filtering(self):
         """Test error chain with ISO7816-4 checker followed by Test checker."""
         errorchain = []
         errorchain = [ErrorCheckingChain(errorchain, ISO7816_8ErrorChecker()),
                      ErrorCheckingChain(errorchain, ISO7816_4ErrorChecker()),
-                     ErrorCheckingChain(errorchain, ISO7816_4_SW1ErrorChecker())]
+                     ErrorCheckingChain(
+                         errorchain, ISO7816_4_SW1ErrorChecker())]
 
         # don't care about Warning Exceptions
-        errorchain[0].addFilterException(smartcard.sw.SWExceptions.WarningProcessingException)
+        errorchain[0].addFilterException(
+            smartcard.sw.SWExceptions.WarningProcessingException)
 
         for sw2 in range(0x00, 0xff):
 
@@ -272,7 +320,12 @@ class testcase_ErrorChecking(unittest.TestCase):
             errorchain[0]([], 0x62, sw2)
             errorchain[0]([], 0x63, sw2)
             # should raise
-            self.assertRaises(smartcard.sw.SWExceptions.ExecutionErrorException, errorchain[0], [], 0x64, sw2)
+            self.assertRaises(
+                smartcard.sw.SWExceptions.ExecutionErrorException,
+                errorchain[0],
+                [],
+                0x64,
+                sw2)
 
 
 def suite():

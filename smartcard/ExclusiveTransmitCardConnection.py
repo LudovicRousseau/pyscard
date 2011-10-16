@@ -24,7 +24,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 from smartcard.CardConnection import CardConnection
 from smartcard.CardConnectionDecorator import CardConnectionDecorator
 from smartcard.Exceptions import CardConnectionException
-from smartcard.scard import SCardBeginTransaction, SCardEndTransaction, SCARD_LEAVE_CARD
+from smartcard.scard import SCardBeginTransaction, SCardEndTransaction
+from smartcard.scard import SCARD_LEAVE_CARD
 from smartcard.scard import SCardGetErrorMessage
 from smartcard.pcsc import PCSCCardConnection
 import smartcard.pcsc
@@ -43,10 +44,14 @@ class ExclusiveTransmitCardConnection(CardConnectionDecorator):
 
         component = self.component
         while True:
-            if isinstance(component, smartcard.pcsc.PCSCCardConnection.PCSCCardConnection):
+            if isinstance(
+                component,
+                smartcard.pcsc.PCSCCardConnection.PCSCCardConnection):
                 hresult = SCardBeginTransaction(component.hcard)
                 if 0 != hresult:
-                    raise CardConnectionException('Failed to lock with SCardBeginTransaction' + SCardGetErrorMessage(hresult))
+                    raise CardConnectionException(
+                        'Failed to lock with SCardBeginTransaction' +\
+                        SCardGetErrorMessage(hresult))
                 else:
                     #print 'locked'
                     pass
@@ -60,10 +65,15 @@ class ExclusiveTransmitCardConnection(CardConnectionDecorator):
         '''Unlock card with SCardEndTransaction.'''
         component = self.component
         while True:
-            if isinstance(component, smartcard.pcsc.PCSCCardConnection.PCSCCardConnection):
-                hresult = SCardEndTransaction(component.hcard, SCARD_LEAVE_CARD)
+            if isinstance(
+                component,
+                smartcard.pcsc.PCSCCardConnection.PCSCCardConnection):
+                hresult = SCardEndTransaction(component.hcard,
+                                              SCARD_LEAVE_CARD)
                 if 0 != hresult:
-                    raise CardConnectionException('Failed to unlock with SCardEndTransaction' + SCardGetErrorMessage(hresult))
+                    raise CardConnectionException(
+                        'Failed to unlock with SCardEndTransaction' +\
+                        SCardGetErrorMessage(hresult))
                 else:
                     #print 'unlocked'
                     pass
@@ -76,5 +86,6 @@ class ExclusiveTransmitCardConnection(CardConnectionDecorator):
     def transmit(self, bytes, protocol=None):
         '''Gain exclusive access to card during APDU transmission for if this
         decorator decorates a PCSCCardConnection.'''
-        data, sw1, sw2 = CardConnectionDecorator.transmit(self, bytes, protocol)
+        data, sw1, sw2 = CardConnectionDecorator.transmit(
+            self, bytes, protocol)
         return data, sw1, sw2

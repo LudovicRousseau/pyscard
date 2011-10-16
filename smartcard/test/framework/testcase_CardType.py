@@ -37,7 +37,8 @@ import sys
 sys.path += ['..']
 
 try:
-    from local_config import expectedATRs, expectedReaders, expectedReaderGroups, expectedATRinReader
+    from local_config import expectedATRs, expectedReaders
+    from local_config import expectedReaderGroups, expectedATRinReader
 except:
     print 'execute test suite first to generate the local_config.py file'
     sys.exit()
@@ -60,7 +61,8 @@ class testcase_CardType(unittest.TestCase):
                 connection = reader.createConnection()
                 connection.connect()
                 self.assertEquals(True, ct.matches(connection.getATR()))
-                self.assertEquals(True, ct.matches(connection.getATR(), reader))
+                self.assertEquals(
+                    True, ct.matches(connection.getATR(), reader))
                 connection.disconnect()
 
     def testcase_ATRCardTypeWithoutMask(self):
@@ -72,7 +74,8 @@ class testcase_CardType(unittest.TestCase):
                 connection = reader.createConnection()
                 connection.connect()
                 self.assertEquals(True, ct.matches(connection.getATR()))
-                self.assertEquals(True, ct.matches(connection.getATR(), reader))
+                self.assertEquals(
+                    True, ct.matches(connection.getATR(), reader))
                 connection.disconnect()
 
     def testcase_ATRCardTypeMisMatchWithoutMask(self):
@@ -87,7 +90,8 @@ class testcase_CardType(unittest.TestCase):
                 connection = reader.createConnection()
                 connection.connect()
                 self.assertEquals(False, ct.matches(connection.getATR()))
-                self.assertEquals(False, ct.matches(connection.getATR(), reader))
+                self.assertEquals(
+                    False, ct.matches(connection.getATR(), reader))
                 connection.disconnect()
 
     def testcase_ATRCardTypeWithMask(self):

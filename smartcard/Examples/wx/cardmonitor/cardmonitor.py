@@ -27,7 +27,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 import os.path
 import sys
 from smartcard.wx.SimpleSCardApp import *
-from smartcard.wx.SimpleSCardAppEventObserver import SimpleSCardAppEventObserver
+from smartcard.wx.SimpleSCardAppEventObserver import \
+    SimpleSCardAppEventObserver
 
 ID_TEXT = 10000
 
@@ -45,7 +46,8 @@ def module_path():
     even if we are frozen using py2exe. From WhereAmI page on py2exe wiki."""
 
     if we_are_frozen():
-        return os.path.dirname(unicode(sys.executable, sys.getfilesystemencoding()))
+        return os.path.dirname(
+                unicode(sys.executable, sys.getfilesystemencoding()))
 
     return os.path.dirname(unicode(__file__, sys.getfilesystemencoding()))
 
@@ -67,7 +69,8 @@ class SamplePanel(wx.Panel, SimpleSCardAppEventObserver):
         sizer.Add([20, 20], 0, wx.ALIGN_CENTER | wx.ALL, 5)
         sizer.Add([20, 20], 0, wx.ALIGN_CENTER | wx.ALL, 5)
 
-        self.feedbacktext = wx.StaticText(self, ID_TEXT, "", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.feedbacktext = wx.StaticText(
+            self, ID_TEXT, "", wx.DefaultPosition, wx.DefaultSize, 0)
         sizer.Add(self.feedbacktext, 0, wx.ALIGN_LEFT | wx.ALL, 5)
 
         sizer.Add([20, 20], 0, wx.ALIGN_CENTER | wx.ALL, 5)
@@ -80,28 +83,33 @@ class SamplePanel(wx.Panel, SimpleSCardAppEventObserver):
 
     # callbacks from SimpleSCardAppEventObserver interface
     def OnActivateCard(self, card):
-        """Called when a card is activated by double-clicking on the card or reader tree control or toolbar.
+        """Called when a card is activated by double-clicking on the
+        card or reader tree control or toolbar.
         In this sample, we just connect to the card on the first activation."""
         SimpleSCardAppEventObserver.OnActivateCard(self, card)
         self.feedbacktext.SetLabel('Activated card: ' + repr(card))
 
     def OnActivateReader(self, reader):
-        """Called when a reader is activated by double-clicking on the reader tree control or toolbar."""
+        """Called when a reader is activated by double-clicking on the
+        reader tree control or toolbar."""
         SimpleSCardAppEventObserver.OnActivateReader(self, reader)
         self.feedbacktext.SetLabel('Activated reader: ' + repr(reader))
 
     def OnDeactivateCard(self, card):
-        """Called when a card is deactivated in the reader tree control or toolbar."""
+        """Called when a card is deactivated in the reader tree control
+        or toolbar."""
         SimpleSCardAppEventObserver.OnActivateCard(self, card)
         self.feedbacktext.SetLabel('Deactivated card: ' + repr(card))
 
     def OnSelectCard(self, card):
-        """Called when a card is selected by clicking on the card or reader tree control or toolbar."""
+        """Called when a card is selected by clicking on the card or
+        reader tree control or toolbar."""
         SimpleSCardAppEventObserver.OnSelectCard(self, card)
         self.feedbacktext.SetLabel('Selected card: ' + repr(card))
 
     def OnSelectReader(self, reader):
-        """Called when a reader is selected by clicking on the reader tree control or toolbar."""
+        """Called when a reader is selected by clicking on the reader
+        tree control or toolbar."""
         SimpleSCardAppEventObserver.OnSelectReader(self, reader)
         self.feedbacktext.SetLabel('Selected reader: ' + repr(reader))
 
