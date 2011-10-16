@@ -63,7 +63,7 @@ class testcase_CardService(unittest.TestCase):
                 response, sw1, sw2 = cs.connection.transmit(SELECT + DF_TELECOM)
                 expectedSWs = {"9f 1a": 1, "6e 0": 2, "9f 20": 3, "9f 22": 4}
                 self.assertEquals([], response)
-                self.assert_(expectedSWs.has_key("%x %x" % (sw1, sw2)) or "9f" == "%x" % sw1)
+                self.assert_("%x %x" % (sw1, sw2) in expectedSWs or "9f" == "%x" % sw1)
 
 
 def suite():

@@ -117,7 +117,7 @@ class testcase_ErrorChecking(unittest.TestCase):
         for sw1 in range(0x00, 0xff + 1):
             sw2range = []
             exception = None
-            if tiso7816_4SW1.has_key(sw1):
+            if sw1 in tiso7816_4SW1:
                 exception = tiso7816_4SW1[sw1]
             for sw2 in range(0x00, 0xff + 1):
                 if None != exception:
@@ -145,7 +145,7 @@ class testcase_ErrorChecking(unittest.TestCase):
 
         for sw1 in range(0x00, 0xff + 1):
             sw2range = []
-            if tiso7816_4SW.has_key(sw1):
+            if sw1 in tiso7816_4SW:
                 exception, sw2range = tiso7816_4SW[sw1]
             for sw2 in range(0x00, 0xff + 1):
                 if sw2 in sw2range:
@@ -169,7 +169,7 @@ class testcase_ErrorChecking(unittest.TestCase):
 
         for sw1 in range(0x00, 0xff + 1):
             sw2range = []
-            if tiso7816_8SW.has_key(sw1):
+            if sw1 in tiso7816_8SW:
                 exception, sw2range = tiso7816_8SW[sw1]
             for sw2 in range(0x00, 0xff + 1):
                 if sw2 in sw2range:
@@ -190,7 +190,7 @@ class testcase_ErrorChecking(unittest.TestCase):
 
         for sw1 in range(0x00, 0xff + 1):
             sw2range = []
-            if tiso7816_9SW.has_key(sw1):
+            if sw1 in tiso7816_9SW:
                 exception, sw2range = tiso7816_9SW[sw1]
             for sw2 in range(0x00, 0xff + 1):
                 if sw2 in sw2range:
@@ -217,7 +217,7 @@ class testcase_ErrorChecking(unittest.TestCase):
 
         for sw1 in range(0x00, 0xff + 1):
             sw2range = []
-            if top21_SW.has_key(sw1):
+            if sw1 in top21_SW:
                 exception, sw2range = top21_SW[sw1]
             for sw2 in range(0x00, 0xff + 1):
                 if sw2 in sw2range:

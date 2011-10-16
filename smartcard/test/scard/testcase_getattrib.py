@@ -69,7 +69,7 @@ class testcase_getAttrib(unittest.TestCase):
                 self.assertEquals(reader, expectedReaders[r])
                 self.assertEquals(atr, expectedATRs[r])
 
-                if scard.__dict__.has_key('SCARD_ATTR_ATR_STRING'):
+                if 'SCARD_ATTR_ATR_STRING' in scard.__dict__:
                     hresult, attrib = SCardGetAttrib(hcard, SCARD_ATTR_ATR_STRING)
                     self.assertEquals(hresult, 0)
                     self.assertEquals(expectedATRs[r], attrib)

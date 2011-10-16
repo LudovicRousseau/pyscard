@@ -64,7 +64,7 @@ class __CardNames__(Synchronization):
 
     def dump(self):
         for k, v in self.db.iteritems():
-            print k, `loads(v)`
+            print k, repr(loads(v))
 
     def find(self, atr, reader=None):
         for k, v in self.db.iteritems():
