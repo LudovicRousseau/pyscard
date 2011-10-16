@@ -118,7 +118,7 @@ class PCSCCardRequest(AbstractCardRequest):
         readerstates = {}
         readernames = self.getReaderNames()
         for reader in readernames:
-            if not readerstates.has_key(reader):
+            if not reader in readerstates:
                 readerstates[reader] = (reader, SCARD_STATE_UNAWARE)
 
         # remove dictionary entry for readers that disappeared
@@ -172,7 +172,7 @@ class PCSCCardRequest(AbstractCardRequest):
             # create a dictionary entry for new readers
             readernames = self.getReaderNames()
             for reader in readernames:
-                if not readerstates.has_key(reader):
+                if not reader in readerstates:
                     readerstates[reader] = (reader, SCARD_STATE_UNAWARE)
 
             # remove dictionary entry for readers that disappeared
@@ -263,7 +263,7 @@ class PCSCCardRequest(AbstractCardRequest):
             readernames = self.getReaderNames()
             for reader in readernames:
                 # create a dictionary entry for new readers
-                if not readerstates.has_key(reader):
+                if not reader in readerstates:
                     readerstates[reader] = (reader, SCARD_STATE_UNAWARE)
             # remove dictionary entry for readers that disappeared
             for oldreader in readerstates.keys():
