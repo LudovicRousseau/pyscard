@@ -45,9 +45,9 @@ def module_path():
     even if we are frozen using py2exe. From WhereAmI page on py2exe wiki."""
 
     if we_are_frozen():
-        return os.path.dirname( unicode(sys.executable, sys.getfilesystemencoding( )) )
+        return os.path.dirname(unicode(sys.executable, sys.getfilesystemencoding()))
 
-    return os.path.dirname(unicode(__file__, sys.getfilesystemencoding( )))
+    return os.path.dirname(unicode(__file__, sys.getfilesystemencoding()))
 
 
 class SamplePanel(wx.Panel, SimpleSCardAppEventObserver):

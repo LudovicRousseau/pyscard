@@ -33,10 +33,10 @@ from smartcard.wx import ICO_SMARTCARD, ICO_READER
 Mydata_files = [('images', ['images/readerviewer.ico', ICO_SMARTCARD, ICO_READER ])]
 
 
-setup(  windows=['readerviewer.py'],
-        data_files = Mydata_files,
-        options =
-        {
-            "py2exe":{"dll_excludes":["MSVCP90.dll"]}
-        }
-    )
+setup(windows=['readerviewer.py'],
+    data_files = Mydata_files,
+    options =
+    {
+        "py2exe":{"dll_excludes":["MSVCP90.dll"]}
+    }
+)
