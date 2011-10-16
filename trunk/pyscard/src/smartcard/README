@@ -10,17 +10,18 @@ Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
 This file is part of pyscard.
 
 pyscard is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the Free
-Software Foundation; either version 2.1 of the License, or (at your option) any
-later version.
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 2.1 of the License, or (at your
+option) any later version.
 
-pyscard is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
+pyscard is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+License for more details.
 
-You should have received a copy of the GNU Lesser General Public License along
-with pyscard; if not, write to the Free Software Foundation, Inc., 51
-Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+You should have received a copy of the GNU Lesser General Public License
+along with pyscard; if not, write to the Free Software Foundation, Inc.,
+51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 -------------------------------------------------------------------------------
 Last update : pyscard 1.6.14 (October 2011)
@@ -28,27 +29,28 @@ Last update : pyscard 1.6.14 (October 2011)
 
 pyscard is a python module adding smart cards support to python.
 
-It consists of the smartcard.scard module, an extension module wrapping Windows
-smart card base components (also known as PCSC) on Windows, and PCSC lite on
-linux and Mac OS X Tiger, and of the smartcard module, a python framework with
-objects wrapping PCSC API.
+It consists of the smartcard.scard module, an extension module wrapping
+Windows smart card base components (also known as PCSC) on Windows, and
+PCSC lite on linux and Mac OS X Tiger, and of the smartcard module, a
+python framework with objects wrapping PCSC API.
 
 
 -------------------------------------------------------------------------------
 Documentation
 -------------------------------------------------------------------------------
 
-All documentation is provided in the smartcard/doc directory of the source
-distribution.  Examples are provided in the smartcard/Examples directory of the
-source distribution.  The binary distribution does not include any
-documentation, tests scripts or examples.
+All documentation is provided in the smartcard/doc directory of the
+source distribution.  Examples are provided in the smartcard/Examples
+directory of the source distribution.  The binary distribution does not
+include any documentation, tests scripts or examples.
 
 
 -------------------------------------------------------------------------------
 Installation
 -------------------------------------------------------------------------------
 
-The pyscard library is packaged using the standard distutils python module.
+The pyscard library is packaged using the standard distutils python
+module.
 
 Installation on windows
 -----------------------
@@ -59,8 +61,8 @@ Installing on windows from the binary distribution
 1. download the binary msi installer or self-executable installer
 2. execute the installer
 
-The binary msi installer and self-executable installer are packaged for a
-specific version of python, and have name similar to
+The binary msi installer and self-executable installer are packaged for
+a specific version of python, and have name similar to
 pyscard-1.6.14.win32-py2.5.msi and pyscard-1.6.14.win32-py2.5.exe for
 python 2.5.
 
@@ -70,10 +72,10 @@ Installing on windows from the source distribution
 
 1. you will need swig 1.3.31 from http://www.swig.org, and a C compiler.
 
-By default, Visual Studio 2003 is required for building the c language wrapper
-for python 2.5, and Visual Studio .Net or VisualC++ 6 for python 2.4.  You might
-use another release by fiddling with the python/Lib/distutils/msvccompiler.py
-file that detects the compiler.
+By default, Visual Studio 2003 is required for building the c language
+wrapper for python 2.5, and Visual Studio .Net or VisualC++ 6 for python
+2.4.  You might use another release by fiddling with the
+python/Lib/distutils/msvccompiler.py file that detects the compiler.
 
 2. download the source distribution
 
@@ -99,8 +101,8 @@ Installing on linux from the binary distribution:
 1. download the binary distribution
 
 The binary distribution is either an archive file or a rpm file, with
-names similar to pyscard-1.6.14-1.i386.rpm for the rpm distribution,
-or pyscard-1.6.14.linux-i686.tar.gz for the archive distribution.
+names similar to pyscard-1.6.14-1.i386.rpm for the rpm distribution, or
+pyscard-1.6.14.linux-i686.tar.gz for the archive distribution.
 
 2. untar the binary distribution
 
@@ -125,14 +127,15 @@ pyscard-1.6.14.tar.gz.
 /usr/bin/python setup.py build_ext install
 
 This will build pyscard and install it in the site-packages directory of
-your python distribution, e.g.  /usr/lib/python2.4/site-packages/smartcard.
+your python distribution, e.g.
+/usr/lib/python2.4/site-packages/smartcard.
 
 Installation on Max OS X Tiger:
 --------------------------------
 
-The Mac OS X Tiger support is experimental on pyscard 1.6.14. It was developed
-and tested on a i386 MacBook Pro. Please drop me a mail if you succeed on a
-ppc MacBook.
+The Mac OS X Tiger support is experimental on pyscard 1.6.14. It was
+developed and tested on a i386 MacBook Pro. Please drop me a mail if you
+succeed on a ppc MacBook.
 
 Installing on Mac OS X Tiger from the binary distribution:
 ----------------------------------------------------
@@ -140,20 +143,22 @@ Installing on Mac OS X Tiger from the binary distribution:
 1. download the binary distribution
 
 The binary distribution is an archive file, with a name similar to
-pyscard-1.6.14-py-2.3-macosx10.4.mpkg or pyscard-1.6.14-py-2.5-macosx10.4.mpkg.
+pyscard-1.6.14-py-2.3-macosx10.4.mpkg or
+pyscard-1.6.14-py-2.5-macosx10.4.mpkg.
 
 2. Open the package and proceed with installation.
 
-Python 2.3 is pre-installed, so install pyscard-1.6.14-py-2.3-macosx10.4.mpkg if
-you did not install another release of python.
+Python 2.3 is pre-installed, so install
+pyscard-1.6.14-py-2.3-macosx10.4.mpkg if you did not install another
+release of python.
 
 Install pyscard-1.6.14-py-2.5-macosx10.4.mpkg if you installed python 2.5.
 
 Installing on Mac OS X Tiger from the source distribution
 ----------------------------------------------------------
 
-1. you will need swig 1.3.31 (http://www.swig.org); gcc and pcsc-lite are available
-out of the box on Max OS X Tiger
+1. you will need swig 1.3.31 (http://www.swig.org); gcc and pcsc-lite
+are available out of the box on Max OS X Tiger
 
 2. download the source distribution
 
@@ -166,16 +171,13 @@ pyscard-1.6.14.tar.gz.
 
 sudo python setup.py build_ext install
 
-This will build pyscard and install it in the site-packages directory of your python distribution, e.g.
+This will build pyscard and install it in the site-packages directory of
+your python distribution, e.g.
 /System/Library/Frameworks/Python.framework/Versions/2.3/lib/python2.3/lib/site-packages/smartcard
 
 
 Installation on Max OS X Leopard:
 ---------------------------------
-
-The Mac OS X Leopard support is experimental on pyscard 1.6.14. It was developed
-and tested on a i386 MacBook Pro. Please drop me a mail if you succeed on a
-ppc MacBook.
 
 Installing on Mac OS X Leopard from the binary distribution:
 ----------------------------------------------------
@@ -190,8 +192,8 @@ pyscard-1.6.14-py-2.5-macosx10.5.mpkg.
 Installing on Mac OS X Leopard from the source distribution
 ------------------------------------------------------------
 
-1. you will need swig 1.3.31 (http://www.swig.org); gcc and pcsc-lite are available
-out of the box on Max OS X Leopard
+1. you will need swig 1.3.31 (http://www.swig.org); gcc and pcsc-lite
+are available out of the box on Max OS X Leopard
 
 2. download the source distribution
 
@@ -204,18 +206,53 @@ pyscard-1.6.14.tar.gz.
 
 sudo python setup.py build_ext install
 
-This will build pyscard and install it in the site-packages directory of your python distribution, e.g.
+This will build pyscard and install it in the site-packages directory of
+your python distribution, e.g.
 /System/Library/Frameworks/Python.framework/Versions/2.5/lib/python2.3/lib/site-packages/smartcard
+
+
+Installation on Max OS X Lion:
+------------------------------
+
+Installing on Mac OS X Lion from the binary distribution:
+---------------------------=====-------------------------
+
+1. download the binary distribution
+
+The binary distribution is an archive file, with a name similar to
+pyscard-1.6.14-py-2.7-macosx10.7.mpkg.
+
+2. Open the package and proceed with installation.
+
+Installing on Mac OS X Lion from the source distribution
+--------------------------------------------------------
+
+1. you will need swig 1.3.31 or later (http://www.swig.org); gcc and pcsc-lite
+are available out of the box on Max OS X Leopard
+
+2. download the source distribution
+
+The source distribution is available as pyscard-1.6.14.zip or
+pyscard-1.6.14.tar.gz.
+
+3. untar or unzip the source distribution
+
+4. from a terminal, type the following:
+
+sudo python setup.py build_ext install
+
+This will build pyscard and install it in the site-packages directory of
+your python distribution, e.g. /Library/Python/2.7/lib/site-packages/smartcard
 
 
 -------------------------------------------------------------------------------
 Developer documentation, unit tests and examples
 -------------------------------------------------------------------------------
-The developer documentation is in the smartcard/doc directory of the source
-distribution.
+The developer documentation is in the smartcard/doc directory of the
+source distribution.
 
-Examples are located in the smartcard/Examples directory, and the pyunit unit
-tests in the smartcard/test directory.
+Examples are located in the smartcard/Examples directory, and the pyunit
+unit tests in the smartcard/test directory.
 
 -------------------------------------------------------------------------------
 Build instructions for packagers
@@ -224,18 +261,18 @@ Build instructions for packagers
 Building a binary distribution for Windows
 ------------------------------------------
 
-To build a binary distribution from the source distribution, you will need a C
-compiler and swig 1.3.31 (same requirements as for installing from the source
-distribution).
+To build a binary distribution from the source distribution, you will
+need a C compiler and swig 1.3.31 (same requirements as for installing
+from the source distribution).
 
-In the root directory of the source distribution, execute the following command
-in a console:
+In the root directory of the source distribution, execute the following
+command in a console:
 
 setup.py build_ext bdist_msi
 setup.py build_ext bdist_wininst
 
-This will build the msi installer and self-executable installer in the dist
-directory, with names similar to pyscard-1.6.14.win32-py2.5.msi and
+This will build the msi installer and self-executable installer in the
+dist directory, with names similar to pyscard-1.6.14.win32-py2.5.msi and
 pyscard-1.6.14.win32-py2.5.exe for python 2.5, and
 pyscard-1.6.14.win32-py2.4.msi and pyscard-1.6.14.win32-py2.4.exe for
 python 2.4.
@@ -243,9 +280,9 @@ python 2.4.
 Building a binary distribution for linux
 ----------------------------------------
 
-To build a binary distribution from the source distribution, you will need
-gcc, swig 1.3.31 and pcsc-lite (same requirements as for installing from the
-source distribution).
+To build a binary distribution from the source distribution, you will
+need gcc, swig 1.3.31 and pcsc-lite (same requirements as for installing
+from the source distribution).
 
 In the root directory of the source distribution, execute the following
 command in a terminal:
@@ -259,8 +296,8 @@ Building a rpm distribution for linux
 ----------------------------------------
 
 To build a rpm distribution from the source distribution, you will need
-gcc, swig 1.3.31 and pcsc-lite (same requirements as for installing from the
-source distribution).
+gcc, swig 1.3.31 and pcsc-lite (same requirements as for installing from
+the source distribution).
 
 In the root directory of the source distribution, execute the following
 command in a terminal:
@@ -279,14 +316,15 @@ similar to pyscard-1.6.14-1.i386.rpm.
 Building a binary distribution for Mac OS X Tiger
 -------------------------------------------------
 
-To build a binary distribution from the source distribution, you will need
-swig 1.3.31 (same requirements as for installing from the source distribution)
-and bdist_mpkg 0.4.3 (http://cheeseshop.python.org/pypi/bdist_mpkg/).
+To build a binary distribution from the source distribution, you will
+need swig 1.3.31 (same requirements as for installing from the source
+distribution) and bdist_mpkg 0.4.3
+(http://cheeseshop.python.org/pypi/bdist_mpkg/).
 
 
-If you are using the pre-installed python 2.3 distribution, in the root directory
-of the source distribution, i.e. in the src directory, execute the following commands
-in a terminal:
+If you are using the pre-installed python 2.3 distribution, in the root
+directory of the source distribution, i.e. in the src directory, execute
+the following commands in a terminal:
 
 python setup.py build_ext
 /System/Library/Frameworks/Python.Framework/Versions/2.3/bin/bdist_mpkg setup.py
@@ -305,9 +343,10 @@ This will build package pyscard-1.6.14-py-2.6-macosx10.4.mpkg.
 Building a binary distribution for Mac OS X Leopard
 ---------------------------------------------------
 
-To build a binary distribution from the source distribution, you will need
-swig 1.3.31 (same requirements as for installing from the source distribution)
-and bdist_mpkg 0.4.3 (http://cheeseshop.python.org/pypi/bdist_mpkg/).
+To build a binary distribution from the source distribution, you will
+need swig 1.3.31 (same requirements as for installing from the source
+distribution) and bdist_mpkg 0.4.3
+(http://cheeseshop.python.org/pypi/bdist_mpkg/).
 
 Apply the following patch to tools.py of bdist_mpkg package:
 
@@ -336,14 +375,16 @@ diff -rNu bdist_mpkg-0.4.3/bdist_mpkg/tools.py bdist_mpkg-0.4.3.leopard/bdist_mp
 +    raise ValueError('group %s not found' % (name,))
 ===== patch end ========
 
-This patch is required since Mac OS X Leopard does not have the nidump command any more.
+This patch is required since Mac OS X Leopard does not have the nidump
+command any more.
 
-Install bdist_mpkg by executing the bdist_mpkg setup.py script with build and
-install as arguments, i.e. from the root directory of the bdist_mpkg
-source distribution enter: python setup.py build install.
+Install bdist_mpkg by executing the bdist_mpkg setup.py script with
+build and install as arguments, i.e. from the root directory of the
+bdist_mpkg source distribution enter: python setup.py build install.
 
-For python 2.5, from the root directory of the pyscard source distribution,
-i.e. in the src directory, execute the following commands in a terminal:
+For python 2.5, from the root directory of the pyscard source
+distribution, i.e. in the src directory, execute the following commands
+in a terminal:
 
 python setup.py build_ext
 /Library/Frameworks/Python.Framework/Versions/2.5/Extras/bin/bdist_mpkg setup.py
