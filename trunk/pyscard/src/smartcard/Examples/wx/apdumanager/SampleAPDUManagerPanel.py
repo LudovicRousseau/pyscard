@@ -59,38 +59,38 @@ class SampleAPDUManagerPanel(wx.Panel, SimpleSCardAppEventObserver):
         """Called when a card is activated by double-clicking on the card or reader tree control or toolbar.
         In this sample, we just connect to the card on the first activation."""
         SimpleSCardAppEventObserver.OnActivateCard(self, card)
-        self.feedbacktext.SetLabel('Activated card: ' + `card`)
+        self.feedbacktext.SetLabel('Activated card: ' + repr(card))
         self.transmitbutton.Enable()
 
     def OnActivateReader(self, reader):
         """Called when a reader is activated by double-clicking on the reader tree control or toolbar."""
         SimpleSCardAppEventObserver.OnActivateReader(self, reader)
-        self.feedbacktext.SetLabel('Activated reader: ' + `reader`)
+        self.feedbacktext.SetLabel('Activated reader: ' + repr(reader))
         self.transmitbutton.Disable()
 
     def OnDeactivateCard(self, card):
         """Called when a card is deactivated in the reader tree control or toolbar."""
         SimpleSCardAppEventObserver.OnActivateCard(self, card)
-        self.feedbacktext.SetLabel('Deactivated card: ' + `card`)
+        self.feedbacktext.SetLabel('Deactivated card: ' + repr(card))
         self.transmitbutton.Disable()
 
     def OnDeselectCard(self, card):
         """Called when a card is selected by clicking on the card or reader tree control or toolbar."""
         SimpleSCardAppEventObserver.OnSelectCard(self, card)
-        self.feedbacktext.SetLabel('Deselected card: ' + `card`)
+        self.feedbacktext.SetLabel('Deselected card: ' + repr(card))
         self.transmitbutton.Disable()
 
     def OnSelectCard(self, card):
         """Called when a card is selected by clicking on the card or reader tree control or toolbar."""
         SimpleSCardAppEventObserver.OnSelectCard(self, card)
-        self.feedbacktext.SetLabel('Selected card: ' + `card`)
+        self.feedbacktext.SetLabel('Selected card: ' + repr(card))
         if hasattr(self.selectedcard, 'connection'):
             self.transmitbutton.Enable()
 
     def OnSelectReader(self, reader):
         """Called when a reader is selected by clicking on the reader tree control or toolbar."""
         SimpleSCardAppEventObserver.OnSelectReader(self, reader)
-        self.feedbacktext.SetLabel('Selected reader: ' + `reader`)
+        self.feedbacktext.SetLabel('Selected reader: ' + repr(reader))
         self.transmitbutton.Disable()
 
     # callbacks
