@@ -95,8 +95,7 @@ class ReaderToolbar(wx.ToolBar):
         self.AddSeparator()
         self.AddSimpleTool(
             20,
-            bmpCard, "
-            Connect to smartcard",
+            bmpCard, "Connect to smartcard",
             "Connect to smart card")
         self.AddSeparator()
 
