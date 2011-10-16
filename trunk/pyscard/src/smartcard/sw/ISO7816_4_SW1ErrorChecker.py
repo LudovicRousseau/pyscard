@@ -70,7 +70,7 @@ class ISO7816_4_SW1ErrorChecker(ErrorChecker):
         @param data:       apdu response data
         @param sw1, sw2:   apdu data status words
         """
-        if iso7816_4SW1.has_key(sw1):
+        if sw1 in iso7816_4SW1:
             exception = iso7816_4SW1[sw1]
             raise exception(data, sw1, sw2)
 

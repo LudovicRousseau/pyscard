@@ -104,7 +104,7 @@ class op21_ErrorChecker(ErrorChecker):
         @param sw1, sw2:   apdu data status words
 
         Derived classes must raise a L{smartcard.sw.SWException} upon error."""
-        if op21_SW.has_key(sw1):
+        if sw1 in op21_SW:
             exception, sw2dir = op21_SW[sw1]
             if type(sw2dir) == type({}):
                 try:
