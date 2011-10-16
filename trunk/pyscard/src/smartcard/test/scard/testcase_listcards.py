@@ -135,7 +135,7 @@ if 'winscard' == resourceManager:
                 expectedPrimaryProviderResult = {
                         'dummycard': [0, self.dummycardguid1],
                         'Identity Device (Microsoft Generic Profile)': [2, None],
-                        'Identity Device (NIST SP 800-73 [PIV])': [2, None] }
+                        'Identity Device (NIST SP 800-73 [PIV])': [2, None]}
             else:
                 expectedPrimaryProviderResult = {
                         'dummycard': [0, self.dummycardguid1],
@@ -156,7 +156,7 @@ if 'winscard' == resourceManager:
                 expectedProviderCSPResult = {
                         'dummycard': [2, None],
                         'Identity Device (Microsoft Generic Profile)': [0, 'Microsoft Base Smart Card Crypto Provider'],
-                        'Identity Device (NIST SP 800-73 [PIV])': [0, 'Microsoft Base Smart Card Crypto Provider'] }
+                        'Identity Device (NIST SP 800-73 [PIV])': [0, 'Microsoft Base Smart Card Crypto Provider']}
             else:
                 expectedProviderCSPResult = {
                         'dummycard': [2, None],
