@@ -30,7 +30,7 @@ import py2exe
 
 from smartcard.wx import ICO_SMARTCARD, ICO_READER
 
-Mydata_files = [('images', ['images/mysmartcard.ico', ICO_SMARTCARD, ICO_READER ])]
+Mydata_files = [('images', ['images/mysmartcard.ico', ICO_SMARTCARD, ICO_READER])]
 
 
 setup(windows=['apdumanager.py'],
