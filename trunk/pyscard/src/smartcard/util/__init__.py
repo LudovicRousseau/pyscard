@@ -94,7 +94,7 @@ def toBytes(bytestring):
     try:
         return reduce(lambda x, y: x + [int(y, 16)], unpack('2s' * (len(packedstring) / 2), packedstring), [])
     except:
-        raise TypeError, 'not a string representing a list of bytes'
+        raise TypeError('not a string representing a list of bytes')
 
 
 """GSM3.38 character conversion table."""
@@ -195,7 +195,7 @@ def toHexString(bytes=[], format=0):
         pass
 
     if type(bytes) is not list:
-        raise TypeError, 'not a list of bytes'
+        raise TypeError('not a list of bytes')
 
     if bytes == None or bytes == []:
         return ""

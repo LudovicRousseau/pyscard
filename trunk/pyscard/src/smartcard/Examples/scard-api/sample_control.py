@@ -31,17 +31,17 @@ from smartcard.util import toBytes
 try:
     hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
     if hresult != SCARD_S_SUCCESS:
-        raise error, 'Failed to establish context: ' + SCardGetErrorMessage(hresult)
+        raise error('Failed to establish context: ' + SCardGetErrorMessage(hresult))
     print 'Context established!'
 
     try:
         hresult, readers = SCardListReaders(hcontext, [])
         if hresult != SCARD_S_SUCCESS:
-            raise error, 'Failed to list readers: ' + SCardGetErrorMessage(hresult)
+            raise error('Failed to list readers: ' + SCardGetErrorMessage(hresult))
         print 'PCSC Readers:', readers
 
         if len(readers) < 1:
-            raise error, 'No smart card readers'
+            raise error('No smart card readers')
 
         for zreader in readers:
 
@@ -51,7 +51,7 @@ try:
                 hresult, hcard, dwActiveProtocol = SCardConnect(
                     hcontext, zreader, SCARD_SHARE_DIRECT, SCARD_PROTOCOL_T0)
                 if hresult != SCARD_S_SUCCESS:
-                    raise error, 'Unable to connect: ' + SCardGetErrorMessage(hresult)
+                    raise error('Unable to connect: ' + SCardGetErrorMessage(hresult))
                 print 'Connected with active protocol', dwActiveProtocol
 
                 try:
@@ -59,7 +59,7 @@ try:
                         # IOCTL_SMARTCARD_GET_ATTRIBUTE = SCARD_CTL_CODE(2)
                         hresult, response = SCardControl(hcard, SCARD_CTL_CODE(2), toBytes("%.8lx" % SCARD_ATTR_VENDOR_NAME))
                         if hresult != SCARD_S_SUCCESS:
-                            raise error, 'SCardControl failed: ' + SCardGetErrorMessage(hresult)
+                            raise error('SCardControl failed: ' + SCardGetErrorMessage(hresult))
                         r = ""
                         for i in xrange(len(response)):
                             r += "%c" % response[i]
@@ -68,7 +68,7 @@ try:
                         # get firmware on Gemplus readers
                         hresult, response = SCardControl(hcard, SCARD_CTL_CODE(1), [0x02])
                         if hresult != SCARD_S_SUCCESS:
-                            raise error, 'SCardControl failed: ' + SCardGetErrorMessage(hresult)
+                            raise error('SCardControl failed: ' + SCardGetErrorMessage(hresult))
                         r = ""
                         for i in xrange(len(response)):
                             r += "%c" % response[i]
@@ -76,7 +76,7 @@ try:
                 finally:
                     hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
                     if hresult != SCARD_S_SUCCESS:
-                        raise error, 'Failed to disconnect: ' + SCardGetErrorMessage(hresult)
+                        raise error('Failed to disconnect: ' + SCardGetErrorMessage(hresult))
                     print 'Disconnected'
 
             except error, (message):
@@ -85,7 +85,7 @@ try:
     finally:
         hresult = SCardReleaseContext(hcontext)
         if hresult != SCARD_S_SUCCESS:
-            raise error, 'Failed to release context: ' + SCardGetErrorMessage(hresult)
+            raise error('Failed to release context: ' + SCardGetErrorMessage(hresult))
         print 'Released context.'
 
 except error, e:
