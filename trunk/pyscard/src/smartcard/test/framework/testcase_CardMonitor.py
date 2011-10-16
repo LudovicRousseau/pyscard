@@ -63,7 +63,7 @@ class printobserver(CardObserver):
             foundcards[toHexString(card.atr)] = 1
         for atr in expectedATRs:
             if [] != atr and {} != foundcards:
-                self.testcase.assert_(foundcards.has_key(toHexString(atr)))
+                self.testcase.assert_(toHexString(atr) in foundcards)
 
 
 class testthread(threading.Thread):

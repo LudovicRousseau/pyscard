@@ -58,28 +58,28 @@ class testcase_readers(unittest.TestCase):
         for reader in readers():
             foundreaders[str(reader)] = 1
         for reader in expectedReaders:
-            self.assert_(foundreaders.has_key(reader))
+            self.assert_(reader in foundreaders)
 
     def testcase_legacyreaders(self):
         foundreaders = {}
         for reader in listReaders():
             foundreaders[reader] = 1
         for reader in expectedReaders:
-            self.assert_(foundreaders.has_key(reader))
+            self.assert_(reader in foundreaders)
 
     def testcase_readers_in_readergroup(self):
         foundreaders = {}
         for reader in readers(['SCard$DefaultReaders']):
             foundreaders[str(reader)] = 1
         for reader in expectedReaders:
-            self.assert_(foundreaders.has_key(reader))
+            self.assert_(reader in foundreaders)
 
     def testcase_readers_in_readergroup_empty(self):
         foundreaders = {}
         for reader in readers([]):
             foundreaders[str(reader)] = 1
         for reader in expectedReaders:
-            self.assert_(foundreaders.has_key(reader))
+            self.assert_(reader in foundreaders)
 
     if 'winscard' == resourceManager:
 
@@ -88,7 +88,7 @@ class testcase_readers(unittest.TestCase):
             for reader in readers(['dummy$group']):
                 foundreaders[reader] = 1
             for reader in expectedReaders:
-                self.assert_(not foundreaders.has_key(reader))
+                self.assert_(not reader in foundreaders)
             self.assertEquals(0, len(foundreaders))
 
     def testcase_readergroups(self):
@@ -96,7 +96,7 @@ class testcase_readers(unittest.TestCase):
         for readergroup in readergroups():
             foundreadergroups[readergroup] = 1
         for readergroup in expectedReaderGroups:
-            self.assert_(foundreadergroups.has_key(readergroup))
+            self.assert_(readergroup in foundreadergroups)
 
 
 def suite():

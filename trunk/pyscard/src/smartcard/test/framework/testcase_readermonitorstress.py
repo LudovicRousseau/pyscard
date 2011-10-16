@@ -85,7 +85,7 @@ class readerInsertionThread(threading.Thread):
                 mutexvreaders.acquire()
                 if newreader not in virtualreaders:
                     virtualreaders.append(newreader)
-                    if insertedreaderstats.has_key(newreader):
+                    if newreader in insertedreaderstats:
                         insertedreaderstats[newreader] += 1
                     else:
                         insertedreaderstats[newreader] = 1
@@ -109,7 +109,7 @@ class readerRemovalThread(threading.Thread):
                 if virtualreaders:
                     oldreader = random.choice(virtualreaders)
                     virtualreaders.remove(oldreader)
-                    if removedreaderstats.has_key(oldreader):
+                    if oldreader in removedreaderstats:
                         removedreaderstats[oldreader] += 1
                     else:
                         removedreaderstats[oldreader] = 1
@@ -130,12 +130,12 @@ class countobserver(ReaderObserver):
     def update(self, observable, (addedreaders, removedreaders)):
         self.countnotified += 1
         for newreader in addedreaders:
-            if self.insertedreaderstats.has_key(newreader):
+            if newreader in self.insertedreaderstats:
                 self.insertedreaderstats[newreader] += 1
             else:
                 self.insertedreaderstats[newreader] = 1
         for oldreader in removedreaders:
-            if self.removedreaderstats.has_key(oldreader):
+            if oldreader in self.removedreaderstats:
                 self.removedreaderstats[oldreader] += 1
             else:
                 self.removedreaderstats[oldreader] = 1

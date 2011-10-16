@@ -62,7 +62,7 @@ class testcase_locatecards(unittest.TestCase):
         for reader in readers:
             foundReaders[reader] = 1
         for reader in expectedReaders:
-            self.assert_(foundReaders.has_key(reader))
+            self.assert_(reader in foundReaders)
 
         if 'winscard' == resourceManager:
             hresult, cards = SCardListCards(self.hcontext, [], [])
@@ -79,7 +79,7 @@ class testcase_locatecards(unittest.TestCase):
             for reader in expectedReaders:
                 dictexpectedreaders[reader] = 1
             for reader, eventstate, atr in newstates:
-                if dictexpectedreaders.has_key(reader) and [] != expectedATRinReader[reader]:
+                if reader in dictexpectedreaders and [] != expectedATRinReader[reader]:
                     self.assertEquals(expectedATRinReader[reader], atr)
                     self.assert_(eventstate & SCARD_STATE_PRESENT)
                     self.assert_(eventstate & SCARD_STATE_CHANGED)
@@ -101,7 +101,7 @@ class testcase_locatecards(unittest.TestCase):
             for reader in expectedReaders:
                 dictexpectedreaders[reader] = 1
             for reader, eventstate, atr in newstates:
-                if dictexpectedreaders.has_key(reader) and [] != expectedATRinReader[reader]:
+                if reader in dictexpectedreaders and [] != expectedATRinReader[reader]:
                     self.assertEquals(expectedATRinReader[reader], atr)
                     self.assert_(eventstate & SCARD_STATE_PRESENT)
                     self.assert_(eventstate & SCARD_STATE_CHANGED)

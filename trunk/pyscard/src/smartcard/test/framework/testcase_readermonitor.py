@@ -62,7 +62,7 @@ class printobserver(ReaderObserver):
             foundreaders[str(reader)] = 1
         if {} != foundreaders:
             for reader in expectedReaders:
-                self.testcase.assert_(foundreaders.has_key(reader))
+                self.testcase.assert_(reader in foundreaders)
 
 
 class testthread(threading.Thread):

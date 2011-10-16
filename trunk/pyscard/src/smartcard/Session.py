@@ -58,7 +58,7 @@ class Session:
         if readerName == None:
             if len(readers()) > 0:
                 self.reader = readers()[0]
-                self.readerName = `self.reader`
+                self.readerName = repr(self.reader)
             else:
                 raise NoReadersException()
 
@@ -68,7 +68,7 @@ class Session:
             for reader in readers():
                 if readerName == str(reader):
                     self.reader = reader
-                    self.readerName = `self.reader`
+                    self.readerName = repr(self.reader)
 
         try:
             self.reader

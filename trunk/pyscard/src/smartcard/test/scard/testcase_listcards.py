@@ -128,7 +128,7 @@ if 'winscard' == resourceManager:
             for i in xrange(len(cards)):
                 foundCards[cards[i]] = 1
             for i in expectedCards:
-                self.assert_(foundCards.has_key(i))
+                self.assert_(i in foundCards)
 
             # dummycard has a primary provider, other cards have no primary provider
             if 'Windows-7-6.1.7600'==platform.platform():
@@ -146,7 +146,7 @@ if 'winscard' == resourceManager:
             for i in xrange(len(cards)):
                 hresult, providername = SCardGetCardTypeProviderName(
                     self.hcontext, cards[i], SCARD_PROVIDER_PRIMARY)
-                if expectedPrimaryProviderResult.has_key(cards[i]):
+                if cards[i] in expectedPrimaryProviderResult:
                     self.assertEquals(hresult, expectedPrimaryProviderResult[cards[i]][0])
                     if hresult == 0:
                         self.assertEquals(providername, smartcard.guid.GUIDToStr(expectedPrimaryProviderResult[cards[i]][1]))
@@ -167,7 +167,7 @@ if 'winscard' == resourceManager:
             for i in xrange(len(cards)):
                 hresult, providername = SCardGetCardTypeProviderName(
                     self.hcontext, cards[i], SCARD_PROVIDER_CSP)
-                if expectedProviderCSPResult.has_key(cards[i]):
+                if cards[i] in expectedProviderCSPResult:
                     self.assertEquals(hresult, expectedProviderCSPResult[cards[i]][0])
                     self.assertEquals(providername, expectedProviderCSPResult[cards[i]][1])
 
