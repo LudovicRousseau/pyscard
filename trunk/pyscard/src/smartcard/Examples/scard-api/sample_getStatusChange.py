@@ -88,7 +88,6 @@ try:
         for i in newstates:
             printstate(i)
 
-
     finally:
         hresult = SCardReleaseContext(hcontext)
         if hresult != SCARD_S_SUCCESS:
