@@ -79,7 +79,7 @@ if 'winscard' == resourceManager:
         # locate a known card
         # Cryptoflex 8k v2 is present in standard Windows 2000
         def test_listcryptoflexbyatr(self):
-            if 'Windows-7-6.1.7600'==platform.platform():
+            if 'Windows-7-6.1.7600' == platform.platform():
                 dmyATR = [0x3B, 0x75, 0x94, 0x00, 0x00, 0x62, 0x02, 0x02, 0x01, 0x01]
                 dmyName = ['dummycard']
                 hresult, card = SCardListCards(self.hcontext, dmyATR, [])
@@ -112,7 +112,7 @@ if 'winscard' == resourceManager:
         # locate all cards and interfaces in the system
         def test_listallcards(self):
 
-            if 'Windows-7-6.1.7600'==platform.platform():
+            if 'Windows-7-6.1.7600' == platform.platform():
                 expectedCards = ['Identity Device (Microsoft Generic Profile)',
                                  'Identity Device (NIST SP 800-73 [PIV])']
             else:
@@ -131,7 +131,7 @@ if 'winscard' == resourceManager:
                 self.assert_(i in foundCards)
 
             # dummycard has a primary provider, other cards have no primary provider
-            if 'Windows-7-6.1.7600'==platform.platform():
+            if 'Windows-7-6.1.7600' == platform.platform():
                 expectedPrimaryProviderResult = {
                         'dummycard': [0, self.dummycardguid1],
                         'Identity Device (Microsoft Generic Profile)': [2, None],
@@ -152,7 +152,7 @@ if 'winscard' == resourceManager:
                         self.assertEquals(providername, smartcard.guid.GUIDToStr(expectedPrimaryProviderResult[cards[i]][1]))
 
             # dummycard has no CSP, other cards have a CSP
-            if 'Windows-7-6.1.7600'==platform.platform():
+            if 'Windows-7-6.1.7600' == platform.platform():
                 expectedProviderCSPResult = {
                         'dummycard': [2, None],
                         'Identity Device (Microsoft Generic Profile)': [0, 'Microsoft Base Smart Card Crypto Provider'],
