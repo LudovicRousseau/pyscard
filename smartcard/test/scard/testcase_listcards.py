@@ -113,7 +113,7 @@ if 'winscard' == resourceManager:
         def test_listallcards(self):
 
             if 'Windows-7-6.1.7600'==platform.platform():
-                expectedCards = [ 'Identity Device (Microsoft Generic Profile)', 
+                expectedCards = [ 'Identity Device (Microsoft Generic Profile)',
                                   'Identity Device (NIST SP 800-73 [PIV])' ]
             else:
                 # dummycard has been introduced in the test setup and
