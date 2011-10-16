@@ -55,11 +55,11 @@ if 'winscard' == resourceManager:
                 if hresult == ERROR_ALREADY_EXISTS:
                     print 'Card already exists'
                 else:
-                    raise error, 'Failed to introduce card type: ' + SCardGetErrorMessage(hresult)
+                    raise error('Failed to introduce card type: ' + SCardGetErrorMessage(hresult))
 
             hresult, cards = SCardListCards(hcontext, [], [])
             if hresult != SCARD_S_SUCCESS:
-                raise error, 'Failure to list cards'
+                raise error('Failure to list cards')
             print 'Cards:', cards
 
             readerstates = []
@@ -101,7 +101,7 @@ if 'winscard' == resourceManager:
             hresult = SCardForgetCardType(hcontext, znewcardName)
             hresult = SCardReleaseContext(hcontext)
             if hresult != SCARD_S_SUCCESS:
-                raise error, 'Failed to release context: ' + SCardGetErrorMessage(hresult)
+                raise error('Failed to release context: ' + SCardGetErrorMessage(hresult))
             print 'Released context.'
 
     except error, e:

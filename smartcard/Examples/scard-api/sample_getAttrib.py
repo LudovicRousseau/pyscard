@@ -93,17 +93,17 @@ def printAttribute(attrib, value):
 try:
     hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
     if hresult != SCARD_S_SUCCESS:
-        raise error, 'Faile to establish context: ' + SCardGetErrorMessage(hresult)
+        raise error('Failed to establish context: ' + SCardGetErrorMessage(hresult))
     print 'Context established!'
 
     try:
         hresult, readers = SCardListReaders(hcontext, [])
         if hresult != SCARD_S_SUCCESS:
-            raise error, 'Failed to list readers: ' + SCardGetErrorMessage(hresult)
+            raise error('Failed to list readers: ' + SCardGetErrorMessage(hresult))
         print 'PCSC Readers:', readers
 
         if len(readers) < 1:
-            raise error, 'No smart card readers'
+            raise error('No smart card readers')
         print 'Trying to retreive attributes of', readers[0]
 
         for reader in readers:
@@ -127,13 +127,13 @@ try:
                 finally:
                     hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
                     if hresult != SCARD_S_SUCCESS:
-                        raise error, 'Failed to disconnect: ' + SCardGetErrorMessage(hresult)
+                        raise error('Failed to disconnect: ' + SCardGetErrorMessage(hresult))
                     print 'Disconnected'
 
     finally:
         hresult = SCardReleaseContext(hcontext)
         if hresult != SCARD_S_SUCCESS:
-            raise error, 'Failed to release context: ' + SCardGetErrorMessage(hresult)
+            raise error('Failed to release context: ' + SCardGetErrorMessage(hresult))
         print 'Released context.'
 
 except Exception, e:

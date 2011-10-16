@@ -57,24 +57,24 @@ if 'winscard' == resourceManager:
             hresult = SCardIntroduceCardType(hcontext, znewcardName, znewcardPrimGuid,
                 znewcardPrimGuid + znewcardSecGuid, znewcardATR, znewcardMask)
             if hresult != SCARD_S_SUCCESS:
-                raise error, 'Failed to introduce card type: ' + SCardGetErrorMessage(hresult)
+                raise error('Failed to introduce card type: ' + SCardGetErrorMessage(hresult))
 
             # list card interfaces
             hresult, interfaces = SCardListInterfaces(hcontext, znewcardName)
             if hresult != SCARD_S_SUCCESS:
-                raise error, 'Failed to list interfaces: ' + SCardGetErrorMessage(hresult)
+                raise error('Failed to list interfaces: ' + SCardGetErrorMessage(hresult))
             for i in interfaces:
                 print 'Interface for ' + znewcardName + ' :', smartcard.guid.GUIDToStr(i)
 
             print 'Forgeting card ' + znewcardName
             hresult = SCardForgetCardType(hcontext, znewcardName)
             if hresult != SCARD_S_SUCCESS:
-                raise error, 'Failed to remove card type: ' + SCardGetErrorMessage(hresult)
+                raise error('Failed to remove card type: ' + SCardGetErrorMessage(hresult))
 
         finally:
             hresult2 = SCardReleaseContext(hcontext)
             if hresult2 != SCARD_S_SUCCESS:
-                raise error, 'Failed to release context: ' + SCardGetErrorMessage(hresult)
+                raise error('Failed to release context: ' + SCardGetErrorMessage(hresult))
             print 'Released context.'
 
     except error:
