@@ -102,7 +102,7 @@ try:
         elif 'pcsclite' == resourceManager:
             hresult, readers = SCardListReaders(hcontext, readerGroups)
             if hresult != SCARD_S_SUCCESS:
-                raise error, 'Failed to list readers in groups ' + `readerGroups` + ' : ' + SCardGetErrorMessage(hresult)
+                raise error, 'Failed to list readers in groups ' + repr(readerGroups) + ' : ' + SCardGetErrorMessage(hresult)
             print 'PCSC Readers in reader group', readerGroups, ':', readers
 
 
