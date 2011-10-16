@@ -46,7 +46,7 @@ class Card:
         """Return True if self==other (same reader and same atr).
            Return False otherwise."""
         if isinstance(other, Card):
-            return (self.atr == other.atr and `self.reader` == `other.reader`)
+            return (self.atr == other.atr and repr(self.reader) == repr(other.reader))
         else:
             return False
 
