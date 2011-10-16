@@ -40,5 +40,3 @@ setup(  windows=['apdumanager.py'],
             "py2exe":{"dll_excludes":["MSVCP90.dll"]}
         }
     )
-
-

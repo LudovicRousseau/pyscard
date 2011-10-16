@@ -105,7 +105,6 @@ try:
                 raise error, 'Failed to list readers in groups ' + repr(readerGroups) + ' : ' + SCardGetErrorMessage(hresult)
             print 'PCSC Readers in reader group', readerGroups, ':', readers
 
-
     finally:
         hresult = SCardReleaseContext(hcontext)
         if hresult != SCARD_S_SUCCESS:

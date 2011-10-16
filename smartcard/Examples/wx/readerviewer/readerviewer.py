@@ -40,7 +40,6 @@ def module_path():
     """ This will get us the program's directory,
     even if we are frozen using py2exe. From WhereAmI page on py2exe wiki."""
 
-
     if we_are_frozen():
         return os.path.dirname( unicode(sys.executable, sys.getfilesystemencoding( )) )
 

@@ -40,5 +40,3 @@ setup(  windows=['readerviewer.py'],
             "py2exe":{"dll_excludes":["MSVCP90.dll"]}
         }
     )
-
-

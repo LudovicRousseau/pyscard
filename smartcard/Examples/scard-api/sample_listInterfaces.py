@@ -59,7 +59,6 @@ if 'winscard' == resourceManager:
             if hresult != SCARD_S_SUCCESS:
                 raise error, 'Failed to introduce card type: ' + SCardGetErrorMessage(hresult)
 
-
             # list card interfaces
             hresult, interfaces = SCardListInterfaces(hcontext, znewcardName)
             if hresult != SCARD_S_SUCCESS:
