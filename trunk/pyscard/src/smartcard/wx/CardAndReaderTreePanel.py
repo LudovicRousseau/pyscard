@@ -47,20 +47,26 @@ class BaseCardTreeCtrl(wx.TreeCtrl):
                   style=0,
                   clientpanel=None):
         """Constructor. Initializes a smartcard or reader tree control."""
-        wx.TreeCtrl.__init__(self, parent, ID, pos, size, wx.TR_SINGLE | wx.TR_NO_BUTTONS)
+        wx.TreeCtrl.__init__(
+            self, parent, ID, pos, size, wx.TR_SINGLE | wx.TR_NO_BUTTONS)
 
         self.clientpanel = clientpanel
         self.parent = parent
 
         isz = (16, 16)
         il = wx.ImageList(isz[0], isz[1])
-        self.capindex = il.Add(wx.ArtProvider_GetBitmap(wx.ART_HELP_BOOK, wx.ART_OTHER, isz))
-        self.fldrindex = il.Add(wx.ArtProvider_GetBitmap(wx.ART_FOLDER, wx.ART_OTHER, isz))
-        self.fldropenindex = il.Add(wx.ArtProvider_GetBitmap(wx.ART_FILE_OPEN, wx.ART_OTHER, isz))
+        self.capindex = il.Add(
+            wx.ArtProvider_GetBitmap(wx.ART_HELP_BOOK, wx.ART_OTHER, isz))
+        self.fldrindex = il.Add
+        (wx.ArtProvider_GetBitmap(wx.ART_FOLDER, wx.ART_OTHER, isz))
+        self.fldropenindex = il.Add(
+            wx.ArtProvider_GetBitmap(wx.ART_FILE_OPEN, wx.ART_OTHER, isz))
         if None != ICO_SMARTCARD:
-            self.cardimageindex = il.Add(wx.Bitmap(ICO_SMARTCARD, wx.BITMAP_TYPE_ICO))
+            self.cardimageindex = il.Add(
+                wx.Bitmap(ICO_SMARTCARD, wx.BITMAP_TYPE_ICO))
         if None != ICO_READER:
-            self.readerimageindex = il.Add(wx.Bitmap(ICO_READER, wx.BITMAP_TYPE_ICO))
+            self.readerimageindex = il.Add(
+                wx.Bitmap(ICO_READER, wx.BITMAP_TYPE_ICO))
         self.il = il
         self.SetImageList(self.il)
 
@@ -88,7 +94,8 @@ class CardTreeCtrl(BaseCardTreeCtrl):
         self.root = self.AddRoot("Smartcards")
         self.SetPyData(self.root, None)
         self.SetItemImage(self.root, self.fldrindex, wx.TreeItemIcon_Normal)
-        self.SetItemImage(self.root, self.fldropenindex, wx.TreeItemIcon_Expanded)
+        self.SetItemImage(
+            self.root, self.fldropenindex, wx.TreeItemIcon_Expanded)
         self.Expand(self.root)
 
     def OnAddCards(self, addedcards):
@@ -99,8 +106,10 @@ class CardTreeCtrl(BaseCardTreeCtrl):
             childCard = self.AppendItem(parentnode, toHexString(cardtoadd.atr))
             self.SetItemText(childCard, toHexString(cardtoadd.atr))
             self.SetPyData(childCard, cardtoadd)
-            self.SetItemImage(childCard, self.cardimageindex, wx.TreeItemIcon_Normal)
-            self.SetItemImage(childCard, self.cardimageindex, wx.TreeItemIcon_Expanded)
+            self.SetItemImage(
+                childCard, self.cardimageindex, wx.TreeItemIcon_Normal)
+            self.SetItemImage(
+                childCard, self.cardimageindex, wx.TreeItemIcon_Expanded)
             self.Expand(childCard)
         self.Expand(self.root)
         self.EnsureVisible(self.root)
@@ -113,7 +122,8 @@ class CardTreeCtrl(BaseCardTreeCtrl):
         for cardtoremove in removedcards:
             (childCard, cookie) = self.GetFirstChild(parentnode)
             while childCard.IsOk():
-                if self.GetItemText(childCard) == toHexString(cardtoremove.atr):
+                if self.GetItemText(childCard) == \
+                        toHexString(cardtoremove.atr):
                     self.Delete(childCard)
                 (childCard, cookie) = self.GetNextChild(parentnode, cookie)
         self.Expand(self.root)
@@ -134,23 +144,33 @@ class ReaderTreeCtrl(BaseCardTreeCtrl):
                   clientpanel=None):
         """Constructor. Create a reader tree control."""
 
-        BaseCardTreeCtrl.__init__(self, parent, ID, pos, size,
-                                   wx.TR_SINGLE | wx.TR_NO_BUTTONS, clientpanel)
+        BaseCardTreeCtrl.__init__(
+            self,
+            parent,
+            ID,
+            pos,
+            size,
+            wx.TR_SINGLE | wx.TR_NO_BUTTONS,
+            clientpanel)
 
         self.mutex = RLock()
 
         self.root = self.AddRoot("Smartcard Readers")
         self.SetPyData(self.root, None)
-        self.SetItemImage(self.root, self.fldrindex, wx.TreeItemIcon_Normal)
-        self.SetItemImage(self.root, self.fldropenindex, wx.TreeItemIcon_Expanded)
+        self.SetItemImage(
+            self.root, self.fldrindex, wx.TreeItemIcon_Normal)
+        self.SetItemImage(
+            self.root, self.fldropenindex, wx.TreeItemIcon_Expanded)
         self.Expand(self.root)
 
     def AddATR(self, readernode, atr):
         """Add an ATR to a reader node."""
         capchild = self.AppendItem(readernode, atr)
         self.SetPyData(capchild, None)
-        self.SetItemImage(capchild, self.cardimageindex, wx.TreeItemIcon_Normal)
-        self.SetItemImage(capchild, self.cardimageindex, wx.TreeItemIcon_Expanded)
+        self.SetItemImage(
+            capchild, self.cardimageindex, wx.TreeItemIcon_Normal)
+        self.SetItemImage(
+            capchild, self.cardimageindex, wx.TreeItemIcon_Expanded)
         self.Expand(capchild)
         return capchild
 
@@ -185,18 +205,27 @@ class ReaderTreeCtrl(BaseCardTreeCtrl):
                         self.SetPyData(childCard, cardtoadd)
                         found = True
                     else:
-                        (childReader, cookie) = self.GetNextChild(parentnode, cookie)
+                        (childReader, cookie) = self.GetNextChild(
+                            parentnode, cookie)
 
                 # reader was not found, add reader node
                 # this happens when card monitoring thread signals
                 # added cards before reader monitoring thread signals
                 # added readers
                 if not found:
-                    childReader = self.AppendItem(parentnode, str(cardtoadd.reader))
+                    childReader = self.AppendItem(
+                        parentnode, str(cardtoadd.reader))
                     self.SetPyData(childReader, cardtoadd.reader)
-                    self.SetItemImage(childReader, self.readerimageindex, wx.TreeItemIcon_Normal)
-                    self.SetItemImage(childReader, self.readerimageindex, wx.TreeItemIcon_Expanded)
-                    childCard = self.AddATR(childReader, toHexString(cardtoadd.atr))
+                    self.SetItemImage(
+                        childReader,
+                        self.readerimageindex,
+                        wx.TreeItemIcon_Normal)
+                    self.SetItemImage(
+                        childReader,
+                        self.readerimageindex,
+                        wx.TreeItemIcon_Expanded)
+                    childCard = self.AddATR(
+                        childReader, toHexString(cardtoadd.atr))
                     self.SetPyData(childCard, cardtoadd)
                     self.Expand(childReader)
 
@@ -221,13 +250,22 @@ class ReaderTreeCtrl(BaseCardTreeCtrl):
                     if self.GetItemText(childReader) == str(readertoadd):
                         found = True
                     else:
-                        (childReader, cookie) = self.GetNextChild(parentnode, cookie)
+                        (childReader, cookie) = self.GetNextChild(
+                                                    parentnode, cookie)
                 if not found:
                     childReader = self.AppendItem(parentnode, str(readertoadd))
                     self.SetPyData(childReader, readertoadd)
-                    self.SetItemImage(childReader, self.readerimageindex, wx.TreeItemIcon_Normal)
-                    self.SetItemImage(childReader, self.readerimageindex, wx.TreeItemIcon_Expanded)
-                    self.AddATR(childReader, self.GetATR(readertoadd))
+                    self.SetItemImage(
+                        childReader,
+                        self.readerimageindex,
+                        wx.TreeItemIcon_Normal)
+                    self.SetItemImage(
+                        childReader,
+                        self.readerimageindex,
+                        wx.TreeItemIcon_Expanded)
+                    self.AddATR(
+                        childReader,
+                        self.GetATR(readertoadd))
                     self.Expand(childReader)
             self.Expand(self.root)
         finally:
@@ -245,12 +283,14 @@ class ReaderTreeCtrl(BaseCardTreeCtrl):
                 (childReader, cookie) = self.GetFirstChild(parentnode)
                 found = False
                 while childReader.IsOk() and not found:
-                    if self.GetItemText(childReader) == str(cardtoremove.reader):
+                    if self.GetItemText(childReader) == \
+                            str(cardtoremove.reader):
                         (childCard, cookie2) = self.GetFirstChild(childReader)
                         self.SetItemText(childCard, 'no card inserted')
                         found = True
                     else:
-                        (childReader, cookie) = self.GetNextChild(parentnode, cookie)
+                        (childReader, cookie) = \
+                            self.GetNextChild(parentnode, cookie)
             self.Expand(self.root)
         finally:
             self.mutex.release()
@@ -269,7 +309,8 @@ class ReaderTreeCtrl(BaseCardTreeCtrl):
                     if self.GetItemText(childReader) == str(readertoremove):
                         self.Delete(childReader)
                     else:
-                        (childReader, cookie) = self.GetNextChild(parentnode, cookie)
+                        (childReader, cookie) = \
+                            self.GetNextChild(parentnode, cookie)
             self.Expand(self.root)
         finally:
             self.mutex.release()
@@ -288,7 +329,8 @@ class CardAndReaderTreePanel(wx.Panel):
             self.cardtreectrl = cardtreectrl
 
         def update(self, observable, (addedcards, removedcards)):
-            """CardObserver callback that is notified when cards are added or removed."""
+            """CardObserver callback that is notified
+            when cards are added or removed."""
             self.cardtreectrl.OnRemoveCards(removedcards)
             self.cardtreectrl.OnAddCards(addedcards)
 
@@ -300,7 +342,8 @@ class CardAndReaderTreePanel(wx.Panel):
             self.readertreectrl = readertreectrl
 
         def update(self, observable, (addedreaders, removedreaders)):
-            """ReaderObserver callback that is notified when readers are added or removed."""
+            """ReaderObserver callback that is notified when
+            readers are added or removed."""
             self.readertreectrl.OnRemoveReaders(removedreaders)
             self.readertreectrl.OnAddReaders(addedreaders)
 
@@ -325,31 +368,39 @@ class CardAndReaderTreePanel(wx.Panel):
             # create the smartcard insertion observer
             self.cardtreecardobserver = self._CardObserver(self.cardtreectrl)
 
-            # register as a CardObserver; we will ge notified of added/removed cards
+            # register as a CardObserver; we will ge
+            # notified of added/removed cards
             self.cardmonitor = CardMonitor()
             self.cardmonitor.addObserver(self.cardtreecardobserver)
 
-            sizer.Add(self.cardtreectrl, flag=wx.EXPAND | wx.ALL, proportion=1)
+            sizer.Add(
+                self.cardtreectrl, flag=wx.EXPAND | wx.ALL, proportion=1)
 
         # create the reader tree
         if appstyle & smartcard.wx.SimpleSCardApp.TR_READER:
-            self.readertreectrl = ReaderTreeCtrl(self, clientpanel=clientpanel)
+            self.readertreectrl = ReaderTreeCtrl(
+                                        self, clientpanel=clientpanel)
 
             # create the reader insertion observer
-            self.readertreereaderobserver = self._ReaderObserver(self.readertreectrl)
+            self.readertreereaderobserver = self._ReaderObserver(
+                                                    self.readertreectrl)
 
-            # register as a ReaderObserver; we will ge notified of added/removed readers
+            # register as a ReaderObserver; we will ge
+            # notified of added/removed readers
             self.readermonitor = ReaderMonitor()
             self.readermonitor.addObserver(self.readertreereaderobserver)
 
             # create the smartcard insertion observer
-            self.readertreecardobserver = self._CardObserver(self.readertreectrl)
+            self.readertreecardobserver = self._CardObserver(
+                                                self.readertreectrl)
 
-            # register as a CardObserver; we will ge notified of added/removed cards
+            # register as a CardObserver; we will get
+            # notified of added/removed cards
             self.cardmonitor = CardMonitor()
             self.cardmonitor.addObserver(self.readertreecardobserver)
 
-            sizer.Add(self.readertreectrl, flag=wx.EXPAND | wx.ALL, proportion=1)
+            sizer.Add(
+                self.readertreectrl, flag=wx.EXPAND | wx.ALL, proportion=1)
 
         self.SetSizer(sizer)
         self.SetAutoLayout(True)

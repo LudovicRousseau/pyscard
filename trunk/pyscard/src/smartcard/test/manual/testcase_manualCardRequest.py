@@ -33,7 +33,8 @@ from smartcard.CardConnection import CardConnection
 from smartcard.CardMonitoring import CardMonitor, CardObserver
 from smartcard.CardRequest import CardRequest
 from smartcard.CardType import AnyCardType, ATRCardType
-from smartcard.Exceptions import CardConnectionException, CardRequestTimeoutException
+from smartcard.Exceptions import CardConnectionException
+from smartcard.Exceptions import CardRequestTimeoutException
 from smartcard.util import toHexString
 from smartcard.System import readers
 
@@ -84,14 +85,17 @@ class testcase_manualCardRequest(unittest.TestCase, CardObserver):
 
         self.removeAllCards()
         cardtype = AnyCardType()
-        cardrequest = CardRequest(timeout=None, cardType=cardtype, newcardonly=True)
+        cardrequest = CardRequest(
+            timeout=None, cardType=cardtype, newcardonly=True)
         print 're-insert any combination of cards six time'
         count = 0
         for i in range(0, 6):
             cardservice = cardrequest.waitforcard()
             try:
                 cardservice.connection.connect()
-                print toHexString(cardservice.connection.getATR()), 'in', cardservice.connection.getReader()
+                print toHexString(
+                    cardservice.connection.getATR()), \
+                    'in', cardservice.connection.getReader()
             except CardConnectionException:
                 # card was removed too fast
                 pass
@@ -108,7 +112,8 @@ class testcase_manualCardRequest(unittest.TestCase, CardObserver):
         for i in range(0, 6):
             card = random.choice(cardz)
             cardtype = ATRCardType(card.atr)
-            cardrequest = CardRequest(timeout=None, cardType=cardtype, newcardonly=True)
+            cardrequest = CardRequest(
+                timeout=None, cardType=cardtype, newcardonly=True)
             print 're-insert card', toHexString(card.atr), 'into', card.reader
             cardservice = cardrequest.waitforcard()
             print 'ok'
@@ -130,7 +135,8 @@ class testcase_manualCardRequest(unittest.TestCase, CardObserver):
 
         # make sure we have 6 time-outs
         cardtype = AnyCardType()
-        cardrequest = CardRequest(timeout=1, cardType=cardtype, newcardonly=True)
+        cardrequest = CardRequest(
+            timeout=1, cardType=cardtype, newcardonly=True)
         count = 0
         for i in range(0, 6):
             try:
@@ -152,7 +158,8 @@ class testcase_manualCardRequest(unittest.TestCase, CardObserver):
 
         # make sure insertion is within 5s
         cardtype = AnyCardType()
-        cardrequest = CardRequest(timeout=5, cardType=cardtype, newcardonly=True)
+        cardrequest = CardRequest(
+            timeout=5, cardType=cardtype, newcardonly=True)
         count = 0
         for i in range(0, 6):
             try:
@@ -167,7 +174,7 @@ class testcase_manualCardRequest(unittest.TestCase, CardObserver):
         print '\n'
         self.assertEquals(6, count)
 
-    def testcase_CardRequestNewCardAnyCardTypeSpecificReaderNotPresentInfiniteTimeOut(self):
+    def testcase_CardRequestNewCardInReaderNotPresentInfiniteTimeOut(self):
         """Test smartcard.CardRequest for any new card in a specific
         reader not present without time-out."""
 
@@ -183,11 +190,17 @@ class testcase_manualCardRequest(unittest.TestCase, CardObserver):
             _readerz.remove(reader)
 
         cardtype = AnyCardType()
-        cardrequest = CardRequest(timeout=None, readers=[_readerz[0]], cardType=cardtype, newcardonly=True)
+        cardrequest = CardRequest(
+            timeout=None,
+            readers=[_readerz[0]],
+            cardType=cardtype,
+            newcardonly=True)
         print 'Re-insert reader ', _readerz[0], 'with a card inside'
         cardservice = cardrequest.waitforcard()
         cardservice.connection.connect()
-        print toHexString(cardservice.connection.getATR()), 'in', cardservice.connection.getReader()
+        print toHexString(
+            cardservice.connection.getATR()), \
+            'in', cardservice.connection.getReader()
         cardservice.connection.disconnect()
 
 

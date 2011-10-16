@@ -65,15 +65,21 @@ class pcscinnerreadergroups(innerreadergroups):
 
         hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
         if 0 != hresult:
-            raise error('Failed to establish context: ' + SCardGetErrorMessage(hresult))
+            raise error(
+                'Failed to establish context: ' + \
+                SCardGetErrorMessage(hresult))
         try:
             hresult = SCardIntroduceReaderGroup(hcontext, newgroup)
             if 0 != hresult:
-                raise error('Unable to introduce reader group: ' + SCardGetErrorMessage(hresult))
+                raise error(
+                    'Unable to introduce reader group: ' + \
+                    SCardGetErrorMessage(hresult))
         finally:
             hresult = SCardReleaseContext(hcontext)
             if 0 != hresult:
-                raise error('Failed to release context: ' + SCardGetErrorMessage(hresult))
+                raise error(
+                    'Failed to release context: ' + \
+                    SCardGetErrorMessage(hresult))
 
     def removereadergroup(self, group):
         """Remove a reader group"""
@@ -82,15 +88,21 @@ class pcscinnerreadergroups(innerreadergroups):
 
         hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
         if 0 != hresult:
-            raise error('Failed to establish context: ' + SCardGetErrorMessage(hresult))
+            raise error(
+                'Failed to establish context: ' + \
+                SCardGetErrorMessage(hresult))
         try:
             hresult = SCardForgetReaderGroup(hcontext, group)
             if hresult != 0:
-                raise error('Unable to forget reader group: ' + SCardGetErrorMessage(hresult))
+                raise error(
+                    'Unable to forget reader group: ' + \
+                    SCardGetErrorMessage(hresult))
         finally:
             hresult = SCardReleaseContext(hcontext)
             if 0 != hresult:
-                raise error('Failed to release context: ' + SCardGetErrorMessage(hresult))
+                raise error(
+                    'Failed to release context: ' + \
+                    SCardGetErrorMessage(hresult))
 
 
 class PCSCReaderGroups(readergroups):

@@ -105,14 +105,25 @@ class ATR:
             if self.hasTB[n]:
                 self.TB[n] = self.bytes[offset + self.hasTA[n] + self.hasTB[n]]
             if self.hasTC[n]:
-                self.TC[n] = self.bytes[offset + self.hasTA[n] + self.hasTB[n] + self.hasTC[n]]
+                self.TC[n] = self.bytes[offset +\
+                             self.hasTA[n] +\
+                             self.hasTB[n] +\
+                             self.hasTC[n]]
             if self.hasTD[n]:
-                self.TD[n] = self.bytes[offset + self.hasTA[n] + self.hasTB[n] + self.hasTC[n] + self.hasTD[n]]
+                self.TD[n] = self.bytes[offset +\
+                             self.hasTA[n] +\
+                             self.hasTB[n] +\
+                             self.hasTC[n] +\
+                             self.hasTD[n]]
 
-            self.interfaceBytesCount += self.hasTA[n] + self.hasTB[n] + self.hasTC[n] + self.hasTD[n]
+            self.interfaceBytesCount += self.hasTA[n] +\
+                                        self.hasTB[n] +\
+                                        self.hasTC[n] +\
+                                        self.hasTD[n]
             TD = self.TD[n]
             hasTD = self.hasTD[n]
-            offset = offset + self.hasTA[n] + self.hasTB[n] + self.hasTC[n] + self.hasTD[n]
+            offset = offset + self.hasTA[n] + self.hasTB[n] +\
+                              self.hasTC[n] + self.hasTD[n]
             n = n + 1
 
         # historical bytes
@@ -279,7 +290,8 @@ class ATR:
 
     def __str__(self):
         """Returns a string representation of the ATR as a strem of bytes."""
-        return reduce(lambda a, b: a + "%-0.2X " % ((b + 256) % 256), self.bytes, '')
+        return reduce(lambda a, b: a + \
+                      "%-0.2X " % ((b + 256) % 256), self.bytes, '')
 
 
 if __name__ == '__main__':
@@ -299,4 +311,5 @@ if __name__ == '__main__':
         print 80 * '-'
         print a
         a.dump()
-        print reduce(lambda a, b: a + "%-0.2X " % ((b + 256) % 256), a.getHistoricalBytes(), '')
+        print reduce(lambda a, b: a + \
+                     "%-0.2X " % ((b + 256) % 256), a.getHistoricalBytes(), '')

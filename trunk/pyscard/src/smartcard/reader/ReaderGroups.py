@@ -37,7 +37,8 @@ class DeleteSCardDefaultReaderGroupException(SmartcardException):
     """Raised when trying to delete SCard$DefaultReaders reader group."""
 
     def __init__(self):
-        SmartcardException.__init__(self, 'SCard$DefaultReaders cannot be deleted')
+        SmartcardException.__init__(
+            self, 'SCard$DefaultReaders cannot be deleted')
 
 
 class innerreadergroups(ulist):

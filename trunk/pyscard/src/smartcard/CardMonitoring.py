@@ -173,7 +173,8 @@ class CardMonitoringThread:
                     if addedcards != [] or removedcards != []:
                         self.cards = currentcards
                         self.observable.setChanged()
-                        self.observable.notifyObservers((addedcards, removedcards))
+                        self.observable.notifyObservers(
+                            (addedcards, removedcards))
 
                 # when CardMonitoringThread.__del__() is invoked in
                 # response to shutdown, e.g., when execution of the
@@ -204,7 +205,8 @@ class CardMonitoringThread:
 
     def __init__(self, observable):
         if not CardMonitoringThread.instance:
-            CardMonitoringThread.instance = CardMonitoringThread.__CardMonitoringThreadSingleton(observable)
+            CardMonitoringThread.instance = \
+               CardMonitoringThread.__CardMonitoringThreadSingleton(observable)
             CardMonitoringThread.instance.start()
 
     def __getattr__(self, name):

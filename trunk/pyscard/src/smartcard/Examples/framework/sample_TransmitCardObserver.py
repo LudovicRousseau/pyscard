@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 """
-Sample script that monitors card insertions, connects to cards and transmit an apdu
+Sample script that monitors card insertions,
+connects to cards and transmit an apdu
 
 __author__ = "http://www.gemalto.com"
 
@@ -47,7 +48,8 @@ class transmitobserver(CardObserver):
                 print "+Inserted: ", toHexString(card.atr)
                 card.connection = card.createConnection()
                 card.connection.connect()
-                response, sw1, sw2 = card.connection.transmit(SELECT_DF_TELECOM)
+                response, sw1, sw2 = card.connection.transmit(
+                    SELECT_DF_TELECOM)
                 print "%.2x %.2x" % (sw1, sw2)
 
         for card in removedcards:

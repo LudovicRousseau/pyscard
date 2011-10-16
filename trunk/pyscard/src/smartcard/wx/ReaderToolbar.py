@@ -37,7 +37,8 @@ class ReaderComboBox(wx.ComboBox, ReaderObserver):
                         size=(170, -1), style=wx.CB_DROPDOWN | wx.CB_SORT,
                         choices=[])
 
-        # register as a ReaderObserver; we will ge notified of added/removed readers
+        # register as a ReaderObserver; we will get
+        #  notified of added/removed readers
         self.readermonitor = ReaderMonitor()
         self.readermonitor.addObserver(self)
 
@@ -62,30 +63,41 @@ class ReaderToolbar(wx.ToolBar):
 
     def __init__(self, parent):
         """Constructor, creating the reader toolbar."""
-        wx.ToolBar.__init__(self,
-                             parent,
-                             pos=wx.DefaultPosition,
-                             size=wx.DefaultSize,
-                             style=wx.SIMPLE_BORDER | wx.TB_HORIZONTAL | wx.TB_FLAT | wx.TB_TEXT,
-                             name='Reader Toolbar')
+        wx.ToolBar.__init__(
+           self,
+           parent,
+           pos=wx.DefaultPosition,
+           size=wx.DefaultSize,
+           style=wx.SIMPLE_BORDER | wx.TB_HORIZONTAL | wx.TB_FLAT | wx.TB_TEXT,
+           name='Reader Toolbar')
 
         # create bitmaps for toolbar
         tsize = (16, 16)
         if None != ICO_READER:
             bmpReader = wx.Bitmap(ICO_READER, wx.BITMAP_TYPE_ICO)
         else:
-            bmpReader = wx.ArtProvider_GetBitmap(wx.ART_HELP_BOOK, wx.ART_OTHER, isz)
+            bmpReader = wx.ArtProvider_GetBitmap(
+                wx.ART_HELP_BOOK, wx.ART_OTHER, isz)
         if None != ICO_SMARTCARD:
             bmpCard = wx.Bitmap(ICO_SMARTCARD, wx.BITMAP_TYPE_ICO)
         else:
-            bmpCard = wx.ArtProvider_GetBitmap(wx.ART_HELP_BOOK, wx.ART_OTHER, isz)
+            bmpCard = wx.ArtProvider_GetBitmap(
+                wx.ART_HELP_BOOK, wx.ART_OTHER, isz)
         self.readercombobox = ReaderComboBox(self)
 
         # create and add controls
-        self.AddSimpleTool(10, bmpReader, "Select smart card reader", "Select smart card reader")
+        self.AddSimpleTool(
+            10,
+            bmpReader,
+            "Select smart card reader",
+            "Select smart card reader")
         self.AddControl(self.readercombobox)
         self.AddSeparator()
-        self.AddSimpleTool(20, bmpCard, "Connect to smartcard", "Connect to smart card")
+        self.AddSimpleTool(
+            20,
+            bmpCard, "
+            Connect to smartcard",
+            "Connect to smart card")
         self.AddSeparator()
 
         self.Realize()

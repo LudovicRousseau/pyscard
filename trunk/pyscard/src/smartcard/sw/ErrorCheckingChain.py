@@ -1,4 +1,5 @@
-"""The error checking chain is a list of status word (sw1, sw2) error check strategies.
+"""The error checking chain is a list of status word
+(sw1, sw2) error check strategies.
 
 __author__ = "http://www.gemalto.com"
 

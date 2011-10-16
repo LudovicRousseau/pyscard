@@ -81,9 +81,11 @@ PCSCv2_PART10_PROPERTY_bPPDUSupport = 9
 
 Properties = {
 "PCSCv2_PART10_PROPERTY_wLcdLayout": PCSCv2_PART10_PROPERTY_wLcdLayout,
-"PCSCv2_PART10_PROPERTY_bEntryValidationCondition": PCSCv2_PART10_PROPERTY_bEntryValidationCondition,
+"PCSCv2_PART10_PROPERTY_bEntryValidationCondition": \
+    PCSCv2_PART10_PROPERTY_bEntryValidationCondition,
 "PCSCv2_PART10_PROPERTY_bTimeOut2": PCSCv2_PART10_PROPERTY_bTimeOut2,
-"PCSCv2_PART10_PROPERTY_wLcdMaxCharacters": PCSCv2_PART10_PROPERTY_wLcdMaxCharacters,
+"PCSCv2_PART10_PROPERTY_wLcdMaxCharacters": \
+PCSCv2_PART10_PROPERTY_wLcdMaxCharacters,
 "PCSCv2_PART10_PROPERTY_wLcdMaxLines": PCSCv2_PART10_PROPERTY_wLcdMaxLines,
 "PCSCv2_PART10_PROPERTY_bMinPINSize": PCSCv2_PART10_PROPERTY_bMinPINSize,
 "PCSCv2_PART10_PROPERTY_bMaxPINSize": PCSCv2_PART10_PROPERTY_bMaxPINSize,
@@ -111,7 +113,10 @@ def getFeatureRequest(cardConnection):
     features = []
     while (len(response) > 0):
         tag = response[0]
-        control = (((((response[2] << 8) + response[3]) << 8) + response[4]) << 8) + response[5]
+        control = (((((response[2] << 8) + \
+                      response[3]) << 8) + \
+                      response[4]) << 8) + \
+                      response[5]
         try:
             features.append([Features[tag], control])
         except KeyError:

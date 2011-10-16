@@ -28,7 +28,9 @@ import sys
 
 
 def main_is_frozen():
-    return(hasattr(sys, "frozen") or hasattr(sys, "importers") or imp.is_frozen("__main__"))
+    return(hasattr(sys, "frozen") or \
+           hasattr(sys, "importers") or \
+           imp.is_frozen("__main__"))
 
 
 ICO_SMARTCARD = None
@@ -36,8 +38,14 @@ ICO_READER = None
 
 # running from a script, i.e. not running from standalone exe built with py2exe
 if not main_is_frozen():
-    ICO_SMARTCARD = os.path.join(os.path.dirname(__file__), 'resources', 'smartcard.ico')
-    ICO_READER = os.path.join(os.path.dirname(__file__), 'resources', 'reader.ico')
+    ICO_SMARTCARD = os.path.join(
+        os.path.dirname(__file__),
+        'resources',
+        'smartcard.ico')
+    ICO_READER = os.path.join(
+        os.path.dirname(__file__),
+        'resources',
+        'reader.ico')
 
 # runing from a standalone exe built with py2exe
 # resources expected images directory

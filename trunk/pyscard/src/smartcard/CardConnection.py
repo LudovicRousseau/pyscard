@@ -48,7 +48,8 @@ class CardConnection(Observable):
         Observable.__init__(self)
         self.reader = reader
         self.errorcheckingchain = None
-        self.defaultprotocol = CardConnection.T0_protocol | CardConnection.T1_protocol
+        self.defaultprotocol = CardConnection.T0_protocol |\
+                                CardConnection.T1_protocol
 
     def __del__(self):
         """Connect to card."""
@@ -136,10 +137,16 @@ class CardConnection(Observable):
                     CardConnection.RAW_protocol
         """
         Observable.setChanged(self)
-        Observable.notifyObservers(self, CardConnectionEvent('command', [bytes, protocol]))
+        Observable.notifyObservers(self,
+                                   CardConnectionEvent(
+                                       'command',
+                                       [bytes, protocol]))
         data, sw1, sw2 = self.doTransmit(bytes, protocol)
         Observable.setChanged(self)
-        Observable.notifyObservers(self, CardConnectionEvent('response', [data, sw1, sw2]))
+        Observable.notifyObservers(self,
+                                   CardConnectionEvent(
+                                       'response',
+                                       [data, sw1, sw2]))
         if None != self.errorcheckingchain:
             self.errorcheckingchain[0](data, sw1, sw2)
         return data, sw1, sw2
@@ -161,10 +168,16 @@ class CardConnection(Observable):
         bytes:       list of bytes to transmit
         """
         Observable.setChanged(self)
-        Observable.notifyObservers(self, CardConnectionEvent('command', [controlCode, bytes]))
+        Observable.notifyObservers(self,
+                                   CardConnectionEvent(
+                                       'command',
+                                       [controlCode, bytes]))
         data = self.doControl(controlCode, bytes)
         Observable.setChanged(self)
-        Observable.notifyObservers(self, CardConnectionEvent('response', data))
+        Observable.notifyObservers(self,
+                                   CardConnectionEvent(
+                                       'response',
+                                       data))
         if None != self.errorcheckingchain:
             self.errorcheckingchain[0](data)
         return data
@@ -181,7 +194,10 @@ class CardConnection(Observable):
         attribId: attribute id like SCARD_ATTR_VENDOR_NAME
         """
         Observable.setChanged(self)
-        Observable.notifyObservers(self, CardConnectionEvent('attrib', [attribId]))
+        Observable.notifyObservers(self,
+                                   CardConnectionEvent(
+                                       'attrib',
+                                       [attribId]))
         data = self.doGetAttrib(attribId)
         if None != self.errorcheckingchain:
             self.errorcheckingchain[0](data)

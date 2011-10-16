@@ -32,7 +32,8 @@ import CardAndReaderTreePanel
 import ReaderToolbar
 
 import smartcard
-from smartcard.wx.SimpleSCardAppEventObserver import SimpleSCardAppEventObserver
+from smartcard.wx.SimpleSCardAppEventObserver import \
+    SimpleSCardAppEventObserver
 
 [
 wxID_SIMPLESCARDAPP_FRAME,
@@ -50,7 +51,8 @@ class BlankPanel(wx.Panel, SimpleSCardAppEventObserver):
 
 
 class TreeAndUserPanelPanel(wx.Panel):
-    '''The panel that contains the Card/Reader TreeCtrl and the user provided Panel.'''
+    '''The panel that contains the Card/Reader TreeCtrl
+    and the user provided Panel.'''
 
     def __init__(self, parent, apppanelclass, appstyle):
         """
@@ -58,7 +60,8 @@ class TreeAndUserPanelPanel(wx.Panel):
             the left-hand panel is holding the smartcard and/or reader tree
             the right-hand panel is holding the application dialog
 
-        apppanelclass: the class of the panel to instantiate in the SimpleSCardAppFrame
+        apppanelclass: the class of the panel to instantiate in the
+                    SimpleSCardAppFrame
         appstyle: a combination of the following styles (bitwise or |)
                   TR_SMARTCARD: display a smartcard tree panel
                   TR_READER: display a reader tree panel
@@ -82,21 +85,44 @@ class TreeAndUserPanelPanel(wx.Panel):
         # create card/reader tree control
         if appstyle & smartcard.wx.SimpleSCardApp.TR_SMARTCARD or \
            appstyle & smartcard.wx.SimpleSCardApp.TR_READER:
-            self.readertreepanel = CardAndReaderTreePanel.CardAndReaderTreePanel(self, appstyle, self.dialogpanel)
+            self.readertreepanel = \
+                CardAndReaderTreePanel.CardAndReaderTreePanel(
+                    self, appstyle, self.dialogpanel)
             boxsizer.Add(self.readertreepanel, 1, wx.EXPAND | wx.ALL, 5)
 
         boxsizer.Add(self.dialogpanel, 2, wx.EXPAND | wx.ALL)
 
         if appstyle & smartcard.wx.SimpleSCardApp.TR_READER:
-            self.Bind(wx.EVT_TREE_ITEM_ACTIVATED, self.OnActivateReader, self.readertreepanel.readertreectrl)
-            self.Bind(wx.EVT_TREE_SEL_CHANGED, self.OnSelectReader, self.readertreepanel.readertreectrl)
-            self.Bind(wx.EVT_TREE_ITEM_RIGHT_CLICK, self.OnReaderRightClick, self.readertreepanel.readertreectrl)
-            self.Bind(wx.EVT_TREE_ITEM_COLLAPSED, self.OnItemCollapsed, self.readertreepanel.readertreectrl)
+            self.Bind(
+                wx.EVT_TREE_ITEM_ACTIVATED,
+                self.OnActivateReader,
+                self.readertreepanel.readertreectrl)
+            self.Bind(
+                wx.EVT_TREE_SEL_CHANGED,
+                self.OnSelectReader,
+                self.readertreepanel.readertreectrl)
+            self.Bind(
+                wx.EVT_TREE_ITEM_RIGHT_CLICK,
+                self.OnReaderRightClick,
+                self.readertreepanel.readertreectrl)
+            self.Bind(
+                wx.EVT_TREE_ITEM_COLLAPSED,
+                self.OnItemCollapsed,
+                self.readertreepanel.readertreectrl)
 
         if appstyle & smartcard.wx.SimpleSCardApp.TR_SMARTCARD:
-            self.Bind(wx.EVT_TREE_ITEM_ACTIVATED, self.OnActivateCard, self.readertreepanel.cardtreectrl)
-            self.Bind(wx.EVT_TREE_SEL_CHANGED, self.OnSelectCard, self.readertreepanel.cardtreectrl)
-            self.Bind(wx.EVT_TREE_ITEM_RIGHT_CLICK, self.OnCardRightClick, self.readertreepanel.cardtreectrl)
+            self.Bind(
+                wx.EVT_TREE_ITEM_ACTIVATED,
+                self.OnActivateCard,
+                self.readertreepanel.cardtreectrl)
+            self.Bind(
+                wx.EVT_TREE_SEL_CHANGED,
+                self.OnSelectCard,
+                self.readertreepanel.cardtreectrl)
+            self.Bind(
+                wx.EVT_TREE_ITEM_RIGHT_CLICK,
+                self.OnCardRightClick,
+                self.readertreepanel.cardtreectrl)
 
         self.SetSizer(boxsizer)
         self.SetAutoLayout(True)
@@ -145,7 +171,7 @@ class TreeAndUserPanelPanel(wx.Panel):
         self.readertreepanel.readertreectrl.Expand(item)
 
     def OnCardRightClick(self, event):
-        """Called when the user right-clicks a node in the card tree control."""
+        """Called when user right-clicks a node in the card tree control."""
         item = event.GetItem()
         if item:
             itemdata = self.readertreepanel.cardtreectrl.GetItemPyData(item)
@@ -156,7 +182,8 @@ class TreeAndUserPanelPanel(wx.Panel):
                     self.disconnectID = wx.NewId()
 
                     self.Bind(wx.EVT_MENU, self.OnConnect, id=self.connectID)
-                    self.Bind(wx.EVT_MENU, self.OnDisconnect, id=self.disconnectID)
+                    self.Bind(
+                        wx.EVT_MENU, self.OnDisconnect, id=self.disconnectID)
 
                 menu = wx.Menu()
                 if not hasattr(self.selectedcard, 'connection'):
@@ -167,7 +194,7 @@ class TreeAndUserPanelPanel(wx.Panel):
                 menu.Destroy()
 
     def OnReaderRightClick(self, event):
-        """Called when the user right-clicks a node in the reader tree control."""
+        """Called when user right-clicks a node in the reader tree control."""
         item = event.GetItem()
         if item:
             itemdata = self.readertreepanel.readertreectrl.GetItemPyData(item)
@@ -178,7 +205,8 @@ class TreeAndUserPanelPanel(wx.Panel):
                     self.disconnectID = wx.NewId()
 
                     self.Bind(wx.EVT_MENU, self.OnConnect, id=self.connectID)
-                    self.Bind(wx.EVT_MENU, self.OnDisconnect, id=self.disconnectID)
+                    self.Bind(
+                        wx.EVT_MENU, self.OnDisconnect, id=self.disconnectID)
 
                 menu = wx.Menu()
                 if not hasattr(self.selectedcard, 'connection'):
@@ -236,7 +264,8 @@ class SimpleSCardAppFrame(wx.Frame):
             the right-hand panel is holding the application dialog
 
         appname: name of the application
-        apppanelclass: the class of the panel to instantiate in the SimpleSCardAppFrame
+        apppanelclass: the class of the panel to instantiate in the
+                       SimpleSCardAppFrame
         appstyle: a combination of the following styles (bitwise or |)
                   TR_SMARTCARD: display a smartcard tree panel
                   TR_READER: display a reader tree panel
@@ -264,7 +293,8 @@ class SimpleSCardAppFrame(wx.Frame):
             self.SetIcon(_icon)
 
         boxsizer = wx.BoxSizer(wx.VERTICAL)
-        self.treeuserpanel = TreeAndUserPanelPanel(self, apppanelclass, appstyle)
+        self.treeuserpanel = TreeAndUserPanelPanel(
+            self, apppanelclass, appstyle)
         boxsizer.Add(self.treeuserpanel, 3, wx.EXPAND | wx.ALL)
 
         # create a toolbar if required
@@ -286,7 +316,10 @@ class SimpleSCardAppFrame(wx.Frame):
 
         self.Bind(wx.EVT_CLOSE, self.OnCloseFrame)
         if appstyle & smartcard.wx.SimpleSCardApp.TB_SMARTCARD:
-            self.Bind(wx.EVT_COMBOBOX, self.OnReaderComboBox, self.toolbar.readercombobox)
+            self.Bind(
+                wx.EVT_COMBOBOX,
+                self.OnReaderComboBox,
+                self.toolbar.readercombobox)
 
     def OnCloseFrame(self, evt):
         """Called when frame is closed, i.e. on wx.EVT_CLOSE"""

@@ -35,7 +35,8 @@ import smartcard.util
 try:
     import wx
 except:
-    print 'You need wxpython (http://www.wxpython.org) to run this sample from the source code!'
+    print 'You need wxpython (http://www.wxpython.org) ' + \
+          'to run this sample from the source code!'
     print 'press a key to continue'
     import msvcrt
     msvcrt.getch()
@@ -61,7 +62,12 @@ class pcscdiag(wx.Frame):
     def __init__(self, parent, title):
         wx.Frame.__init__(self, parent, -1, title, size=(600, 400))
         w, h = self.GetClientSizeTuple()
-        self.tree = wx.TreeCtrl(self, wx.NewId(), wx.DefaultPosition, (w, h), wx.TR_HAS_BUTTONS | wx.TR_EDIT_LABELS)
+        self.tree = wx.TreeCtrl(
+            self,
+            wx.NewId(),
+            wx.DefaultPosition,
+            (w, h),
+            wx.TR_HAS_BUTTONS | wx.TR_EDIT_LABELS)
         self.InitTree()
         self.OnExpandAll()
 
@@ -73,9 +79,12 @@ class pcscdiag(wx.Frame):
             childReader = self.tree.AppendItem(readerNode, repr(reader))
             childCard = self.tree.AppendItem(childReader, getATR(reader))
 
-        readerGroupNode = self.tree.AppendItem(self.tree.GetRootItem(), "Readers Groups")
+        readerGroupNode = self.tree.AppendItem(
+            self.tree.GetRootItem(),
+            "Readers Groups")
         for readergroup in smartcard.System.readergroups():
-            childReaderGroup = self.tree.AppendItem(readerGroupNode, readergroup)
+            childReaderGroup = self.tree.AppendItem(
+                readerGroupNode, readergroup)
             readers = smartcard.System.readers(readergroup)
             for reader in readers:
                 child = self.tree.AppendItem(childReaderGroup, repr(reader))

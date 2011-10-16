@@ -37,7 +37,8 @@ import sys
 sys.path += ['..']
 
 try:
-    from local_config import expectedATRs, expectedReaders, expectedReaderGroups, expectedATRinReader
+    from local_config import expectedATRs, expectedReaders
+    from local_config import expectedReaderGroups, expectedATRinReader
 except:
     print 'execute test suite first to generate the local_config.py file'
     sys.exit()
@@ -65,7 +66,8 @@ class testcase_Card(unittest.TestCase):
                 response, sw1, sw2 = cc.transmit(SELECT + DF_TELECOM)
                 expectedSWs = {"9f 1a": 1, "9f 20": 2, "6e 0": 3}
                 self.assertEquals([], response)
-                self.assert_("%x %x" % (sw1, sw2) in expectedSWs or "9f" == "%x" % sw1)
+                self.assert_(
+                    "%x %x" % (sw1, sw2) in expectedSWs or "9f" == "%x" % sw1)
             else:
                 self.assertRaises(NoCardException, cc.connect)
 
@@ -83,7 +85,8 @@ class testcase_Card(unittest.TestCase):
                 response, sw1, sw2 = cc.transmit(SELECT + DF_TELECOM)
                 expectedSWs = {"9f 1a": 1, "9f 20": 2, "6e 0": 3}
                 self.assertEquals([], response)
-                self.assert_("%x %x" % (sw1, sw2) in expectedSWs or "9f" == "%x" % sw1)
+                self.assert_(
+                    "%x %x" % (sw1, sw2) in expectedSWs or "9f" == "%x" % sw1)
             else:
                 self.assertRaises(NoCardException, cc.connect)
 

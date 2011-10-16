@@ -36,7 +36,8 @@ import sys
 sys.path += ['..']
 
 try:
-    from local_config import expectedATRs, expectedReaders, expectedReaderGroups, expectedATRinReader
+    from local_config import expectedATRs, expectedReaders
+    from local_config import expectedReaderGroups, expectedATRinReader
 except:
     print 'execute test suite first to generate the local_config.py file'
     sys.exit()
@@ -132,7 +133,10 @@ if 'winscard' == resourceManager:
             groups.insert(0, newgroup)
             for r in PCSCReader.readers('SCard$DefaultReaders'):
                 r.addtoreadergroup(newgroup)
-            self.assertEquals(PCSCReader.readers('SCard$DefaultReaders'), PCSCReader.readers(newgroup))
+            self.assertEquals(
+                PCSCReader.readers(
+                    'SCard$DefaultReaders'),
+                PCSCReader.readers(newgroup))
             groups.pop(0)
             self.assertEquals([], PCSCReader.readers(newgroup))
 
@@ -143,7 +147,10 @@ if 'winscard' == resourceManager:
             groups.insert(0, newgroup)
             for r in PCSCReader.readers('SCard$DefaultReaders'):
                 r.addtoreadergroup(newgroup)
-            self.assertEquals(PCSCReader.readers('SCard$DefaultReaders'), PCSCReader.readers(newgroup))
+            self.assertEquals(
+                PCSCReader.readers(
+                    'SCard$DefaultReaders'),
+                PCSCReader.readers(newgroup))
             for r in PCSCReader.readers('SCard$DefaultReaders'):
                 r.removefromreadergroup(newgroup)
             self.assertEquals([], PCSCReader.readers(newgroup))

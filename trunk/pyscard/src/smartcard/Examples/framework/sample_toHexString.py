@@ -35,8 +35,10 @@ print 'toHexString(bytes, COMMA) =', toHexString(bytes, COMMA)
 print 'toHexString(bytes, PACK) =', toHexString(bytes, PACK)
 print 'toHexString(bytes, HEX) =', toHexString(bytes, HEX)
 print 'toHexString(bytes, HEX | COMMA) =', toHexString(bytes, HEX | COMMA)
-print 'toHexString(bytes, HEX | UPPERCASE) =', toHexString(bytes, HEX | UPPERCASE)
-print 'toHexString(bytes, HEX | UPPERCASE | COMMA) =', toHexString(bytes, HEX | UPPERCASE | COMMA)
+print 'toHexString(bytes, HEX | UPPERCASE) =', \
+    toHexString(bytes, HEX | UPPERCASE)
+print 'toHexString(bytes, HEX | UPPERCASE | COMMA) =', \
+    toHexString(bytes, HEX | UPPERCASE | COMMA)
 
 
 print 40 * '-'
@@ -47,8 +49,10 @@ print 'toHexString(bytes) =', toHexString(bytes)
 print 'toHexString(bytes, PACK) =', toHexString(bytes, PACK)
 print 'toHexString(bytes, HEX) =', toHexString(bytes, HEX)
 print 'toHexString(bytes, HEX | COMMA) =', toHexString(bytes, HEX | COMMA)
-print 'toHexString(bytes, HEX | UPPERCASE) =', toHexString(bytes, HEX | UPPERCASE)
-print 'toHexString(bytes, HEX | UPPERCASE | COMMA) =', toHexString(bytes, HEX | UPPERCASE | COMMA)
+print 'toHexString(bytes, HEX | UPPERCASE) =', \
+    toHexString(bytes, HEX | UPPERCASE)
+print 'toHexString(bytes, HEX | UPPERCASE | COMMA) =', \
+    toHexString(bytes, HEX | UPPERCASE | COMMA)
 
 
 import sys

@@ -43,7 +43,8 @@ from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver
 from smartcard.CardMonitoring import CardMonitor, CardObserver
 from smartcard.CardRequest import CardRequest
 from smartcard.CardType import AnyCardType
-from smartcard.ExclusiveTransmitCardConnection import ExclusiveTransmitCardConnection
+from smartcard.ExclusiveTransmitCardConnection import \
+    ExclusiveTransmitCardConnection
 from smartcard.util import toHexString
 
 
@@ -68,7 +69,8 @@ class testthread(threading.Thread):
         cardservice = cardrequest.waitforcard()
 
         # attach our decorator
-        cardservice.connection = ExclusiveTransmitCardConnection(cardservice.connection)
+        cardservice.connection = ExclusiveTransmitCardConnection(
+                                    cardservice.connection)
 
         # uncomment to attach the console tracer
         #observer=ConsoleCardConnectionObserver()
@@ -120,7 +122,8 @@ class testcase_cardmonitor(unittest.TestCase):
             t.join()
         for t in threads:
             if 0 == 1:
-                print 'Thread %d: transmitted %ld apdus.' % (t.threadindex, t.countTransmitted)
+                print 'Thread %d: transmitted %ld apdus.' % \
+                        (t.threadindex, t.countTransmitted)
 
 
 def suite():

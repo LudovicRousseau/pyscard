@@ -83,8 +83,8 @@ class PyroNameServer(Thread):
         Pyro.nsc.main(args)
 
     def run(self):
-        """Starts Pyro naming server with command line arguments (see pyro documentation)
-        """
+        """Starts Pyro naming server with command line arguments
+        (see pyro documentation)"""
         args = []
         for arg in self.args:
             args.append(arg)
@@ -102,7 +102,8 @@ class PyroNameServer(Thread):
         while not ns:
             try:
                 time.sleep(3)
-                ns = Pyro.naming.NameServerLocator(identification=self.identification).getNS()
+                ns = Pyro.naming.NameServerLocator(
+                    identification=self.identification).getNS()
             except Pyro.errors.NamingError as er:
                 pass
 

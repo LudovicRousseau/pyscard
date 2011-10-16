@@ -29,8 +29,10 @@ from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver
 from smartcard.CardConnection import CardConnection
 from smartcard.util import toHexString
 
-from smartcard.ExclusiveConnectCardConnection import ExclusiveConnectCardConnection
-from smartcard.ExclusiveTransmitCardConnection import ExclusiveTransmitCardConnection
+from smartcard.ExclusiveConnectCardConnection import \
+    ExclusiveConnectCardConnection
+from smartcard.ExclusiveTransmitCardConnection import \
+    ExclusiveTransmitCardConnection
 
 
 # define the apdus used in this script
@@ -48,7 +50,8 @@ observer = ConsoleCardConnectionObserver()
 cardservice.connection.addObserver(observer)
 
 # attach our decorator
-cardservice.connection = ExclusiveTransmitCardConnection(ExclusiveConnectCardConnection(cardservice.connection))
+cardservice.connection = ExclusiveTransmitCardConnection(
+    ExclusiveConnectCardConnection(cardservice.connection))
 
 # connect to the card and perform a few transmits
 cardservice.connection.connect()

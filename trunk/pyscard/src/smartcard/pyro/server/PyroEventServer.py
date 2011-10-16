@@ -66,8 +66,10 @@ class PyroEventServer(Thread):
             port = int(port)
         norange = (port == 0)
 
-        self.starter = Pyro.EventService.Server.EventServiceStarter(identification=identification)
-        self.starter.start(hostname, port, useNameServer=useNameServer, norange=norange)
+        self.starter = Pyro.EventService.Server.EventServiceStarter(
+            identification=identification)
+        self.starter.start(
+            hostname, port, useNameServer=useNameServer, norange=norange)
 
     def stop(self):
         """Shutdown pyro event server."""
