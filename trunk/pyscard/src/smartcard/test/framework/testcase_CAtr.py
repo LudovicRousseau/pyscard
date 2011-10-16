@@ -111,8 +111,8 @@ class testcase_CAtr(unittest.TestCase):
         self.assert_(a.getTB1() == 0x00)
         self.assert_(a.getTC1() == 0x00)
         self.assert_(a.getTD1() == 0x81)
-        self.assert_(a.TD[2 - 1] == 0x21) # TD2
-        self.assert_(a.TB[3 - 1] == 0x45) # TB3
+        self.assert_(a.TD[2 - 1] == 0x21)  # TD2
+        self.assert_(a.TB[3 - 1] == 0x45)  # TB3
 
 
 def suite():
