@@ -140,7 +140,7 @@ class ISO7816_4ErrorChecker(ErrorChecker):
         @param sw1, sw2:   apdu data status words
 
         Derived classes must raise a L{smartcard.sw.SWException} upon error."""
-        if iso7816_4SW.has_key(sw1):
+        if sw1 in iso7816_4SW:
             exception, sw2dir = iso7816_4SW[sw1]
             if type(sw2dir) == type({}):
                 try:
