@@ -153,7 +153,6 @@ class SampleAPDUManagerPanel(wx.Panel, SimpleSCardAppEventObserver):
         boxsizerEvents = wx.StaticBoxSizer(staticboxEvents, wx.HORIZONTAL)
         boxsizerEvents.Add(self.feedbacktext, 0, wx.ALIGN_CENTER | wx.ALL, 5)
 
-
         sizerboxTransmitButton = wx.BoxSizer(wx.HORIZONTAL)
         sizerboxTransmitButton.Add([20, 20], 0, wx.ALIGN_CENTER | wx.ALL, 5)
         self.transmitbutton = wx.Button(self, ID_TRANSMIT, "Transmit", wx.DefaultPosition, wx.DefaultSize, 0)

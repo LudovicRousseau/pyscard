@@ -62,7 +62,6 @@ if 'winscard' == resourceManager:
                 raise error, 'Failure to list cards'
             print 'Cards:', cards
 
-
             readerstates = []
             for i in xrange(len(readers)):
                 readerstates += [(readers[i], SCARD_STATE_UNAWARE)]

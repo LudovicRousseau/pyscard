@@ -73,7 +73,6 @@ class pcscdiag(wx.Frame):
             childReader = self.tree.AppendItem(readerNode, repr(reader))
             childCard = self.tree.AppendItem(childReader, getATR(reader))
 
-
         readerGroupNode = self.tree.AppendItem(self.tree.GetRootItem(), "Readers Groups")
         for readergroup in smartcard.System.readergroups():
             childReaderGroup = self.tree.AppendItem(readerGroupNode, readergroup)

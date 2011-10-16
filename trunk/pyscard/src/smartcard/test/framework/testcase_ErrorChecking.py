@@ -263,7 +263,6 @@ class testcase_ErrorChecking(unittest.TestCase):
                      ErrorCheckingChain(errorchain, ISO7816_4ErrorChecker()),
                      ErrorCheckingChain(errorchain, ISO7816_4_SW1ErrorChecker())]
 
-
         # don't care about Warning Exceptions
         errorchain[0].addFilterException(smartcard.sw.SWExceptions.WarningProcessingException)
 

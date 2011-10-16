@@ -39,5 +39,3 @@ setup(  windows=['cardmonitor.py'],
             "py2exe":{"dll_excludes":["MSVCP90.dll"]}
         }
     )
-
-

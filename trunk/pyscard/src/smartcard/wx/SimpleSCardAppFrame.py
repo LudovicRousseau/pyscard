@@ -73,7 +73,6 @@ class TreeAndUserPanelPanel(wx.Panel):
 
         boxsizer = wx.BoxSizer(wx.HORIZONTAL)
 
-
         # create user dialog
         if None != apppanelclass:
             self.dialogpanel = apppanelclass(self)
