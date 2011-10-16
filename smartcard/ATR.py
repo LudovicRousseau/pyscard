@@ -235,17 +235,17 @@ class ATR:
     def isT0Supported(self):
         """Return True if T=0 is supported."""
         protocols = self.getSupportedProtocols()
-        return protocols.has_key('T=0')
+        return 'T=0' in protocols
 
     def isT1Supported(self):
         """Return True if T=1 is supported."""
         protocols = self.getSupportedProtocols()
-        return protocols.has_key('T=1')
+        return 'T=1' in protocols
 
     def isT15Supported(self):
         """Return True if T=15 is supported."""
         protocols = self.getSupportedProtocols()
-        return protocols.has_key('T=15')
+        return 'T=15' in protocols
 
     def dump(self):
         """Dump the details of an ATR."""
