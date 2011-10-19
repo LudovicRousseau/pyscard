@@ -36,7 +36,7 @@ def synchronize(klass, names=None):
                 klass.__dict__[name] = synchronized(val)
 
 
-class Synchronization(object):
+class Synchronization:
     # You can create your own self.mutex, or inherit from this class:
 
     def __init__(self):
