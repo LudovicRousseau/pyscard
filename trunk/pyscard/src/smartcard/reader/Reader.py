@@ -49,11 +49,11 @@ class Reader(object):
         pass
 
     def __eq__(self, other):
-        """Returns 0 if self==other (same name)."""
+        """Returns True if self==other (same name)."""
         if type(other) == type(self):
             return self.name == other.name
         else:
-            return 1
+            return False
 
     def __repr__(self):
         """Returns card reader name string for `object` calls."""
