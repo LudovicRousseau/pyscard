@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 
-class CardConnectionEvent:
+class CardConnectionEvent(object):
     """Base class for card connection events.
 
     This event is notified by CardConnection objects.

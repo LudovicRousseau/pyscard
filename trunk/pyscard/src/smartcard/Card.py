@@ -27,7 +27,7 @@ from smartcard.System import readers
 from smartcard.util import toHexString
 
 
-class Card:
+class Card(object):
     """Card class."""
 
     def __init__(self, reader, atr):

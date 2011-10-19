@@ -27,7 +27,7 @@ from smartcard.PassThruCardService import PassThruCardService
 import smartcard.System
 
 
-class AbstractCardRequest:
+class AbstractCardRequest(object):
     """The base class for xxxCardRequest classes.
 
     A CardRequest is used for waitForCard() invocations and specifies what

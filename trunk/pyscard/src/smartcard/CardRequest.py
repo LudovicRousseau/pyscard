@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 from smartcard.pcsc.PCSCCardRequest import PCSCCardRequest
 
 
-class CardRequest:
+class CardRequest(object):
     """A CardRequest is used for waitForCard() invocations and specifies what
     kind of smart card an application is waited for.
     """

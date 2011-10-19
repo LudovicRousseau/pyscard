@@ -29,7 +29,7 @@ from smartcard.PassThruCardService import PassThruCardService
 from smartcard.System import readers
 
 
-class Session:
+class Session(object):
     """The Session object enables programmers to transmit APDU to smartcards.
 
     This is an example of use of the Session object:

@@ -63,7 +63,7 @@ class CardObserver(Observer):
         pass
 
 
-class CardMonitor:
+class CardMonitor(object):
     """Class that monitors smart card insertion/removal.
     and notify observers
 
@@ -130,7 +130,7 @@ class CardMonitor:
         return getattr(self.instance, name)
 
 
-class CardMonitoringThread:
+class CardMonitoringThread(object):
     """Card insertion thread.
     This thread waits for card insertion.
     """

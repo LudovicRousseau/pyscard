@@ -34,7 +34,7 @@ from smartcard.ClassLoader import get_class
 from smartcard.pcsc.PCSCReader import PCSCReader
 
 
-class ReaderFactory:
+class ReaderFactory(object):
     """Class to create readers from reader type id."""
 
     factories = {}

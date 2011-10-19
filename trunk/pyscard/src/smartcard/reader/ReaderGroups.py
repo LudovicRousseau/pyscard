@@ -91,7 +91,7 @@ class innerreadergroups(ulist):
         pass
 
 
-class readergroups:
+class readergroups(object):
     """ReadersGroups organizes smart card reader as groups."""
 
     """The single instance of __readergroups"""

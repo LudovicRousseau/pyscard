@@ -15,7 +15,7 @@ Known subclasses:
 from smartcard.Synchronization import *
 
 
-class Observer:
+class Observer(object):
 
     def update(observable, arg):
         '''Called when the observed object is

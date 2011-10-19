@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 
-class SWException:
+class SWException(Exception):
     """Base class for status word exceptions.
 
     Status word exceptions are generated when errors and warnings are detected
