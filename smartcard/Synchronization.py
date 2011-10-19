@@ -33,10 +33,10 @@ def synchronize(klass, names=None):
         if callable(val) and name != '__init__' and \
             (names == None or name in names):
                 # print "synchronizing", name
-                klass.__dict__[name] = synchronized(val)
+                setattr(klass, name, synchronized(val))
 
 
-class Synchronization:
+class Synchronization(object):
     # You can create your own self.mutex, or inherit from this class:
 
     def __init__(self):
