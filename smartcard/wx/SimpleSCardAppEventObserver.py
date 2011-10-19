@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 
-class SimpleSCardAppEventObserver:
+class SimpleSCardAppEventObserver(object):
     """This interface defines the event handlers
     called by the SimpleSCardApp."""
 

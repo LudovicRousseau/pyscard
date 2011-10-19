@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 from sys import exc_info
 
 
-class ErrorCheckingChain:
+class ErrorCheckingChain(object):
     """The error checking chain is a list of response apdu status word
     (sw1, sw2) error check strategies. Each strategy in the chain is
     called until an error is detected. A L{smartcard.sw.SWException}

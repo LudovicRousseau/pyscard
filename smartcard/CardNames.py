@@ -74,7 +74,7 @@ class __CardNames__(Synchronization):
 synchronize(__CardNames__, "add delete dump find")
 
 
-class CardNames:
+class CardNames(object):
     """The CardNames organizes cards by a unique name and an associated
     smartcard.CardType.CardType."""
 

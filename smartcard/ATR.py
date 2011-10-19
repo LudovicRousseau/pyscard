@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 from smartcard.Exceptions import SmartcardException
 
 
-class ATR:
+class ATR(object):
     """ATR class."""
 
     clockrateconversion = [372, 372, 558, 744, 1116, 1488, 1860, 'RFU',

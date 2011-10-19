@@ -28,7 +28,7 @@ from smartcard.scard import *
 from smartcard.pcsc.PCSCExceptions import EstablishContextException
 
 
-class PCSCContext:
+class PCSCContext(object):
     """Manage a singleton pcsc context handle."""
 
     class __PCSCContextSingleton:

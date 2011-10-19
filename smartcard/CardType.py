@@ -25,7 +25,7 @@ from smartcard.System import readers
 from smartcard.util import toHexString
 
 
-class CardType:
+class CardType(object):
     """Abstract base class for CardTypes.
 
     Known sub-classes: smartcard.CardType.AnyCardType

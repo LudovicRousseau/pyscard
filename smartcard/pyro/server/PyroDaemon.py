@@ -30,7 +30,7 @@ import Pyro.core
 import Pyro.naming
 
 
-class PyroDaemon:
+class PyroDaemon(object):
     """Singleton class to wrap the pyro daemon."""
 
     class _PyroDaemon:

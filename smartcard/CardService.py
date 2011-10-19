@@ -34,7 +34,7 @@ from smartcard.Exceptions import SmartcardException
 from smartcard.scard import *
 
 
-class CardService:
+class CardService(object):
     """Card service abstract class.
     Known subclasses: smartcard.PassThruCardService
     """
