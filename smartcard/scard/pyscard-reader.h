@@ -1,12 +1,31 @@
 /*==============================================================================
-This file contains SCARD_ATTR attributes definitions taken from reader.h, in 
-MUSCLE SmartCard Development ( http://www.linuxnet.com ). It allows to
-build pyscard on Mac OS X without any dependency on the muscle source code.
-Indeed, default Mac OS X does not containt reader.h as part of the PCSC.framework.
+This file contains SCARD_ATTR attributes definitions taken from
+reader.h, in MUSCLE SmartCard Development ( http://www.linuxnet.com ).
+It allows to build pyscard on Mac OS X without any dependency on the
+muscle source code.  Indeed, default Mac OS X does not containt reader.h
+as part of the PCSC.framework.
 
 Copyright (C) 1999-2005 David Corcoran <corcoran@linuxnet.com>
 Copyright (C) 1999-2009 Ludovic Rousseau <ludovic.rousseau@free.fr>
-================================================================================
+
+The licence of reader.h pcsc-lite is 3-clauses BSD and can be relicenced
+in LGPL v2+ for pyscard.
+
+This file is part of pyscard.
+
+pyscard is free software; you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation; either version 2.1 of the License, or
+(at your option) any later version.
+
+pyscard is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with pyscard; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 ==============================================================================*/
 
 #define SCARD_ATTR_VALUE(Class, Tag) ((((ULONG)(Class)) << 16) | ((ULONG)(Tag)))
