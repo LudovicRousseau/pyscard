@@ -119,8 +119,8 @@ def main(argv):
         appname='A simple card monitoring tool',
         apppanel=SamplePanel,
         appstyle=TR_SMARTCARD | TR_READER,
-        appicon=os.path.join(module_path(), 'images', 'mysmartcard.ico'),
-        size=(800, 600))
+        appicon=os.path.join(
+            module_path(), 'images', 'mysmartcard.ico'), size=(800, 600))
     app.MainLoop()
 
 if __name__ == "__main__":
