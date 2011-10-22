@@ -185,12 +185,12 @@ Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
     #endif
     // undefined on older releases
     #ifndef MAX_BUFFER_SIZE_EXTENDED
-        #define MAX_BUFFER_SIZE_EXTENDED    (4 + 3 + (1<<16) + 3)
+        #define MAX_BUFFER_SIZE_EXTENDED    (4 + 3 + (1<<16) + 3 + 2)
     #endif
 #else // !PCSCLITE
 // SCARD_CTL_CODE defined in WinSmCrd.h included by Win32 winscard.h
 // MAX_BUFFER_SIZE_EXTENDED is pcsc-lite specific
-#define MAX_BUFFER_SIZE_EXTENDED (1<<16)+2
+#define MAX_BUFFER_SIZE_EXTENDED    (4 + 3 + (1<<16) + 3 + 2)
 #endif //PCSCLITE
 
 #include "pcsctypes.h"
