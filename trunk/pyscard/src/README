@@ -227,8 +227,9 @@ pyscard-1.6.14-py-2.7-macosx10.7.mpkg.
 Installing on Mac OS X Lion from the source distribution
 --------------------------------------------------------
 
-1. you will need swig 1.3.31 or later (http://www.swig.org); gcc and pcsc-lite
-are available out of the box on Max OS X Leopard
+1. you will need swig 2.0.4 (http://www.swig.org) and Xcode
+(http://developer.apple.com/xcode/);
+pcsc-lite is available out of the box on Max OS X Leopard
 
 2. download the source distribution
 
@@ -339,6 +340,26 @@ python setup.py build_ext
 
 This will build package pyscard-1.6.14-py-2.6-macosx10.4.mpkg.
 
+
+Building a binary distribution for Mac OS X Lion
+-------------------------------------------------
+
+To build a binary distribution from the source distribution, you will
+need swig 2.0.4 and Xcode (same requirements as for installing from the source
+distribution) and bdist_mpkg 0.4.4 (http://pypi.python.org/pypi/bdist_mpkg/).
+
+Install bdist_mpkg by executing the bdist_mpkg setup.py script with
+build and install as arguments, i.e. from the root directory of the
+bdist_mpkg source distribution enter: python setup.py build install.
+
+From the root directory of the pyscard source distribution,
+i.e. in the src directory, execute the following commands in a terminal:
+
+python setup.py build_ext
+bdist_mpkg setup.py
+
+This will build package pyscard-1.6.14-py-2.7-macosx10.7.mpkg in the dist
+directory.
 
 Building a binary distribution for Mac OS X Leopard
 ---------------------------------------------------
