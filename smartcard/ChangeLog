@@ -1,7 +1,9 @@
 1.6.14 (October 2011)
 ===================
         * added support for windows 64bit amd64 (Jean-Daniel Aussel)
-        * support python "new" classes (derive classes from object) (Ludovic Rousseau from chrysn suggestion)
+        * support python "new" classes (derive classes from object) (Ludovic Rousseau from chrysn feature request ID 3110077)
+        * fixed Reader.__eq__() (Ludovic Rousseau from Bernard Paulus bug ID 3418113)
+        * fixed extended APDU transmit buffer too short by 2 (Jean-Daniel Aussel from bugs ID 2914636 and 3106761)
 
 
 1.6.12 (August 2010)

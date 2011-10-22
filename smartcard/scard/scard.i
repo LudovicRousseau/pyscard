@@ -190,7 +190,7 @@ Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #else // !PCSCLITE
 // SCARD_CTL_CODE defined in WinSmCrd.h included by Win32 winscard.h
 // MAX_BUFFER_SIZE_EXTENDED is pcsc-lite specific
-#define MAX_BUFFER_SIZE_EXTENDED (1<<16)
+#define MAX_BUFFER_SIZE_EXTENDED (1<<16)+2
 #endif //PCSCLITE
 
 #include "pcsctypes.h"
@@ -430,8 +430,8 @@ static SCARDRETCODE _SetAttrib(SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELI
     {
         SCARDRETCODE lRet;
 
-        pblRecvBuffer->ab = (unsigned char*)mem_Malloc(MAX_BUFFER_SIZE_EXTENDED*sizeof(unsigned char));
-        pblRecvBuffer->cBytes = MAX_BUFFER_SIZE_EXTENDED;
+        pblRecvBuffer->ab = (unsigned char*)mem_Malloc(MAX_BUFFER_SIZE_EXTENDED*2*sizeof(unsigned char));
+        pblRecvBuffer->cBytes = MAX_BUFFER_SIZE_EXTENDED+2;
 
         lRet = (mySCardControl)(
                     hcard,
@@ -452,8 +452,8 @@ static SCARDRETCODE _SetAttrib(SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELI
     {
         SCARDRETCODE lRet;
 
-        pblRecvBuffer->ab = (unsigned char*)mem_Malloc(MAX_BUFFER_SIZE_EXTENDED*sizeof(unsigned char));
-        pblRecvBuffer->cBytes = MAX_BUFFER_SIZE_EXTENDED;
+        pblRecvBuffer->ab = (unsigned char*)mem_Malloc(MAX_BUFFER_SIZE_EXTENDED*2*sizeof(unsigned char));
+        pblRecvBuffer->cBytes = MAX_BUFFER_SIZE_EXTENDED+2;
 
         lRet = (mySCardControl)(
                     hcard,
@@ -758,8 +758,8 @@ static SCARDRETCODE _Transmit(
     PSCARD_IO_REQUEST piorequest=NULL;
     long ret;
 
-    pblRecvBuffer->ab = (unsigned char*)mem_Malloc(MAX_BUFFER_SIZE_EXTENDED*sizeof(unsigned char));
-    pblRecvBuffer->cBytes = MAX_BUFFER_SIZE_EXTENDED;
+    pblRecvBuffer->ab = (unsigned char*)mem_Malloc(MAX_BUFFER_SIZE_EXTENDED*2*sizeof(unsigned char));
+    pblRecvBuffer->cBytes = MAX_BUFFER_SIZE_EXTENDED+2;
 
     // keep in sync with redefinition in PcscDefs.i
     switch(pioSendPci)
