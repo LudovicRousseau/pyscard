@@ -1,6 +1,8 @@
 1.6.14 (October 2011)
 ===================
         * added support for windows 64bit amd64 (Jean-Daniel Aussel)
+        * support python "new" classes (derive classes from object) (Ludovic Rousseau from chrysn suggestion)
+
 
 1.6.12 (August 2010)
 ===================
