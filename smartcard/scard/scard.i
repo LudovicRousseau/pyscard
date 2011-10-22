@@ -430,8 +430,8 @@ static SCARDRETCODE _SetAttrib(SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELI
     {
         SCARDRETCODE lRet;
 
-        pblRecvBuffer->ab = (unsigned char*)mem_Malloc(MAX_BUFFER_SIZE_EXTENDED*2*sizeof(unsigned char));
-        pblRecvBuffer->cBytes = MAX_BUFFER_SIZE_EXTENDED+2;
+        pblRecvBuffer->ab = (unsigned char*)mem_Malloc(MAX_BUFFER_SIZE_EXTENDED*sizeof(unsigned char));
+        pblRecvBuffer->cBytes = MAX_BUFFER_SIZE_EXTENDED;
 
         lRet = (mySCardControl)(
                     hcard,
@@ -452,8 +452,8 @@ static SCARDRETCODE _SetAttrib(SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELI
     {
         SCARDRETCODE lRet;
 
-        pblRecvBuffer->ab = (unsigned char*)mem_Malloc(MAX_BUFFER_SIZE_EXTENDED*2*sizeof(unsigned char));
-        pblRecvBuffer->cBytes = MAX_BUFFER_SIZE_EXTENDED+2;
+        pblRecvBuffer->ab = (unsigned char*)mem_Malloc(MAX_BUFFER_SIZE_EXTENDED*sizeof(unsigned char));
+        pblRecvBuffer->cBytes = MAX_BUFFER_SIZE_EXTENDED;
 
         lRet = (mySCardControl)(
                     hcard,
@@ -758,8 +758,8 @@ static SCARDRETCODE _Transmit(
     PSCARD_IO_REQUEST piorequest=NULL;
     long ret;
 
-    pblRecvBuffer->ab = (unsigned char*)mem_Malloc(MAX_BUFFER_SIZE_EXTENDED*2*sizeof(unsigned char));
-    pblRecvBuffer->cBytes = MAX_BUFFER_SIZE_EXTENDED+2;
+    pblRecvBuffer->ab = (unsigned char*)mem_Malloc(MAX_BUFFER_SIZE_EXTENDED*sizeof(unsigned char));
+    pblRecvBuffer->cBytes = MAX_BUFFER_SIZE_EXTENDED;
 
     // keep in sync with redefinition in PcscDefs.i
     switch(pioSendPci)
