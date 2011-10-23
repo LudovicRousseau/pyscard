@@ -40,11 +40,7 @@ class pcscinnerreadergroups(innerreadergroups):
         self.unremovablegroups = ['SCard$DefaultReaders']
 
     def getreadergroups(self):
-        """ Returns the list of smartcard reader groups.
-
-        import smartcard
-        print smartcard.reader_groups()
-        """
+        """ Returns the list of smartcard reader groups."""
         innerreadergroups.getreadergroups(self)
 
         hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
@@ -61,8 +57,6 @@ class pcscinnerreadergroups(innerreadergroups):
     def addreadergroup(self, newgroup):
         """Add a reader group"""
 
-        innerreadergroups.addreadergroup(self, newgroup)
-
         hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
         if 0 != hresult:
             raise error(
@@ -74,6 +68,9 @@ class pcscinnerreadergroups(innerreadergroups):
                 raise error(
                     'Unable to introduce reader group: ' + \
                     SCardGetErrorMessage(hresult))
+            else:
+                innerreadergroups.addreadergroup(self, newgroup)
+
         finally:
             hresult = SCardReleaseContext(hcontext)
             if 0 != hresult:
@@ -83,8 +80,6 @@ class pcscinnerreadergroups(innerreadergroups):
 
     def removereadergroup(self, group):
         """Remove a reader group"""
-
-        innerreadergroups.removereadergroup(self, group)
 
         hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
         if 0 != hresult:
@@ -97,6 +92,9 @@ class pcscinnerreadergroups(innerreadergroups):
                 raise error(
                     'Unable to forget reader group: ' + \
                     SCardGetErrorMessage(hresult))
+            else:
+                innerreadergroups.removereadergroup(self, group)
+
         finally:
             hresult = SCardReleaseContext(hcontext)
             if 0 != hresult:
@@ -108,20 +106,10 @@ class pcscinnerreadergroups(innerreadergroups):
 class PCSCReaderGroups(readergroups):
     """PCSC readers groups."""
 
-    """The single instance of __readergroups"""
-    instance = None
-
-    """Constructor: create a single instance of __readergroups on first call"""
-
     def __init__(self, initlist=None):
-        if None == PCSCReaderGroups.instance:
-            PCSCReaderGroups.instance = pcscinnerreadergroups(initlist)
-
-    """All operators redirected to inner class."""
-
-    def __getattr__(self, name):
-        return getattr(self.instance, name)
-
+        """Create a single instance of pcscinnerreadergroups on first call"""
+        self.innerclazz = pcscinnerreadergroups
+        readergroups.__init__(self, initlist)
 
 if __name__ == '__main__':
     print PCSCReaderGroups()
