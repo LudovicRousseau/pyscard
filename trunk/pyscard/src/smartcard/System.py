@@ -44,7 +44,7 @@ def readers(groups=[]):
 def readergroups():
     """Returns the list of reader groups."""
 
-    return smartcard.pcsc.PCSCReaderGroups.PCSCReaderGroups()
+    return smartcard.pcsc.PCSCReaderGroups.PCSCReaderGroups().instance
 
 
 # for legacy only

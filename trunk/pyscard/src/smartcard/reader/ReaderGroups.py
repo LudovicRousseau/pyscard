@@ -64,6 +64,12 @@ class innerreadergroups(ulist):
         """Called when a reader group is added."""
         self.removereadergroup(item)
 
+    def __iter__(self):
+        return ulist.__iter__(self)
+
+    def next(self):
+        return ulist.__next__(self)
+
     #
     # abstract methods implemented in subclasses
     #
@@ -76,11 +82,13 @@ class innerreadergroups(ulist):
         """Add a reader group"""
         if not isinstance(newgroup, type("")):
             raise BadReaderGroupException
+        self += newgroup
 
     def removereadergroup(self, group):
         """Remove a reader group"""
         if not isinstance(group, type("")):
             raise BadReaderGroupException
+        self.remove(group)
 
     def addreadertogroup(self, readername, groupname):
         """Add a reader to a reader group"""
@@ -96,12 +104,12 @@ class readergroups(object):
 
     """The single instance of __readergroups"""
     instance = None
-
-    """Constructor: create a single instance of __readergroups on first call"""
+    innerclazz = innerreadergroups
 
     def __init__(self, initlist=None):
+        """Create a single instance of innerreadergroups on first call"""
         if None == readergroups.instance:
-            readergroups.instance = innerreadergroups(initlist)
+            readergroups.instance = self.innerclazz(initlist)
 
     """All operators redirected to inner class."""
 
