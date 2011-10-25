@@ -85,13 +85,20 @@ if 'winscard' == resourceManager:
         # locate a known card
         # Cryptoflex 8k v2 is present in standard Windows 2000
         def test_listcryptoflexbyatr(self):
-            if 'Windows-7-6.1.7600' == platform.platform():
+            if -1 != platform.platform().find('Windows-7'):
                 dmyATR = \
                   [0x3B, 0x75, 0x94, 0x00, 0x00, 0x62, 0x02, 0x02, 0x01, 0x01]
                 dmyName = ['dummycard']
                 hresult, card = SCardListCards(self.hcontext, dmyATR, [])
                 self.assertEquals(hresult, 0)
                 self.assertEquals(card, dmyName)
+            elif -1 != platform.platform().find('Windows-Vista-6.0'):
+                axaltodotnetATR = \
+                  [ 0x3B, 0x16, 0x96, 0x41, 0x73, 0x74, 0x72, 0x69, 0x64 ]
+                axaltodotnetName = ['Axalto Cryptoflex .NET']
+                hresult, card = SCardListCards(self.hcontext, axaltodotnetATR, [])
+                self.assertEquals(hresult, 0)
+                self.assertEquals(card, axaltodotnetName)
             else:
                 slbCryptoFlex8kv2ATR = \
                   [0x3B, 0x95, 0x15, 0x40, 0x00, 0x68, 0x01, 0x02, 0x00, 0x00]
@@ -122,9 +129,14 @@ if 'winscard' == resourceManager:
         # locate all cards and interfaces in the system
         def test_listallcards(self):
 
-            if 'Windows-7-6.1.7600' == platform.platform():
+            if -1 != platform.platform().find('Windows-7'):
                 expectedCards = ['Identity Device (Microsoft Generic Profile)',
                                  'Identity Device (NIST SP 800-73 [PIV])']
+            elif -1 != platform.platform().find('Windows-Vista-6.0'):
+                expectedCards = [
+                    'Axalto Cryptoflex .NET',
+                    'Infineon SICRYPT CardModule Card',
+                    'dummycard' ]
             else:
                 # dummycard has been introduced in the test setup and
                 # will be removed in the test teardown. Other cards are
