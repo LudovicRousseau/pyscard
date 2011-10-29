@@ -52,6 +52,16 @@ from smartcard.System import readers
 class testcase_Card(unittest.TestCase):
     """Test case for smartcard.Card."""
 
+    def testcase_CardDictionary(self):
+        """Create a dictionnary with Card keys"""
+        mydict = {}
+        for reader in readers():
+            card = Card(reader, expectedATRinReader[str(reader)])
+            mydict[card] = reader
+
+        for card in mydict.keys():
+            self.assert_(str(card.reader) in expectedReaders)
+
     def testcase_Card_FromReaders(self):
         """Create a Card from Readers and test that the response
         to SELECT DF_TELECOM has two bytes."""
