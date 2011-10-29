@@ -56,6 +56,10 @@ class Card(object):
         False otherwise."""
         return not self.__eq__(other)
 
+    def __hash__(self):
+        """Returns a hash value for this object (str(self) is unique)."""
+        return hash(str(self))
+
     def createConnection(self):
         """Return a CardConnection to the Card object."""
         readerobj = None

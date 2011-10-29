@@ -4,6 +4,7 @@
         * support python "new" classes (derive classes from object) (Ludovic Rousseau from chrysn feature request ID 3110077)
         * fixed Reader.__eq__() (Ludovic Rousseau from Bernard Paulus bug ID 3418113)
         * fixed extended APDU transmit buffer too short by 2 (Jean-Daniel Aussel from bugs ID 2914636 and 3106761)
+        + make Card and Reader objects hashable (Jean-Daniel Aussel from Hans-Peter Jansen feature request and patch)
 
 
 1.6.12 (August 2010)
