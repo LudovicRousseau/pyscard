@@ -61,6 +61,13 @@ class testcase_readers(unittest.TestCase):
         for reader in expectedReaders:
             self.assert_(reader in foundreaders)
 
+    def testcase_hashreaders(self):
+        foundreaders = {}
+        for reader in readers():
+            foundreaders[reader] = 1
+        for reader in foundreaders.keys():
+            self.assert_(reader in readers())
+
     def testcase_legacyreaders(self):
         foundreaders = {}
         for reader in listReaders():
