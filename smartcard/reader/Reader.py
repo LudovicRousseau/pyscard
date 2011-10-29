@@ -55,6 +55,10 @@ class Reader(object):
         else:
             return False
 
+    def __hash__(self):
+        """Returns a hash value for this object (self.name is unique)."""
+        return hash(self.name)
+
     def __repr__(self):
         """Returns card reader name string for `object` calls."""
         return "'%s'" % self.name
