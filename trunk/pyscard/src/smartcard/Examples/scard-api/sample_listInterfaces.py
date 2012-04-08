@@ -26,6 +26,7 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
+import platform
 from smartcard.scard import *
 import smartcard.guid
 
@@ -52,14 +53,20 @@ if 'winscard' == resourceManager:
         try:
 
             # list interfaces for a known card
+            if -1 != platform.platform().find('Windows-7'):
+                expectedCard = 'Identity Device (Microsoft Generic Profile)'
+            elif -1 != platform.platform().find('Windows-Vista-6.0'):
+                expectedCard = 'Axalto Cryptoflex .NET'
+            else:
+                expectedCard = 'Schlumberger Cryptoflex 8k v2'
             hresult, interfaces = SCardListInterfaces(
                 hcontext,
-                'Schlumberger Cryptoflex 8k v2')
+                expectedCard)
             if hresult != SCARD_S_SUCCESS:
                 raise scard.error(
                     'Failed to list interfaces: ' + \
                     SCardGetErrorMessage(hresult))
-            print 'Interfaces for Schlumberger Cryptoflex 8k v2:', interfaces
+            print 'Interfaces for ', expectedCard, ':', interfaces
 
             # introduce a card (forget first in case it is already present)
             hresult = SCardForgetCardType(hcontext, znewcardName)
