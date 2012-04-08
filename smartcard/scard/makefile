@@ -1,22 +1,22 @@
 # -----------------------------------------------------------------------------
-# Copyright 2001-2011 gemalto
+# Copyright 2001-2012 gemalto
 # Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
 #
 # A little makefile to build the python extension outside of distutils
 # on windows for easy debugging.
-# 
+#
 # This file is part of pyscard.
-# 
+#
 # pyscard is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by
 # the Free Software Foundation; either version 2.1 of the License, or
 # (at your option) any later version.
-# 
+#
 # pyscard is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU Lesser General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Lesser General Public License
 # along with pyscard; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -37,7 +37,7 @@ linker_flags = /DLL /nologo /INCREMENTAL:no /LIBPATH:$(pythondir)\libs /LIBPATH:
 all: $(pythonpackagedir)\_scard.pyd $(pythonpackagedir)\_scard_d.pyd
 
 # depedencies
-$(pythonpackagedir)\_scard.pyd : obj\_scard.pyd 
+$(pythonpackagedir)\_scard.pyd : obj\_scard.pyd
 	if exist obj\_scard.pyd copy obj\_scard.pyd $(pythonpackagedir)\_scard.pyd
 
 $(pythonpackagedir)\_scard_d.pyd  : objd\_scard_d.pyd
@@ -98,8 +98,8 @@ objd\scard_wrap.c: scard.i pcscdefs.i pcsctypemaps.i
 # clean-up generated files
 clean:
 	@del obj\_scard.pyd obj\_scard.exp obj\_scard.lib
-	@del obj\scard_wrap.obj obj\helpers.obj obj\winscarddll.obj 
+	@del obj\scard_wrap.obj obj\helpers.obj obj\winscarddll.obj
 	@del obj\scard.res obj\scard.py obj\scard_wrap.c
-	@del objd\_scard_d.pyd objd\_scard_d.exp objd\_scard_d.lib 
-	@del objd\_scard_d.pdb objd\scard_wrap.obj objd\helpers.obj objd\winscarddll.obj 
+	@del objd\_scard_d.pyd objd\_scard_d.exp objd\_scard_d.lib
+	@del objd\_scard_d.pdb objd\scard_wrap.obj objd\helpers.obj objd\winscarddll.obj
 	@del objd\scard.res objd\scard.py objd\scard_wrap.c

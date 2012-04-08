@@ -5,7 +5,7 @@ using py2exe. Run: python.exe setup.py py2exe, to build executable file.
 
 __author__ = "http://www.gemalto.com"
 
-Copyright 2001-2011 gemalto
+Copyright 2001-2012 gemalto
 Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
 
 This file is part of pyscard.

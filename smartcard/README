@@ -4,7 +4,7 @@ pyscard smartcard library for python
 http://pyscard.sourceforge.net/
 -------------------------------------------------------------------------------
 
-Copyright 2001-2011 gemalto
+Copyright 2001-2012 gemalto
 Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
 
 This file is part of pyscard.
@@ -24,7 +24,7 @@ along with pyscard; if not, write to the Free Software Foundation, Inc.,
 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 -------------------------------------------------------------------------------
-Last update : pyscard 1.6.14 (October 2011)
+Last update : pyscard 1.6.14 (April 2012)
 -------------------------------------------------------------------------------
 
 pyscard is a python module adding smart cards support to python.

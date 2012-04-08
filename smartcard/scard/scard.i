@@ -1,5 +1,5 @@
 /*==============================================================================
-Copyright 2001-2011 gemalto
+Copyright 2001-2012 gemalto
 Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
 Author: Ludovic Rousseau, mailto:ludovic.rousseau@free.fr
 
@@ -136,7 +136,7 @@ module on any platform:
 Comments, bug reports, improvements welcome.
 
 -------------------------------------------------------------------------------
-Copyright 2001-2011 gemalto
+Copyright 2001-2012 gemalto
 @Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
 @Author: Ludovic Rousseau, mailto:ludovic.rousseau@free.fr
 
