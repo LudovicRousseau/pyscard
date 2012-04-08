@@ -1,5 +1,5 @@
 /*==============================================================================
-Copyright 2001-2011 gemalto
+Copyright 2001-2012 gemalto
 Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
 
 This file is part of pyscard.
@@ -236,7 +236,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     WINAPI _defaultSCARDISVALIDCONTEXT(
         IN      SCARDCONTEXT hContext)
     {
-		(void)hContext;
+        (void)hContext;
 
         return SCARD_E_NO_SERVICE;
     }
@@ -248,10 +248,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
         OUT LPBYTE pbAttr,
         IN OUT SCARDDWORDARG* pcbAttrLen)
     {
-		(void)hCard;
-		(void)dwAttrId;
-		(void)pbAttr;
-		(void)pcbAttrLen;
+        (void)hCard;
+        (void)dwAttrId;
+        (void)pbAttr;
+        (void)pcbAttrLen;
 
         return SCARD_E_NO_SERVICE;
     }
@@ -263,10 +263,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
         IN LPCBYTE pbAttr,
         IN SCARDDWORDARG cbAttrLen)
     {
-		(void)hCard;
-		(void)dwAttrId;
-		(void)pbAttr;
-		(void)cbAttrLen;
+        (void)hCard;
+        (void)dwAttrId;
+        (void)pbAttr;
+        (void)cbAttrLen;
 
         return SCARD_E_NO_SERVICE;
     }
@@ -448,7 +448,7 @@ static WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDBEGINTRANSACTION(
     IN      SCARDHANDLE hCard)
 {
-	(void)hCard;
+    (void)hCard;
 
     return SCARD_E_NO_SERVICE;
 }
@@ -457,7 +457,7 @@ static WINSCARDAPI SCARDRETCODE
 WINAPI _defaultSCARDCANCEL(
     IN      SCARDCONTEXT hContext)
 {
-	(void)hContext;
+    (void)hContext;
 
     return SCARD_E_NO_SERVICE;
 }

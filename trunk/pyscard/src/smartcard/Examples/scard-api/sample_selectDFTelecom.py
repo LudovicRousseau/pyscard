@@ -4,7 +4,7 @@ Sample for python PCSC wrapper module: Select DF_TELECOM on a SIM card
 
 __author__ = "http://www.gemalto.com"
 
-Copyright 2001-2011 gemalto
+Copyright 2001-2012 gemalto
 Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
 Copyright 2010 Ludovic Rousseau
 Author: Ludovic Rousseau, mailto:ludovic.rousseau@free.fr
