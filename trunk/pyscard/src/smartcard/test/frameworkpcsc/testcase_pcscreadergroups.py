@@ -53,7 +53,7 @@ if 'winscard' == resourceManager:
         """Test smartcard framework readers factory methods"""
 
         def setUp(self):
-            groups = PCSCReaderGroups()
+            groups = PCSCReaderGroups().instance
             try:
                 groups.remove('Pinpad$Readers')
                 groups.remove('Biometric$Readers')
@@ -62,8 +62,8 @@ if 'winscard' == resourceManager:
 
         def testcase_add(self):
             """Test for groups=groups+newgroups"""
-            groupssnapshot = list(PCSCReaderGroups())
-            groups = PCSCReaderGroups()
+            groupssnapshot = list(PCSCReaderGroups().instance)
+            groups = PCSCReaderGroups().instance
             newgroup = 'Pinpad$Readers'
             groups = groups + newgroup
             self.assertEquals(groups, groupssnapshot + [newgroup])
@@ -71,8 +71,8 @@ if 'winscard' == resourceManager:
 
         def testcase_addlist(self):
             """Test for groups=groups+[newgroups]"""
-            groupssnapshot = list(PCSCReaderGroups())
-            groups = PCSCReaderGroups()
+            groupssnapshot = list(PCSCReaderGroups().instance)
+            groups = PCSCReaderGroups().instance
             newgroups = ['Pinpad$Readers', 'Biometric$Readers']
             groups = groups + newgroups
             self.assertEquals(groups, groupssnapshot + newgroups)
@@ -81,8 +81,8 @@ if 'winscard' == resourceManager:
 
         def testcase_iadd(self):
             """Test for groups+=newgroup"""
-            groupssnapshot = list(PCSCReaderGroups())
-            groups = PCSCReaderGroups()
+            groupssnapshot = list(PCSCReaderGroups().instance)
+            groups = PCSCReaderGroups().instance
             newgroup = 'Pinpad$Readers'
             groups += newgroup
             self.assertEquals(groups, groupssnapshot + [newgroup])
@@ -90,8 +90,8 @@ if 'winscard' == resourceManager:
 
         def testcase_iaddlist(self):
             """Test for groups+=[newgroups]"""
-            groupssnapshot = list(PCSCReaderGroups())
-            groups = PCSCReaderGroups()
+            groupssnapshot = list(PCSCReaderGroups().instance)
+            groups = PCSCReaderGroups().instance
             newgroups = ['Pinpad$Readers', 'Biometric$Readers']
             groups += newgroups
             self.assertEquals(groups, groupssnapshot + newgroups)
@@ -100,8 +100,8 @@ if 'winscard' == resourceManager:
 
         def testcase_append(self):
             """Test for groups.append(newgroup)"""
-            groupssnapshot = list(PCSCReaderGroups())
-            groups = PCSCReaderGroups()
+            groupssnapshot = list(PCSCReaderGroups().instance)
+            groups = PCSCReaderGroups().instance
             newgroup = 'Pinpad$Readers'
             groups.append(newgroup)
             self.assertEquals(groups, groupssnapshot + [newgroup])
@@ -109,8 +109,8 @@ if 'winscard' == resourceManager:
 
         def testcase_insert(self):
             """Test for groups.insert(newgroup)"""
-            groupssnapshot = list(PCSCReaderGroups())
-            groups = PCSCReaderGroups()
+            groupssnapshot = list(PCSCReaderGroups().instance)
+            groups = PCSCReaderGroups().instance
             newgroup = 'Pinpad$Readers'
             groups.insert(0, newgroup)
             self.assertEquals(groups, [newgroup] + groupssnapshot)
@@ -118,8 +118,8 @@ if 'winscard' == resourceManager:
 
         def testcase_removereadergroup_pop(self):
             """Test for groups.pop()"""
-            groupssnapshot = list(PCSCReaderGroups())
-            groups = PCSCReaderGroups()
+            groupssnapshot = list(PCSCReaderGroups().instance)
+            groups = PCSCReaderGroups().instance
             newgroup = 'Pinpad$Readers'
             groups.insert(0, newgroup)
             self.assertEquals(groups, [newgroup] + groupssnapshot)
@@ -128,7 +128,7 @@ if 'winscard' == resourceManager:
 
         def testcase_addreadertogroup(self):
             """Test for adding readers to group"""
-            groups = PCSCReaderGroups()
+            groups = PCSCReaderGroups().instance
             newgroup = 'Pinpad$Readers'
             groups.insert(0, newgroup)
             for r in PCSCReader.readers('SCard$DefaultReaders'):
@@ -142,7 +142,7 @@ if 'winscard' == resourceManager:
 
         def testcase_removereaderfromgroup(self):
             """Test for removing readers from group"""
-            groups = PCSCReaderGroups()
+            groups = PCSCReaderGroups().instance
             newgroup = 'Pinpad$Readers'
             groups.insert(0, newgroup)
             for r in PCSCReader.readers('SCard$DefaultReaders'):
