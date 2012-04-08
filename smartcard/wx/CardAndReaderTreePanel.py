@@ -57,8 +57,8 @@ class BaseCardTreeCtrl(wx.TreeCtrl):
         il = wx.ImageList(isz[0], isz[1])
         self.capindex = il.Add(
             wx.ArtProvider_GetBitmap(wx.ART_HELP_BOOK, wx.ART_OTHER, isz))
-        self.fldrindex = il.Add
-        (wx.ArtProvider_GetBitmap(wx.ART_FOLDER, wx.ART_OTHER, isz))
+        self.fldrindex = il.Add(
+            wx.ArtProvider_GetBitmap(wx.ART_FOLDER, wx.ART_OTHER, isz))
         self.fldropenindex = il.Add(
             wx.ArtProvider_GetBitmap(wx.ART_FILE_OPEN, wx.ART_OTHER, isz))
         if None != ICO_SMARTCARD:
