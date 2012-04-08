@@ -26,13 +26,14 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
+import platform
 import unittest
-
-from smartcard.reader.ReaderGroups import readergroups
+from smartcard.System import readergroups
 from smartcard.scard import resourceManager
 
 
-if 'winscard' == resourceManager:
+if 'winscard' == resourceManager and \
+    -1 == platform.platform().find('Windows-7'):
 
     class testcase_readergroups(unittest.TestCase):
         """Test smartcard framework readersgroups."""
