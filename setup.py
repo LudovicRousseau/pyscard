@@ -127,7 +127,7 @@ else:
     platform__cc_defines = [('PCSCLITE', '1')]
     platform_swig_opts = ['-DPCSCLITE']
     platform_sources = []
-    platform_libraries = ["python%d.%d" % sys.version_info[:2]]
+    platform_libraries = []
     platform_include_dirs = ['/usr/include/PCSC']
     platform_extra_compile_args = []    # ['-ggdb', '-O0']
     platform_extra_link_args = []   # ['-ggdb']
