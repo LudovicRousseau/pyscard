@@ -74,12 +74,12 @@ elif 'darwin' in get_platform() \
         platform_extra_link_args = ['-arch', 'i386', '-arch', 'ppc', '-ggdb']
 
 #
-# Mac OS X Lion, python 2.7
+# Mac OS X Lion (and above), python 2.7
 # PowerPC is no more supported, x86_64 is new
 #
 # x86_64 and i386
 #
-elif 'macosx-10.7' in get_platform():
+elif 'macosx-10.' in get_platform():
     platform__cc_defines = [('PCSCLITE', '1'),
                             ('__APPLE__', '1'),
                             ('__LION__', '1')]
@@ -111,7 +111,7 @@ elif 'macosx-10.6' in get_platform():
 # Mac OS X Leopard has python 2.5 preinstalled
 # get_platform() returns a string similar to 'macosx-10.5-i386'
 #
-elif 'macosx-10.' in get_platform():
+elif 'macosx-10.5' in get_platform():
     platform__cc_defines = [('PCSCLITE', '1'),
                             ('__APPLE__', '1'),
                             ('__LEOPARD__', '1')]
@@ -123,6 +123,9 @@ elif 'macosx-10.' in get_platform():
                                    '-arch', 'i386',
                                    '-arch', 'ppc', '-ggdb', '-O0']
     platform_extra_link_args = ['-arch', 'i386', '-arch', 'ppc', '-ggdb']
+#
+# Other (GNU/Linux, etc.)
+#
 else:
     platform__cc_defines = [('PCSCLITE', '1')]
     platform_swig_opts = ['-DPCSCLITE']
