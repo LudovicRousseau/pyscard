@@ -24,7 +24,7 @@ along with pyscard; if not, write to the Free Software Foundation, Inc.,
 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 -------------------------------------------------------------------------------
-Last update : pyscard 1.6.14 (April 2012)
+Last update : pyscard 1.6.16 (Decembre 2012)
 -------------------------------------------------------------------------------
 
 pyscard is a python module adding smart cards support to python.
@@ -63,7 +63,7 @@ Installing on windows from the binary distribution
 
 The binary msi installer and self-executable installer are packaged for
 a specific version of python, and have name similar to
-pyscard-1.6.14.win32-py2.5.msi and pyscard-1.6.14.win32-py2.5.exe for
+pyscard-1.6.16.win32-py2.5.msi and pyscard-1.6.16.win32-py2.5.exe for
 python 2.5.
 
 
@@ -79,8 +79,8 @@ python/Lib/distutils/msvccompiler.py file that detects the compiler.
 
 2. download the source distribution
 
-The source distribution is available as pyscard-1.6.14.zip for windows,
-and pyscard-1.6.14.tar.gz for linux.
+The source distribution is available as pyscard-1.6.16.zip for windows,
+and pyscard-1.6.16.tar.gz for linux.
 
 3. unzip the source distribution, open a console and type the following:
 
@@ -101,8 +101,8 @@ Installing on linux from the binary distribution:
 1. download the binary distribution
 
 The binary distribution is either an archive file or a rpm file, with
-names similar to pyscard-1.6.14-1.i386.rpm for the rpm distribution, or
-pyscard-1.6.14.linux-i686.tar.gz for the archive distribution.
+names similar to pyscard-1.6.16-1.i386.rpm for the rpm distribution, or
+pyscard-1.6.16.linux-i686.tar.gz for the archive distribution.
 
 2. untar the binary distribution
 
@@ -117,8 +117,8 @@ Installing on linux from the source distribution
 
 2. download the source distribution
 
-The source distribution is available as pyscard-1.6.14.zip or
-pyscard-1.6.14.tar.gz.
+The source distribution is available as pyscard-1.6.16.zip or
+pyscard-1.6.16.tar.gz.
 
 3. untar the source distribution
 
@@ -133,7 +133,7 @@ your python distribution, e.g.
 Installation on Max OS X Tiger:
 --------------------------------
 
-The Mac OS X Tiger support is experimental on pyscard 1.6.14. It was
+The Mac OS X Tiger support is experimental on pyscard 1.6.16. It was
 developed and tested on a i386 MacBook Pro. Please drop me a mail if you
 succeed on a ppc MacBook.
 
@@ -143,16 +143,16 @@ Installing on Mac OS X Tiger from the binary distribution:
 1. download the binary distribution
 
 The binary distribution is an archive file, with a name similar to
-pyscard-1.6.14-py-2.3-macosx10.4.mpkg or
-pyscard-1.6.14-py-2.5-macosx10.4.mpkg.
+pyscard-1.6.16-py-2.3-macosx10.4.mpkg or
+pyscard-1.6.16-py-2.5-macosx10.4.mpkg.
 
 2. Open the package and proceed with installation.
 
 Python 2.3 is pre-installed, so install
-pyscard-1.6.14-py-2.3-macosx10.4.mpkg if you did not install another
+pyscard-1.6.16-py-2.3-macosx10.4.mpkg if you did not install another
 release of python.
 
-Install pyscard-1.6.14-py-2.5-macosx10.4.mpkg if you installed python 2.5.
+Install pyscard-1.6.16-py-2.5-macosx10.4.mpkg if you installed python 2.5.
 
 Installing on Mac OS X Tiger from the source distribution
 ----------------------------------------------------------
@@ -162,8 +162,8 @@ are available out of the box on Max OS X Tiger
 
 2. download the source distribution
 
-The source distribution is available as pyscard-1.6.14.zip or
-pyscard-1.6.14.tar.gz.
+The source distribution is available as pyscard-1.6.16.zip or
+pyscard-1.6.16.tar.gz.
 
 3. untar or unzip the source distribution
 
@@ -185,7 +185,7 @@ Installing on Mac OS X Leopard from the binary distribution:
 1. download the binary distribution
 
 The binary distribution is an archive file, with a name similar to
-pyscard-1.6.14-py-2.5-macosx10.5.mpkg.
+pyscard-1.6.16-py-2.5-macosx10.5.mpkg.
 
 2. Open the package and proceed with installation.
 
@@ -197,8 +197,8 @@ are available out of the box on Max OS X Leopard
 
 2. download the source distribution
 
-The source distribution is available as pyscard-1.6.14.zip or
-pyscard-1.6.14.tar.gz.
+The source distribution is available as pyscard-1.6.16.zip or
+pyscard-1.6.16.tar.gz.
 
 3. untar or unzip the source distribution
 
@@ -220,7 +220,7 @@ Installing on Mac OS X Lion from the binary distribution:
 1. download the binary distribution
 
 The binary distribution is an archive file, with a name similar to
-pyscard-1.6.14-py-2.7-macosx10.7.mpkg.
+pyscard-1.6.16-py-2.7-macosx10.7.mpkg.
 
 2. Open the package and proceed with installation.
 
@@ -233,8 +233,8 @@ pcsc-lite is available out of the box on Max OS X Leopard
 
 2. download the source distribution
 
-The source distribution is available as pyscard-1.6.14.zip or
-pyscard-1.6.14.tar.gz.
+The source distribution is available as pyscard-1.6.16.zip or
+pyscard-1.6.16.tar.gz.
 
 3. untar or unzip the source distribution
 
@@ -273,9 +273,9 @@ setup.py build_ext bdist_msi
 setup.py build_ext bdist_wininst
 
 This will build the msi installer and self-executable installer in the
-dist directory, with names similar to pyscard-1.6.14.win32-py2.5.msi and
-pyscard-1.6.14.win32-py2.5.exe for python 2.5, and
-pyscard-1.6.14.win32-py2.4.msi and pyscard-1.6.14.win32-py2.4.exe for
+dist directory, with names similar to pyscard-1.6.16.win32-py2.5.msi and
+pyscard-1.6.16.win32-py2.5.exe for python 2.5, and
+pyscard-1.6.16.win32-py2.4.msi and pyscard-1.6.16.win32-py2.4.exe for
 python 2.4.
 
 Building a binary distribution for linux
@@ -290,7 +290,7 @@ command in a terminal:
 
 /usr/bin/python setup.py build_ext bdist
 
-This will build a package similar to pyscard-1.6.14.linux-i686.tar.gz
+This will build a package similar to pyscard-1.6.16.linux-i686.tar.gz
 containing a tree
 
 Building a rpm distribution for linux
@@ -312,7 +312,7 @@ e.g.:
 echo "%_unpackaged_files_terminate_build        0" >> /etc/rpm/macros
 
 This will build in the dist directory a binary distribution with a name
-similar to pyscard-1.6.14-1.i386.rpm.
+similar to pyscard-1.6.16-1.i386.rpm.
 
 Building a binary distribution for Mac OS X Tiger
 -------------------------------------------------
@@ -330,7 +330,7 @@ the following commands in a terminal:
 python setup.py build_ext
 /System/Library/Frameworks/Python.Framework/Versions/2.3/bin/bdist_mpkg setup.py
 
-This will build package pyscard-1.6.14-py-2.3-macosx10.4.mpkg.
+This will build package pyscard-1.6.16-py-2.3-macosx10.4.mpkg.
 
 If you are using python 2.5, in the root directory of the source distribution,
 i.e. in the src directory, execute the following commands in a terminal:
@@ -338,7 +338,7 @@ i.e. in the src directory, execute the following commands in a terminal:
 python setup.py build_ext
 /Library/Frameworks/Python.Framework/Versions/2.5/bin/bdist_mpkg setup.py
 
-This will build package pyscard-1.6.14-py-2.6-macosx10.4.mpkg.
+This will build package pyscard-1.6.16-py-2.6-macosx10.4.mpkg.
 
 
 Building a binary distribution for Mac OS X Lion
@@ -358,7 +358,7 @@ i.e. in the src directory, execute the following commands in a terminal:
 python setup.py build_ext
 bdist_mpkg setup.py
 
-This will build package pyscard-1.6.14-py-2.7-macosx10.7.mpkg in the dist
+This will build package pyscard-1.6.16-py-2.7-macosx10.7.mpkg in the dist
 directory.
 
 Building a binary distribution for Mac OS X Leopard
@@ -410,7 +410,7 @@ in a terminal:
 python setup.py build_ext
 /Library/Frameworks/Python.Framework/Versions/2.5/Extras/bin/bdist_mpkg setup.py
 
-This will build package pyscard-1.6.14-py-2.5-macosx10.5.mpkg.
+This will build package pyscard-1.6.16-py-2.5-macosx10.5.mpkg.
 
 For python 2.6, from the root directory of the pyscard source distribution,
 i.e. in the src directory, execute the following commands in a terminal:
@@ -418,7 +418,7 @@ i.e. in the src directory, execute the following commands in a terminal:
 python setup.py build_ext
 /Library/Frameworks/Python.framework/Versions/2.6/bin/bdist_mpkg setup.py
 
-This will build package pyscard-1.6.14-py-2.6-macosx10.5.mpkg.
+This will build package pyscard-1.6.16-py-2.6-macosx10.5.mpkg.
 
 -------------------------------------------------------------------------------
 Issue Tracking
