@@ -1,6 +1,8 @@
 """
 from Thinking in Python, Bruce Eckel
-http://mindview.net/Books/TIPython
+http://python-3-patterns-idioms-test.readthedocs.org/en/latest/Observer.html
+
+(c) Copyright 2008, Creative Commons Attribution-Share Alike 3.0.
 
 Class support for "observer" pattern.
 
