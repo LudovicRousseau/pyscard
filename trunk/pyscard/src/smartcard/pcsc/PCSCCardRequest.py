@@ -53,7 +53,7 @@ class PCSCCardRequest(AbstractCardRequest):
         @param readers: the list of readers to consider for requesting a
         card default is to consider all readers
 
-        @param cardTypeClass: the CardType class to wait for; default is
+        @param cardType: the CardType class to wait for; default is
         AnyCardType, i.e.  the request will returns with new or already
         inserted cards
 
