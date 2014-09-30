@@ -44,7 +44,6 @@ class ReaderFactory(object):
     def createReader(clazz, readername):
         """Static method to create a reader from a reader clazz.
 
-        @param module:     the python module that contains the reader class
         @param clazz:      the reader class name
         @param readername: the reader name
         """
