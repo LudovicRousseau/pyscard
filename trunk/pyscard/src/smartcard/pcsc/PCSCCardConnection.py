@@ -183,7 +183,7 @@ class PCSCCardConnection(CardConnection):
         pcscprotocolheader = translateprotocolheader(protocol)
         if 0 == pcscprotocolheader:
             raise CardConnectionException(
-                'Invalid protocol in transmit: must be' + \
+                'Invalid protocol in transmit: must be ' + \
                 'CardConnection.T0_protocol, ' + \
                 'CardConnection.T1_protocol, or ' + \
                 'CardConnection.RAW_protocol')
