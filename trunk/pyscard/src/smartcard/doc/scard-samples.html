@@ -1,106 +1,160 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
 <html>
-
 <head>
-<title>scard samples</title>
+  <meta name="generator" content=
+  "HTML Tidy for Linux (vers 25 March 2009), see www.w3.org">
+
+  <title>scard samples</title>
 </head>
-<body bgcolor="#ffffff">
-<H1 align="center">smartcard.scard PCSC wrapper samples</h1>
-<a href="http://sourceforge.net/projects/pyscard"><img
-src="http://sflogo.sourceforge.net/sflogo.php?group_id=196342&amp;type=11"
-width="120" height="30" align="right" alt="Get pyscard at SourceForge.net. Fast,
-secure and Free Open
-Source software downloads" /></a> <hr>
-<H1 align="center">&nbsp;</h1>
-Last update : pyscard 1.6.16 (Decembre 2012)
-<p>Using the <a href="epydoc/index.html">smartcard framework</a> is the preferred
-  way to write python smart card application. You can however use the <a href="epydoc/smartcard.scard.scard-module.html">smartcard.scard</a>
-  library to write your python smart card application if you want to write your
-  own python framework, or if you want to access some features of the SCardXXX
-  C API not available in the smartcard framework.
-<p>The <a href="epydoc/smartcard.scard.scard-module.html">smartcard.scard</a>
-  module is a native extension module wrapping Windows smart card base components
-  (also known as PCSC) on Windows, and pcsc-lite on linux and Mac OS X, whereas
-  the <a href="epydoc/index.html">smartcard framework</a> is a pure python
-  framework hiding scard complexity and PCSC.
-<p align="center"><img src="images/pyscard.jpg" width="396" height="540"
-    align="middle" alt="pyscard">
-<h2>smartcard.scard samples</h2>
-<table summary="sample codes" border>
-  <tr>
-    <td>send a Control Code to a card or reader</td>
-    <td><a href="Examples/scard-api/sample_control.py" >view source</a></td>
-  </tr>
-  <tr>
-    <td>get the ATR of a card</td>
-    <td><a href="Examples/scard-api/sample_getATR.py" >view source</a></td>
-  </tr>
-  <tr>
-    <td>get the attributes of a card</td>
-    <td><a href="Examples/scard-api/sample_getAttrib.py">view source</a></td>
-  </tr>
-  <tr>
-    <td>wait for card insertion/removal</td>
-    <td><a href="Examples/scard-api/sample_getStatusChange.py">view
-        source</a></td>
-  </tr>
-  <tr>
-    <td>list the cards introduced in the system</td>
-    <td><a href="Examples/scard-api/sample_listCards.py">view source</a></td>
-  </tr>
-  <tr>
-    <td>list the interfaces supported by a card</td>
-    <td><a href="Examples/scard-api/sample_listInterfaces.py">view
-        source</a></td>
-  </tr>
-  <tr>
-    <td>locate cards in the system</td>
-    <td><a href="Examples/scard-api/sample_locateCards.py">view source</a></td>
-  </tr>
-  <tr>
-    <td>manage readers and reader groups</td>
-    <td><a href="Examples/scard-api/sample_readerGroups.py">view source</a></td>
-  </tr>
-  <tr>
-    <td>list smart card readers</td>
-    <td><a href="Examples/scard-api/sample_readers.py">view source</a></td>
-  </tr>
-  <tr>
-    <td>select the DF_TELECOM of a SIM card</td>
-    <td><a href="Examples/scard-api/sample_selectDFTelecom.py">view
-        source</a></td>
-  </tr>
-  <tr>
-    <td>perform a simple smart card transaction</td>
-    <td><a href="Examples/scard-api/sample_transaction.py">view source</a></td>
-  </tr>
-</table>
 
-<hr>
-<p>This file is part of pyscard.</p>
-<p>pyscard is free software; you can redistribute it and/or modify it under
-  the terms of the GNU Lesser General Public License as published by the Free
-  Software Foundation; either version 2.1 of the License, or (at your option)
-  any later version.</p>
-<p>pyscard is distributed in the hope that it will be useful, but WITHOUT
-  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-  FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
-  details.</p>
-<p>You should have received a copy of the GNU Lesser General Public License along
-  with pyscard; if not, write to the Free Software Foundation, Inc., 51 Franklin
-  St, Fifth Floor, Boston, MA 02110-1301 USA</p>
-</body>
-<!-- Piwik -->
-<script type="text/javascript">
+<body bgcolor="#FFFFFF">
+  <h1 align="center">smartcard.scard PCSC wrapper
+  samples</h1><a href=
+  "http://sourceforge.net/projects/pyscard"><img src=
+  "http://sflogo.sourceforge.net/sflogo.php?group_id=196342&amp;type=11"
+  width="120" height="30" align="right" alt=
+  "Get pyscard at SourceForge.net. Fast, secure and Free Open Source software downloads"></a>
+  <hr>
+
+  <h1 align="center">&nbsp;</h1>Last update : pyscard 1.6.16
+  (Decembre 2012)
+
+  <p>Using the <a href="epydoc/index.html">smartcard framework</a>
+  is the preferred way to write python smart card application. You
+  can however use the <a href=
+  "epydoc/smartcard.scard.scard-module.html">smartcard.scard</a>
+  library to write your python smart card application if you want
+  to write your own python framework, or if you want to access some
+  features of the SCardXXX C API not available in the smartcard
+  framework.</p>
+
+  <p>The <a href=
+  "epydoc/smartcard.scard.scard-module.html">smartcard.scard</a>
+  module is a native extension module wrapping Windows smart card
+  base components (also known as PCSC) on Windows, and pcsc-lite on
+  linux and Mac OS X, whereas the <a href=
+  "epydoc/index.html">smartcard framework</a> is a pure python
+  framework hiding scard complexity and PCSC.</p>
+
+  <p align="center"><img src="images/pyscard.jpg" width="396"
+  height="540" align="middle" alt="pyscard"></p>
+
+  <h2>smartcard.scard samples</h2>
+
+  <table summary="sample codes" border>
+    <tr>
+      <td>send a Control Code to a card or reader</td>
+
+      <td><a href="Examples/scard-api/sample_control.py">view
+      source</a></td>
+    </tr>
+
+    <tr>
+      <td>get the ATR of a card</td>
+
+      <td><a href="Examples/scard-api/sample_getATR.py">view
+      source</a></td>
+    </tr>
+
+    <tr>
+      <td>get the attributes of a card</td>
+
+      <td><a href="Examples/scard-api/sample_getAttrib.py">view
+      source</a></td>
+    </tr>
+
+    <tr>
+      <td>wait for card insertion/removal</td>
+
+      <td><a href=
+      "Examples/scard-api/sample_getStatusChange.py">view
+      source</a></td>
+    </tr>
+
+    <tr>
+      <td>list the cards introduced in the system</td>
+
+      <td><a href="Examples/scard-api/sample_listCards.py">view
+      source</a></td>
+    </tr>
+
+    <tr>
+      <td>list the interfaces supported by a card</td>
+
+      <td><a href=
+      "Examples/scard-api/sample_listInterfaces.py">view
+      source</a></td>
+    </tr>
+
+    <tr>
+      <td>locate cards in the system</td>
+
+      <td><a href="Examples/scard-api/sample_locateCards.py">view
+      source</a></td>
+    </tr>
+
+    <tr>
+      <td>manage readers and reader groups</td>
+
+      <td><a href="Examples/scard-api/sample_readerGroups.py">view
+      source</a></td>
+    </tr>
+
+    <tr>
+      <td>list smart card readers</td>
+
+      <td><a href="Examples/scard-api/sample_readers.py">view
+      source</a></td>
+    </tr>
+
+    <tr>
+      <td>select the DF_TELECOM of a SIM card</td>
+
+      <td><a href=
+      "Examples/scard-api/sample_selectDFTelecom.py">view
+      source</a></td>
+    </tr>
+
+    <tr>
+      <td>perform a simple smart card transaction</td>
+
+      <td><a href="Examples/scard-api/sample_transaction.py">view
+      source</a></td>
+    </tr>
+  </table>
+  <hr>
+
+  <p>This file is part of pyscard.</p>
+
+  <p>pyscard is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later
+  version.</p>
+
+  <p>pyscard is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  Lesser General Public License for more details.</p>
+
+  <p>You should have received a copy of the GNU Lesser General
+  Public License along with pyscard; if not, write to the Free
+  Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
+  MA 02110-1301 USA</p><!-- Piwik -->
+  <script type="text/javascript">
 var pkBaseURL = (("https:" == document.location.protocol) ? "https://sourceforge.net/apps/piwik/pyscard/" : "http://sourceforge.net/apps/piwik/pyscard/");
-document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
-</script><script type="text/javascript">
+  document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+  </script><script type="text/javascript">
 piwik_action_name = '';
-piwik_idsite = 1;
-piwik_url = pkBaseURL + "piwik.php";
-piwik_log(piwik_action_name, piwik_idsite, piwik_url);
-</script>
-<object><noscript><p><img src="http://sourceforge.net/apps/piwik/pyscard/piwik.php?idsite=1" alt="piwik"/></p></noscript></object>
-<!-- End Piwik Tag -->
-    </html>
-
+  piwik_idsite = 1;
+  piwik_url = pkBaseURL + "piwik.php";
+  piwik_log(piwik_action_name, piwik_idsite, piwik_url);
+  </script><object>
+    <noscript>
+    <p><img src=
+    "http://sourceforge.net/apps/piwik/pyscard/piwik.php?idsite=1"
+    alt="piwik"></p></noscript>
+  </object> <!-- End Piwik Tag -->
+</body>
+</html>
