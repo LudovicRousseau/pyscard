@@ -97,7 +97,6 @@
 <hr>
 <a name="copyright"></a>
 <h2>Copyright</h2>
-<p>
     
 <pre>Copyright 2001-2009 <a href="http://www.gemalto.com">gemalto</a><br>Author: Jean-Daniel Aussel, <a href="mailto:jean-daniel.aussel@gemalto.com">mailto:jean-daniel.aussel@gemalto.com</a></pre>
 <p>This file is part of pyscard.</p>
@@ -146,15 +145,8 @@
 <p>&nbsp;
 <hr>
 <h2><a name="quickstart"></a>Quick-start</h2>
-<h2></h2>
-<h2></h2>
-<h2></h2>
-<h2></h2>
-<h3></h3>
-<h3></h3>
 <p>We will see in this section some variations on how to send APDU commands to
   a smart card.</p>
-<p></p>
 <h3><a name="readercentric"></a>The reader-centric approach</h3>
 <p>A PC application interacts with a card by sending list of bytes, known as Application 
   Protocol Data Units (APDU). The format of these APDUs is defined in the ISO7816-4 
@@ -164,7 +156,6 @@
   use the reader-centric approach.</p>
 <p>In the reader-centric approach, we open a connection with a card thru a smart 
   card reader, and send APDU commands to the card using the connection:</p>
-<p></p>
 <p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
   from smartcard.System import readers<br>
   &gt;&gt;&gt; from smartcard.util import toHexString<br>
@@ -319,7 +310,6 @@ T15 supported:  True<br>  </font></p>
 <p>Other CardTypes are available, and new CardTypes can be created, as described
   below.</p>
 <p><a href="#top">to the top</a></p>
-<h3></h3>
 <h4><a name="anycardrequest"></a>Requesting any card</h4>
 <p>The <a href="epydoc/smartcard.CardType.AnyCardType-class.html">AnyCardType</a> 
   is useful for requesting any card in any reader:</p>
@@ -338,7 +328,6 @@ T15 supported:  True<br>  </font></p>
   &gt;&gt;&gt; print cardservice.connection.getReader()<br>
   SchlumbergerSema Reflex USB v.2 0</font></p>
 <p><a href="#top">to the top</a></p>
-<h3></h3>
 <h4><a name="customtyperequest"></a>Custom CardTypes</h4>
 <p>Custom CardTypes can be created, e.g. a card type that checks the ATR and the 
   historical bytes of the card. To create a custom CardType, deriver your CardType 
@@ -445,7 +434,6 @@ T15 supported:  True<br>  </font></p>
   response: 00 00 00 00 7F 10 02 00 00 00 00 00 0D 13 00 0A 04 00 83 8A 83 8A 
   00 01 00 00 status words: 90 0<br>
   &gt;&gt;&gt;</font></p>
-<p></p>
 <h3><a name="objectcentric"></a>The object-centric approach</h3>
 <p>In the object-centric approach, we associate a high-level object with a set 
   of smart cards supported by the object. For example we associate a javacard 
@@ -454,9 +442,7 @@ T15 supported:  True<br>  </font></p>
   Once a card supported by the object is inserted, we perform the required function 
   by calling the objec methods.</p>
 <p><i>To be written...</i></p>
-<p><font face="Courier New, Courier, mono" size="2" color="#0033FF"> </font>
 <hr>
-<h2></h2>
 <h2><a name="apdutracing"></a>Tracing APDUs</h2>
 <h3><a name="bruteforcetracing"></a>The brute force</h3>
 <p>A straightforward way of tracing command and response APDUs is to insert print
@@ -544,7 +530,6 @@ T15 supported:  True<br>  </font></p>
   00 01 00 00 status words: 90 0<br>
   &gt;&gt;&gt;</font></p>
 <p><a href="#top">to the top</a></p>
-<h3></h3>
 <h3><a name="connectionobservers"></a>Using card connection observers to trace
   apdu transmission</h3>
 <p>The prefered solution is to implement a card connection observer, and register
@@ -728,7 +713,6 @@ T15 supported:  True<br>  </font></p>
   00 00 90 0<br>
   &gt;&gt;&gt;</font></p>
 <p><a href="#top">to the top</a></p>
-<h3></h3>
 <h2><a name="apduerror"></a>Testing for APDU transmission errors</h2>
 <p>Upon transmission and processing of an APDU, the smart card returns a pair 
   of status words, SW1 and SW2, to report various success or error codes following 
@@ -750,7 +734,6 @@ T15 supported:  True<br>  </font></p>
   word errors.</p>
 <h3><a name="bruteforceerror"></a>The brute force for testing APDU transmission
   errors</h3>
-<h3></h3>
 <p>As for APDU tracing, a straightforward way of checking for errors in response
   APDUs during the execution of scripts is to insert testt statements after the
   transmit() method calls:</p>
@@ -836,7 +819,6 @@ T15 supported:  True<br>  </font></p>
 <p>The prefered solution is for testing errors is to use smarcard.sw.ErrorChecker,
   as described in the following section.</p>
 <p><a href="#top">to the top</a></p>
-<h3></h3>
 <h3><a name="errorcheckingchains"></a>Checking APDU transmission errors with error
   checkers</h3>
 <p>Status word errors can occur from different sources. The ISO7816-4 standards
@@ -870,7 +852,6 @@ T15 supported:  True<br>  </font></p>
 <p>The first call to error checker does not raise an exception, since 90 00 does
   not report any error. The second calls however raises a CheckingErrorException.</p>
 <p><a href="#top">to the top</a></p>
-<h3></h3>
 <h4><a name="errorcheckingchains2"></a>Error checking chains</h4>
 <p>Error checkers can be chained into <a href="epydoc/smartcard.sw.ErrorCheckingChain.ErrorCheckingChain-class.html">error 
   checking chain</a>. Each checker in the chain is called until an error condition 
@@ -909,7 +890,6 @@ T15 supported:  True<br>  </font></p>
   does not report any error. The second calls however raises a CheckingErrorException,
   caused by the iso7816-9 error checker.</p>
 <p><a href="#top">to the top</a></p>
-<h3></h3>
 <h4><a name="filteringerrors"></a>Filtering exceptions</h4>
 <p>You can filter undesired exceptions in a chain by adding a filtered exception
   to the error checking chain:</p>
@@ -951,8 +931,6 @@ T15 supported:  True<br>  </font></p>
   &gt;&gt;&gt; errorchain[0].addFilterException( WarningProcessingException )<br>
   &gt;&gt;&gt; errorchain[0]( [], 0x62, 0x00 )<br>
   &gt;&gt;&gt;</font></p>
-<p></p>
-<p></p>
 <p>The first call to the error chain with sw1 sw2 = 62 00 raises a <a href="epydoc/smartcard.sw.SWExceptions.WarningProcessingException-class.html">WarningProcessingException</a>.</p>
 <p><font face="Courier New, Courier, mono" size="2" color="#0033FF">&gt;&gt;&gt;
   errorchain[0]( [], 0x62, 0x00 )<br>
@@ -967,11 +945,8 @@ T15 supported:  True<br>  </font></p>
   &gt;&gt;&gt; errorchain[0]( [], 0x62, 0x00 )<br>
   &gt;&gt;&gt;</font></p>
 <p><a href="#top">to the top</a></p>
-<h3></h3>
 <h4><a name="cardconnectionchecking"></a>Detecting response APDU errors for a
   card connection</h4>
-<p></p>
-<p></p>
 <p>To detect APDU response errors during transmission, simply set the error checking
   chain of the connection used for transmission:</p>
 <p><font face="Courier New, Courier, mono" size="3" color="#0033ff">from smartcard.CardType
@@ -1040,7 +1015,6 @@ T15 supported:  True<br>  </font></p>
   as the card connection error checking chain. The card connection will use the 
   chain for error checking upon reception of a response apdu:</p>
 <p><a href="#top">to the top</a></p>
-<h3></h3>
 <h4><a name="customerrorcheckers"></a>Writing a custom error checker</h4>
 <p>Implementing a custom error checker requires implementing a sub-class of <a href="epydoc/smartcard.sw.op21_ErrorChecker.op21_ErrorChecker-class.html">ErrorChecker</a>, 
   and overriding the __call__ method. The following error checker raises a <a href="epydoc/smartcard.sw.SWExceptions.SecurityRelatedException-class.html">SecurityRelatedException</a> 
@@ -1092,7 +1066,6 @@ T15 supported:  True<br>  </font></p>
   &nbsp;&nbsp;&nbsp;&nbsp;apdu = GET_RESPONSE + [sw2]<br>
   &nbsp;&nbsp;&nbsp;&nbsp;response, sw1, sw2 = cardservice.connection.transmit(
   apdu )</font></p>
-<p></p>
 <p><font color="#0033ff" face="Courier New, Courier, mono" size="3"><br>
   </font></p>
 <hr>
@@ -1107,7 +1080,6 @@ T15 supported:  True<br>  </font></p>
   0']<br>
   &gt;&gt;&gt;</font></p>
 <p><a href="#top">to the top</a></p>
-<h3></h3>
 <h3><a name="readergroups"></a>Organizing Smartcard Readers into reader groups</h3>
 <p>Reader group management is only available on Windows, since PCSC-lite does 
   not currently supports reader groups management.
@@ -1186,7 +1158,6 @@ T15 supported:  True<br>  </font></p>
   ['SCard$DefaultReaders']<br>
   &gt;&gt;&gt;</font></p>
 <p><a href="#top">to the top</a></p>
-<h3></h3>
 <h3><a name="readermonitoring"></a>Monitoring readers</h3>
 <p>You can monitor the insertion or removal of readers using the <a href="epydoc/smartcard.ReaderMonitoring.ReaderObserver-class.html">ReaderObserver</a> 
   interface. 
@@ -1358,7 +1329,6 @@ class myobserver( CardObserver ):
                 print "%.2x %.2x" % (sw1, sw2)
 
 </font></pre>
-<p>
 <p><a href="#top">to the top</a> </p>
 <h3><a name="cardconnectiondecorators"></a>Card Connection Decorators</h3>
 <p>APDUs are transmitted to a card using the CardConnection object. It is sometime 
@@ -1381,7 +1351,6 @@ class FakeATRConnection( CardConnectionDecorator ):
         return [ 0x3f ] + atr [1:]
 
 </font></pre>
-<p>
 <p>To apply the decorator, just construct the decorator around the CardConnection 
   instance to wrap and use the decorator in place of the card connection object:</p>
 <pre><font face="Courier New, Courier, mono" size="3" color="#0033FF">
