@@ -24,8 +24,8 @@ Pyscard consists of:
 .. image:: ../doc/images/pyscard.jpg
     :align: center
 
-Documentation Index
-*******************
+Documentation
+*************
 
     :ref:`pyscard_user_guide`
 
