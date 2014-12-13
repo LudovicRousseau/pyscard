@@ -40,3 +40,24 @@ Samples
     High level API samples: See :ref:`framework_samples`
 
     Low level API samples: See :ref:`wrapper_samples`
+
+Index
+*****
+
+Contents:
+
+.. toctree::
+   :maxdepth: 4
+
+   user-guide
+   pyscard-framework
+   pyscard-wrapper
+   license
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+
