@@ -5,7 +5,8 @@ pyscard - python for smart cards
 <https://sourceforge.net/projects/pyscard/>`_ is a python module adding
 smart cards support to `python <http://www.python.org/>`_.
 
-`download <http://sourceforge.net/projects/pyscard/>`_ pyscard from sourceforge.net.
+`download <https://sourceforge.net/projects/pyscard/files/pyscard/>`_
+pyscard from sourceforge.net.
 
 Report bugs, patches and feature requests using the `sourceforge pyscard
 bug tracking system <https://sourceforge.net/p/pyscard/_list/tickets>`_.
