@@ -611,6 +611,8 @@ build a READERSTATELIST from a Python list of reader states
         mem_Free( prl );
         return NULL;
     }
+	/* zeroise SCARD_READERSTATE to work with remote desktop */
+	memset(prl->ars, 0, cRStates*sizeof(SCARD_READERSTATE) );
 
     prl->aszReaderNames = mem_Malloc( cRStates*sizeof(char*) );
     if (!prl->aszReaderNames)
