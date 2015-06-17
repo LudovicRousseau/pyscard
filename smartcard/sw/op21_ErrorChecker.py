@@ -122,4 +122,4 @@ if __name__ == '__main__':
     try:
         ecs([], 0x94, 0x84)
     except smartcard.sw.SWExceptions.CheckingErrorException, e:
-        print e, "%x %x" % (e.sw1, e.sw2)
+        print(str(e) + "%x %x" % (e.sw1, e.sw2))

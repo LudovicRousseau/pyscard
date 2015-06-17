@@ -58,5 +58,6 @@ if __name__ == '__main__':
     cs = PassThruCardService(cc)
     cs.connection.connect()
     data, sw1, sw2 = cs.connection.transmit(SELECT + DF_TELECOM)
-    print "%X %X" % (sw1, sw2)
+    print("%X %X" % (sw1, sw2))
     cs.connection.disconnect()
+

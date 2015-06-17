@@ -16,12 +16,12 @@ def synchronized(method):
     def f(*args):
         self = args[0]
         self.mutex.acquire()
-        # print method.__name__, 'acquired'
+        # print(method.__name__, 'acquired')
         try:
             return apply(method, args)
         finally:
             self.mutex.release()
-            # print method.__name__, 'released'
+            # print(method.__name__, 'released')
     return f
 
 
@@ -34,7 +34,7 @@ def synchronize(klass, names=None):
     for (name, val) in klass.__dict__.items():
         if callable(val) and name != '__init__' and \
             (names == None or name in names):
-                # print "synchronizing", name
+                # print("synchronizing", name)
                 setattr(klass, name, synchronized(val))
 
 

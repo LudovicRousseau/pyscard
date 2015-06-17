@@ -195,7 +195,7 @@ class ReaderMonitoringThread(Thread):
 
 if __name__ == "__main__":
     from smartcard.ReaderMonitoring import ReaderMonitor
-    print 'insert or remove readers in the next 20 seconds'
+    print('insert or remove readers in the next 20 seconds')
 
     # a simple reader observer that prints added/removed readers
     class printobserver(ReaderObserver):
@@ -203,9 +203,10 @@ if __name__ == "__main__":
         def __init__(self, obsindex):
             self.obsindex = obsindex
 
-        def update(self, observable, (addedreaders, removedreaders)):
-            print "%d - added:   " % self.obsindex, addedreaders
-            print "%d - removed: " % self.obsindex, removedreaders
+        def update(self, observable, handlers):
+            addedreaders, removedreaders = handlers
+            print("%d - added:   " % self.obsindex, addedreaders)
+            print("%d - removed: " % self.obsindex, removedreaders)
 
     class testthread(Thread):
 

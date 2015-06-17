@@ -61,9 +61,9 @@ def listReaders():
 
 if __name__ == '__main__':
     try:
-        print readers()
-        print readers(['SCard$DefaultReaders'])
-        print readergroups()
+        print(readers())
+        print(readers(['SCard$DefaultReaders']))
+        print(readergroups())
     except:
         import sys
-        print sys.exc_info()[1]
+        print(sys.exc_info()[1])

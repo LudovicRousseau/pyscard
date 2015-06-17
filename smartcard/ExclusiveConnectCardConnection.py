@@ -64,7 +64,7 @@ class ExclusiveConnectCardConnection(CardConnectionDecorator):
                     raise CardConnectionException(
                         'Failed to connect with SCARD_SHARE_EXCLUSIVE' +\
                         SCardGetErrorMessage(hresult))
-                # print 'reconnected exclusive'
+                # print('reconnected exclusive')
                 break
             if hasattr(component, 'component'):
                 component = component.component

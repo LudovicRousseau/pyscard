@@ -263,30 +263,30 @@ class ATR(object):
 
         for i in range(0, len(self.TA)):
             if self.TA[i] != None:
-                print "TA%d: %x" % (i + 1, self.TA[i])
+                print("TA%d: %x" % (i + 1, self.TA[i]))
             if self.TB[i] != None:
-                print "TB%d: %x" % (i + 1, self.TB[i])
+                print("TB%d: %x" % (i + 1, self.TB[i]))
             if self.TC[i] != None:
-                print "TC%d: %x" % (i + 1, self.TC[i])
+                print("TC%d: %x" % (i + 1, self.TC[i]))
             if self.TD[i] != None:
-                print "TD%d: %x" % (i + 1, self.TD[i])
+                print("TD%d: %x" % (i + 1, self.TD[i]))
 
-        print 'supported protocols', self.getSupportedProtocols()
-        print 'T=0 supported', self.isT0Supported()
-        print 'T=1 supported', self.isT1Supported()
+        print('supported protocols ' + ','.join(self.getSupportedProtocols()))
+        print('T=0 supported: ' + str(self.isT0Supported()))
+        print('T=1 supported: ' + str(self.isT1Supported()))
 
-        print 'checksum:', self.getChecksum()
+        print('checksum: ' + self.getChecksum())
 
-        print '\tclock rate conversion factor:', self.getClockRateConversion()
-        print '\tbit rate adjustment factor:', self.getBitRateFactor()
+        print('\tclock rate conversion factor: ' + str(self.getClockRateConversion()))
+        print('\tbit rate adjustment factor: ' + str(self.getBitRateFactor()))
 
-        print '\tmaximum programming current:', self.getProgrammingCurrent()
-        print '\tprogramming voltage:', self.getProgrammingVoltage()
+        print('\tmaximum programming current: ' + str(self.getProgrammingCurrent()))
+        print('\tprogramming voltage: ' + str(self.getProgrammingVoltage()))
 
-        print '\tguard time:', self.getGuardTime()
+        print('\tguard time: ' + str(self.getGuardTime()))
 
-        print 'nb of interface bytes:', self.getInterfaceBytesCount()
-        print 'nb of historical bytes:', self.getHistoricalBytesCount()
+        print('nb of interface bytes: %d' % self.getInterfaceBytesCount())
+        print('nb of historical bytes: %d' % self.getHistoricalBytesCount())
 
     def __str__(self):
         """Returns a string representation of the ATR as a strem of bytes."""
@@ -308,8 +308,9 @@ if __name__ == '__main__':
 
     for atr in atrs:
         a = ATR(atr)
-        print 80 * '-'
-        print a
+        print(80 * '-')
+        print(a)
         a.dump()
-        print reduce(lambda a, b: a + \
-                     "%-0.2X " % ((b + 256) % 256), a.getHistoricalBytes(), '')
+        print(reduce(lambda a, b: a + \
+                     "%-0.2X " % ((b + 256) % 256), a.getHistoricalBytes(), ''))
+

@@ -231,19 +231,20 @@ if __name__ == '__main__':
     cc = readers()[0].createConnection()
     cc.connect(mode=SCARD_SHARE_DIRECT)
 
-    #print cc.control( CM_IOCTL_GET_FEATURE_REQUEST )
+    #print(cc.control(CM_IOCTL_GET_FEATURE_REQUEST))
     features = getFeatureRequest(cc)
-    print features
+    print(features)
 
-    print hasFeature(features, FEATURE_VERIFY_PIN_START)
-    print hasFeature(features, FEATURE_VERIFY_PIN_DIRECT)
+    print(hasFeature(features, FEATURE_VERIFY_PIN_START))
+    print(hasFeature(features, FEATURE_VERIFY_PIN_DIRECT))
 
     properties = getPinProperties(cc)
-    print "\nPinProperties:"
-    for k in properties.keys():
-        print " %s: %s" % (k, properties[k])
+    print("\nPinProperties:")
+    for k, v in properties.iteritems():
+        print(" %s: %s" % (k, v))
 
-    print "\nTlvProperties:"
+    print("\nTlvProperties:")
     properties = getTlvProperties(cc)
-    for k in properties.keys():
-        print " %s: %s" % (k, properties[k])
+    for k, v in properties.iteritems():
+        print(" %s: %s" % (k, v))
+

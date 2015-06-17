@@ -64,7 +64,7 @@ class __CardNames__(Synchronization):
 
     def dump(self):
         for k, v in self.db.iteritems():
-            print k, repr(loads(v))
+            print(k, repr(loads(v)))
 
     def find(self, atr, reader=None):
         for k, v in self.db.iteritems():
@@ -102,8 +102,8 @@ if __name__ == '__main__':
     cn = CardNames()
     cn.add("Palmera Protect V2", ct)
     cn.dump()
-    print cn.find([0x3B, 0x16, 0x94, 0x20, 0x02, 0x01, 0x00, 0x00, 0x0D])
-    print cn.find([0x3B, 0x16, 0x94, 0x20, 0x02, 0x01, 0x00, 0x00])
+    print(cn.find([0x3B, 0x16, 0x94, 0x20, 0x02, 0x01, 0x00, 0x00, 0x0D]))
+    print(cn.find([0x3B, 0x16, 0x94, 0x20, 0x02, 0x01, 0x00, 0x00]))
     cn.delete("Palmera Protect V2")
-    print '---------'
+    print('---------')
     cn.dump()
