@@ -183,7 +183,7 @@ class ReaderMonitoringThread(Thread):
                 # wait every second on stopEvent
                 self.stopEvent.wait(self.period)
 
-            except Exception, e:
+            except Exception:
                 # FIXME Tighten the exceptions caught by this block
                 traceback.print_exc()
                 # Most likely raised during interpreter shutdown due
