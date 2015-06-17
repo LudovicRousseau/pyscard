@@ -183,7 +183,7 @@ class ReaderMonitoringThread(Thread):
                 # wait every second on stopEvent
                 self.stopEvent.wait(self.period)
 
-            except Exception, e:
+            except Exception:
                 # Most likely raised during interpreter shutdown due
                 # to unclean exit which failed to remove all observers.
                 # To solve this, we set the stop event and pass the

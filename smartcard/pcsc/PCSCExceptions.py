@@ -113,5 +113,6 @@ class RemoveReaderFromGroupException(BaseSCardException):
 if __name__ == "__main__":
     try:
         raise EstablishContextException(smartcard.scard.SCARD_E_NO_MEMORY)
-    except BaseSCardException, exc:
+    except BaseSCardException as exc:
         print(exc)
+
