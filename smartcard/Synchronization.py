@@ -18,7 +18,7 @@ def synchronized(method):
         self.mutex.acquire()
         # print(method.__name__, 'acquired')
         try:
-            return apply(method, args)
+            return method(*args)
         finally:
             self.mutex.release()
             # print(method.__name__, 'released')
