@@ -328,9 +328,10 @@ class CardAndReaderTreePanel(wx.Panel):
         def __init__(self, cardtreectrl):
             self.cardtreectrl = cardtreectrl
 
-        def update(self, observable, (addedcards, removedcards)):
+        def update(self, observable, handlers):
             """CardObserver callback that is notified
             when cards are added or removed."""
+            addedcards, removedcards = handlers
             self.cardtreectrl.OnRemoveCards(removedcards)
             self.cardtreectrl.OnAddCards(addedcards)
 
@@ -341,9 +342,10 @@ class CardAndReaderTreePanel(wx.Panel):
         def __init__(self, readertreectrl):
             self.readertreectrl = readertreectrl
 
-        def update(self, observable, (addedreaders, removedreaders)):
+        def update(self, observable, handlers):
             """ReaderObserver callback that is notified when
             readers are added or removed."""
+            addedcards, removedcards = handlers
             self.readertreectrl.OnRemoveReaders(removedreaders)
             self.readertreectrl.OnAddReaders(addedreaders)
 

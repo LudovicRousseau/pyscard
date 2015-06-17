@@ -42,9 +42,10 @@ class ReaderComboBox(wx.ComboBox, ReaderObserver):
         self.readermonitor = ReaderMonitor()
         self.readermonitor.addObserver(self)
 
-    def update(self, observable, (addedreaders, removedreaders)):
+    def update(self, observable, handlers):
         """Toolbar ReaderObserver callback that is notified when
         readers are added or removed."""
+        addedreaders, removedreaders = handlers
         for reader in addedreaders:
             item = self.Append(str(reader))
             self.SetClientData(item, reader)
