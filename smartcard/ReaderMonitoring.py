@@ -49,12 +49,13 @@ class ReaderObserver(Observer):
     def __init__(self):
         pass
 
-    def update(self, observable, (addedreaders, removedreaders)):
+    def update(self, observable, handlers):
         """Called upon reader insertion/removal.
 
         observable:
-        addedreaders: list of added readers causing notification
-        removedreaders: list of removed readers causing notification
+        handlers:
+            addedreaders: list of added readers causing notification
+            removedreaders: list of removed readers causing notification
         """
         pass
 

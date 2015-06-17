@@ -53,12 +53,13 @@ class CardObserver(Observer):
     def __init__(self):
         pass
 
-    def update(self, observable, (addedcards, removedcards)):
+    def update(self, observable, handlers):
         """Called upon reader insertion/removal.
 
         observable:
-        addedcards: list of added readers causing notification
-        removedcards: list of removed readers causing notification
+        handlers:
+            addedcards: list of added readers causing notification
+            removedcards: list of removed readers causing notification
         """
         pass
 
