@@ -62,5 +62,6 @@ if __name__ == "__main__":
     """Small sample illustrating the use of guid.py."""
     import smartcard.guid
     dummycardguid1 = strToGUID('{AD4F1667-EA75-4124-84D4-641B3B197C65}')
-    print dummycardguid1
-    print GUIDToStr(dummycardguid1)
+    print(dummycardguid1)
+    print(GUIDToStr(dummycardguid1))
+

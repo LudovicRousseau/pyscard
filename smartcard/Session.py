@@ -40,9 +40,9 @@ class Session(object):
     SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
     DF_TELECOM = [0x7F, 0x10]
     data, sw1, sw2 = s.sendCommandAPDU(SELECT+DF_TELECOM)
-    print data, sw1, sw2
+    print(data, sw1, sw2)
     s.close()
-    print `s`
+    print(`s`)
     """
 
     def __init__(self, readerName=None, cardServiceClass=None):

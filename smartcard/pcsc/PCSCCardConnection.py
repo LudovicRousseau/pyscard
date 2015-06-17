@@ -250,6 +250,7 @@ if __name__ == '__main__':
     from smartcard.pcsc.PCSCReader import PCSCReader
     cc = PCSCReader.readers()[0].createConnection()
     cc.connect()
-    print "%r %x %x" % cc.transmit(SELECT + DF_TELECOM)
+    print("%r %x %x" % cc.transmit(SELECT + DF_TELECOM))
 
-    print cc.control(0, [])
+    print(cc.control(0, []))
+

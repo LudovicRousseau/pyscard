@@ -218,7 +218,7 @@ class CardMonitoringThread(object):
 
 if __name__ == "__main__":
     from smartcard.CardMonitoring import CardMonitor
-    print 'insert or remove cards in the next 10 seconds'
+    print('insert or remove cards in the next 10 seconds')
 
     # a simple card observer that prints added/removed cards
     class printobserver(CardObserver):
@@ -226,9 +226,10 @@ if __name__ == "__main__":
         def __init__(self, obsindex):
             self.obsindex = obsindex
 
-        def update(self, observable, (addedcards, removedcards)):
-            print "%d - added:   " % self.obsindex, addedcards
-            print "%d - removed: " % self.obsindex, removedcards
+        def update(self, observable, handlers):
+            addedcards, removedcards = handlers
+            print("%d - added:   %s" % (self.obsindex, str(addedcards)))
+            print("%d - removed: %s" % (self.obsindex, str(removedcards)))
 
     class testthread(Thread):
 

@@ -346,9 +346,10 @@ if __name__ == '__main__':
     """Small sample illustrating the use of PCSCCardRequest.py."""
 
     from smartcard.util import toHexString
-    print 'Insert a new card within 10 seconds'
+    print('Insert a new card within 10 seconds')
     cr = PCSCCardRequest(timeout=10, newcardonly=True)
     cs = cr.waitforcard()
     cs.connection.connect()
-    print cs.connection.getReader(), toHexString(cs.connection.getATR())
+    print(cs.connection.getReader() + ' ' + toHexString(cs.connection.getATR()))
     cs.connection.disconnect()
+

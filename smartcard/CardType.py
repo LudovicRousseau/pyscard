@@ -98,8 +98,9 @@ class ATRCardType(CardType):
 if __name__ == '__main__':
     """Small sample illustrating the use of CardType.py."""
     r = readers()
-    print r
+    print(r)
     connection = r[0].createConnection()
     connection.connect()
     atrct = ATRCardType([0x3B, 0x16, 0x94, 0x20, 0x02, 0x01, 0x00, 0x00, 0x0D])
-    print atrct.matches(connection.getATR())
+    print(atrct.matches(connection.getATR()))
+

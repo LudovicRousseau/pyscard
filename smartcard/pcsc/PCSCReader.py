@@ -119,11 +119,11 @@ if __name__ == '__main__':
     creaders = PCSCReader.readers()
     for reader in creaders:
         try:
-            print reader.name
+            print(reader.name)
             connection = reader.createConnection()
             connection.connect()
-            print toHexString(connection.getATR())
+            print(toHexString(connection.getATR()))
             data, sw1, sw2 = connection.transmit(SELECT + DF_TELECOM)
-            print "%X %X" % (sw1, sw2)
-        except NoCardException, x:
-            print 'no card in reader'
+            print("%02X %02X" % (sw1, sw2))
+        except NoCardException:
+            print('no card in reader')
