@@ -41,7 +41,7 @@ def  strToGUID(s):
     for i in unpack('x' + '2s' * 4 + 'x' + '2s2sx' * 3 + '2s' * 6 + 'x', s):
         l += [int(i, 16)]
     zr = []
-    for i in xrange(len(l)):
+    for i in range(len(l)):
         zr.append(l[map[i]])
     return zr
 
@@ -54,7 +54,7 @@ def GUIDToStr(g):
     '{AD4F1667-EA75-4124-84D4-641B3B197C65}'
     """
     zr = []
-    for i in xrange(len(g)):
+    for i in range(len(g)):
         zr.append(g[map[i]])
     return "{%2X%2X%2X%2X-%2X%2X-%2X%2X-%2X%2X-%2X%2X%2X%2X%2X%2X}" % tuple(zr)
 
