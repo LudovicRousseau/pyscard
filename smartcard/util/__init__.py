@@ -202,8 +202,6 @@ def toHexString(bytes=[], format=0):
     '0X3B, 0X65, 0X00, 0X00, 0X9C, 0X11, 0X01, 0X01, 0X03'
     """
 
-    from string import rstrip
-
     for byte in tuple(bytes):
         pass
 
@@ -218,15 +216,13 @@ def toHexString(bytes=[], format=0):
             pformat = pformat + ","
         pformat = pformat + " "
         if PACK & format:
-            pformat = rstrip(pformat)
+            pformat = pformat.rstrip()
         if HEX & format:
             if UPPERCASE & format:
                 pformat = "0X" + pformat
             else:
                 pformat = "0x" + pformat
-        return rstrip(rstrip(
-                reduce(lambda a, b: a + pformat % ((b + 256) % 256),
-                        [""] + bytes)), ',')
+        return (''.join(map(lambda a: pformat % ((a + 256) % 256), bytes))).rstrip()
 
 
 # FIXME This appears to duplicate toASCIIString()
