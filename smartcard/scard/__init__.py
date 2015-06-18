@@ -1,4 +1,4 @@
 try:
-    from scard import *
+    from smartcard.scard.scard import *
 except:
     from smartcard.scard._scard import *
