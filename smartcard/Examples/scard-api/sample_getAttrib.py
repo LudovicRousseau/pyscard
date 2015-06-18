@@ -85,10 +85,10 @@ else:
 
 
 def printAttribute(attrib, value):
-    print '-----------------', attributes[attrib], '-----------------'
-    print value
-    print smartcard.util.toHexString(value, smartcard.util.HEX)
-    print apply(struct.pack, ['<' + 'B' * len(value)] + value)
+    print('-----------------', attributes[attrib], '-----------------')
+    print(value)
+    print(smartcard.util.toHexString(value, smartcard.util.HEX))
+    print(struct.pack(*['<' + 'B' * len(value)] + value))
 
 
 try:
@@ -97,7 +97,7 @@ try:
         raise error(
             'Failed to establish context: ' + \
             SCardGetErrorMessage(hresult))
-    print 'Context established!'
+    print('Context established!')
 
     try:
         hresult, readers = SCardListReaders(hcontext, [])
@@ -105,11 +105,11 @@ try:
             raise error(
                 'Failed to list readers: ' + \
                 SCardGetErrorMessage(hresult))
-        print 'PCSC Readers:', readers
+        print('PCSC Readers:', readers)
 
         if len(readers) < 1:
             raise error('No smart card readers')
-        print 'Trying to retreive attributes of', readers[0]
+        print('Trying to retreive attributes of', readers[0])
 
         for reader in readers:
             hresult, hcard, dwActiveProtocol = SCardConnect(
@@ -117,22 +117,22 @@ try:
                 reader,
                 SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1)
             if hresult != SCARD_S_SUCCESS:
-                print error, \
-                    'Unable to connect: ' + SCardGetErrorMessage(hresult)
+                print(error, \
+                    'Unable to connect: ' + SCardGetErrorMessage(hresult))
             else:
 
-                print 'Connected with active protocol', dwActiveProtocol
+                print('Connected with active protocol', dwActiveProtocol)
 
                 try:
-                    for i in attributes.keys():
+                    for i in list(attributes.keys()):
                         hresult, attrib = SCardGetAttrib(hcard, i)
                         if hresult == SCARD_S_SUCCESS:
                             printAttribute(i, attrib)
                         else:
-                            print '-----------------', \
+                            print('-----------------', \
                                 attributes[i], \
-                                '-----------------'
-                            print 'unsupported'
+                                '-----------------')
+                            print('unsupported')
 
                 finally:
                     hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
@@ -140,7 +140,7 @@ try:
                         raise error(
                             'Failed to disconnect: ' + \
                             SCardGetErrorMessage(hresult))
-                    print 'Disconnected'
+                    print('Disconnected')
 
     finally:
         hresult = SCardReleaseContext(hcontext)
@@ -148,12 +148,12 @@ try:
             raise error(
                 'Failed to release context: ' + \
                 SCardGetErrorMessage(hresult))
-        print 'Released context.'
+        print('Released context.')
 
-except Exception, e:
-    print e
+except Exception as e:
+    print(e)
 
 import sys
 if 'win32' == sys.platform:
-    print 'press Enter to continue'
+    print('press Enter to continue')
     sys.stdin.read(1)

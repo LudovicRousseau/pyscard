@@ -33,21 +33,21 @@ try:
     if hresult != SCARD_S_SUCCESS:
         raise error(
             'Failed to establish context: ' + SCardGetErrorMessage(hresult))
-    print 'Context established!'
+    print('Context established!')
 
     try:
         hresult, readers = SCardListReaders(hcontext, [])
         if hresult != SCARD_S_SUCCESS:
             raise error(
                 'Failed to list readers: ' + SCardGetErrorMessage(hresult))
-        print 'PCSC Readers:', readers
+        print('PCSC Readers:', readers)
 
         if len(readers) < 1:
             raise error('No smart card readers')
 
         for zreader in readers:
 
-            print 'Trying to Control reader:', zreader
+            print('Trying to Control reader:', zreader)
 
             try:
                 hresult, hcard, dwActiveProtocol = SCardConnect(
@@ -55,7 +55,7 @@ try:
                 if hresult != SCARD_S_SUCCESS:
                     raise error(
                         'Unable to connect: ' + SCardGetErrorMessage(hresult))
-                print 'Connected with active protocol', dwActiveProtocol
+                print('Connected with active protocol', dwActiveProtocol)
 
                 try:
                     if 'winscard' == resourceManager:
@@ -69,9 +69,9 @@ try:
                                 'SCardControl failed: ' +\
                                 SCardGetErrorMessage(hresult))
                         r = ""
-                        for i in xrange(len(response)):
+                        for i in range(len(response)):
                             r += "%c" % response[i]
-                        print 'SCARD_ATTR_VENDOR_NAME:', r
+                        print('SCARD_ATTR_VENDOR_NAME:', r)
                     elif 'pcsclite' == resourceManager and \
                           not 'pcsclite-tiger' == resourceManagerSubType:
                         # get firmware on Gemplus readers
@@ -84,19 +84,19 @@ try:
                                 'SCardControl failed: ' + \
                                 SCardGetErrorMessage(hresult))
                         r = ""
-                        for i in xrange(len(response)):
+                        for i in range(len(response)):
                             r += "%c" % response[i]
-                        print 'Control:', r
+                        print('Control:', r)
                 finally:
                     hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
                     if hresult != SCARD_S_SUCCESS:
                         raise error(
                             'Failed to disconnect: ' + \
                             SCardGetErrorMessage(hresult))
-                    print 'Disconnected'
+                    print('Disconnected')
 
-            except error, (message):
-                print error, message
+            except error as message:
+                print(error, message)
 
     finally:
         hresult = SCardReleaseContext(hcontext)
@@ -104,12 +104,12 @@ try:
             raise error(
                 'Failed to release context: ' + \
                 SCardGetErrorMessage(hresult))
-        print 'Released context.'
+        print('Released context.')
 
-except error, e:
-    print e
+except error as e:
+    print(e)
 
 import sys
 if 'win32' == sys.platform:
-    print 'press Enter to continue'
+    print('press Enter to continue')
     sys.stdin.read(1)

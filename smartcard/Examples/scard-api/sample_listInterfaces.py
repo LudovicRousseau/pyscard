@@ -48,7 +48,7 @@ if 'winscard' == resourceManager:
             raise scard.error(
                 'Failed to establish context: ' + \
                 SCardGetErrorMessage(hresult))
-        print 'Context established!'
+        print('Context established!')
 
         try:
 
@@ -66,11 +66,11 @@ if 'winscard' == resourceManager:
                 raise scard.error(
                     'Failed to list interfaces: ' + \
                     SCardGetErrorMessage(hresult))
-            print 'Interfaces for ', expectedCard, ':', interfaces
+            print('Interfaces for ', expectedCard, ':', interfaces)
 
             # introduce a card (forget first in case it is already present)
             hresult = SCardForgetCardType(hcontext, znewcardName)
-            print 'Introducing card ' + znewcardName
+            print('Introducing card ' + znewcardName)
             hresult = SCardIntroduceCardType(
                 hcontext,
                 znewcardName,
@@ -90,10 +90,10 @@ if 'winscard' == resourceManager:
                     'Failed to list interfaces: ' + \
                     SCardGetErrorMessage(hresult))
             for i in interfaces:
-                print 'Interface for ' + znewcardName + ' :', \
-                      smartcard.guid.GUIDToStr(i)
+                print('Interface for ' + znewcardName + ' :', \
+                      smartcard.guid.GUIDToStr(i))
 
-            print 'Forgeting card ' + znewcardName
+            print('Forgeting card ' + znewcardName)
             hresult = SCardForgetCardType(hcontext, znewcardName)
             if hresult != SCARD_S_SUCCESS:
                 raise error(
@@ -106,17 +106,17 @@ if 'winscard' == resourceManager:
                 raise error(
                     'Failed to release context: ' + \
                     SCardGetErrorMessage(hresult))
-            print 'Released context.'
+            print('Released context.')
 
     except error:
         import sys
-        print sys.exc_info()[0], ':', sys.exc_info()[1]
+        print(sys.exc_info()[0], ':', sys.exc_info()[1])
 
 elif 'pcsclite' == resourceManager:
-    print 'SCardListInterfaces not supported by pcsc lite'
+    print('SCardListInterfaces not supported by pcsc lite')
 
 
 import sys
 if 'win32' == sys.platform:
-    print 'press Enter to continue'
+    print('press Enter to continue')
     sys.stdin.read(1)

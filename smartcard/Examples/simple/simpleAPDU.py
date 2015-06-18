@@ -35,22 +35,22 @@ GET_TIME = [0x80, 0x38, 0x00, 0xA0]
 try:
     # get all the available readers
     r = readers()
-    print "Available readers: ", r
+    print("Available readers: ", r)
 
     # by default we use the first reader
     i = 0
     if len(sys.argv) > 1:
         i = int(sys.argv[1])
-    print "Using: %s" % r[i]
+    print("Using: %s" % r[i])
 
     connection = r[i].createConnection()
     connection.connect()
 
     data, sw1, sw2 = connection.transmit(SELECT_APPLET)
-    print "Select Applet: %02X %02X" % (sw1, sw2)
+    print("Select Applet: %02X %02X" % (sw1, sw2))
 
     data, sw1, sw2 = connection.transmit(GET_TIME)
-    print "Get Time: %02X %02X" % (sw1, sw2)
+    print("Get Time: %02X %02X" % (sw1, sw2))
 
 except:
-    print sys.exc_info()[1]
+    print(sys.exc_info()[1])

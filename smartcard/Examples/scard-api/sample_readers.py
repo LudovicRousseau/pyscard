@@ -34,7 +34,7 @@ try:
         raise error(
             'Failed to establish context: ' + \
             SCardGetErrorMessage(hresult))
-    print 'Context established!'
+    print('Context established!')
 
     try:
         hresult, readers = SCardListReaders(hcontext, [])
@@ -42,14 +42,14 @@ try:
             raise error(
                 'Failed to list readers: ' + \
                 SCardGetErrorMessage(hresult))
-        print 'PCSC Readers:', readers
+        print('PCSC Readers:', readers)
 
         hresult, readerGroups = SCardListReaderGroups(hcontext)
         if hresult != SCARD_S_SUCCESS:
             raise error(
                 'Unable to list reader groups: ' + \
                 SCardGetErrorMessage(hresult))
-        print 'PCSC Reader groups:', readerGroups
+        print('PCSC Reader groups:', readerGroups)
 
     finally:
         hresult = SCardReleaseContext(hcontext)
@@ -57,12 +57,12 @@ try:
             raise error(
                 'Failed to release context: ' + \
                 SCardGetErrorMessage(hresult))
-        print 'Released context.'
+        print('Released context.')
 
     import sys
     if 'win32' == sys.platform:
-        print 'press Enter to continue'
+        print('press Enter to continue')
         sys.stdin.read(1)
 
-except error, e:
-    print e
+except error as e:
+    print(e)

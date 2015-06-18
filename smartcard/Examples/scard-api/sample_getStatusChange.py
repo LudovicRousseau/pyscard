@@ -37,29 +37,29 @@ srTreeMask = \
 
 def printstate(state):
     reader, eventstate, atr = state
-    print reader + " " + smartcard.util.toHexString(atr, smartcard.util.HEX)
+    print(reader + " " + smartcard.util.toHexString(atr, smartcard.util.HEX))
     if eventstate & SCARD_STATE_ATRMATCH:
-        print '\tCard found'
+        print('\tCard found')
     if eventstate & SCARD_STATE_UNAWARE:
-        print '\tState unware'
+        print('\tState unware')
     if eventstate & SCARD_STATE_IGNORE:
-        print '\tIgnore reader'
+        print('\tIgnore reader')
     if eventstate & SCARD_STATE_UNAVAILABLE:
-        print '\tReader unavailable'
+        print('\tReader unavailable')
     if eventstate & SCARD_STATE_EMPTY:
-        print '\tReader empty'
+        print('\tReader empty')
     if eventstate & SCARD_STATE_PRESENT:
-        print '\tCard present in reader'
+        print('\tCard present in reader')
     if eventstate & SCARD_STATE_EXCLUSIVE:
-        print '\tCard allocated for exclusive use by another application'
+        print('\tCard allocated for exclusive use by another application')
     if eventstate & SCARD_STATE_INUSE:
-        print '\tCard in used by another application but can be shared'
+        print('\tCard in used by another application but can be shared')
     if eventstate & SCARD_STATE_MUTE:
-        print '\tCard is mute'
+        print('\tCard is mute')
     if eventstate & SCARD_STATE_CHANGED:
-        print '\tState changed'
+        print('\tState changed')
     if eventstate & SCARD_STATE_UNKNOWN:
-        print '\tState unknowned'
+        print('\tState unknowned')
 
 
 try:
@@ -68,7 +68,7 @@ try:
         raise error(
             'Failed to establish context: ' + \
             SCardGetErrorMessage(hresult))
-    print 'Context established!'
+    print('Context established!')
 
     try:
         hresult, readers = SCardListReaders(hcontext, [])
@@ -76,24 +76,24 @@ try:
             raise error(
                 'Failed to list readers: ' + \
                 SCardGetErrorMessage(hresult))
-        print 'PCSC Readers:', readers
+        print('PCSC Readers:', readers)
 
         readerstates = []
-        for i in xrange(len(readers)):
+        for i in range(len(readers)):
             readerstates += [(readers[i], SCARD_STATE_UNAWARE)]
 
-        print '----- Current reader and card states are: -------'
+        print('----- Current reader and card states are: -------')
         hresult, newstates = SCardGetStatusChange(hcontext, 0, readerstates)
         for i in newstates:
             printstate(i)
 
-        print '----- Please insert or remove a card ------------'
+        print('----- Please insert or remove a card ------------')
         hresult, newstates = SCardGetStatusChange(
                                 hcontext,
                                 INFINITE,
                                 newstates)
 
-        print '----- New reader and card states are: -----------'
+        print('----- New reader and card states are: -----------')
         for i in newstates:
             printstate(i)
 
@@ -103,12 +103,12 @@ try:
             raise error(
                 'Failed to release context: ' + \
                 SCardGetErrorMessage(hresult))
-        print 'Released context.'
+        print('Released context.')
 
     import sys
     if 'win32' == sys.platform:
-        print 'press Enter to continue'
+        print('press Enter to continue')
         sys.stdin.read(1)
 
-except error, e:
-    print e
+except error as e:
+    print(e)

@@ -45,13 +45,13 @@ class SecureChannelConnection(CardConnectionDecorator):
 
     def cypher(self, bytes):
         '''Cypher mock-up; you would include the secure channel logics here.'''
-        print 'cyphering', toHexString(bytes)
+        print('cyphering', toHexString(bytes))
         return bytes
 
     def uncypher(self, data):
         '''Uncypher mock-up;
         you would include the secure channel logics here.'''
-        print 'uncyphering', toHexString(data)
+        print('uncyphering', toHexString(data))
         return data
 
     def transmit(self, bytes, protocol=None):
@@ -99,7 +99,7 @@ cardservice.connection = FakeATRConnection(
 # connect to the card and perform a few transmits
 cardservice.connection.connect()
 
-print 'ATR', toHexString(cardservice.connection.getATR())
+print('ATR', toHexString(cardservice.connection.getATR()))
 
 apdu = SELECT + DF_TELECOM
 response, sw1, sw2 = cardservice.connection.transmit(apdu)
@@ -111,5 +111,5 @@ if sw1 == 0x9F:
 
 import sys
 if 'win32' == sys.platform:
-    print 'press Enter to continue'
+    print('press Enter to continue')
     sys.stdin.read(1)

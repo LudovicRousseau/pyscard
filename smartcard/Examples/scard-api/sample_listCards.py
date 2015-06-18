@@ -38,7 +38,7 @@ if 'winscard' == resourceManager:
             raise error(
                 'Failed to establish context: ' + \
                 SCardGetErrorMessage(hresult))
-        print 'Context established!'
+        print('Context established!')
 
         try:
             hresult, card = SCardListCards(hcontext, slbCryptoFlex8kv2ATR, [])
@@ -46,24 +46,24 @@ if 'winscard' == resourceManager:
                 raise error(
                     'Failure to locate Schlumberger Cryptoflex 8k v2 card: ' +\
                     SCardGetErrorMessage(hresult))
-            print 'Located by ATR:', card
+            print('Located by ATR:', card)
 
             hresult, cards = SCardListCards(hcontext, [], [])
             if hresult != SCARD_S_SUCCESS:
                 raise error(
                     'Failure to list cards: ' + \
                     SCardGetErrorMessage(hresult))
-            print 'Cards:', cards
+            print('Cards:', cards)
 
             for i in cards:
                 hresult, providerguid = SCardGetCardTypeProviderName(
                     hcontext, i, SCARD_PROVIDER_PRIMARY)
                 if hresult == SCARD_S_SUCCESS:
-                    print i, 'Primary provider:', providername
+                    print(i, 'Primary provider:', providername)
                 hresult, providername = SCardGetCardTypeProviderName(
                     hcontext, i, SCARD_PROVIDER_CSP)
                 if hresult == SCARD_S_SUCCESS:
-                    print i, 'CSP Provider:', providername
+                    print(i, 'CSP Provider:', providername)
 
         finally:
             hresult = SCardReleaseContext(hcontext)
@@ -71,16 +71,16 @@ if 'winscard' == resourceManager:
                 raise error(
                     'Failed to release context: ' + \
                     SCardGetErrorMessage(hresult))
-            print 'Released context.'
+            print('Released context.')
 
-    except error, e:
-        print e
+    except error as e:
+        print(e)
 
 elif 'pcsclite' == resourceManager:
-    print 'SCardListCards not supported by pcsc lite'
+    print('SCardListCards not supported by pcsc lite')
 
 
 import sys
 if 'win32' == sys.platform:
-    print 'press Enter to continue'
+    print('press Enter to continue')
     sys.stdin.read(1)

@@ -33,11 +33,11 @@ for reader in readers():
     try:
         connection = reader.createConnection()
         connection.connect()
-        print reader, toHexString(connection.getATR())
+        print(reader, toHexString(connection.getATR()))
     except NoCardException:
-        print reader, 'no card inserted'
+        print(reader, 'no card inserted')
 
 import sys
 if 'win32' == sys.platform:
-    print 'press Enter to continue'
+    print('press Enter to continue')
     sys.stdin.read(1)
