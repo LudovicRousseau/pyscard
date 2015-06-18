@@ -36,7 +36,7 @@ try:
         raise error(
             'Failed to establish context: ' + \
             SCardGetErrorMessage(hresult))
-    print 'Context established!'
+    print('Context established!')
 
     try:
         hresult, readers = SCardListReaders(hcontext, [])
@@ -44,14 +44,14 @@ try:
             raise error(
                 'Failed to list readers: ' + \
                 SCardGetErrorMessage(hresult))
-        print 'PCSC Readers in all groups:', readers
+        print('PCSC Readers in all groups:', readers)
 
         hresult, readerGroups = SCardListReaderGroups(hcontext)
         if hresult != SCARD_S_SUCCESS:
             raise error(
                 'Unable to list reader groups: ' + \
                 SCardGetErrorMessage(hresult))
-        print 'PCSC Reader groups:', readerGroups
+        print('PCSC Reader groups:', readerGroups)
 
         if 'winscard' == resourceManager:
 
@@ -74,7 +74,7 @@ try:
                 raise error(
                     'Failed to list readers: ' + \
                     SCardGetErrorMessage(hresult))
-            print 'PCSC Readers in all groups:', readers
+            print('PCSC Readers in all groups:', readers)
 
             hresult = SCardAddReaderToGroup(hcontext, dummyreader, newgroup)
             if hresult != SCARD_S_SUCCESS:
@@ -87,7 +87,7 @@ try:
                 raise error(
                     'Unable to list reader groups: ' + \
                     SCardGetErrorMessage(hresult))
-            print 'PCSC Reader groups:', readerGroups
+            print('PCSC Reader groups:', readerGroups)
 
             hresult, readers = SCardListReaders(hcontext, [newgroup])
             if hresult != SCARD_S_SUCCESS:
@@ -95,7 +95,7 @@ try:
                     'Failed to list readers in group ' + \
                     newgroup + ' : ' + \
                     SCardGetErrorMessage(hresult))
-            print 'PCSC Readers in reader group', newgroup, ':', readers
+            print('PCSC Readers in reader group', newgroup, ':', readers)
 
             hresult = SCardRemoveReaderFromGroup(
                 hcontext,
@@ -111,7 +111,7 @@ try:
                 raise error(
                     'Unable to list reader groups: ' + \
                     SCardGetErrorMessage(hresult))
-            print 'PCSC Reader groups:', readerGroups
+            print('PCSC Reader groups:', readerGroups)
 
             hresult = SCardForgetReaderGroup(hcontext, newgroup)
             if hresult != SCARD_S_SUCCESS:
@@ -130,7 +130,7 @@ try:
                 raise error(
                     'Failed to list readers: ' + \
                     SCardGetErrorMessage(hresult))
-            print 'PCSC Readers in all groups:', readers
+            print('PCSC Readers in all groups:', readers)
 
         elif 'pcsclite' == resourceManager:
             hresult, readers = SCardListReaders(hcontext, readerGroups)
@@ -139,7 +139,7 @@ try:
                     'Failed to list readers in groups ' + \
                     repr(readerGroups) + ' : ' + \
                     SCardGetErrorMessage(hresult))
-            print 'PCSC Readers in reader group', readerGroups, ':', readers
+            print('PCSC Readers in reader group', readerGroups, ':', readers)
 
     finally:
         hresult = SCardReleaseContext(hcontext)
@@ -147,12 +147,12 @@ try:
             raise error(
                 'Failed to release context: ' + \
                 SCardGetErrorMessage(hresult))
-        print 'Released context.'
+        print('Released context.')
 
     import sys
     if 'win32' == sys.platform:
-        print 'press Enter to continue'
+        print('press Enter to continue')
         sys.stdin.read(1)
 
-except error, e:
-    print e
+except error as e:
+    print(e)

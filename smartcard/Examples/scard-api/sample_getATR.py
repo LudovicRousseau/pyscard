@@ -35,7 +35,7 @@ if __name__ == '__main__':
         raise error(
             'Failed to establish context: ' + \
             SCardGetErrorMessage(hresult))
-    print 'Context established!'
+    print('Context established!')
 
     try:
         hresult, readers = SCardListReaders(hcontext, [])
@@ -45,48 +45,48 @@ if __name__ == '__main__':
                 SCardGetErrorMessage(hresult))
         if len(readers) < 1:
             raise Exception('No smart card readers')
-        print 'PCSC Readers:', readers
+        print('PCSC Readers:', readers)
 
         for reader in readers:
-            print 'Trying to retreive ATR of card in', reader
+            print('Trying to retreive ATR of card in', reader)
 
             hresult, hcard, dwActiveProtocol = SCardConnect(
                 hcontext,
                 reader,
                 SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1)
             if hresult != SCARD_S_SUCCESS:
-                print 'Unable to connect: ' + SCardGetErrorMessage(hresult)
+                print('Unable to connect: ' + SCardGetErrorMessage(hresult))
             else:
 
-                print 'Connected with active protocol', dwActiveProtocol
+                print('Connected with active protocol', dwActiveProtocol)
 
                 try:
                     hresult, reader, state, protocol, atr = SCardStatus(hcard)
                     if hresult != SCARD_S_SUCCESS:
-                        print 'failed to get status: ' + \
-                              SCardGetErrorMessage(hresult)
-                    print 'Reader:', reader
-                    print 'State:', hex(state)
-                    print 'Protocol:', protocol
-                    print 'ATR:', smartcard.util.toHexString(
+                        print('failed to get status: ' + \
+                              SCardGetErrorMessage(hresult))
+                    print('Reader:', reader)
+                    print('State:', hex(state))
+                    print('Protocol:', protocol)
+                    print('ATR:', smartcard.util.toHexString(
                                         atr,
-                                        smartcard.util.HEX)
+                                        smartcard.util.HEX))
 
                 finally:
                     hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
                     if hresult != SCARD_S_SUCCESS:
-                        print 'Failed to disconnect: ' + \
-                            SCardGetErrorMessage(hresult)
-                    print 'Disconnected'
+                        print('Failed to disconnect: ' + \
+                            SCardGetErrorMessage(hresult))
+                    print('Disconnected')
 
     finally:
         hresult = SCardReleaseContext(hcontext)
         if hresult != SCARD_S_SUCCESS:
             raise error('Failed to release context: ' + \
                             SCardGetErrorMessage(hresult))
-        print 'Released context.'
+        print('Released context.')
 
 import sys
 if 'win32' == sys.platform:
-    print 'press Enter to continue'
+    print('press Enter to continue')
     sys.stdin.read(1)

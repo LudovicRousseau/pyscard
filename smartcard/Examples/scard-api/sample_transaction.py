@@ -34,7 +34,7 @@ try:
         raise error(
             'Failed to establish context: ' + \
             SCardGetErrorMessage(hresult))
-    print 'Context established!'
+    print('Context established!')
 
     try:
         hresult, readers = SCardListReaders(hcontext, [])
@@ -42,13 +42,13 @@ try:
             raise error(
                 'Failed to list readers:: ' + \
                 SCardGetErrorMessage(hresult))
-        print 'PCSC Readers:', readers
+        print('PCSC Readers:', readers)
 
         if len(readers) < 1:
             raise error('No smart card readers')
 
         for zreader in readers:
-            print 'Trying to perform transaction on card in', zreader
+            print('Trying to perform transaction on card in', zreader)
 
             try:
                 hresult, hcard, dwActiveProtocol = SCardConnect(
@@ -60,7 +60,7 @@ try:
                     raise error(
                         'unable to connect: ' + \
                         SCardGetErrorMessage(hresult))
-                print 'Connected with active protocol', dwActiveProtocol
+                print('Connected with active protocol', dwActiveProtocol)
 
                 try:
                     hresult = SCardBeginTransaction(hcard)
@@ -68,17 +68,17 @@ try:
                         raise error(
                             'failed to begin transaction: ' + \
                             SCardGetErrorMessage(hresult))
-                    print 'Beginning transaction'
+                    print('Beginning transaction')
 
                     hresult, reader, state, protocol, atr = SCardStatus(hcard)
                     if hresult != SCARD_S_SUCCESS:
                         raise error(
                             'failed to get status: ' + \
                             SCardGetErrorMessage(hresult))
-                    print 'ATR:',
-                    for i in xrange(len(atr)):
-                        print "0x%.2X" % atr[i],
-                    print ""
+                    print('ATR:', end=' ')
+                    for i in range(len(atr)):
+                        print("0x%.2X" % atr[i], end=' ')
+                    print("")
 
                 finally:
                     hresult = SCardEndTransaction(hcard, SCARD_LEAVE_CARD)
@@ -86,16 +86,16 @@ try:
                         raise error(
                             'failed to end transaction: ' + \
                             SCardGetErrorMessage(hresult))
-                    print 'Transaction ended'
+                    print('Transaction ended')
 
                     hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
                     if hresult != SCARD_S_SUCCESS:
                         raise error(
                             'failed to disconnect: ' + \
                             SCardGetErrorMessage(hresult))
-                    print 'Disconnected'
-            except error, (message):
-                print error, message
+                    print('Disconnected')
+            except error as message:
+                print(error, message)
 
     finally:
         hresult = SCardReleaseContext(hcontext)
@@ -103,12 +103,12 @@ try:
             raise error(
                 'failed to release context: ' + \
                 SCardGetErrorMessage(hresult))
-        print 'Released context.'
+        print('Released context.')
 
-except error, e:
-    print e
+except error as e:
+    print(e)
 
 import sys
 if 'win32' == sys.platform:
-    print 'press Enter to continue'
+    print('press Enter to continue')
     sys.stdin.read(1)

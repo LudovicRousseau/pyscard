@@ -40,7 +40,7 @@ cardtype = AnyCardType()
 
 try:
     # request card insertion
-    print 'insert a card (SIM card if possible) within 10s'
+    print('insert a card (SIM card if possible) within 10s')
     cardrequest = CardRequest(timeout=10, cardType=cardtype)
     cardservice = cardrequest.waitforcard()
 
@@ -60,12 +60,12 @@ try:
         response, sw1, sw2 = cardservice.connection.transmit(apdu)
 
     else:
-        print 'no DF_TELECOM'
+        print('no DF_TELECOM')
 
 except CardRequestTimeoutException:
-    print 'time-out: no card inserted during last 10s'
+    print('time-out: no card inserted during last 10s')
 
 import sys
 if 'win32' == sys.platform:
-    print 'press Enter to continue'
+    print('press Enter to continue')
     sys.stdin.read(1)
