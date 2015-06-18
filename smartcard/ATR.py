@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 from smartcard.Exceptions import SmartcardException
-
+from smartcard.util import toHexString
 
 class ATR(object):
     """ATR class."""
@@ -290,8 +290,7 @@ class ATR(object):
 
     def __str__(self):
         """Returns a string representation of the ATR as a strem of bytes."""
-        return reduce(lambda a, b: a + \
-                      "%-0.2X " % ((b + 256) % 256), self.bytes, '')
+        return toHexString(self.bytes)
 
 
 if __name__ == '__main__':
@@ -311,6 +310,5 @@ if __name__ == '__main__':
         print(80 * '-')
         print(a)
         a.dump()
-        print(reduce(lambda a, b: a + \
-                     "%-0.2X " % ((b + 256) % 256), a.getHistoricalBytes(), ''))
+        print(toHexString(a.getHistoricalBytes()))
 
