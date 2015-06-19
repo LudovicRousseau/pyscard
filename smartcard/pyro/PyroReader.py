@@ -64,7 +64,7 @@ class PyroReader(Reader):
             ns = Pyro.naming.NameServerLocator().getNS()
             readernames = ns.list(':pyscard.smartcard.readers')
         except Pyro.errors.NamingError:
-            print 'Warning: pyro name server not found'
+            print('Warning: pyro name server not found')
 
         remotereaders = []
         for readername in readernames:
@@ -81,11 +81,11 @@ if __name__ == '__main__':
     remotereaders = PyroReader.readers()
     for reader in remotereaders:
         try:
-            print reader.name, ', uri: ', reader.uri
+            print(reader.name, ', uri: ', reader.uri)
             connection = reader.createConnection()
             connection.connect()
-            print toHexString(connection.getATR())
+            print(toHexString(connection.getATR()))
             data, sw1, sw2 = connection.transmit(SELECT + DF_TELECOM)
-            print "%X %X" % (sw1, sw2)
-        except NoCardException, x:
-            print 'no card in reader'
+            print("%X %X" % (sw1, sw2))
+        except NoCardException as x:
+            print('no card in reader')
