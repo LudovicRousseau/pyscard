@@ -26,13 +26,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 from distutils.util import get_platform
 import sys
 
-<<<<<<< HEAD
 from setuptools import setup, Extension
-=======
+
+
 if sys.version_info[0:2] < (2, 6):
     raise RuntimeError("pyscard requires Python 2.6+ to build.")
->>>>>>> Remove support for Python releases older than 2.6
-
 
 if sys.version_info[0:2] < (2, 6):
     raise RuntimeError("pyscard requires Python 2.6+ to build.")
@@ -55,15 +53,6 @@ elif 'cygwin-' in get_platform():
     platform_extra_compile_args = []
     platform_extra_link_args = []
 
-<<<<<<< HEAD
-=======
-#
-# Mac OS X Lion (and above), python 2.7
-# PowerPC is no more supported, x86_64 is new
-#
-# x86_64 and i386
-#
->>>>>>> Remove support for Python releases older than 2.6
 elif 'macosx-10.' in get_platform():
     if 'macosx-10.6' in get_platform():
         macosx_define = '__LEOPARD__' # Snow Leopard, Python 2.6
@@ -138,7 +127,6 @@ kw = {'name': "pyscard",
                              swig_opts=['-outdir',
                                         'smartcard/scard'] \
                                         + platform_swig_opts)],
-<<<<<<< HEAD
       'extras_require': {
             'Gui': ['wxPython'],
             'Pyro': ['Pyro'],
@@ -148,11 +136,6 @@ kw = {'name': "pyscard",
           'Development Status :: 5 - Production/Stable',
           'License :: OSI Approved :: GNU Lesser General Public License v2 '
                                      'or later (LGPLv2+)',
-=======
-      'classifiers': [
-          'Development Status :: 1.6.16 - Release',
-          'License :: GNU LESSER GENERAL PUBLIC LICENSE',
->>>>>>> Remove support for Python releases older than 2.6
           'Intended Audience :: Developers',
           'Operating System :: Unix',
           'Operating System :: Microsoft :: Windows',
@@ -163,22 +146,11 @@ kw = {'name': "pyscard",
           'Topic :: Security ',
           ]
      }
-<<<<<<< HEAD
-=======
-
-# FIXME Sourceforge downloads are unauthenticated, migrate to PyPI
-kw['download_url'] = ('http://sourceforge.net/projects/%(name)s/files'
-                      '/%(name)s/%(name)s%%20%(version)s'
-                      '/%(name)s-%(version)s.tar.gz/download' % kw)
->>>>>>> Remove support for Python releases older than 2.6
 
 # FIXME Sourceforge downloads are unauthenticated, migrate to PyPI
 kw['download_url'] = ('http://sourceforge.net/projects/%(name)s/files'
                       '/%(name)s/%(name)s%%20%(version)s'
                       '/%(name)s-%(version)s.tar.gz/download' % kw)
 
-<<<<<<< HEAD
 setup(**kw)
 
-=======
->>>>>>> Remove support for Python releases older than 2.6
