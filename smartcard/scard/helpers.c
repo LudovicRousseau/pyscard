@@ -48,7 +48,7 @@ extern PyObject* PyExc_SCardError;
 #define PyInt_Check(x) PyLong_Check(x)
 #define PyInt_AsLong(x) PyLong_AsLong(x)
 #define PyInt_FromLong(x) PyLong_FromLong(x)
-#define PyString_Check(name) PyBytes_Check(name)
+#define PyString_Check(name) PyUnicode_Check(name)
 #define PyString_FromString(x) PyUnicode_FromString(x)
 #define PyString_AsString(str) PyBytes_AsString(str)
 
