@@ -31,7 +31,7 @@ import sys
 if sys.version_info[0:2] < (2, 6):
     raise RuntimeError("pyscard requires Python 2.6+ to build.")
 
-if 'win32' == get_platform():
+if get_platform() in ('win32', 'win-amd64'):
     platform__cc_defines = [('WIN32', '100')]
     platform_swig_opts = ['-DWIN32']
     platform_sources = ['smartcard/scard/scard.rc']
@@ -40,15 +40,6 @@ if 'win32' == get_platform():
     platform_extra_compile_args = []
     platform_extra_link_args = []
 
-elif 'win-amd64' == get_platform():
-    platform__cc_defines = [('WIN32', '100')]
-    platform_swig_opts = ['-DWIN32']
-    platform_sources = ['smartcard/scard/scard.rc']
-    platform_libraries = ['winscard']
-    platform_include_dirs = []
-    platform_extra_compile_args = []
-    platform_extra_link_args = []
-    
 elif 'cygwin-' in get_platform():
     platform__cc_defines = [('WIN32', '100')]
     platform_swig_opts = ['-DWIN32']
@@ -58,33 +49,15 @@ elif 'cygwin-' in get_platform():
     platform_extra_compile_args = []
     platform_extra_link_args = []
 
-#
-# Mac OS X Lion (and above), python 2.7
-# PowerPC is no more supported, x86_64 is new
-#
-# x86_64 and i386
-#
 elif 'macosx-10.' in get_platform():
+    if 'macosx-10.6' in get_platform():
+        macosx_define = '__LEOPARD__' # Snow Leopard, Python 2.6
+    else:
+        macosx_define = '__LION__' # Lion (and above), Python 2.7
     platform__cc_defines = [('PCSCLITE', '1'),
                             ('__APPLE__', '1'),
-                            ('__LION__', '1')]
-    platform_swig_opts = ['-DPCSCLITE', '-D__APPLE__', '-D__LION__']
-    platform_sources = []
-    platform_libraries = []
-    platform_include_dirs = []
-    platform_extra_compile_args = ['-v', '-arch', 'i386',
-                                   '-arch', 'x86_64', '-ggdb']
-    platform_extra_link_args = ['-arch', 'i386', '-arch', 'x86_64', '-ggdb']
-
-#
-# Mac OS X Snow Leopard, python 2.6
-# PowerPC is no more supported, x86_64 is new
-#
-elif 'macosx-10.6' in get_platform():
-    platform__cc_defines = [('PCSCLITE', '1'),
-                            ('__APPLE__', '1'),
-                            ('__LEOPARD__', '1')]
-    platform_swig_opts = ['-DPCSCLITE', '-D__APPLE__', '-D__LEOPARD__']
+                            (macosx_define, '1')]
+    platform_swig_opts = ['-DPCSCLITE', '-D__APPLE__', '-D' + macosx_define]
     platform_sources = []
     platform_libraries = []
     platform_include_dirs = []
