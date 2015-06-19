@@ -5,12 +5,10 @@
 $BASE_URL = "https://www.python.org/ftp/python/"
 $GET_PIP_URL = "https://bootstrap.pypa.io/get-pip.py"
 $GET_PIP_PATH = "C:\get-pip.py"
+$SWIG_BASE_URL = "http://prdownloads.sourceforge.net/swig/"
 
-
-function DownloadPython ($python_version, $platform_suffix) {
+function DownloadFile ($url, $filename) {
     $webclient = New-Object System.Net.WebClient
-    $filename = "python-" + $python_version + $platform_suffix + ".msi"
-    $url = $BASE_URL + $python_version + "/" + $filename
 
     $basedir = $pwd.Path + "\"
     $filepath = $basedir + $filename
@@ -35,6 +33,19 @@ function DownloadPython ($python_version, $platform_suffix) {
    return $filepath
 }
 
+function DownloadPython ($python_version, $platform_suffix) {
+    $filename = "python-" + $python_version + $platform_suffix + ".msi"
+    $url = $BASE_URL + $python_version + "/" + $filename
+    $filepath = DownloadFile $url $filename
+    return $filepath
+}
+
+function DownloadSwig ($swig_version) {
+    $filename = "swigwin-" + $swig_version + ".zip"
+    $url = $SWIG_BASE_URL + $filename
+    $filepath = DownloadFile $url $filename
+    return $filepath
+}
 
 function InstallPython ($python_version, $architecture, $python_home) {
     Write-Host "Installing Python" $python_version "for" $architecture "bit architecture to" $python_home
@@ -56,6 +67,19 @@ function InstallPython ($python_version, $architecture, $python_home) {
     return $true
 }
 
+function InstallSwig ($swig_version, $swig_home, $python_home) {
+    Write-Host "Installing Swig" $swig_version "to" $swig_home
+    if (Test-Path $swig_home) {
+        Write-Host $swig_home "already exists, skipping."
+        return $false
+    }
+    $filepath = DownloadSwig $swig_version
+    Write-Host "Unzipping" $filepath "to" $swig_home
+    $python_path = $python_home + "/python.exe"
+    $args = "-m zipfile -e $filepath C:/"
+    Write-Host "Executing:" $python_path $args
+    Start-Process -FilePath "$python_path" -ArgumentList $args -Wait -Passthru
+}
 
 function InstallPip ($python_home) {
     $pip_path = $python_home + "/Scripts/pip.exe"
@@ -78,6 +102,7 @@ function InstallPackage ($python_home, $pkg) {
 
 function main () {
     InstallPython $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
+    InstallSwig $env:SWIG_VERSION $env:SWIG $env:PYTHON
     InstallPip $env:PYTHON
     InstallPackage $env:PYTHON wheel
 }

@@ -5,6 +5,9 @@ environment:
     # /E:ON and /V:ON options are not enabled in the batch script intepreter
     # See: http://stackoverflow.com/a/13751649/163740
     WITH_COMPILER: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_compiler.cmd"
+    SWIG: "C:\\swigwin-3.0.5"
+    SWIG_VERSION: "3.0.5"
+    SWIG_SHA256: "12b4e1905124f26f4f6970e23948238166aeb44001fa4ee5c1fd6bbbb7d981f4"
 
   matrix:
     - PYTHON: "C:\\Python27"
@@ -47,6 +50,7 @@ test_script:
   - echo Skipped
 
 after_test:
+  - SET PATH=%SWIG%;%PATH%
   - "%WITH_COMPILER% %PYTHON%/python setup.py bdist_wheel"
 
 artifacts:
