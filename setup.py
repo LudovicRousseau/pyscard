@@ -122,11 +122,16 @@ kw = {'name': "pyscard",
                                         'smartcard/scard'] \
                                         + platform_swig_opts)],
       'classifiers': [
-          'Development Status :: 1.6.16 - Release',
-          'License :: GNU LESSER GENERAL PUBLIC LICENSE',
+          'Development Status :: 5 - Release',
+          'License :: OSI Approved :: GNU Lesser General Public License v2 '
+                                     'or later (LGPLv2+)',
           'Intended Audience :: Developers',
           'Operating System :: Unix',
           'Operating System :: Microsoft :: Windows',
+          'Operating System :: MacOS X',
+          'Programming Language :: Python :: 2.6',
+          'Programming Language :: Python :: 2.7',
+          'Programming Language :: Python :: 2 :: Only',
           'Topic :: Security :: Smartcards',
           ]
      }
