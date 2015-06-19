@@ -23,10 +23,11 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-from distutils import core, dir_util, file_util
-from distutils.core import Extension
 from distutils.util import get_platform
 import sys
+
+from setuptools import setup, Extension
+
 
 if sys.version_info[0:2] < (2, 6):
     raise RuntimeError("pyscard requires Python 2.6+ to build.")
@@ -142,5 +143,5 @@ kw['download_url'] = ('http://sourceforge.net/projects/%(name)s/files'
                       '/%(name)s/%(name)s%%20%(version)s'
                       '/%(name)s-%(version)s.tar.gz/download' % kw)
 
-pyscard_dist = core.setup(**kw)
+setup(**kw)
 
