@@ -32,9 +32,6 @@ from setuptools import setup, Extension
 if sys.version_info[0:2] < (2, 6):
     raise RuntimeError("pyscard requires Python 2.6+ to build.")
 
-if sys.version_info[0:2] < (2, 6):
-    raise RuntimeError("pyscard requires Python 2.6+ to build.")
-
 if get_platform() in ('win32', 'win-amd64'):
     platform__cc_defines = [('WIN32', '100')]
     platform_swig_opts = ['-DWIN32']
