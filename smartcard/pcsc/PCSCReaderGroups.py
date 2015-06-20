@@ -112,5 +112,5 @@ class PCSCReaderGroups(readergroups):
         readergroups.__init__(self, initlist)
 
 if __name__ == '__main__':
-    print(PCSCReaderGroups())
+    print(PCSCReaderGroups().getreadergroups())
 
