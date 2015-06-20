@@ -202,7 +202,7 @@ class PCSCCardConnection(CardConnection):
         sw2 = (response[-1] + 256) % 256
 
         data = map(lambda x: (x + 256) % 256, response[:-2])
-        return data, sw1, sw2
+        return list(data), sw1, sw2
 
     def doControl(self, controlCode, bytes=[]):
         """Transmit a control command to the reader and return response.
@@ -220,7 +220,7 @@ class PCSCCardConnection(CardConnection):
                 'Failed to control ' + SCardGetErrorMessage(hresult))
 
         data = map(lambda x: (x + 256) % 256, response)
-        return data
+        return list(data)
 
     def doGetAttrib(self, attribId):
         """get an attribute
