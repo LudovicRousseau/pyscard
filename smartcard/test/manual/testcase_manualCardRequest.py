@@ -23,7 +23,7 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-
+from __future__ import print_function
 import random
 import string
 import time
@@ -41,16 +41,16 @@ from smartcard.System import readers
 #
 # setup test first: detect current readers and cards
 #
-print 'insert two smartcard readers'
+print('insert two smartcard readers')
 while True:
     readerz = readers()
     if 2 <= len(readerz):
         break
     time.sleep(.3)
 for reader in readerz:
-    print '\t', reader
+    print('\t', reader)
 
-print 'insert two cards in the readers'
+print('insert two cards in the readers')
 cardrequest = CardRequest()
 while True:
     cardz = cardrequest.waitforcardevent()
@@ -58,7 +58,7 @@ while True:
         break
     time.sleep(.3)
 for card in cardz:
-    print '\t', toHexString(card.atr)
+    print('\t', toHexString(card.atr))
 
 
 class testcase_manualCardRequest(unittest.TestCase, CardObserver):
@@ -71,14 +71,14 @@ class testcase_manualCardRequest(unittest.TestCase, CardObserver):
         pass
 
     def removeAllCards(self):
-        print 'please remove all inserted smart cards'
+        print('please remove all inserted smart cards')
         cardrequest = CardRequest()
         while True:
             cards = cardrequest.waitforcardevent()
             if 0 == len(cards):
                 break
             time.sleep(.3)
-        print 'ok'
+        print('ok')
 
     def testcase_CardRequestNewCardAnyCardTypeInfiniteTimeOut(self):
         """Test smartcard.CardRequest for any new card without time-out."""
@@ -87,21 +87,21 @@ class testcase_manualCardRequest(unittest.TestCase, CardObserver):
         cardtype = AnyCardType()
         cardrequest = CardRequest(
             timeout=None, cardType=cardtype, newcardonly=True)
-        print 're-insert any combination of cards six time'
+        print('re-insert any combination of cards six time')
         count = 0
         for i in range(0, 6):
             cardservice = cardrequest.waitforcard()
             try:
                 cardservice.connection.connect()
-                print toHexString(
+                print(toHexString(
                     cardservice.connection.getATR()), \
-                    'in', cardservice.connection.getReader()
+                    'in', cardservice.connection.getReader())
             except CardConnectionException:
                 # card was removed too fast
                 pass
             cardservice.connection.disconnect()
             count += 1
-        self.assertEquals(6, count)
+        self.assertEqual(6, count)
 
     def testcase_CardRequestNewCardATRCardTypeInfiniteTimeOut(self):
         """Test smartcard.CardRequest for new card with given ATR
@@ -114,18 +114,18 @@ class testcase_manualCardRequest(unittest.TestCase, CardObserver):
             cardtype = ATRCardType(card.atr)
             cardrequest = CardRequest(
                 timeout=None, cardType=cardtype, newcardonly=True)
-            print 're-insert card', toHexString(card.atr), 'into', card.reader
+            print('re-insert card', toHexString(card.atr), 'into', card.reader)
             cardservice = cardrequest.waitforcard()
-            print 'ok'
+            print('ok')
             try:
                 cardservice.connection.connect()
-                self.assertEquals(cardservice.connection.getATR(), card.atr)
+                self.assertEqual(cardservice.connection.getATR(), card.atr)
             except CardConnectionException:
                 # card was removed too fast
                 pass
             cardservice.connection.disconnect()
             count += 1
-        self.assertEquals(6, count)
+        self.assertEqual(6, count)
 
     def testcase_CardRequestNewCardAnyCardTypeFiniteTimeOutNoInsertion(self):
         """Test smartcard.CardRequest for new card with time-out and no
@@ -142,13 +142,13 @@ class testcase_manualCardRequest(unittest.TestCase, CardObserver):
             try:
                 before = time.time()
                 cardservice = cardrequest.waitforcard()
-            except CardRequestTimeoutException, e:
+            except CardRequestTimeoutException as e:
                 elapsed = int(10 * (time.time() - before))
-                print '.',
-                self.assert_(elapsed >= 10 and elapsed <= 11.)
+                print('.', end=' ')
+                self.assertTrue(elapsed >= 10 and elapsed <= 11.)
                 count += 1
-        print '\n'
-        self.assertEquals(6, count)
+        print('\n')
+        self.assertEqual(6, count)
 
     def testcase_CardRequestNewCardAnyCardTypeFiniteTimeOutInsertion(self):
         """Test smartcard.CardRequest for new card with time-out and
@@ -163,22 +163,22 @@ class testcase_manualCardRequest(unittest.TestCase, CardObserver):
         count = 0
         for i in range(0, 6):
             try:
-                print 're-insert any card within the next 5 seconds'
+                print('re-insert any card within the next 5 seconds')
                 before = time.time()
                 cardservice = cardrequest.waitforcard()
                 count += 1
                 elapsed = int(10 * (time.time() - before))
-                self.assert_(elapsed <= 55.)
-            except CardRequestTimeoutException, e:
-                print 'too slow... Test will show a failure'
-        print '\n'
-        self.assertEquals(6, count)
+                self.assertTrue(elapsed <= 55.)
+            except CardRequestTimeoutException as e:
+                print('too slow... Test will show a failure')
+        print('\n')
+        self.assertEqual(6, count)
 
     def testcase_CardRequestNewCardInReaderNotPresentInfiniteTimeOut(self):
         """Test smartcard.CardRequest for any new card in a specific
         reader not present without time-out."""
 
-        print 'please remove a smart card reader'
+        print('please remove a smart card reader')
         _readerz = readers()
         while True:
             readerz = readers()
@@ -195,12 +195,12 @@ class testcase_manualCardRequest(unittest.TestCase, CardObserver):
             readers=[_readerz[0]],
             cardType=cardtype,
             newcardonly=True)
-        print 'Re-insert reader ', _readerz[0], 'with a card inside'
+        print('Re-insert reader ', _readerz[0], 'with a card inside')
         cardservice = cardrequest.waitforcard()
         cardservice.connection.connect()
-        print toHexString(
+        print(toHexString(
             cardservice.connection.getATR()), \
-            'in', cardservice.connection.getReader()
+            'in', cardservice.connection.getReader())
         cardservice.connection.disconnect()
 
 
