@@ -101,10 +101,10 @@ PCSCv2_PART10_PROPERTY_wLcdMaxCharacters,
 
 # we already have:       Features['FEATURE_x'] = FEATURE_x
 # we will now also have: Features[FEATURE_x] = 'FEATURE_x'
-for k in Features.keys():
+for k in list(Features.keys()):
     Features[Features[k]] = k
 
-for k in Properties.keys():
+for k in list(Properties.keys()):
     Properties[Properties[k]] = k
 
 
