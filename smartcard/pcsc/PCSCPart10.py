@@ -228,8 +228,8 @@ def getTlvProperties(cardConnection, featureList=None, controlCode=None):
 
 if __name__ == '__main__':
     """Small sample illustrating the use of PCSCPart10."""
-    from smartcard.pcsc.PCSCReader import readers
-    cc = readers()[0].createConnection()
+    from smartcard.pcsc.PCSCReader import PCSCReader
+    cc = PCSCReader.readers()[0].createConnection()
     cc.connect(mode=SCARD_SHARE_DIRECT)
 
     #print(cc.control(CM_IOCTL_GET_FEATURE_REQUEST))

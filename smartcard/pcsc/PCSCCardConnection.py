@@ -127,10 +127,17 @@ class PCSCCardConnection(CardConnection):
                     'Unable to connect with protocol: ' + \
                     dictProtocol[pcscprotocol] + '. ' + \
                     SCardGetErrorMessage(hresult))
+
         protocol = 0
-        for p in dictProtocol:
-            if p == dwActiveProtocol:
-                protocol = eval("CardConnection.%s_protocol" % dictProtocol[p])
+        if dwActiveProtocol == SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1:
+            # special case for T0 | T1
+            # this happen when mode=SCARD_SHARE_DIRECT and no protocol is
+            # then negociated with the card
+            protocol = CardConnection.T0_protocol | CardConnection.T1_protocol
+        else:
+            for p in dictProtocol:
+                if p == dwActiveProtocol:
+                    protocol = eval("CardConnection.%s_protocol" % dictProtocol[p])
         PCSCCardConnection.setProtocol(self, protocol)
 
     def disconnect(self):
@@ -241,9 +248,9 @@ if __name__ == '__main__':
     """Small sample illustrating the use of CardConnection."""
     SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
     DF_TELECOM = [0x7F, 0x10]
-    from smartcard.pcsc.PCSCReader import readers
+    from smartcard.pcsc.PCSCReader import PCSCReader
     from smartcard.pcsc.PCSCPart10 import CM_IOCTL_GET_FEATURE_REQUEST
-    cc = readers()[0].createConnection()
+    cc = PCSCReader.readers()[0].createConnection()
     cc.connect()
     print("%r %x %x" % cc.transmit(SELECT + DF_TELECOM))
 
