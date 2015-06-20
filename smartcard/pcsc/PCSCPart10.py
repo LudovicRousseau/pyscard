@@ -241,11 +241,11 @@ if __name__ == '__main__':
 
     properties = getPinProperties(cc)
     print("\nPinProperties:")
-    for k, v in properties.iteritems():
+    for k, v in properties.items():
         print(" %s: %s" % (k, v))
 
     print("\nTlvProperties:")
     properties = getTlvProperties(cc)
-    for k, v in properties.iteritems():
+    for k, v in properties.items():
         print(" %s: %s" % (k, v))
 
