@@ -135,7 +135,7 @@ class PCSCCardRequest(AbstractCardRequest):
         # call SCardGetStatusChange only if we have some readers
         if {} != readerstates:
             hresult, newstates = SCardGetStatusChange(
-                self.hcontext, 0, readerstates.values())
+                self.hcontext, 0, list(readerstates.values()))
         else:
             hresult = 0
             newstates = []
@@ -197,7 +197,7 @@ class PCSCCardRequest(AbstractCardRequest):
             # wait for card insertion
             if {} != readerstates:
                 hresult, newstates = SCardGetStatusChange(
-                    self.hcontext, 0, readerstates.values())
+                    self.hcontext, 0, list(readerstates.values()))
             else:
                 hresult = SCARD_E_TIMEOUT
                 newstates = []
@@ -298,7 +298,7 @@ class PCSCCardRequest(AbstractCardRequest):
             # get status change
             if {} != readerstates:
                 hresult, newstates = SCardGetStatusChange(
-                    self.hcontext, 0, readerstates.values())
+                    self.hcontext, 0, list(readerstates.values()))
             else:
                 hresult = 0
                 newstates = []
