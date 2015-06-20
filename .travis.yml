@@ -1,0 +1,11 @@
+language: python
+python:
+    - "2.6"
+    - "2.7"
+
+install:
+    - apt-get install -y libpcsclite-dev swig
+    - pip install wheel
+
+script:
+    - python setup.py bdist_wheel
