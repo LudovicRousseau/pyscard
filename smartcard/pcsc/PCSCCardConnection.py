@@ -242,9 +242,10 @@ if __name__ == '__main__':
     SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
     DF_TELECOM = [0x7F, 0x10]
     from smartcard.pcsc.PCSCReader import readers
+    from smartcard.pcsc.PCSCPart10 import CM_IOCTL_GET_FEATURE_REQUEST
     cc = readers()[0].createConnection()
     cc.connect()
     print("%r %x %x" % cc.transmit(SELECT + DF_TELECOM))
 
-    print(cc.control(0, []))
+    print(cc.control(CM_IOCTL_GET_FEATURE_REQUEST, []))
 
