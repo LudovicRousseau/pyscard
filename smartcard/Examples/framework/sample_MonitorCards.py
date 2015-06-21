@@ -24,6 +24,7 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
+from __future__ import print_function
 from time import sleep
 
 from smartcard.CardMonitoring import CardMonitor, CardObserver
@@ -37,16 +38,17 @@ class printobserver(CardObserver):
     prints the list of cards
     """
 
-    def update(self, observable, (addedcards, removedcards)):
+    def update(self, observable, actions):
+        (addedcards, removedcards) = actions
         for card in addedcards:
-            print "+Inserted: ", toHexString(card.atr)
+            print("+Inserted: ", toHexString(card.atr))
         for card in removedcards:
-            print "-Removed: ", toHexString(card.atr)
+            print("-Removed: ", toHexString(card.atr))
 
 if __name__ == '__main__':
-    print "Insert or remove a smartcard in the system."
-    print "This program will exit in 10 seconds"
-    print ""
+    print("Insert or remove a smartcard in the system.")
+    print("This program will exit in 10 seconds")
+    print("")
     cardmonitor = CardMonitor()
     cardobserver = printobserver()
     cardmonitor.addObserver(cardobserver)
@@ -59,5 +61,5 @@ if __name__ == '__main__':
 
     import sys
     if 'win32' == sys.platform:
-        print 'press Enter to continue'
+        print('press Enter to continue')
         sys.stdin.read(1)

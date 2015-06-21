@@ -40,26 +40,27 @@ class transmitobserver(CardObserver):
     def __init__(self):
         self.cards = []
 
-    def update(self, observable, (addedcards, removedcards)):
+    def update(self, observable, actions):
+        (addedcards, removedcards) = actions
         for card in addedcards:
             if card not in self.cards:
                 self.cards += [card]
-                print "+Inserted: ", toHexString(card.atr)
+                print("+Inserted: ", toHexString(card.atr))
                 card.connection = card.createConnection()
                 card.connection.connect()
                 response, sw1, sw2 = card.connection.transmit(
                     SELECT_DF_TELECOM)
-                print "%.2x %.2x" % (sw1, sw2)
+                print("%.2x %.2x" % (sw1, sw2))
 
         for card in removedcards:
-            print "-Removed: ", toHexString(card.atr)
+            print("-Removed: ", toHexString(card.atr))
             if card in self.cards:
                 self.cards.remove(card)
 
 if __name__ == '__main__':
-    print "Insert or remove a smartcard in the system."
-    print "This program will exit in 100 seconds"
-    print ""
+    print("Insert or remove a smartcard in the system.")
+    print("This program will exit in 100 seconds")
+    print("")
     cardmonitor = CardMonitor()
     cardobserver = transmitobserver()
     cardmonitor.addObserver(cardobserver)

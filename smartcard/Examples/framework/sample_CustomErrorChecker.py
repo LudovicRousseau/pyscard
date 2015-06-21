@@ -23,6 +23,7 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
+from __future__ import print_function
 from smartcard.CardType import AnyCardType
 from smartcard.CardRequest import CardRequest
 from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver
@@ -36,7 +37,7 @@ class MyErrorChecker(ErrorChecker):
     """Our custom error checker that will except if 0x61<sw1<0x70."""
 
     def __call__(self, data, sw1, sw2):
-        print sw1, sw2
+        print(sw1, sw2)
         if 0x61 < sw1 and 0x70 > sw1:
             raise SWException(data, sw1, sw2)
 
@@ -47,8 +48,8 @@ DF_TELECOM = [0x7F, 0x10]
 
 if __name__ == '__main__':
 
-    print 'Insert a card within 10 seconds'
-    print 'Cards without a DF_TELECOM will except'
+    print('Insert a card within 10 seconds')
+    print('Cards without a DF_TELECOM will except')
 
     # request any card
     cardtype = AnyCardType()
@@ -76,12 +77,12 @@ if __name__ == '__main__':
             GET_RESPONSE = [0XA0, 0XC0, 00, 00]
             apdu = GET_RESPONSE + [sw2]
             response, sw1, sw2 = cardservice.connection.transmit(apdu)
-    except SWException, e:
-        print e, "%x %x" % (e.sw1, e.sw2)
+    except SWException as e:
+        print(e, "%x %x" % (e.sw1, e.sw2))
 
         cardservice.connection.disconnect()
 
     import sys
     if 'win32' == sys.platform:
-        print 'press Enter to continue'
+        print('press Enter to continue')
         sys.stdin.read(1)
