@@ -24,27 +24,25 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 from __future__ import print_function
-from struct import unpack
+import uuid
 
-# guid is ulong+ushort+ushort+uchar[8]; we need a map because bytes
-# are swappted for the first three
-map = {0: 3, 1: 2, 2: 1, 3: 0, 4: 5, 5: 4, 6: 7, 7: 6, 8: 8, 9: 9,
-    10: 10, 11: 11, 12: 12, 13: 13, 14: 14, 15: 15}
+# guid is ulong+ushort+ushort+uchar[8]
 
 
-def  strToGUID(s):
+def strToGUID(s):
     """Converts a GUID string into a list of bytes.
 
     >>> strToGUID('{AD4F1667-EA75-4124-84D4-641B3B197C65}')
     [103, 22, 79, 173, 117, 234, 36, 65, 132, 212, 100, 27, 59, 25, 124, 101]
     """
-    l = []
-    for i in unpack('x' + '2s' * 4 + 'x' + '2s2sx' * 3 + '2s' * 6 + 'x', s):
-        l += [int(i, 16)]
-    zr = []
-    for i in range(len(l)):
-        zr.append(l[map[i]])
-    return zr
+    dat = uuid.UUID(hex=s)
+    if isinstance(dat.bytes_le, str):
+        # Python 2
+        dat = [ord(e) for e in dat.bytes_le]
+    else:
+        # Python 3
+        dat = list(dat.bytes_le)
+    return dat
 
 
 def GUIDToStr(g):
@@ -54,15 +52,22 @@ def GUIDToStr(g):
     ...            132, 212, 100, 27, 59, 25, 124, 101])
     '{AD4F1667-EA75-4124-84D4-641B3B197C65}'
     """
-    zr = []
-    for i in range(len(g)):
-        zr.append(g[map[i]])
-    return "{%2X%2X%2X%2X-%2X%2X-%2X%2X-%2X%2X-%2X%2X%2X%2X%2X%2X}" % tuple(zr)
+    try:
+        dat = uuid.UUID(bytes_le=bytes(g))
+    except:
+        dat = uuid.UUID(bytes_le=''.join(map(chr, g)))
+    return '{' + str(dat).upper() + '}'
+
 
 if __name__ == "__main__":
     """Small sample illustrating the use of guid.py."""
-    import smartcard.guid
-    dummycardguid1 = strToGUID('{AD4F1667-EA75-4124-84D4-641B3B197C65}')
+    guid_in = '{AD4F1667-EA75-4124-84D4-641B3B197C65}'
+    print(guid_in)
+    dummycardguid1 = strToGUID(guid_in)
     print(dummycardguid1)
-    print(GUIDToStr(dummycardguid1))
-
+    guid_out = GUIDToStr(dummycardguid1)
+    print(guid_out)
+    if guid_in != guid_out:
+        print("Failure")
+    else:
+        print("Success")
