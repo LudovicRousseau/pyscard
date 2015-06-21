@@ -23,6 +23,7 @@ You should have received a copy of the GNU Lesser General Public License
 along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
+from __future__ import print_function
 from smartcard.CardType import AnyCardType
 from smartcard.CardRequest import CardRequest
 from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver
@@ -56,7 +57,7 @@ cardservice.connection = ExclusiveTransmitCardConnection(
 # connect to the card and perform a few transmits
 cardservice.connection.connect()
 
-print 'ATR', toHexString(cardservice.connection.getATR())
+print('ATR', toHexString(cardservice.connection.getATR()))
 
 try:
     cardservice.connection.lock()
@@ -72,5 +73,5 @@ finally:
 
 import sys
 if 'win32' == sys.platform:
-    print 'press Enter to continue'
+    print('press Enter to continue')
     sys.stdin.read(1)

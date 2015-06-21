@@ -24,6 +24,7 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
+from __future__ import print_function
 from sys import stdin, exc_info
 from time import sleep
 
@@ -36,14 +37,15 @@ class printobserver(ReaderObserver):
     prints the list of readers
     """
 
-    def update(self, observable, (addedreaders, removedreaders)):
-        print "Added readers", addedreaders
-        print "Removed readers", removedreaders
+    def update(self, observable, actions):
+        (addedreaders, removedreaders) = actions
+        print("Added readers", addedreaders)
+        print("Removed readers", removedreaders)
 
 try:
-    print "Add or remove a smartcard reader to the system."
-    print "This program will exit in 10 seconds"
-    print ""
+    print("Add or remove a smartcard reader to the system.")
+    print("This program will exit in 10 seconds")
+    print("")
     readermonitor = ReaderMonitor()
     readerobserver = printobserver()
     readermonitor.addObserver(readerobserver)
@@ -56,8 +58,8 @@ try:
 
     import sys
     if 'win32' == sys.platform:
-        print 'press Enter to continue'
+        print('press Enter to continue')
         sys.stdin.read(1)
 
 except:
-    print exc_info()[0], ':', exc_info()[1]
+    print(exc_info()[0], ':', exc_info()[1])

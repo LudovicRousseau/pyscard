@@ -23,12 +23,11 @@ You should have received a copy of the GNU Lesser General Public License
 along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
+from __future__ import print_function
 from smartcard.CardType import AnyCardType
 from smartcard.CardRequest import CardRequest
 from smartcard.CardConnectionObserver import CardConnectionObserver
 from smartcard.util import toHexString
-
-from string import replace
 
 
 class TracerAndSELECTInterpreter(CardConnectionObserver):
@@ -38,24 +37,24 @@ class TracerAndSELECTInterpreter(CardConnectionObserver):
     def update(self, cardconnection, ccevent):
 
         if 'connect' == ccevent.type:
-            print 'connecting to ' + cardconnection.getReader()
+            print('connecting to ' + cardconnection.getReader())
 
         elif 'disconnect' == ccevent.type:
-            print 'disconnecting from ' + cardconnection.getReader()
+            print('disconnecting from ' + cardconnection.getReader())
 
         elif 'command' == ccevent.type:
             str = toHexString(ccevent.args[0])
-            str = replace(str, "A0 A4 00 00 02", "SELECT")
-            str = replace(str, "A0 C0 00 00", "GET RESPONSE")
-            print '>', str
+            str = str.replace("A0 A4 00 00 02", "SELECT")
+            str = str.replace("A0 C0 00 00", "GET RESPONSE")
+            print('>', str)
 
         elif 'response' == ccevent.type:
             if [] == ccevent.args[0]:
-                print '<  []', "%-2X %-2X" % tuple(ccevent.args[-2:])
+                print('<  []', "%-2X %-2X" % tuple(ccevent.args[-2:]))
             else:
-                print '<',
+                print('<',
                 toHexString(ccevent.args[0]),
-                "%-2X %-2X" % tuple(ccevent.args[-2:])
+                "%-2X %-2X" % tuple(ccevent.args[-2:]))
 
 
 # define the apdus used in this script
@@ -84,9 +83,9 @@ if sw1 == 0x9F:
     apdu = GET_RESPONSE + [sw2]
     response, sw1, sw2 = cardservice.connection.transmit(apdu)
 else:
-    print 'no DF_TELECOM'
+    print('no DF_TELECOM')
 
 import sys
 if 'win32' == sys.platform:
-    print 'press Enter to continue'
+    print('press Enter to continue')
     sys.stdin.read(1)

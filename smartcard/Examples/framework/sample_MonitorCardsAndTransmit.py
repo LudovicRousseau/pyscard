@@ -25,6 +25,7 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
+from __future__ import print_function
 from sys import stdin, exc_info
 from time import sleep
 
@@ -48,9 +49,10 @@ class selectDFTELECOMObserver(CardObserver):
     def __init__(self):
         self.observer = ConsoleCardConnectionObserver()
 
-    def update(self, observable, (addedcards, removedcards)):
+    def update(self, observable, actions):
+        (addedcards, removedcards) = actions
         for card in addedcards:
-            print "+Inserted: ", toHexString(card.atr)
+            print("+Inserted: ", toHexString(card.atr))
             card.connection = card.createConnection()
             card.connection.connect()
             card.connection.addObserver(self.observer)
@@ -61,12 +63,12 @@ class selectDFTELECOMObserver(CardObserver):
                 response, sw1, sw2 = card.connection.transmit(apdu)
 
         for card in removedcards:
-            print "-Removed: ", toHexString(card.atr)
+            print("-Removed: ", toHexString(card.atr))
 
 try:
-    print "Insert or remove a SIM card in the system."
-    print "This program will exit in 60 seconds"
-    print ""
+    print("Insert or remove a SIM card in the system.")
+    print("This program will exit in 60 seconds")
+    print("")
     cardmonitor = CardMonitor()
     selectobserver = selectDFTELECOMObserver()
     cardmonitor.addObserver(selectobserver)
@@ -79,8 +81,8 @@ try:
 
     import sys
     if 'win32' == sys.platform:
-        print 'press Enter to continue'
+        print('press Enter to continue')
         sys.stdin.read(1)
 
 except:
-    print exc_info()[0], ':', exc_info()[1]
+    print(exc_info()[0], ':', exc_info()[1])
