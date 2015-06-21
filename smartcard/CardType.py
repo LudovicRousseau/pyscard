@@ -74,7 +74,7 @@ class ATRCardType(CardType):
         else:
             if len(self.atr) != len(self.mask):
                 raise InvalidATRMaskLengthException(toHexString(mask))
-            self.maskedatr = map(lambda x, y: x & y, self.atr, self.mask)
+            self.maskedatr = list(map(lambda x, y: x & y, self.atr, self.mask))
 
     def matches(self, atr, reader=None):
         """Returns true if the atr matches the masked CardType atr.
@@ -90,7 +90,7 @@ class ATRCardType(CardType):
             return not True
 
         if None != self.mask:
-            maskedatr = map(lambda x, y: x & y, list(atr), self.mask)
+            maskedatr = list(map(lambda x, y: x & y, list(atr), self.mask))
         else:
             maskedatr = atr
         return self.maskedatr == maskedatr
