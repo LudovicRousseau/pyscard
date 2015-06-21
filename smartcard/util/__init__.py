@@ -66,7 +66,7 @@ def toASCIIBytes(stringtoconvert):
     [78, 117, 109, 98, 101, 114, 32, 49, 48, 49]
     """
 
-    return map(ord, list(stringtoconvert))
+    return list(map(ord, list(stringtoconvert)))
 
 
 def toASCIIString(bytelist):
@@ -97,14 +97,10 @@ def toBytes(bytestring):
     >>> toBytes("3B6500   009C1101  0103")
     [59, 101, 0, 0, 156, 17, 1, 1, 3]
     """
-    import struct
-    import re
-    packedstring = ''.join(re.split('\W+', bytestring))
+    packedstring = bytestring.replace(' ', '')
     try:
-        return reduce(lambda x, y: x + [int(y, 16)],
-                        struct.unpack('2s' * (len(packedstring) / 2),
-                        packedstring), [])
-    except (struct.error, ValueError):
+        return list(map(lambda x: int(''.join(x), 16), zip(*[iter(packedstring)] * 2)))
+    except KeyError:
         raise TypeError('not a string representing a list of bytes')
 
 
@@ -231,10 +227,7 @@ def HexListToBinString(hexlist):
     >>> HexListToBinString([78, 117, 109, 98, 101, 114, 32, 49, 48, 49])
     'Number 101'
     """
-    binstring = ""
-    for byte in hexlist:
-        binstring = binstring + chr(eval('0x%x' % byte))
-    return binstring
+    return ''.join(map(chr, hexlist))
 
 
 # FIXME This appears to duplicate to ASCIIBytes()
@@ -243,10 +236,7 @@ def BinStringToHexList(binstring):
     >>> BinStringToHexList("Number 101")
     [78, 117, 109, 98, 101, 114, 32, 49, 48, 49]
     """
-    hexlist = []
-    for byte in binstring:
-        hexlist = hexlist + [ord(byte)]
-    return hexlist
+    return list(map(ord, binstring))
 
 
 def hl2bs(hexlist):
