@@ -38,10 +38,10 @@ def padd(bytelist, length, padding='FF'):
 
         returns the padded bytelist
         example:
-        padd(toBytes(\"3B 65 00 00 9C 11 01 01 03\"), 16) returns
+        padd(toBytes("3B 65 00 00 9C 11 01 01 03"), 16) returns
          [0x3B, 0x65, 0, 0, 0x9C, 0x11, 1, 1, 3,
           0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
-        padd(toBytes(\"3B 65 00 00 9C 11 01 01 03\"), 8) returns [
+        padd(toBytes("3B 65 00 00 9C 11 01 01 03"), 8) returns [
          0x3B, 0x65, 0, 0, 0x9C, 0x11, 1, 1, 3 ]
 
     """
@@ -67,7 +67,7 @@ def toASCIIBytes(stringtoconvert):
        [ 0x4E, 0x75, 0x6D, 0x62, 0x65, 0x72, 0x20, 0x31, 0x30, 0x31 ]
     """
 
-    return map(ord, list(stringtoconvert))
+    return list(map(ord, list(stringtoconvert)))
 
 
 def toASCIIString(bytelist):
@@ -91,18 +91,14 @@ def toASCIIString(bytelist):
 def toBytes(bytestring):
     """Returns a list of bytes from a byte string
 
-       bytestring: a byte string such as \"3B 65 00 00 9C 11 01 01 03\" or
-                            \"3B6500009C11010103\" or
-                            \"3B6500   009C1101  0103\"
+       bytestring: a byte string such as "3B 65 00 00 9C 11 01 01 03" or
+                            "3B6500009C11010103" or
+                            "3B6500   009C1101  0103"
     """
-    from struct import unpack
-    import re
-    packedstring = ''.join(re.split('\W+', bytestring))
+    packedstring = bytestring.replace(' ', '')
     try:
-        return reduce(lambda x, y: x + [int(y, 16)],
-                        unpack('2s' * (len(packedstring) / 2),
-                        packedstring), [])
-    except:
+        return list(map(lambda x: int(''.join(x), 16), zip(*[iter(packedstring)] * 2)))
+    except KeyError:
         raise TypeError('not a string representing a list of bytes')
 
 
@@ -231,17 +227,11 @@ def toHexString(bytes=[], format=0):
 
 
 def HexListToBinString(hexlist):
-    binstring = ""
-    for byte in hexlist:
-        binstring = binstring + chr(eval('0x%x' % byte))
-    return binstring
+    return ''.join(map(chr, hexlist))
 
 
 def BinStringToHexList(binstring):
-    hexlist = []
-    for byte in binstring:
-        hexlist = hexlist + [ord(byte)]
-    return hexlist
+    return list(map(ord, binstring))
 
 
 def hl2bs(hexlist):
