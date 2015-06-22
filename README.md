@@ -1,0 +1,16 @@
+pyscard: smartcard library for python
+=====================================
+
+[pyscard](http://pyscard.sourceforge.net/) - python smart card library - is a python module adding smart
+cards support to [python](https://www.python.org/).
+
+![alt text](http://pyscard.sourceforge.net/_images/pyscard.jpg "pyscard architecture")
+
+Documentation
+-------------
+http://pyscard.sourceforge.net/user-guide.html#pyscard-user-guide
+
+Samples
+-------
+High level API samples: See http://pyscard.sourceforge.net/pyscard-framework.html#framework-samples
+Low level API samples: See http://pyscard.sourceforge.net/pyscard-wrapper.html#wrapper-samples
