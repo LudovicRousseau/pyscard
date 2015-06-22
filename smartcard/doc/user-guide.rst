@@ -1199,30 +1199,26 @@ To monitor reader insertion/removal, simply add the observer to the
 
 .. sourcecode:: python
 
-    from sys import stdin, exc_info
+    from sys import stdin
     from time import sleep
 
     from smartcard.ReaderMonitoring import ReaderMonitor, ReaderObserver
 
-    try:
-        print "Add or remove a smartcard reader to the system."
-        print "This program will exit in 10 seconds"
-        print ""
-        readermonitor = ReaderMonitor()
-        readerobserver = printobserver()
-        readermonitor.addObserver( readerobserver )
+    print "Add or remove a smartcard reader to the system."
+    print "This program will exit in 10 seconds"
+    print ""
+    readermonitor = ReaderMonitor()
+    readerobserver = printobserver()
+    readermonitor.addObserver( readerobserver )
 
-        sleep(10)
+    sleep(10)
 
-        # don't forget to remove observer, or the
-        # monitor will poll forever...
-        readermonitor.deleteObserver(readerobserver)
+    # don't forget to remove observer, or the
+    # monitor will poll forever...
+    readermonitor.deleteObserver(readerobserver)
 
-        print 'press Enter to continue'
-        stdin.readline()
-
-    except error:
-        print exc_info()[0], ': ', exc_info()[1]
+    print 'press Enter to continue'
+    stdin.readline()
 
 Smart Cards
 ***********
@@ -1261,13 +1257,12 @@ card observer to the `CardMonitor
             for card in removedcards:
                 print "-Removed: ", toHexString( card.atr )
 
-    try:
-        print "Insert or remove a smartcard in the system."
-        print "This program will exit in 10 seconds"
-        print ""
-        cardmonitor = CardMonitor()
-        cardobserver = printobserver()
-        cardmonitor.addObserver( cardobserver )
+    print "Insert or remove a smartcard in the system."
+    print "This program will exit in 10 seconds"
+    print ""
+    cardmonitor = CardMonitor()
+    cardobserver = printobserver()
+    cardmonitor.addObserver( cardobserver )
 
 
 Sending APDUs to a Smart Card Obtained from Card Monitoring

@@ -95,14 +95,14 @@ def toBytes(bytestring):
                             \"3B6500009C11010103\" or
                             \"3B6500   009C1101  0103\"
     """
-    from struct import unpack
+    import struct
     import re
     packedstring = ''.join(re.split('\W+', bytestring))
     try:
         return reduce(lambda x, y: x + [int(y, 16)],
-                        unpack('2s' * (len(packedstring) / 2),
+                        struct.unpack('2s' * (len(packedstring) / 2),
                         packedstring), [])
-    except:
+    except (struct.error, ValueError):
         raise TypeError('not a string representing a list of bytes')
 
 

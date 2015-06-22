@@ -26,6 +26,8 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
+import sys
+
 import platform
 from smartcard.scard import *
 import smartcard.guid
@@ -42,7 +44,7 @@ if 'winscard' == resourceManager:
     znewcardSecGuid = \
         smartcard.guid.strToGUID('{EB7F69EA-BA20-47d0-8C50-11CFDEB63BBE}')
 
-    try:
+    def main():
         hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
         if hresult != SCARD_S_SUCCESS:
             raise scard.error(
@@ -108,15 +110,13 @@ if 'winscard' == resourceManager:
                     SCardGetErrorMessage(hresult))
             print 'Released context.'
 
-    except error:
-        import sys
-        print sys.exc_info()[0], ':', sys.exc_info()[1]
-
 elif 'pcsclite' == resourceManager:
-    print 'SCardListInterfaces not supported by pcsc lite'
+    def main():
+        print 'SCardListInterfaces not supported by pcsc lite'
 
 
-import sys
-if 'win32' == sys.platform:
-    print 'press Enter to continue'
-    sys.stdin.read(1)
+if __name__ == '__main__':
+    main()
+    if 'win32' == sys.platform:
+        print 'press Enter to continue'
+        sys.stdin.read(1)
