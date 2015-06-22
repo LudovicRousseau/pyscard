@@ -99,7 +99,7 @@ def toBytes(bytestring):
     """
     import struct
     import re
-    packedstring = ''.join(re.split('\W+', bytestring))
+    packedstring = ''.join(re.split(r'\W+', bytestring))
     try:
         return reduce(lambda x, y: x + [int(y, 16)],
                         struct.unpack('2s' * (len(packedstring) / 2),
@@ -203,9 +203,6 @@ def toHexString(bytes=[], format=0):
     """
 
     from string import rstrip
-
-    for byte in tuple(bytes):
-        pass
 
     if type(bytes) is not list:
         raise TypeError('not a list of bytes')
