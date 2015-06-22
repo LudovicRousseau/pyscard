@@ -25,7 +25,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 from smartcard.CardConnection import CardConnection
 from smartcard.Exceptions import (CardConnectionException,
     NoCardException, SmartcardException)
-from smartcard.Observer import Observable
 
 from smartcard.scard import *
 
@@ -240,8 +239,8 @@ if __name__ == '__main__':
     """Small sample illustrating the use of CardConnection."""
     SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
     DF_TELECOM = [0x7F, 0x10]
-    from smartcard.pcsc.PCSCReader import readers
-    cc = readers()[0].createConnection()
+    from smartcard.pcsc.PCSCReader import PCSCReader
+    cc = PCSCReader.readers()[0].createConnection()
     cc.connect()
     print "%r %x %x" % cc.transmit(SELECT + DF_TELECOM)
 

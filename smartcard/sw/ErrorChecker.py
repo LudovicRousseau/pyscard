@@ -36,7 +36,7 @@ class ErrorChecker(object):
     pattern.
     """
 
-    def __call__(data, sw1, sw2):
+    def __call__(self, data, sw1, sw2):
         """Called to test data, sw1 and sw2 for error.
 
         @param data:       apdu response data
