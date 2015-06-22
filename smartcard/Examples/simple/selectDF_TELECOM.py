@@ -65,10 +65,6 @@ try:
 except CardRequestTimeoutException:
     print 'time-out: no card inserted during last 10s'
 
-except:
-    import sys
-    print sys.exc_info()[1]
-
 import sys
 if 'win32' == sys.platform:
     print 'press Enter to continue'

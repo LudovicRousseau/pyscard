@@ -1,4 +1,3 @@
-try:
-    from scard import *
-except:
-    from smartcard.scard._scard import *
+from __future__ import absolute_import
+
+from smartcard.scard.scard import *
