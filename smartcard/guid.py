@@ -32,7 +32,11 @@ map = {0: 3, 1: 2, 2: 1, 3: 0, 4: 5, 5: 4, 6: 7, 7: 6, 8: 8, 9: 9,
 
 
 def  strToGUID(s):
-    """Converts a GUID string into a list of bytes."""
+    """Converts a GUID string into a list of bytes.
+
+    >>> strToGUID('{AD4F1667-EA75-4124-84D4-641B3B197C65}')
+    [103, 22, 79, 173, 117, 234, 36, 65, 132, 212, 100, 27, 59, 25, 124, 101]
+    """
     l = []
     for i in unpack('x' + '2s' * 4 + 'x' + '2s2sx' * 3 + '2s' * 6 + 'x', s):
         l += [int(i, 16)]
@@ -43,7 +47,12 @@ def  strToGUID(s):
 
 
 def GUIDToStr(g):
-    """Converts a GUID sequence of bytes into a string."""
+    """Converts a GUID sequence of bytes into a string.
+
+    >>> GUIDToStr([103,22,79,173,  117,234,  36,65,
+    ...            132, 212, 100, 27, 59, 25, 124, 101])
+    '{AD4F1667-EA75-4124-84D4-641B3B197C65}'
+    """
     zr = []
     for i in xrange(len(g)):
         zr.append(g[map[i]])

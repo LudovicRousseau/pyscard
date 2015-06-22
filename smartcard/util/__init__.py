@@ -37,13 +37,13 @@ def padd(bytelist, length, padding='FF'):
         padding:  padding value (default is 0xff)
 
         returns the padded bytelist
-        example:
-        padd(toBytes(\"3B 65 00 00 9C 11 01 01 03\"), 16) returns
-         [0x3B, 0x65, 0, 0, 0x9C, 0x11, 1, 1, 3,
-          0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
-        padd(toBytes(\"3B 65 00 00 9C 11 01 01 03\"), 8) returns [
-         0x3B, 0x65, 0, 0, 0x9C, 0x11, 1, 1, 3 ]
 
+    >>> padd([59, 101, 0, 0, 156, 17, 1, 1, 3], 16)
+    [59, 101, 0, 0, 156, 17, 1, 1, 3, 255, 255, 255, 255, 255, 255, 255]
+    >>> padd([59, 101, 0, 0, 156, 17, 1, 1, 3], 12, '80')
+    [59, 101, 0, 0, 156, 17, 1, 1, 3, 128, 128, 128]
+    >>> padd([59, 101, 0, 0, 156, 17, 1, 1, 3], 8)
+    [59, 101, 0, 0, 156, 17, 1, 1, 3]
     """
 
     if len(bytelist) < length:
@@ -62,9 +62,8 @@ def toASCIIBytes(stringtoconvert):
 
        toASCIIBytes() is the reverse of toASCIIString()
 
-       example:
-       toASCIIBytes("Number 101") returns
-       [ 0x4E, 0x75, 0x6D, 0x62, 0x65, 0x72, 0x20, 0x31, 0x30, 0x31 ]
+    >>> toASCIIBytes("Number 101")
+    [78, 117, 109, 98, 101, 114, 32, 49, 48, 49]
     """
 
     return map(ord, list(stringtoconvert))
@@ -79,10 +78,8 @@ def toASCIIString(bytelist):
 
        toASCIIString() is the reverse of toASCIIBytes()
 
-       example:
-
-       toASCIIString([0x4E,0x75,0x6D,0x62,0x65,0x72,0x20,0x31,0x30,0x31])
-       returns "Number 101")
+    >>> toASCIIString([0x4E,0x75,0x6D,0x62,0x65,0x72,0x20,0x31,0x30,0x31])
+    'Number 101'
     """
 
     return ''.join(map(chr, bytelist))
@@ -91,9 +88,14 @@ def toASCIIString(bytelist):
 def toBytes(bytestring):
     """Returns a list of bytes from a byte string
 
-       bytestring: a byte string such as \"3B 65 00 00 9C 11 01 01 03\" or
-                            \"3B6500009C11010103\" or
-                            \"3B6500   009C1101  0103\"
+    bytestring: a byte string
+
+    >>> toBytes("3B 65 00 00 9C 11 01 01 03")
+    [59, 101, 0, 0, 156, 17, 1, 1, 3]
+    >>> toBytes("3B6500009C11010103")
+    [59, 101, 0, 0, 156, 17, 1, 1, 3]
+    >>> toBytes("3B6500   009C1101  0103")
+    [59, 101, 0, 0, 156, 17, 1, 1, 3]
     """
     from struct import unpack
     import re
@@ -156,9 +158,8 @@ def toGSM3_38Bytes(stringtoconvert):
 
        returns a list of bytes
 
-       example:
-       toGSM3_38Bytes("@ùPascal") returns
-        [ 0x00, 0x06, 0x50, 0x61, 0x73, 0x63, 0x61, 0x6C ]
+    >>> toGSM3_38Bytes("@ùPascal")
+    [0, 6, 80, 97, 115, 99, 97, 108]
     """
 
     bytes = []
@@ -185,26 +186,20 @@ def toHexString(bytes=[], format=0):
                 UPPERCASE: use 0X before bytes (need HEX)
                 PACK: remove blanks
 
-        example:
-        bytes = [ 0x3B, 0x65, 0x00, 0x00, 0x9C, 0x11, 0x01, 0x01, 0x03 ]
-
-        toHexString(bytes) returns  3B 65 00 00 9C 11 01 01 03
-
-        toHexString(bytes, COMMA) returns  3B, 65, 00, 00, 9C, 11, 01, 01, 03
-
-        toHexString(bytes, HEX) returns
-            0x3B 0x65 0x00 0x00 0x9C 0x11 0x01 0x01 0x03
-
-        toHexString(bytes, HEX | COMMA) returns
-            0x3B, 0x65, 0x00, 0x00, 0x9C, 0x11, 0x01, 0x01, 0x03
-
-        toHexString(bytes, PACK) returns  3B6500009C11010103
-
-        toHexString(bytes, HEX | UPPERCASE) returns
-            0X3B 0X65 0X00 0X00 0X9C 0X11 0X01 0X01 0X03
-
-        toHexString(bytes, HEX | UPPERCASE | COMMA) returns
-            0X3B, 0X65, 0X00, 0X00, 0X9C, 0X11, 0X01, 0X01, 0X03
+    >>> vals = [0x3B, 0x65, 0x00, 0x00, 0x9C, 0x11, 0x01, 0x01, 0x03]
+    >>> toHexString(vals)
+    '3B 65 00 00 9C 11 01 01 03'
+    >>> toHexString(vals, COMMA)
+    '3B, 65, 00, 00, 9C, 11, 01, 01, 03'
+    >>> toHexString(vals, HEX)
+    '0x3B 0x65 0x00 0x00 0x9C 0x11 0x01 0x01 0x03'
+    >>> toHexString(vals, HEX | COMMA)
+    '0x3B, 0x65, 0x00, 0x00, 0x9C, 0x11, 0x01, 0x01, 0x03'
+    >>> toHexString(vals, PACK)
+    >>> toHexString(vals, HEX | UPPERCASE)
+    '0X3B 0X65 0X00 0X00 0X9C 0X11 0X01 0X01 0X03'
+    >>> toHexString(vals, HEX | UPPERCASE | COMMA)
+    '0X3B, 0X65, 0X00, 0X00, 0X9C, 0X11, 0X01, 0X01, 0X03'
     """
 
     from string import rstrip
@@ -234,14 +229,24 @@ def toHexString(bytes=[], format=0):
                         [""] + bytes)), ',')
 
 
+# FIXME This appears to duplicate toASCIIString()
 def HexListToBinString(hexlist):
+    """
+    >>> HexListToBinString([78, 117, 109, 98, 101, 114, 32, 49, 48, 49])
+    'Number 101'
+    """
     binstring = ""
     for byte in hexlist:
         binstring = binstring + chr(eval('0x%x' % byte))
     return binstring
 
 
+# FIXME This appears to duplicate to ASCIIBytes()
 def BinStringToHexList(binstring):
+    """
+    >>> BinStringToHexList("Number 101")
+    [78, 117, 109, 98, 101, 114, 32, 49, 48, 49]
+    """
     hexlist = []
     for byte in binstring:
         hexlist = hexlist + [ord(byte)]
@@ -249,8 +254,18 @@ def BinStringToHexList(binstring):
 
 
 def hl2bs(hexlist):
+    """An alias for HexListToBinString
+
+    >>> hl2bs([78, 117, 109, 98, 101, 114, 32, 49, 48, 49])
+    'Number 101'
+    """
     return HexListToBinString(hexlist)
 
 
 def bs2hl(binstring):
+    """An alias for BinStringToHexList
+
+    >>> bs2hl("Number 101")
+    [78, 117, 109, 98, 101, 114, 32, 49, 48, 49]
+    """
     return BinStringToHexList(binstring)
