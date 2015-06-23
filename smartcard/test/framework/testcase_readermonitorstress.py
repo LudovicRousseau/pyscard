@@ -127,7 +127,8 @@ class countobserver(ReaderObserver):
         self.removedreaderstats = {}
         self.countnotified = 0
 
-    def update(self, observable, (addedreaders, removedreaders)):
+    def update(self, observable, actions):
+        (addedreaders, removedreaders) = actions
         self.countnotified += 1
         for newreader in addedreaders:
             if newreader in self.insertedreaderstats:
