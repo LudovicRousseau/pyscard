@@ -47,73 +47,53 @@ Introduction
 
 The smartcard.scard module is a Python wrapper around PCSC smart card base
 services.  On Windows, the wrapper is performed around the smart card base
-components winscard library.  On linux, the wrapper is performed around
-PCSC-lite library.
+components winscard library.  On linux and OS X, the wrapper is performed
+around the PCSC-lite library.
 
 
-On Windows using the smart card base components, the smartcard.scard
-module provides mapping for the following API functions:
+The smartcard.scard module provides mapping for the following API functions,
+depending on the Operating System:
 
- - SCardAddReaderToGroup
- - SCardBeginTransaction
- - SCardCancel
- - SCardConnect
- - SCardControl
- - SCardDisconnect
- - SCardEndTransaction
- - SCardEstablishContext
- - SCardForgetCardType
- - SCardForgetReader
- - SCardForgetReaderGroup
- - SCardGetAttrib
- - SCardGetCardTypeProviderName
- - SCardGetErrorMessage
- - SCardGetStatusChange
- - SCardIntroduceCardType
- - SCardIntroduceReader
- - SCardIntroduceReaderGroup
- - SCardIsValidContext
- - SCardListInterfaces
- - SCardListCards
- - SCardListReaders
- - SCardListReaderGroups
- - SCardLocateCards
- - SCardReconnect
- - SCardReleaseContext
- - SCardRemoveReaderFromGroup
- - SCardSetAttrib
- - SCardStatus
- - SCardTransmit
-
-On linux or Mac OS X Leopard with PCSC lite, the smartcard.scard module
-provides mapping for the following API functions:
-
- - SCardBeginTransaction
- - SCardCancel
- - SCardConnect
- - SCardControl
- - SCardDisconnect
- - SCardEndTransaction
- - SCardEstablishContext
- - SCardGetAttrib
- - SCardGetStatusChange
- - SCardIsValidContext
- - SCardListReaders
- - SCardListReaderGroups
- - SCardReconnect
- - SCardReleaseContext
- - SCardSetAttrib
- - SCardStatus
- - SCardTransmit
-
-The following PCSC smart card functions are not wrapped by the scard
-module on any platform:
-
- - GetOpenCardName
- - SCardFreeMemory
- - SCardGetProviderId
- - SCardSetCartTypeProviderName
- - SCardUIDlgSelectCard
+=============================== ======= =======
+Function                        Windows  Linux 
+                                         OS X  
+=============================== ======= =======
+GetOpenCardName                                
+SCardAddReaderToGroup              Y           
+SCardBeginTransaction              Y       Y   
+SCardCancel                        Y       Y   
+SCardConnect                       Y       Y   
+SCardControl                       Y       Y   
+SCardDisconnect                    Y       Y   
+SCardEndTransaction                Y       Y   
+SCardEstablishConteYt              Y       Y   
+SCardForgetCardType                Y           
+SCardForgetReader                  Y           
+SCardForgetReaderGroup             Y           
+SCardFreeMemory                                
+SCardGetAttrib                     Y       Y   
+SCardGetCardTypeProviderName       Y           
+SCardGetErrorMessage               Y           
+SCardGetProviderId                             
+SCardGetStatusChange               Y       Y   
+SCardIntroduceCardType             Y           
+SCardIntroduceReader               Y           
+SCardIntroduceReaderGroup          Y           
+SCardIsValidConteYt                Y       Y   
+SCardListCards                     Y           
+SCardListInterfaces                Y           
+SCardListReaderGroups              Y       Y   
+SCardListReaders                   Y       Y   
+SCardLocateCards                   Y           
+SCardReconnect                     Y       Y   
+SCardReleaseConteYt                Y       Y   
+SCardRemoveReaderFromGroup         Y           
+SCardSetAttrib                     Y       Y   
+SCardSetCartTypeProviderName                   
+SCardStatus                        Y       Y   
+SCardTransmit                      Y       Y   
+SCardUIDlgSelectCard                           
+=============================== ======= =======
 
 Comments, bug reports, improvements welcome.
 
@@ -1211,97 +1191,57 @@ SCARDRETCODE _RemoveReaderFromGroup(
 
     This function get an attribute from the IFD Handler.
 
-    For PCSC lite, the list of possible attributes is:
+    The possible attributes are:
 
-        * SCARD_ATTR_ASYNC_PROTOCOL_TYPES
-        * SCARD_ATTR_ATR_STRING
-        * SCARD_ATTR_CHANNEL_ID
-        * SCARD_ATTR_CHARACTERISTICS
-        * SCARD_ATTR_CURRENT_BWT
-        * SCARD_ATTR_CURRENT_CLK
-        * SCARD_ATTR_CURRENT_CWT
-        * SCARD_ATTR_CURRENT_D
-        * SCARD_ATTR_CURRENT_EBC_ENCODING
-        * SCARD_ATTR_CURRENT_F
-        * SCARD_ATTR_CURRENT_IFSC
-        * SCARD_ATTR_CURRENT_IFSD
-        * SCARD_ATTR_CURRENT_IO_STATE
-        * SCARD_ATTR_CURRENT_N
-        * SCARD_ATTR_CURRENT_PROTOCOL_TYPE
-        * SCARD_ATTR_CURRENT_W
-        * SCARD_ATTR_DEFAULT_CLK
-        * SCARD_ATTR_DEFAULT_DATA_RATE
-        * SCARD_ATTR_DEVICE_FRIENDLY_NAME_A
-        * SCARD_ATTR_DEVICE_FRIENDLY_NAME_W
-        * SCARD_ATTR_DEVICE_IN_USE
-        * SCARD_ATTR_DEVICE_SYSTEM_NAME_A
-        * SCARD_ATTR_DEVICE_SYSTEM_NAME_W
-        * SCARD_ATTR_DEVICE_UNIT
-        * SCARD_ATTR_ESC_AUTHREQUEST
-        * SCARD_ATTR_ESC_CANCEL
-        * SCARD_ATTR_ESC_RESET
-        * SCARD_ATTR_EXTENDED_BWT
-        * SCARD_ATTR_ICC_INTERFACE_STATUS
-        * SCARD_ATTR_ICC_PRESENCE
-        * SCARD_ATTR_ICC_TYPE_PER_ATR
-        * SCARD_ATTR_MAX_CLK
-        * SCARD_ATTR_MAX_DATA_RATE
-        * SCARD_ATTR_MAX_IFSD
-        * SCARD_ATTR_MAXINPUT
-        * SCARD_ATTR_POWER_MGMT_SUPPORT
-        * SCARD_ATTR_SUPRESS_T1_IFS_REQUEST
-        * SCARD_ATTR_SYNC_PROTOCOL_TYPES
-        * SCARD_ATTR_USER_AUTH_INPUT_DEVICE
-        * SCARD_ATTR_USER_TO_CARD_AUTH_DEVICE
-        * SCARD_ATTR_VENDOR_IFD_SERIAL_NO
-        * SCARD_ATTR_VENDOR_IFD_TYPE
-        * SCARD_ATTR_VENDOR_IFD_VERSION
-        * SCARD_ATTR_VENDOR_NAME
-
-    For Windows Resource Manager, the list of possible attributes is:
-
-        * SCARD_ATTR_VENDOR_NAME
-        * SCARD_ATTR_VENDOR_IFD_TYPE
-        * SCARD_ATTR_VENDOR_IFD_VERSION
-        * SCARD_ATTR_VENDOR_IFD_SERIAL_NO
-        * SCARD_ATTR_CHANNEL_ID
-        * SCARD_ATTR_DEFAULT_CLK
-        * SCARD_ATTR_MAX_CLK
-        * SCARD_ATTR_DEFAULT_DATA_RATE
-        * SCARD_ATTR_MAX_DATA_RATE
-        * SCARD_ATTR_MAX_IFSD
-        * SCARD_ATTR_POWER_MGMT_SUPPORT
-        * SCARD_ATTR_USER_TO_CARD_AUTH_DEVICE
-        * SCARD_ATTR_USER_AUTH_INPUT_DEVICE
-        * SCARD_ATTR_CHARACTERISTICS
-        * SCARD_ATTR_CURRENT_PROTOCOL_TYPE
-        * SCARD_ATTR_CURRENT_CLK
-        * SCARD_ATTR_CURRENT_F
-        * SCARD_ATTR_CURRENT_D
-        * SCARD_ATTR_CURRENT_N
-        * SCARD_ATTR_CURRENT_W
-        * SCARD_ATTR_CURRENT_IFSC
-        * SCARD_ATTR_CURRENT_IFSD
-        * SCARD_ATTR_CURRENT_BWT
-        * SCARD_ATTR_CURRENT_CWT
-        * SCARD_ATTR_CURRENT_EBC_ENCODING
-        * SCARD_ATTR_EXTENDED_BWT
-        * SCARD_ATTR_ICC_PRESENCE
-        * SCARD_ATTR_ICC_INTERFACE_STATUS
-        * SCARD_ATTR_CURRENT_IO_STATE
-        * SCARD_ATTR_ATR_STRING
-        * SCARD_ATTR_ICC_TYPE_PER_ATR
-        * SCARD_ATTR_ESC_RESET
-        * SCARD_ATTR_ESC_CANCEL
-        * SCARD_ATTR_ESC_AUTHREQUEST
-        * SCARD_ATTR_MAXINPUT
-        * SCARD_ATTR_DEVICE_UNIT
-        * SCARD_ATTR_DEVICE_IN_USE
-        * SCARD_ATTR_DEVICE_FRIENDLY_NAME_A
-        * SCARD_ATTR_DEVICE_SYSTEM_NAME_A
-        * SCARD_ATTR_DEVICE_FRIENDLY_NAME_W
-        * SCARD_ATTR_DEVICE_SYSTEM_NAME_W
-        * SCARD_ATTR_SUPRESS_T1_IFS_REQUEST
+    ======================================== ======= =======
+    Attribute                                Windows  PSCS  
+                                                      lite
+    ======================================== ======= =======
+    SCARD_ATTR_ASYNC_PROTOCOL_TYPES                     Y   
+    SCARD_ATTR_ATR_STRING                       Y       Y   
+    SCARD_ATTR_CHANNEL_ID                       Y       Y   
+    SCARD_ATTR_CHARACTERISTICS                  Y       Y   
+    SCARD_ATTR_CURRENT_BWT                      Y       Y   
+    SCARD_ATTR_CURRENT_CLK                      Y       Y   
+    SCARD_ATTR_CURRENT_CWT                      Y       Y   
+    SCARD_ATTR_CURRENT_D                        Y       Y   
+    SCARD_ATTR_CURRENT_EBC_ENCODING             Y       Y   
+    SCARD_ATTR_CURRENT_F                        Y       Y   
+    SCARD_ATTR_CURRENT_IFSC                     Y       Y   
+    SCARD_ATTR_CURRENT_IFSD                     Y       Y   
+    SCARD_ATTR_CURRENT_IO_STATE                 Y       Y   
+    SCARD_ATTR_CURRENT_N                        Y       Y   
+    SCARD_ATTR_CURRENT_PROTOCOL_TYPE            Y       Y   
+    SCARD_ATTR_CURRENT_W                        Y       Y   
+    SCARD_ATTR_DEFAULT_CLK                      Y       Y   
+    SCARD_ATTR_DEFAULT_DATA_RATE                Y       Y   
+    SCARD_ATTR_DEVICE_FRIENDLY_NAME_A           Y       Y   
+    SCARD_ATTR_DEVICE_FRIENDLY_NAME_W           Y       Y   
+    SCARD_ATTR_DEVICE_IN_USE                    Y       Y   
+    SCARD_ATTR_DEVICE_SYSTEM_NAME_A             Y       Y   
+    SCARD_ATTR_DEVICE_SYSTEM_NAME_W             Y       Y   
+    SCARD_ATTR_DEVICE_UNIT                      Y       Y   
+    SCARD_ATTR_ESC_AUTHREQUEST                  Y       Y   
+    SCARD_ATTR_ESC_CANCEL                       Y       Y   
+    SCARD_ATTR_ESC_RESET                        Y       Y   
+    SCARD_ATTR_EXTENDED_BWT                     Y       Y   
+    SCARD_ATTR_ICC_INTERFACE_STATUS             Y       Y   
+    SCARD_ATTR_ICC_PRESENCE                     Y       Y   
+    SCARD_ATTR_ICC_TYPE_PER_ATR                 Y       Y   
+    SCARD_ATTR_MAXINPUT                         Y       Y   
+    SCARD_ATTR_MAX_CLK                          Y       Y   
+    SCARD_ATTR_MAX_DATA_RATE                    Y       Y   
+    SCARD_ATTR_MAX_IFSD                         Y       Y   
+    SCARD_ATTR_POWER_MGMT_SUPPORT               Y       Y   
+    SCARD_ATTR_SUPRESS_T1_IFS_REQUEST           Y       Y   
+    SCARD_ATTR_SYNC_PROTOCOL_TYPES                      Y   
+    SCARD_ATTR_USER_AUTH_INPUT_DEVICE           Y       Y   
+    SCARD_ATTR_USER_TO_CARD_AUTH_DEVICE         Y       Y   
+    SCARD_ATTR_VENDOR_IFD_SERIAL_NO             Y       Y   
+    SCARD_ATTR_VENDOR_IFD_TYPE                  Y       Y   
+    SCARD_ATTR_VENDOR_IFD_VERSION               Y       Y   
+    SCARD_ATTR_VENDOR_NAME                      Y       Y   
+    ======================================== ======= =======
 
     Not all the dwAttrId values listed above may be implemented in the IFD
     Handler you are using.  And some dwAttrId values not listed here may be
@@ -1329,97 +1269,57 @@ SCARDRETCODE _RemoveReaderFromGroup(
     attributes are supported by all readers nor can they be set at all
     times.
 
-    For PCSC lite, the list of possible attributes is:
+    The possible attributes are:
 
-        * SCARD_ATTR_ASYNC_PROTOCOL_TYPES
-        * SCARD_ATTR_ATR_STRING
-        * SCARD_ATTR_CHANNEL_ID
-        * SCARD_ATTR_CHARACTERISTICS
-        * SCARD_ATTR_CURRENT_BWT
-        * SCARD_ATTR_CURRENT_CLK
-        * SCARD_ATTR_CURRENT_CWT
-        * SCARD_ATTR_CURRENT_D
-        * SCARD_ATTR_CURRENT_EBC_ENCODING
-        * SCARD_ATTR_CURRENT_F
-        * SCARD_ATTR_CURRENT_IFSC
-        * SCARD_ATTR_CURRENT_IFSD
-        * SCARD_ATTR_CURRENT_IO_STATE
-        * SCARD_ATTR_CURRENT_N
-        * SCARD_ATTR_CURRENT_PROTOCOL_TYPE
-        * SCARD_ATTR_CURRENT_W
-        * SCARD_ATTR_DEFAULT_CLK
-        * SCARD_ATTR_DEFAULT_DATA_RATE
-        * SCARD_ATTR_DEVICE_FRIENDLY_NAME_A
-        * SCARD_ATTR_DEVICE_FRIENDLY_NAME_W
-        * SCARD_ATTR_DEVICE_IN_USE
-        * SCARD_ATTR_DEVICE_SYSTEM_NAME_A
-        * SCARD_ATTR_DEVICE_SYSTEM_NAME_W
-        * SCARD_ATTR_DEVICE_UNIT
-        * SCARD_ATTR_ESC_AUTHREQUEST
-        * SCARD_ATTR_ESC_CANCEL
-        * SCARD_ATTR_ESC_RESET
-        * SCARD_ATTR_EXTENDED_BWT
-        * SCARD_ATTR_ICC_INTERFACE_STATUS
-        * SCARD_ATTR_ICC_PRESENCE
-        * SCARD_ATTR_ICC_TYPE_PER_ATR
-        * SCARD_ATTR_MAX_CLK
-        * SCARD_ATTR_MAX_DATA_RATE
-        * SCARD_ATTR_MAX_IFSD
-        * SCARD_ATTR_MAXINPUT
-        * SCARD_ATTR_POWER_MGMT_SUPPORT
-        * SCARD_ATTR_SUPRESS_T1_IFS_REQUEST
-        * SCARD_ATTR_SYNC_PROTOCOL_TYPES
-        * SCARD_ATTR_USER_AUTH_INPUT_DEVICE
-        * SCARD_ATTR_USER_TO_CARD_AUTH_DEVICE
-        * SCARD_ATTR_VENDOR_IFD_SERIAL_NO
-        * SCARD_ATTR_VENDOR_IFD_TYPE
-        * SCARD_ATTR_VENDOR_IFD_VERSION
-        * SCARD_ATTR_VENDOR_NAME
-
-    For Windows Resource Manager, the list of possible attributes is:
-
-        * SCARD_ATTR_VENDOR_NAME
-        * SCARD_ATTR_VENDOR_IFD_TYPE
-        * SCARD_ATTR_VENDOR_IFD_VERSION
-        * SCARD_ATTR_VENDOR_IFD_SERIAL_NO
-        * SCARD_ATTR_CHANNEL_ID
-        * SCARD_ATTR_DEFAULT_CLK
-        * SCARD_ATTR_MAX_CLK
-        * SCARD_ATTR_DEFAULT_DATA_RATE
-        * SCARD_ATTR_MAX_DATA_RATE
-        * SCARD_ATTR_MAX_IFSD
-        * SCARD_ATTR_POWER_MGMT_SUPPORT
-        * SCARD_ATTR_USER_TO_CARD_AUTH_DEVICE
-        * SCARD_ATTR_USER_AUTH_INPUT_DEVICE
-        * SCARD_ATTR_CHARACTERISTICS
-        * SCARD_ATTR_CURRENT_PROTOCOL_TYPE
-        * SCARD_ATTR_CURRENT_CLK
-        * SCARD_ATTR_CURRENT_F
-        * SCARD_ATTR_CURRENT_D
-        * SCARD_ATTR_CURRENT_N
-        * SCARD_ATTR_CURRENT_W
-        * SCARD_ATTR_CURRENT_IFSC
-        * SCARD_ATTR_CURRENT_IFSD
-        * SCARD_ATTR_CURRENT_BWT
-        * SCARD_ATTR_CURRENT_CWT
-        * SCARD_ATTR_CURRENT_EBC_ENCODING
-        * SCARD_ATTR_EXTENDED_BWT
-        * SCARD_ATTR_ICC_PRESENCE
-        * SCARD_ATTR_ICC_INTERFACE_STATUS
-        * SCARD_ATTR_CURRENT_IO_STATE
-        * SCARD_ATTR_ATR_STRING
-        * SCARD_ATTR_ICC_TYPE_PER_ATR
-        * SCARD_ATTR_ESC_RESET
-        * SCARD_ATTR_ESC_CANCEL
-        * SCARD_ATTR_ESC_AUTHREQUEST
-        * SCARD_ATTR_MAXINPUT
-        * SCARD_ATTR_DEVICE_UNIT
-        * SCARD_ATTR_DEVICE_IN_USE
-        * SCARD_ATTR_DEVICE_FRIENDLY_NAME_A
-        * SCARD_ATTR_DEVICE_SYSTEM_NAME_A
-        * SCARD_ATTR_DEVICE_FRIENDLY_NAME_W
-        * SCARD_ATTR_DEVICE_SYSTEM_NAME_W
-        * SCARD_ATTR_SUPRESS_T1_IFS_REQUEST
+    ======================================== ======= =======
+    Attribute                                Windows  PSCS  
+                                                      lite
+    ======================================== ======= =======
+    SCARD_ATTR_ASYNC_PROTOCOL_TYPES                     Y   
+    SCARD_ATTR_ATR_STRING                       Y       Y   
+    SCARD_ATTR_CHANNEL_ID                       Y       Y   
+    SCARD_ATTR_CHARACTERISTICS                  Y       Y   
+    SCARD_ATTR_CURRENT_BWT                      Y       Y   
+    SCARD_ATTR_CURRENT_CLK                      Y       Y   
+    SCARD_ATTR_CURRENT_CWT                      Y       Y   
+    SCARD_ATTR_CURRENT_D                        Y       Y   
+    SCARD_ATTR_CURRENT_EBC_ENCODING             Y       Y   
+    SCARD_ATTR_CURRENT_F                        Y       Y   
+    SCARD_ATTR_CURRENT_IFSC                     Y       Y   
+    SCARD_ATTR_CURRENT_IFSD                     Y       Y   
+    SCARD_ATTR_CURRENT_IO_STATE                 Y       Y   
+    SCARD_ATTR_CURRENT_N                        Y       Y   
+    SCARD_ATTR_CURRENT_PROTOCOL_TYPE            Y       Y   
+    SCARD_ATTR_CURRENT_W                        Y       Y   
+    SCARD_ATTR_DEFAULT_CLK                      Y       Y   
+    SCARD_ATTR_DEFAULT_DATA_RATE                Y       Y   
+    SCARD_ATTR_DEVICE_FRIENDLY_NAME_A           Y       Y   
+    SCARD_ATTR_DEVICE_FRIENDLY_NAME_W           Y       Y   
+    SCARD_ATTR_DEVICE_IN_USE                    Y       Y   
+    SCARD_ATTR_DEVICE_SYSTEM_NAME_A             Y       Y   
+    SCARD_ATTR_DEVICE_SYSTEM_NAME_W             Y       Y   
+    SCARD_ATTR_DEVICE_UNIT                      Y       Y   
+    SCARD_ATTR_ESC_AUTHREQUEST                  Y       Y   
+    SCARD_ATTR_ESC_CANCEL                       Y       Y   
+    SCARD_ATTR_ESC_RESET                        Y       Y   
+    SCARD_ATTR_EXTENDED_BWT                     Y       Y   
+    SCARD_ATTR_ICC_INTERFACE_STATUS             Y       Y   
+    SCARD_ATTR_ICC_PRESENCE                     Y       Y   
+    SCARD_ATTR_ICC_TYPE_PER_ATR                 Y       Y   
+    SCARD_ATTR_MAXINPUT                         Y       Y   
+    SCARD_ATTR_MAX_CLK                          Y       Y   
+    SCARD_ATTR_MAX_DATA_RATE                    Y       Y   
+    SCARD_ATTR_MAX_IFSD                         Y       Y   
+    SCARD_ATTR_POWER_MGMT_SUPPORT               Y       Y   
+    SCARD_ATTR_SUPRESS_T1_IFS_REQUEST           Y       Y   
+    SCARD_ATTR_SYNC_PROTOCOL_TYPES                      Y   
+    SCARD_ATTR_USER_AUTH_INPUT_DEVICE           Y       Y   
+    SCARD_ATTR_USER_TO_CARD_AUTH_DEVICE         Y       Y   
+    SCARD_ATTR_VENDOR_IFD_SERIAL_NO             Y       Y   
+    SCARD_ATTR_VENDOR_IFD_TYPE                  Y       Y   
+    SCARD_ATTR_VENDOR_IFD_VERSION               Y       Y   
+    SCARD_ATTR_VENDOR_NAME                      Y       Y   
+    ======================================== ======= =======
 
     Not all the dwAttrId values listed above may be implemented in the IFD
     Handler you are using.  And some dwAttrId values not listed here may be
