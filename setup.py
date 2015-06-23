@@ -78,8 +78,13 @@ else:
     platform_extra_link_args = []   # ['-ggdb']
 
 
+VERSION_INFO = (1, 7, 0, 0)
+VERSION_STR = '%i.%i.%i' % VERSION_INFO[:3]
+VERSION_ALT = '%i,%01i,%01i,%04i' % VERSION_INFO
+
+
 kw = {'name': "pyscard",
-      'version': "1.6.16",
+      'version': VERSION_STR,
       'description': "Smartcard module for Python.",
       'author': "Jean-Daniel Aussel",
       'author_email': "aussel.jean-daniel@gemalto.com",
@@ -103,7 +108,10 @@ kw = {'name': "pyscard",
 
       # the _scard.pyd extension to build
       'ext_modules': [Extension("smartcard.scard._scard",
-                             define_macros=platform__cc_defines,
+                             define_macros=[
+                                    ('VER_PRODUCTVERSION', VERSION_ALT),
+                                    ('VER_PRODUCTVERSION_STR', VERSION_STR)]
+                                    + platform__cc_defines,
                              include_dirs=['smartcard/scard/'] \
                                            + platform_include_dirs,
                              sources=["smartcard/scard/helpers.c",
@@ -116,6 +124,11 @@ kw = {'name': "pyscard",
                              swig_opts=['-outdir',
                                         'smartcard/scard'] \
                                         + platform_swig_opts)],
+      'extras_require': {
+            'Gui': ['wxPython'],
+            'Pyro': ['Pyro'],
+            },
+
       'classifiers': [
           'Development Status :: 5 - Release',
           'License :: OSI Approved :: GNU Lesser General Public License v2 '

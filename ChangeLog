@@ -1,3 +1,9 @@
+1.7.0 (TBD)
+===========
+        * dropped support for Python 2.5 and earlier (Alex Willmer)
+        * dropped support for OS X 10.5 (Leopard) and earlier (Alex Willmer)
+
+
 1.6.16 (December 2014)
 ===================
         * added support for windows 64bit amd64 (Jean-Daniel Aussel)
