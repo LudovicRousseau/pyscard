@@ -98,13 +98,6 @@ kw = {'name': "pyscard",
                    ],
       'package_dir': {"": "."},
       'package_data': {
-                         "smartcard": [
-                                        "ACKS",
-                                        "ChangeLog",
-                                        "LICENSE",
-                                        "README",
-                                        "TODO",
-                                        ],
                          "smartcard/wx": ["resources/*.ico"],
                        },
 
