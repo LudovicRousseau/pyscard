@@ -208,7 +208,7 @@ class PCSCCardConnection(CardConnection):
         sw1 = (response[-2] + 256) % 256
         sw2 = (response[-1] + 256) % 256
 
-        data = map(lambda x: (x + 256) % 256, response[:-2])
+        data = [(x + 256) % 256 for x in response[:-2]]
         return list(data), sw1, sw2
 
     def doControl(self, controlCode, bytes=[]):
@@ -226,7 +226,7 @@ class PCSCCardConnection(CardConnection):
             raise SmartcardException(
                 'Failed to control ' + SCardGetErrorMessage(hresult))
 
-        data = map(lambda x: (x + 256) % 256, response)
+        data = [(x + 256) % 256 for x in response]
         return list(data)
 
     def doGetAttrib(self, attribId):

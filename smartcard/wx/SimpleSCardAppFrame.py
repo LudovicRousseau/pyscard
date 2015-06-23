@@ -37,7 +37,7 @@ from smartcard.wx.SimpleSCardAppEventObserver import \
 
 [
 wxID_SIMPLESCARDAPP_FRAME,
-] = map(lambda x: wx.NewId(), range(1))
+] = [wx.NewId() for x in range(1)]
 
 
 class BlankPanel(wx.Panel, SimpleSCardAppEventObserver):

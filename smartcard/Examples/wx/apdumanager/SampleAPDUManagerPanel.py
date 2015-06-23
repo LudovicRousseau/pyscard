@@ -41,7 +41,7 @@ ID_TEXTCTRL_SW1,
 ID_TEXT_SW2,
 ID_TEXTCTRL_SW2,
 ID_CARDSTATE,
-ID_TRANSMIT] = map(lambda x: wx.NewId(), range(11))
+ID_TRANSMIT] = [wx.NewId() for x in range(11)]
 
 
 class SampleAPDUManagerPanel(wx.Panel, SimpleSCardAppEventObserver):
