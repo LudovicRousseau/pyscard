@@ -94,17 +94,14 @@ class testcase_CardConnection(unittest.TestCase):
 
         for reader in readers():
             cc = reader.createConnection()
-            # on Mac OS X Tiger, trying to connect
-            # with T=1 protocol does not except
-            if not 'pcsclite-tiger' == resourceManagerSubType:
-                if [] != expectedATRinReader[str(reader)]:
-                    # should fail since the test card does not support T1
-                    self.assertRaises(
-                        CardConnectionException,
-                        cc.connect,
-                        CardConnection.T1_protocol)
-                else:
-                    self.assertRaises(NoCardException, cc.connect)
+            if [] != expectedATRinReader[str(reader)]:
+                # should fail since the test card does not support T1
+                self.assertRaises(
+                    CardConnectionException,
+                    cc.connect,
+                    CardConnection.T1_protocol)
+            else:
+                self.assertRaises(NoCardException, cc.connect)
         cc.disconnect()
 
     def testcase_CardConnectionT1inTransmit(self):

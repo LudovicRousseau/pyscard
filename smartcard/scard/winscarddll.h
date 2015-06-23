@@ -189,11 +189,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #endif // WIN32
 
-
-//
-// These functions are not available on Max OS X Tiger
-//
-#ifndef __TIGER__
     typedef WINSCARDAPI SCARDRETCODE
     (WINAPI *SCARDISVALIDCONTEXT)(
         IN      SCARDCONTEXT hContext);
@@ -215,21 +210,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     extern SCARDISVALIDCONTEXT             mySCardIsValidContext;
     extern SCARDGETATTRIB                  mySCardGetAttrib;
     extern SCARDSETATTRIB                  mySCardSetAttrib;
-#endif // !__TIGER__
 
-
-//
-// SCardControl does not have the same prototype on Mac OS X Tiger
-//
-#ifdef __TIGER__
-    typedef WINSCARDAPI SCARDRETCODE
-    (WINAPI *SCARDCONTROL)(
-        IN      SCARDHANDLE hCard,
-        IN      const unsigned char* lpInBuffer,
-        IN      SCARDDWORDARG nInBufferSize,
-        OUT     unsigned char* lpOutBuffer,
-        IN OUT  SCARDDWORDARG* lpBytesReturned);
-#else // !__TIGER__
     typedef WINSCARDAPI SCARDRETCODE
     (WINAPI *SCARDCONTROL)(
         IN      SCARDHANDLE hCard,
@@ -239,7 +220,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
         OUT     LPVOID lpOutBuffer,
         IN      SCARDDWORDARG nOutBufferSize,
         OUT     SCARDDWORDARG* lpBytesReturned);
-#endif // __TIGER__
 
 
 

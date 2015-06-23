@@ -228,10 +228,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     SCARDSTATE                      mySCardState                        = _defaultSCARDSTATE;
 #endif // WIN32
 
-//
-// These functions are not available on Max OS X Tiger
-//
-#ifndef __TIGER__
     static WINSCARDAPI SCARDRETCODE
     WINAPI _defaultSCARDISVALIDCONTEXT(
         IN      SCARDCONTEXT hContext)
@@ -275,23 +271,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     SCARDGETATTRIB                  mySCardGetAttrib                    = _defaultSCARDGETATTRIB;
     SCARDSETATTRIB                  mySCardSetAttrib                    = _defaultSCARDSETATTRIB;
 
-#endif // !__TIGER__
-
-//
-// SCardControl does not have the same prototype on Mac OS X Tiger
-//
-#ifdef __TIGER__
-    static WINSCARDAPI SCARDRETCODE
-    WINAPI _defaultSCARDCONTROL(
-        IN      SCARDHANDLE hCard,
-        IN      const unsigned char* lpInBuffer,
-        IN      SCARDDWORDARG nInBufferSize,
-        OUT     unsigned char* lpOutBuffer,
-        IN OUT  SCARDDWORDARG* lpBytesReturned)
-    {
-        return SCARD_E_NO_SERVICE;
-    }
-#else // !__TIGER__
     static WINSCARDAPI SCARDRETCODE
     WINAPI _defaultSCARDCONTROL(
         IN      SCARDHANDLE hCard,
@@ -312,7 +291,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
         return SCARD_E_NO_SERVICE;
     }
-#endif // __TIGER__
 
 #ifdef PCSCLITE
 ///////////////////////////////////////////////////////////////////////////////
@@ -774,18 +752,12 @@ long winscard_init(void)
                 #ifndef __APPLE__
                     GETPROCADDRESS( SCARDCONTROL, SCardControl, SCardControl );
                 #else // !__APPLE__
-                    #ifdef __TIGER__
-                        GETPROCADDRESS( SCARDCONTROL, SCardControl, SCardControl );
-                    #else // ! __TIGER__
-                        GETPROCADDRESS( SCARDCONTROL, SCardControl, SCardControl132 );
-                    #endif // __TIGER__
+                    GETPROCADDRESS( SCARDCONTROL, SCardControl, SCardControl132 );
                 #endif // __APPLE__
 
-                #ifndef __TIGER__
                     SILENTGETPROCADDRESS( SCARDISVALIDCONTEXT    , SCardIsValidContext    , SCardIsValidContext    );
                     GETPROCADDRESS( SCARDGETATTRIB         , SCardGetAttrib         , SCardGetAttrib         );
                     GETPROCADDRESS( SCARDSETATTRIB         , SCardSetAttrib         , SCardSetAttrib         );
-                #endif
 
                 myg_prgSCardT0Pci  = dlsym( handle, "g_rgSCardT0Pci"  );
                 myg_prgSCardT1Pci  = dlsym( handle, "g_rgSCardT1Pci"  );
