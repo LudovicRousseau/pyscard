@@ -1,11 +1,9 @@
 include LICENSE
 include MANIFEST.in
 include README
-include smartcard/ACKS
-include smartcard/ChangeLog
-include smartcard/LICENSE
-include smartcard/README
-include smartcard/TODO
+include ACKS
+include ChangeLog
+include TODO
 include smartcard/scard/gemalto.ver
 include smartcard/scard/helpers.c
 include smartcard/scard/helpers.h
