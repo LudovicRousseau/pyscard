@@ -86,14 +86,14 @@ class testcase_ErrorChecking(unittest.TestCase):
            exception object for testing fields."""
         try:
             callableObj(*args, **kwargs)
-        except excClass, e:
+        except excClass as e:
             return e
         else:
             if hasattr(excClass, '__name__'):
                 excName = excClass.__name__
             else:
                 excName = str(excClass)
-            raise self.failureException, excName
+            raise self.failureException(excName)
 
     def testcase_ISO7816_4SW1ErrorChecker(self):
         """Test ISO7816_4_SW1ErrorChecker."""
