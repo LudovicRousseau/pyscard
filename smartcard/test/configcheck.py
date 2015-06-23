@@ -27,6 +27,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 
+from __future__ import print_function
 from smartcard.System import readers
 from smartcard.Exceptions import NoCardException
 from smartcard.util import toHexString
@@ -44,7 +45,7 @@ def checklocalconfig():
     try:
         f = open('local_config.py', 'r')
     except IOError:
-        print 'local_config.py not found; generating local_config.py...'
+        print('local_config.py not found; generating local_config.py...')
 
     # generate local configuration
     f = open('local_config.py', 'w+')

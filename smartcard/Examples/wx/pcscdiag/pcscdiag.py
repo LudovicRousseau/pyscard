@@ -26,6 +26,7 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
+from __future__ import print_function
 import smartcard.Exceptions
 import smartcard.System
 import smartcard.util
@@ -35,9 +36,9 @@ import smartcard.util
 try:
     import wx
 except:
-    print 'You need wxpython (http://www.wxpython.org) ' + \
-          'to run this sample from the source code!'
-    print 'press a key to continue'
+    print('You need wxpython (http://www.wxpython.org) ' + \
+          'to run this sample from the source code!')
+    print('press a key to continue')
     import msvcrt
     msvcrt.getch()
     import sys
