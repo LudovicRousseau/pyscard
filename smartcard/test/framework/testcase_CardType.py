@@ -99,7 +99,7 @@ class testcase_CardType(unittest.TestCase):
 
         for reader in readers():
             if [] != expectedATRinReader[str(reader)]:
-                mask = map(lambda x: 0xFF, expectedATRinReader[str(reader)])
+                mask = [0xFF for x in expectedATRinReader[str(reader)]]
                 # don't look to the last byte
                 mask[-1] = 0x00
                 ct = ATRCardType(expectedATRinReader[str(reader)], mask)
@@ -117,7 +117,7 @@ class testcase_CardType(unittest.TestCase):
 
         for reader in readers():
             if [] != expectedATRinReader[str(reader)]:
-                mask = map(lambda x: 0xFF, expectedATRinReader[str(reader)])
+                mask = [0xFF for x in expectedATRinReader[str(reader)]]
                 # don't look to the last byte
                 mask[0] = mask[-1] = 0x00
                 ct = ATRCardType(expectedATRinReader[str(reader)], mask)

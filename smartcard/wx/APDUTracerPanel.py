@@ -30,7 +30,7 @@ from smartcard.util import toHexString
 
 [
 wxID_APDUTEXTCTRL,
-] = map(lambda x: wx.NewId(), range(1))
+] = [wx.NewId() for x in range(1)]
 
 
 class APDUTracerPanel(wx.Panel, CardConnectionObserver):
