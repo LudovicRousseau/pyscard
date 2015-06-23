@@ -63,13 +63,13 @@ class testcase_readergroups(unittest.TestCase):
         # list current readers and compare with expected list
         hresult, readers = SCardListReaders(self.hcontext, [])
         self.assertEquals(hresult, 0)
-        for i in xrange(len(expectedReaders)):
+        for i in range(len(expectedReaders)):
             self.assertEquals(readers[i], expectedReaders[i])
 
         # list current reader groups and compare with expected list
         hresult, readerGroups = SCardListReaderGroups(self.hcontext)
         self.assertEquals(hresult, 0)
-        for i in xrange(len(expectedGroups)):
+        for i in range(len(expectedGroups)):
             self.assertEquals(readerGroups[i], expectedGroups[i])
 
         if 'winscard' == resourceManager:
@@ -91,7 +91,7 @@ class testcase_readergroups(unittest.TestCase):
 
             hresult, readerGroups = SCardListReaderGroups(self.hcontext)
             self.assertEquals(hresult, 0)
-            for i in xrange(len(expectedGroups)):
+            for i in range(len(expectedGroups)):
                 self.assertEquals(readerGroups[i], expectedGroups[i])
 
             # list readers in new group
@@ -108,7 +108,7 @@ class testcase_readergroups(unittest.TestCase):
             self.assertEquals(hresult, 0)
 
             expectedGroups.remove(newgroup)
-            for i in xrange(len(expectedGroups)):
+            for i in range(len(expectedGroups)):
                 self.assertEquals(readerGroups[i], expectedGroups[i])
 
             hresult = SCardForgetReaderGroup(self.hcontext, newgroup)
@@ -116,7 +116,7 @@ class testcase_readergroups(unittest.TestCase):
 
             hresult, readerGroups = SCardListReaderGroups(self.hcontext)
             self.assertEquals(hresult, 0)
-            for i in xrange(len(expectedGroups)):
+            for i in range(len(expectedGroups)):
                 self.assertEquals(readerGroups[i], expectedGroups[i])
 
             hresult = SCardForgetReader(self.hcontext, dummyreader)
