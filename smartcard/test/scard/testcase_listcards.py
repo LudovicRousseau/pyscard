@@ -148,7 +148,7 @@ if 'winscard' == resourceManager:
             hresult, cards = SCardListCards(self.hcontext, [], [])
             self.assertEquals(hresult, 0)
             foundCards = {}
-            for i in xrange(len(cards)):
+            for i in range(len(cards)):
                 foundCards[cards[i]] = 1
             for i in expectedCards:
                 self.assert_(i in foundCards)
@@ -169,7 +169,7 @@ if 'winscard' == resourceManager:
                         'Schlumberger Cryptoflex 4k': [2, None],
                         'Schlumberger Cryptoflex 8k': [2, None],
                         'Schlumberger Cryptoflex 8k v2': [2, None]}
-            for i in xrange(len(cards)):
+            for i in range(len(cards)):
                 hresult, providername = SCardGetCardTypeProviderName(
                     self.hcontext, cards[i], SCARD_PROVIDER_PRIMARY)
                 if cards[i] in expectedPrimaryProviderResult:
@@ -200,7 +200,7 @@ if 'winscard' == resourceManager:
                           [0, 'Schlumberger Cryptographic Service Provider'],
                         'Schlumberger Cryptoflex 8k v2': \
                           [0, 'Schlumberger Cryptographic Service Provider']}
-            for i in xrange(len(cards)):
+            for i in range(len(cards)):
                 hresult, providername = SCardGetCardTypeProviderName(
                     self.hcontext, cards[i], SCARD_PROVIDER_CSP)
                 if cards[i] in expectedProviderCSPResult:
