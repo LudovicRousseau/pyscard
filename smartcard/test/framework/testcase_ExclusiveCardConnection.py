@@ -27,6 +27,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 
+from __future__ import print_function
 import sys
 import random
 import threading
@@ -122,8 +123,8 @@ class testcase_cardmonitor(unittest.TestCase):
             t.join()
         for t in threads:
             if 0 == 1:
-                print 'Thread %d: transmitted %ld apdus.' % \
-                        (t.threadindex, t.countTransmitted)
+                print('Thread %d: transmitted %ld apdus.' % \
+                        (t.threadindex, t.countTransmitted))
 
 
 def suite():

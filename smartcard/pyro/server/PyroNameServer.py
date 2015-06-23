@@ -22,6 +22,7 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
+from __future__ import print_function
 import signal
 import sys
 from threading import Thread
@@ -110,7 +111,7 @@ class PyroNameServer(Thread):
     def __call__(self, signame, sf):
         """Ctrl+c handler that will gracefully shutdown the server
         upon Ctrl+C signal"""
-        print 'PyroNameServer Ctrl+C handler'
+        print('PyroNameServer Ctrl+C handler')
         self.stop()
         time.sleep(1)
         self.handler(signame, sf)

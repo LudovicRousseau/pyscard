@@ -27,6 +27,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 
+from __future__ import print_function
 import unittest
 from smartcard.scard import *
 
@@ -39,7 +40,7 @@ sys.path += ['..']
 try:
     from local_config import expectedATRs, expectedReaders
 except:
-    print 'execute test suite first to generate the local_config.py file'
+    print('execute test suite first to generate the local_config.py file')
     sys.exit()
 
 

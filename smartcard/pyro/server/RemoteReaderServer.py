@@ -23,12 +23,14 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
+from __future__ import print_function
+
 try:
     import Pyro.core
     import Pyro.naming
 except:
-    print 'You need pyro (python remote objects) ' + \
-          'at http://www.xs4all.nl/~irmen/pyro3/'
+    print('You need pyro (python remote objects) ' + \
+          'at http://www.xs4all.nl/~irmen/pyro3/')
     import sys
     sys.exit()
 
@@ -87,7 +89,7 @@ class RemoteReaderServer(ReaderObserver):
             self.ns.createGroup(':pyscard.smartcard')
             self.ns.createGroup(':pyscard.smartcard.readers')
         except Pyro.errors.NamingError as error:
-            print error
+            print(error)
         self.daemon = PyroDaemon.PyroDaemon()
         self.remotereaders = {}
 
@@ -95,10 +97,11 @@ class RemoteReaderServer(ReaderObserver):
         """Start pyro daemon and accept incoming requests."""
         self.daemon.start()
 
-    def update(self, observable, (addedreaders, removedreaders)):
+    def update(self, observable, actions):
         """Called when a local reader is added or removed.
         Create remote pyro reader objects for added readers.
         Delete remote pyro reader objects for removed readers."""
+        (addedreaders, removedreaders) = actions
         for reader in addedreaders:
             remotereader = RemoteReader(reader)
             self.remotereaders[reader.name] = remotereader
@@ -116,6 +119,6 @@ if __name__ == '__main__':
     readerserver = RemoteReaderServer()
     readermonitor = ReaderMonitor()
     readermonitor.addObserver(readerserver)
-    print 'Reader remote server up and running',
-    print 'Please enter Ctrl+C to stop and exit...'
+    print('Reader remote server up and running', end=' ')
+    print('Please enter Ctrl+C to stop and exit...')
     readerserver.start()

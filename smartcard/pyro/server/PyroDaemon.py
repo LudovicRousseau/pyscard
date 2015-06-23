@@ -22,6 +22,7 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
+from __future__ import print_function
 import signal
 from threading import Thread
 import time
@@ -48,7 +49,7 @@ class PyroDaemon(object):
         def __call__(self, signame, sf):
             """Ctrl+c handler that will gracefully shutdown the server
             upon Ctrl+C signal"""
-            print 'PyroDaemon Ctrl+C handler'
+            print('PyroDaemon Ctrl+C handler')
             self.daemon.shutdown(True)
             time.sleep(1)
             self.handler(signame, sf)
