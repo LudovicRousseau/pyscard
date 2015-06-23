@@ -31,7 +31,7 @@ def synchronize(klass, names=None):
     given, or all methods if names=None."""
     if type(names) == type(''):
             names = names.split()
-    for (name, val) in klass.__dict__.items():
+    for (name, val) in list(klass.__dict__.items()):
         if callable(val) and name != '__init__' and \
             (names == None or name in names):
                 # print("synchronizing", name)
