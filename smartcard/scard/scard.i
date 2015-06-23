@@ -106,24 +106,6 @@ provides mapping for the following API functions:
  - SCardStatus
  - SCardTransmit
 
-On Mac OS X Tiger with PCSC lite, the smartcard.scard module provides
-mapping for the following API functions:
-
- - SCardBeginTransaction
- - SCardCancel
- - SCardConnect
- - SCardControl
- - SCardDisconnect
- - SCardEndTransaction
- - SCardEstablishContext
- - SCardGetStatusChange
- - SCardListReaders
- - SCardListReaderGroups
- - SCardReconnect
- - SCardReleaseContext
- - SCardStatus
- - SCardTransmit
-
 The following PCSC smart card functions are not wrapped by the scard
 module on any platform:
 
@@ -371,10 +353,6 @@ SCARDRETCODE _RemoveReaderFromGroup(
 #endif // WIN32
 
 
-//
-// These functions are not available on Max OS X Tiger
-//
-#ifndef __TIGER__
 ///////////////////////////////////////////////////////////////////////////////
 static SCARDRETCODE _IsValidContext(SCARDCONTEXT hcontext)
 {
@@ -413,35 +391,9 @@ static SCARDRETCODE _SetAttrib(SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELI
     lRetCode = (mySCardSetAttrib)(hcard, dwAttrId, pbl->ab, pbl->cBytes);
     return lRetCode;
 }
-#endif // !__TIGER__
 
 
-//
-// SCardControl does not have the same prototype on Mac OS X Tiger
-//
 
-#ifdef __TIGER__
-    ///////////////////////////////////////////////////////////////////////////////
-    static SCARDRETCODE _Control(
-      SCARDHANDLE hcard,
-      BYTELIST* pblSendBuffer,
-      BYTELIST* pblRecvBuffer
-   )
-    {
-        SCARDRETCODE lRet;
-
-        pblRecvBuffer->ab = (unsigned char*)mem_Malloc(MAX_BUFFER_SIZE_EXTENDED*sizeof(unsigned char));
-        pblRecvBuffer->cBytes = MAX_BUFFER_SIZE_EXTENDED;
-
-        lRet = (mySCardControl)(
-                    hcard,
-                    pblSendBuffer->ab,
-                    pblSendBuffer->cBytes,
-                    pblRecvBuffer->ab,
-                    &pblRecvBuffer->cBytes);
-        return lRet;
-    }
-#else // !__TIGER__
     ///////////////////////////////////////////////////////////////////////////////
     static SCARDRETCODE _Control(
       SCARDHANDLE hcard,
@@ -465,7 +417,6 @@ static SCARDRETCODE _SetAttrib(SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELI
                     &pblRecvBuffer->cBytes);
         return lRet;
     }
-#endif // __TIGER__
 
 ///////////////////////////////////////////////////////////////////////////////
 static SCARDRETCODE _BeginTransaction(SCARDHANDLE hcard)
@@ -519,20 +470,6 @@ static SCARDRETCODE _EstablishContext(SCARDDWORDARG dwScope, SCARDCONTEXT* phCon
 {
     long lRet;
     lRet = (mySCardEstablishContext)(dwScope, NULL, NULL, phContext);
-
-    #ifdef __TIGER__
-        // SCardReleaseContext on Mac OS X Tiger fails if SCardConnect is not called with an established
-        // context, even on a dummy reader
-        if (SCARD_S_SUCCESS==lRet)
-        {
-            SCARDHANDLE hcard;
-            SCARDDWORDARG dwarg;
-            (mySCardConnectA)(*phContext, "dummy-reader", SCARD_SHARE_SHARED,
-                SCARD_PROTOCOL_ANY, &hcard, &dwarg);
-        }
-    #endif // __TIGER__
-
-    return lRet;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1248,13 +1185,6 @@ SCARDRETCODE _RemoveReaderFromGroup(
 
 #endif // WIN32
 
-
-//
-// These functions are not available on Max OS X Tiger
-//
-//
-#ifndef __TIGER__
-
     ///////////////////////////////////////////////////////////////////////////////
     %define DOCSTRING_ISVALIDCONTEXT
     "
@@ -1508,41 +1438,7 @@ SCARDRETCODE _RemoveReaderFromGroup(
     %rename(SCardSetAttrib) _SetAttrib(SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* ATTRIBUTESIN);
     SCARDRETCODE _SetAttrib(SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELIST* ATTRIBUTESIN);
 
-#endif // !__TIGER__
 
-
-//
-// SCardControl does not have the same prototype on Mac OS X Tiger
-//
-#ifdef __TIGER__
-    ///////////////////////////////////////////////////////////////////////////////
-    %define DOCSTRING_CONTROL
-    "
-    This function sends a control command to the reader connected to by
-    SCardConnect().  It returns a result and the control response.
-
-    from smartcard.scard import *
-    hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
-    hresult, hcard, dwActiveProtocol = SCardConnect(
-         hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
-    CMD = [ 42, 0x12, 0x34]
-    hresult, response = SCardControl(hcard, CMD)
-    if hresult != SCARD_S_SUCCESS:
-        raise error, 'Failed to control: ' + SCardGetErrorMessage(hresult)
-    "
-    %enddef
-    %feature("docstring") DOCSTRING_CONTROL;
-    %rename(SCardControl) _Control(
-      SCARDHANDLE hcard,
-      BYTELIST* INBUFFER,
-      BYTELIST* OUTBUFFER
-   );
-    SCARDRETCODE _Control(
-      SCARDHANDLE hcard,
-      BYTELIST* INBUFFER,
-      BYTELIST* OUTBUFFER
-   );
-#else // !__TIGER__
     ///////////////////////////////////////////////////////////////////////////////
     %define DOCSTRING_CONTROL
     "
@@ -1573,7 +1469,6 @@ SCARDRETCODE _RemoveReaderFromGroup(
       BYTELIST* INBUFFER,
       BYTELIST* OUTBUFFER
    );
-#endif // __TIGER__
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2080,9 +1975,6 @@ def SCardLocateCards(hcontext, cardnames, readerstates):
 #ifdef PCSCLITE
 %constant char* resourceManager = "pcsclite" ;
     #ifdef __APPLE__
-        #ifdef __TIGER__
-            %constant char* resourceManagerSubType = "pcsclite-tiger" ;
-        #endif //__TIGER__
         #ifdef __LEOPARD__
             %constant char* resourceManagerSubType = "pcsclite-leopard" ;
         #endif //__LEOPARD__

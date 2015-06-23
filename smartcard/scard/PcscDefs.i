@@ -348,10 +348,5 @@ typedef enum
 %constant unsigned long SCARD_P_SHUTDOWN = 0x80100018 ;
 
 // Infinite timeout
-// on Mac OS X Tiger, a 0xffffffff infinite time-out causes a random crash upon SCardGetStatusChange return
-#ifdef __TIGER__
-%constant unsigned long INFINITE = 4320000 ;
-#else // !__TIGER__
 %constant unsigned long INFINITE = 0x7FFFFFFF ;
-#endif // __TIGER__
 
