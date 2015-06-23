@@ -64,11 +64,11 @@ class __CardNames__(Synchronization):
             pass
 
     def dump(self):
-        for k, v in self.db.items():
+        for k, v in list(self.db.items()):
             print(k, repr(loads(v)))
 
     def find(self, atr, reader=None):
-        for k, v in self.db.items():
+        for k, v in list(self.db.items()):
             if loads(v).matches(atr, reader):
                 return k
 

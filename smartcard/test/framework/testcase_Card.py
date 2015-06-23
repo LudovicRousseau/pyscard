@@ -60,7 +60,7 @@ class testcase_Card(unittest.TestCase):
             card = Card(reader, expectedATRinReader[str(reader)])
             mydict[card] = reader
 
-        for card in mydict.keys():
+        for card in list(mydict.keys()):
             self.assert_(str(card.reader) in expectedReaders)
 
     def testcase_Card_FromReaders(self):

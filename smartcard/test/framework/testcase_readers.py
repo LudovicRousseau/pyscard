@@ -66,7 +66,7 @@ class testcase_readers(unittest.TestCase):
         foundreaders = {}
         for reader in readers():
             foundreaders[reader] = 1
-        for reader in foundreaders.keys():
+        for reader in list(foundreaders.keys()):
             self.assert_(reader in readers())
 
     def testcase_legacyreaders(self):
