@@ -23,9 +23,6 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-from sys import exc_info
-
-
 class ErrorCheckingChain(object):
     """The error checking chain is a list of response apdu status word
     (sw1, sw2) error check strategies. Each strategy in the chain is
@@ -76,11 +73,14 @@ class ErrorCheckingChain(object):
         """Called to test data, sw1 and sw2 for error on the chain."""
         try:
             self.strategy(data, sw1, sw2)
-        except:
-            # if exception is filtered, return
-            for exception in self.excludes:
-                if exception == exc_info()[0]:
-                    return
+        except tuple(self.excludes) as exc:
+            # The following addtional filter may look redundant, it isn't.s
+            # It checks that type(exc) is *equal* to any of self.excludes,
+            # rather than equal-or-subclass to any of self.excludes.
+            # This is to keep backward compatibility with the behaviour of
+            # pyscard <= 1.6.16.
+            if type(exc) in self.excludes:
+                return
             # otherwise reraise exception
             raise
 

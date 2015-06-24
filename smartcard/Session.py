@@ -24,7 +24,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 from smartcard.Exceptions import InvalidReaderException, NoReadersException
-from smartcard.CardConnection import CardConnection
 from smartcard.PassThruCardService import PassThruCardService
 from smartcard.System import readers
 
@@ -110,8 +109,3 @@ class Session(object):
     def __repr__(self):
         """Returns a string representation of the session."""
         return "<Session instance: readerName=%s>" % self.readerName
-
-
-if __name__ == '__main__':
-    """Small sample illustrating the use of Session.py."""
-    pass
