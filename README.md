@@ -14,3 +14,7 @@ Samples
 -------
 High level API samples: See http://pyscard.sourceforge.net/pyscard-framework.html#framework-samples
 Low level API samples: See http://pyscard.sourceforge.net/pyscard-wrapper.html#wrapper-samples
+
+Continuous Integration status
+-----------------------------
+tracis-ci: ![tracis-ci](https://travis-ci.org/LudovicRousseau/pyscard.svg "travis-ci")
