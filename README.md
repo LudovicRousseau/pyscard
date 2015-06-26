@@ -17,6 +17,6 @@ Low level API samples: See http://pyscard.sourceforge.net/pyscard-wrapper.html#w
 
 Continuous Integration status
 -----------------------------
-Tracis CI: [![Tracis CI](https://travis-ci.org/LudovicRousseau/pyscard.svg "Travis CI")](https://travis-ci.org/LudovicRousseau/pyscard)
+Travis CI: [![Travis CI](https://travis-ci.org/LudovicRousseau/pyscard.svg "Travis CI")](https://travis-ci.org/LudovicRousseau/pyscard)
 
 AppVeyor: [![Build status](https://ci.appveyor.com/api/projects/status/c97dsaodpcwkm0ra?svg=true)](https://ci.appveyor.com/project/LudovicRousseau/pyscard)
