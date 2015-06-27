@@ -45,6 +45,9 @@ def checklocalconfig():
         f = open('local_config.py', 'r')
     except IOError:
         print 'local_config.py not found; generating local_config.py...'
+    else:
+        print 'regenerating local_config.py...'
+        f.close()
 
     # generate local configuration
     f = open('local_config.py', 'w+')
