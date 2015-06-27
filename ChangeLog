@@ -1,7 +1,12 @@
-1.7.0 (TBD)
+1.7.0 (June 2015)
 ===========
+		* PCSCCardConnection: Fix a problem with mode=SCARD_SHARE_DIRECT
+        * add suppport of cygwin as a build plateform
+		* Fix a problem with Windows Remote Desktop
+		* Switch from distutils to setuptools
         * dropped support for Python 2.5 and earlier (Alex Willmer)
         * dropped support for OS X 10.5 (Leopard) and earlier (Alex Willmer)
+		* minot bugs fixed
 
 
 1.6.16 (December 2014)
