@@ -52,6 +52,8 @@ test_script:
 after_test:
   - SET PATH=%SWIG%;%PATH%
   - "%WITH_COMPILER% %PYTHON%/python setup.py bdist_wheel"
+  - "%WITH_COMPILER% %PYTHON%/python setup.py bdist_wininst"
+  - "%WITH_COMPILER% %PYTHON%/python setup.py bdist_msi"
 
 artifacts:
   - path: dist\*
