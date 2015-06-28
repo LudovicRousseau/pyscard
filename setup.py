@@ -130,17 +130,17 @@ kw = {'name': "pyscard",
             },
 
       'classifiers': [
-          'Development Status :: 5 - Release',
+          'Development Status :: 5 - Production/Stable',
           'License :: OSI Approved :: GNU Lesser General Public License v2 '
                                      'or later (LGPLv2+)',
           'Intended Audience :: Developers',
           'Operating System :: Unix',
           'Operating System :: Microsoft :: Windows',
-          'Operating System :: MacOS X',
+          'Operating System :: MacOS :: MacOS X',
           'Programming Language :: Python :: 2.6',
           'Programming Language :: Python :: 2.7',
           'Programming Language :: Python :: 2 :: Only',
-          'Topic :: Security :: Smartcards',
+          'Topic :: Security ',
           ]
      }
 
