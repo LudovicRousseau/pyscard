@@ -90,7 +90,7 @@ def printAttribute(attrib, value):
     print apply(struct.pack, ['<' + 'B' * len(value)] + value)
 
 
-try:
+if __name__ == '__main__':
     hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
     if hresult != SCARD_S_SUCCESS:
         raise error(
@@ -148,9 +148,6 @@ try:
                 'Failed to release context: ' + \
                 SCardGetErrorMessage(hresult))
         print 'Released context.'
-
-except Exception, e:
-    print e
 
 import sys
 if 'win32' == sys.platform:
