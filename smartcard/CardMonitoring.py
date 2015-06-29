@@ -33,12 +33,9 @@ from threading import Thread, Event
 from time import sleep
 import traceback
 
-from smartcard.System import readers
-from smartcard.Exceptions import CardRequestTimeoutException
 from smartcard.Observer import Observer
 from smartcard.Observer import Observable
 
-from smartcard.CardType import AnyCardType
 from smartcard.CardRequest import CardRequest
 
 _START_ON_DEMAND_ = False
@@ -219,7 +216,6 @@ class CardMonitoringThread(object):
 
 
 if __name__ == "__main__":
-    from smartcard.CardMonitoring import CardMonitor
     print('insert or remove cards in the next 10 seconds')
 
     # a simple card observer that prints added/removed cards

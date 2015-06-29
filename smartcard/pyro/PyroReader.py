@@ -26,9 +26,8 @@ from __future__ import print_function
 import Pyro.core
 import Pyro.naming
 
-from smartcard.Exceptions import CardConnectionException, NoCardException
+from smartcard.Exceptions import NoCardException
 from smartcard.reader.Reader import Reader
-from smartcard.reader.ReaderFactory import ReaderFactory
 
 
 class PyroReader(Reader):

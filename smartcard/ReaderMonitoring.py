@@ -29,12 +29,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 from __future__ import print_function
-from threading import Thread, Event, enumerate
+from threading import Thread, Event
 from time import sleep
 import traceback
 
 import smartcard.System
-from smartcard.Exceptions import ListReadersException
 from smartcard.Observer import Observer
 from smartcard.Observer import Observable
 from smartcard.Synchronization import *
@@ -204,7 +203,6 @@ class ReaderMonitoringThread(Thread):
         self.join()
 
 if __name__ == "__main__":
-    from smartcard.ReaderMonitoring import ReaderMonitor
     print('insert or remove readers in the next 20 seconds')
 
     # a simple reader observer that prints added/removed readers
