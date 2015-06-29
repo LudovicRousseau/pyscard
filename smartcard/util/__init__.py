@@ -99,7 +99,7 @@ def toBytes(bytestring):
     """
     from struct import unpack
     import re
-    packedstring = ''.join(re.split('\W+', bytestring))
+    packedstring = ''.join(re.split(r'\W+', bytestring))
     try:
         return reduce(lambda x, y: x + [int(y, 16)],
                         unpack('2s' * (len(packedstring) / 2),
