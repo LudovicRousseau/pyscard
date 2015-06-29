@@ -54,11 +54,8 @@ if 'winscard' == resourceManager:
 
         def setUp(self):
             groups = PCSCReaderGroups().instance
-            try:
-                groups.remove('Pinpad$Readers')
-                groups.remove('Biometric$Readers')
-            except:
-                pass
+            groups.remove('Pinpad$Readers')
+            groups.remove('Biometric$Readers')
 
         def testcase_add(self):
             """Test for groups=groups+newgroups"""
