@@ -76,7 +76,12 @@ class ErrorCheckingChain(object):
         """Called to test data, sw1 and sw2 for error on the chain."""
         try:
             self.strategy(data, sw1, sw2)
-        except:
+        except tuple(self.excludes) as exc:
+            # The following addtional filter may look redundant, it isn't.
+            # It checks that type(exc) is *equal* to any of self.excludes,
+            # rather than equal-or-subclass to any of self.excludes.
+            # This maintains backward compatibility with the behaviour of
+            # pyscard <= 1.6.16.
             # if exception is filtered, return
             for exception in self.excludes:
                 if exception == exc_info()[0]:
