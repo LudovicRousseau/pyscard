@@ -29,7 +29,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 from smartcard.scard import *
 import smartcard.util
 
-try:
+if __name__ == '__main__':
     hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
     if hresult != SCARD_S_SUCCESS:
         raise error(
@@ -85,9 +85,6 @@ try:
             raise error('Failed to release context: ' + \
                             SCardGetErrorMessage(hresult))
         print 'Released context.'
-
-except Exception, e:
-    print e
 
 import sys
 if 'win32' == sys.platform:
