@@ -408,9 +408,9 @@ class CardAndReaderTreePanel(wx.Panel):
     def OnDestroy(self, event):
         """Called on panel destruction."""
         # deregister observers
-        if hasattr(self, cardmonitor):
+        if hasattr(self, 'cardmonitor'):
             self.cardmonitor.deleteObserver(self.cardtreecardobserver)
-        if hasattr(self, readermonitor):
+        if hasattr(self, 'readermonitor'):
             self.readermonitor.deleteObserver(self.readertreereaderobserver)
             self.cardmonitor.deleteObserver(self.readertreecardobserver)
         event.Skip()
