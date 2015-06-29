@@ -32,10 +32,6 @@ except:
     import sys
     sys.exit()
 
-import signal
-import time
-
-import smartcard.System
 from smartcard.reader.Reader import Reader
 from smartcard.ReaderMonitoring import ReaderMonitor, ReaderObserver
 from smartcard.pyro.server.RemoteCardConnection import RemoteCardConnection

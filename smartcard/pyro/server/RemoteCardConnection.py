@@ -26,10 +26,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 import Pyro.core
 import Pyro.naming
 
-from smartcard.CardConnection import CardConnection
 from smartcard.CardConnectionDecorator import CardConnectionDecorator
-from smartcard.Exceptions import CardConnectionException, NoCardException
-from smartcard.Observer import Observable
 
 
 class RemoteCardConnection(CardConnectionDecorator, Pyro.core.ObjBase):
