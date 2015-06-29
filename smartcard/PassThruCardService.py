@@ -53,6 +53,7 @@ if __name__ == '__main__':
     SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
     DF_TELECOM = [0x7F, 0x10]
     from smartcard.System import readers
+    from smartcard.CardConnection import CardConnection
     cc = readers()[0].createConnection()
     cs = PassThruCardService(cc)
     cs.connection.connect()

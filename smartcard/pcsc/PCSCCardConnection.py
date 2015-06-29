@@ -25,6 +25,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 from smartcard.CardConnection import CardConnection
 from smartcard.Exceptions import (CardConnectionException,
     NoCardException, SmartcardException)
+from smartcard.Observer import Observable
 
 from smartcard.scard import *
 

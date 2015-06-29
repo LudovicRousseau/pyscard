@@ -28,13 +28,16 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
+from sys import exc_info
 from threading import Thread, Event
 from time import sleep
-import traceback
 
+from smartcard.System import readers
+from smartcard.Exceptions import CardRequestTimeoutException
 from smartcard.Observer import Observer
 from smartcard.Observer import Observable
 
+from smartcard.CardType import AnyCardType
 from smartcard.CardRequest import CardRequest
 
 _START_ON_DEMAND_ = False
@@ -183,9 +186,15 @@ class CardMonitoringThread(object):
                     pass
                 except AttributeError:
                     pass
+
                 except:
-                    # FIXME Tighten the exceptions caught by this block
-                    traceback.print_exc()
+                    try:
+                        import sys
+                        print sys.exc_info()[1]
+                        print sys.exc_info()[2]
+                        print sys.exc_info()[0]
+                    except:
+                        pass
 
         # stop the thread by signaling stopEvent
         def stop(self):
@@ -213,6 +222,7 @@ class CardMonitoringThread(object):
 
 
 if __name__ == "__main__":
+    from smartcard.CardMonitoring import CardMonitor
     print 'insert or remove cards in the next 10 seconds'
 
     # a simple card observer that prints added/removed cards

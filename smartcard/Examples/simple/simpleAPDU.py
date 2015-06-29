@@ -32,7 +32,7 @@ SELECT_APPLET = [0x00, 0xA4, 0x04, 0x00, 0x06, 0xA0, 0x00, 0x00, 0x00,
         0x18, 0xFF]
 GET_TIME = [0x80, 0x38, 0x00, 0xA0]
 
-if __name__ == '__main__':
+try:
     # get all the available readers
     r = readers()
     print "Available readers: ", r
@@ -51,3 +51,6 @@ if __name__ == '__main__':
 
     data, sw1, sw2 = connection.transmit(GET_TIME)
     print "Get Time: %02X %02X" % (sw1, sw2)
+
+except:
+    print sys.exc_info()[1]

@@ -26,12 +26,16 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 try:
     import Pyro.core
     import Pyro.naming
-except ImportError:
+except:
     print 'You need pyro (python remote objects) ' + \
           'at http://www.xs4all.nl/~irmen/pyro3/'
     import sys
     sys.exit()
 
+import signal
+import time
+
+import smartcard.System
 from smartcard.reader.Reader import Reader
 from smartcard.ReaderMonitoring import ReaderMonitor, ReaderObserver
 from smartcard.pyro.server.RemoteCardConnection import RemoteCardConnection

@@ -9,6 +9,10 @@ http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/223972
 License: PSF license (http://docs.python.org/license.html).
 """
 
+import sys
+import types
+
+
 def get_mod(modulePath):
     """Import a module."""
     return __import__(modulePath, globals(), locals(), [''])

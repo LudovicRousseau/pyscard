@@ -77,12 +77,12 @@ class ReaderToolbar(wx.ToolBar):
             bmpReader = wx.Bitmap(ICO_READER, wx.BITMAP_TYPE_ICO)
         else:
             bmpReader = wx.ArtProvider_GetBitmap(
-                wx.ART_HELP_BOOK, wx.ART_OTHER, tsize)
+                wx.ART_HELP_BOOK, wx.ART_OTHER, isz)
         if None != ICO_SMARTCARD:
             bmpCard = wx.Bitmap(ICO_SMARTCARD, wx.BITMAP_TYPE_ICO)
         else:
             bmpCard = wx.ArtProvider_GetBitmap(
-                wx.ART_HELP_BOOK, wx.ART_OTHER, tsize)
+                wx.ART_HELP_BOOK, wx.ART_OTHER, isz)
         self.readercombobox = ReaderComboBox(self)
 
         # create and add controls

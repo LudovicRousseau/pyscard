@@ -25,8 +25,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 import Pyro.core
 import Pyro.naming
 
-from smartcard.Exceptions import NoCardException
+from smartcard.Exceptions import CardConnectionException, NoCardException
 from smartcard.reader.Reader import Reader
+from smartcard.reader.ReaderFactory import ReaderFactory
 
 
 class PyroReader(Reader):

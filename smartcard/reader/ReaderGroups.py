@@ -67,6 +67,9 @@ class innerreadergroups(ulist):
     def __iter__(self):
         return ulist.__iter__(self)
 
+    def next(self):
+        return ulist.__next__(self)
+
     #
     # abstract methods implemented in subclasses
     #

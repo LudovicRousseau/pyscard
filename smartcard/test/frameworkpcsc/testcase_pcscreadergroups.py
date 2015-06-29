@@ -38,7 +38,7 @@ sys.path += ['..']
 try:
     from local_config import expectedATRs, expectedReaders
     from local_config import expectedReaderGroups, expectedATRinReader
-except ImportError:
+except:
     print 'execute test suite first to generate the local_config.py file'
     sys.exit()
 
@@ -54,8 +54,11 @@ if 'winscard' == resourceManager:
 
         def setUp(self):
             groups = PCSCReaderGroups().instance
-            groups.remove('Pinpad$Readers')
-            groups.remove('Biometric$Readers')
+            try:
+                groups.remove('Pinpad$Readers')
+                groups.remove('Biometric$Readers')
+            except:
+                pass
 
         def testcase_add(self):
             """Test for groups=groups+newgroups"""

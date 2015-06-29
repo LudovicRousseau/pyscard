@@ -25,7 +25,7 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-import sys
+from sys import stdin, exc_info
 from time import sleep
 
 from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver
@@ -63,7 +63,7 @@ class selectDFTELECOMObserver(CardObserver):
         for card in removedcards:
             print "-Removed: ", toHexString(card.atr)
 
-if __name__ == '__main__':
+try:
     print "Insert or remove a SIM card in the system."
     print "This program will exit in 60 seconds"
     print ""
@@ -77,6 +77,10 @@ if __name__ == '__main__':
     # monitor will poll forever...
     cardmonitor.deleteObserver(selectobserver)
 
+    import sys
     if 'win32' == sys.platform:
         print 'press Enter to continue'
         sys.stdin.read(1)
+
+except:
+    print exc_info()[0], ':', exc_info()[1]
