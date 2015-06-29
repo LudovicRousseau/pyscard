@@ -24,7 +24,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 from smartcard.Exceptions import InvalidReaderException, NoReadersException
-from smartcard.CardConnection import CardConnection
 from smartcard.PassThruCardService import PassThruCardService
 from smartcard.System import readers
 

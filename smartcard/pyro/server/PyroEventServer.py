@@ -92,7 +92,6 @@ class PyroEventServer(Thread):
 
 
 if __name__ == '__main__':
-    import sys
     from smartcard.pyro.server.PyroNameServer import PyroNameServer
     pn = PyroNameServer(sys.argv[1:])
     pn.start()

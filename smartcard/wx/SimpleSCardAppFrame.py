@@ -26,10 +26,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import os.path
 import wx
+
 import smartcard.wx
-import APDUTracerPanel
-import CardAndReaderTreePanel
-import ReaderToolbar
+from smartcard.wx import APDUTracerPanel
+from smartcard.wx import CardAndReaderTreePanel
+from smartcard.wx import ReaderToolbar
 
 import smartcard
 from smartcard.wx.SimpleSCardAppEventObserver import \
