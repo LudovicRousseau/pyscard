@@ -34,7 +34,7 @@ import smartcard.util
 # wxPython GUI modules (http://www.wxpython.org)
 try:
     import wx
-except:
+except ImportError:
     print 'You need wxpython (http://www.wxpython.org) ' + \
           'to run this sample from the source code!'
     print 'press a key to continue'
