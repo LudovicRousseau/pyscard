@@ -42,7 +42,7 @@ if 'winscard' == resourceManager:
     znewcardSecGuid = \
         smartcard.guid.strToGUID('{EB7F69EA-BA20-47d0-8C50-11CFDEB63BBE}')
 
-    try:
+    def main():
         hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
         if hresult != SCARD_S_SUCCESS:
             raise scard.error(
@@ -107,10 +107,7 @@ if 'winscard' == resourceManager:
                     'Failed to release context: ' + \
                     SCardGetErrorMessage(hresult))
             print 'Released context.'
-
-    except error:
-        import sys
-        print sys.exc_info()[0], ':', sys.exc_info()[1]
+    main()
 
 elif 'pcsclite' == resourceManager:
     print 'SCardListInterfaces not supported by pcsc lite'
