@@ -204,9 +204,6 @@ def toHexString(bytes=[], format=0):
 
     from string import rstrip
 
-    for byte in tuple(bytes):
-        pass
-
     if type(bytes) is not list:
         raise TypeError('not a list of bytes')
 
