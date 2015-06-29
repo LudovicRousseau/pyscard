@@ -28,7 +28,6 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-from sys import exc_info
 from threading import Thread, Event, enumerate
 from time import sleep
 import traceback

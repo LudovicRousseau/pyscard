@@ -23,9 +23,6 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-from sys import exc_info
-
-
 class ErrorCheckingChain(object):
     """The error checking chain is a list of response apdu status word
     (sw1, sw2) error check strategies. Each strategy in the chain is
@@ -83,9 +80,8 @@ class ErrorCheckingChain(object):
             # This maintains backward compatibility with the behaviour of
             # pyscard <= 1.6.16.
             # if exception is filtered, return
-            for exception in self.excludes:
-                if exception == exc_info()[0]:
-                    return
+            if type(exc) in self.excludes:
+                return
             # otherwise reraise exception
             raise
 
