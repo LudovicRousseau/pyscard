@@ -48,7 +48,7 @@ class APDUHexValidator(wx.PyValidator):
 
     def Validate(self, win):
         tc = self.GetWindow()
-        val = tc.GetValue()
+        value = tc.GetValue()
 
         if not apduregexp.match(value):
             return False
