@@ -27,6 +27,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 
+from __future__ import print_function
 import unittest
 
 # import local_config for reader/card configuration
@@ -39,7 +40,7 @@ try:
     from local_config import expectedATRs, expectedReaders
     from local_config import expectedReaderGroups, expectedATRinReader
 except ImportError:
-    print 'execute test suite first to generate the local_config.py file'
+    print('execute test suite first to generate the local_config.py file')
     sys.exit()
 
 
