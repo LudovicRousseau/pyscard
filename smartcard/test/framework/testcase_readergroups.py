@@ -50,11 +50,11 @@ if 'winscard' == resourceManager and \
 
             # add pinpad group
             groups = groups + [self.pinpadgroup]
-            self.assertEquals(groups, groupssnapshot + [self.pinpadgroup])
+            self.assertEqual(groups, groupssnapshot + [self.pinpadgroup])
 
             # add pinpad a second time and biometric once
             groups = groups + [self.biogroup, self.pinpadgroup]
-            self.assertEquals(
+            self.assertEqual(
                 groups, groupssnapshot + [self.pinpadgroup, self.biogroup])
 
             # clean-up
@@ -70,11 +70,11 @@ if 'winscard' == resourceManager and \
 
             # add pinpad group
             groups += [self.pinpadgroup]
-            self.assertEquals(groups, groupssnapshot + [self.pinpadgroup])
+            self.assertEqual(groups, groupssnapshot + [self.pinpadgroup])
 
             # add pinpad a second time and biometric once
             groups += [self.biogroup, self.pinpadgroup]
-            self.assertEquals(
+            self.assertEqual(
                 groups, groupssnapshot + [self.pinpadgroup, self.biogroup])
 
             # clean-up
@@ -90,16 +90,16 @@ if 'winscard' == resourceManager and \
 
             # add pinpad group
             zgroups = [self.pinpadgroup] + groups
-            self.assertEquals(groups, groupssnapshot)
-            self.assertEquals(zgroups, groupssnapshot + [self.pinpadgroup])
+            self.assertEqual(groups, groupssnapshot)
+            self.assertEqual(zgroups, groupssnapshot + [self.pinpadgroup])
             self.assert_(isinstance(zgroups, type([])))
             self.assert_(isinstance(groups, type(readergroups())))
 
             # add pinpad a tiwce and biometric once
             zgroups = \
                 [self.pinpadgroup, self.biogroup, self.pinpadgroup] + groups
-            self.assertEquals(groups, groupssnapshot)
-            self.assertEquals(
+            self.assertEqual(groups, groupssnapshot)
+            self.assertEqual(
                 zgroups, groupssnapshot + [self.pinpadgroup, self.biogroup])
             self.assert_(isinstance(zgroups, type([])))
             self.assert_(isinstance(groups, type(readergroups())))
@@ -113,15 +113,15 @@ if 'winscard' == resourceManager and \
 
             # add pinpad group
             groups.append(self.pinpadgroup)
-            self.assertEquals(groups, groupssnapshot + [self.pinpadgroup])
+            self.assertEqual(groups, groupssnapshot + [self.pinpadgroup])
 
             # add pinpad a second time
             groups.append(self.pinpadgroup)
-            self.assertEquals(groups, groupssnapshot + [self.pinpadgroup])
+            self.assertEqual(groups, groupssnapshot + [self.pinpadgroup])
 
             # add biometric once
             groups.append(self.biogroup)
-            self.assertEquals(
+            self.assertEqual(
                 groups, groupssnapshot + [self.pinpadgroup, self.biogroup])
 
             # clean-up
@@ -137,15 +137,15 @@ if 'winscard' == resourceManager and \
 
             # add pinpad group
             groups.insert(0, self.pinpadgroup)
-            self.assertEquals(groups, groupssnapshot + [self.pinpadgroup])
+            self.assertEqual(groups, groupssnapshot + [self.pinpadgroup])
 
             # add pinpad a second time
             groups.insert(1, self.pinpadgroup)
-            self.assertEquals(groups, groupssnapshot + [self.pinpadgroup])
+            self.assertEqual(groups, groupssnapshot + [self.pinpadgroup])
 
             # add biometric once
             groups.insert(1, self.biogroup)
-            self.assertEquals(
+            self.assertEqual(
                 groups, groupssnapshot + [self.pinpadgroup, self.biogroup])
 
             # clean-up

@@ -76,7 +76,7 @@ class testcase_Card(unittest.TestCase):
                 cc.connect()
                 response, sw1, sw2 = cc.transmit(SELECT + DF_TELECOM)
                 expectedSWs = {"9f 1a": 1, "9f 20": 2, "6e 0": 3}
-                self.assertEquals([], response)
+                self.assertEqual([], response)
                 self.assert_(
                     "%x %x" % (sw1, sw2) in expectedSWs or "9f" == "%x" % sw1)
             else:
@@ -95,7 +95,7 @@ class testcase_Card(unittest.TestCase):
                 cc.connect()
                 response, sw1, sw2 = cc.transmit(SELECT + DF_TELECOM)
                 expectedSWs = {"9f 1a": 1, "9f 20": 2, "6e 0": 3}
-                self.assertEquals([], response)
+                self.assertEqual([], response)
                 self.assert_(
                     "%x %x" % (sw1, sw2) in expectedSWs or "9f" == "%x" % sw1)
             else:
@@ -106,14 +106,14 @@ class testcase_Card(unittest.TestCase):
         for reader in readers():
             card = Card(str(reader), expectedATRinReader[str(reader)])
             cardcopy = Card(str(reader), expectedATRinReader[str(reader)])
-            self.assertEquals(True, card == cardcopy)
-            self.assertEquals(True, not card != cardcopy)
+            self.assertEqual(True, card == cardcopy)
+            self.assertEqual(True, not card != cardcopy)
 
         for reader in readers():
             card = Card(str(reader), expectedATRinReader[str(reader)])
             cardcopy = Card(str(reader), [0, 0])
-            self.assertEquals(True, card != cardcopy)
-            self.assertEquals(True, not card == cardcopy)
+            self.assertEqual(True, card != cardcopy)
+            self.assertEqual(True, not card == cardcopy)
 
 
 def suite():

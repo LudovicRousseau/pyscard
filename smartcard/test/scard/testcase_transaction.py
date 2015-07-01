@@ -49,13 +49,13 @@ class testcase_transaction(unittest.TestCase):
 
     def setUp(self):
         hresult, self.hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
-        self.assertEquals(hresult, 0)
+        self.assertEqual(hresult, 0)
         hresult, self.readers = SCardListReaders(self.hcontext, [])
-        self.assertEquals(hresult, 0)
+        self.assertEqual(hresult, 0)
 
     def tearDown(self):
         hresult = SCardReleaseContext(self.hcontext)
-        self.assertEquals(hresult, 0)
+        self.assertEqual(hresult, 0)
 
     def _transaction(self, r):
         if r < len(expectedATRs) and [] != expectedATRs[r]:
@@ -64,23 +64,23 @@ class testcase_transaction(unittest.TestCase):
                 self.readers[r],
                 SCARD_SHARE_SHARED,
                 SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1)
-            self.assertEquals(hresult, 0)
+            self.assertEqual(hresult, 0)
 
             try:
                 hresult = SCardBeginTransaction(hcard)
-                self.assertEquals(hresult, 0)
+                self.assertEqual(hresult, 0)
 
                 hresult, reader, state, protocol, atr = SCardStatus(hcard)
-                self.assertEquals(hresult, 0)
-                self.assertEquals(reader, expectedReaders[r])
-                self.assertEquals(atr, expectedATRs[r])
+                self.assertEqual(hresult, 0)
+                self.assertEqual(reader, expectedReaders[r])
+                self.assertEqual(atr, expectedATRs[r])
 
                 hresult = SCardEndTransaction(hcard, SCARD_LEAVE_CARD)
-                self.assertEquals(hresult, 0)
+                self.assertEqual(hresult, 0)
 
             finally:
                 hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
-                self.assertEquals(hresult, 0)
+                self.assertEqual(hresult, 0)
 
     def test_transaction_reader0(self):
         testcase_transaction._transaction(self, 0)

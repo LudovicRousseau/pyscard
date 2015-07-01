@@ -61,7 +61,7 @@ class printobserver(CardObserver):
     def update(self, observable, actions):
         (addedcards, removedcards) = actions
         foundcards = {}
-        self.testcase.assertEquals(removedcards, [])
+        self.testcase.assertEqual(removedcards, [])
         for card in addedcards:
             foundcards[toHexString(card.atr)] = 1
         for atr in expectedATRs:

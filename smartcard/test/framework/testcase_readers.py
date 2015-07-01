@@ -98,7 +98,7 @@ class testcase_readers(unittest.TestCase):
                 foundreaders[reader] = 1
             for reader in expectedReaders:
                 self.assert_(not reader in foundreaders)
-            self.assertEquals(0, len(foundreaders))
+            self.assertEqual(0, len(foundreaders))
 
     def testcase_readergroups(self):
         foundreadergroups = {}

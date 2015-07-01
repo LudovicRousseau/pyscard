@@ -63,7 +63,7 @@ if 'winscard' == resourceManager:
             groups = PCSCReaderGroups().instance
             newgroup = 'Pinpad$Readers'
             groups = groups + newgroup
-            self.assertEquals(groups, groupssnapshot + [newgroup])
+            self.assertEqual(groups, groupssnapshot + [newgroup])
             groups.remove(newgroup)
 
         def testcase_addlist(self):
@@ -72,7 +72,7 @@ if 'winscard' == resourceManager:
             groups = PCSCReaderGroups().instance
             newgroups = ['Pinpad$Readers', 'Biometric$Readers']
             groups = groups + newgroups
-            self.assertEquals(groups, groupssnapshot + newgroups)
+            self.assertEqual(groups, groupssnapshot + newgroups)
             for group in newgroups:
                 groups.remove(group)
 
@@ -82,7 +82,7 @@ if 'winscard' == resourceManager:
             groups = PCSCReaderGroups().instance
             newgroup = 'Pinpad$Readers'
             groups += newgroup
-            self.assertEquals(groups, groupssnapshot + [newgroup])
+            self.assertEqual(groups, groupssnapshot + [newgroup])
             groups.remove(newgroup)
 
         def testcase_iaddlist(self):
@@ -91,7 +91,7 @@ if 'winscard' == resourceManager:
             groups = PCSCReaderGroups().instance
             newgroups = ['Pinpad$Readers', 'Biometric$Readers']
             groups += newgroups
-            self.assertEquals(groups, groupssnapshot + newgroups)
+            self.assertEqual(groups, groupssnapshot + newgroups)
             for group in newgroups:
                 groups.remove(group)
 
@@ -101,7 +101,7 @@ if 'winscard' == resourceManager:
             groups = PCSCReaderGroups().instance
             newgroup = 'Pinpad$Readers'
             groups.append(newgroup)
-            self.assertEquals(groups, groupssnapshot + [newgroup])
+            self.assertEqual(groups, groupssnapshot + [newgroup])
             groups.remove(newgroup)
 
         def testcase_insert(self):
@@ -110,7 +110,7 @@ if 'winscard' == resourceManager:
             groups = PCSCReaderGroups().instance
             newgroup = 'Pinpad$Readers'
             groups.insert(0, newgroup)
-            self.assertEquals(groups, [newgroup] + groupssnapshot)
+            self.assertEqual(groups, [newgroup] + groupssnapshot)
             groups.remove(newgroup)
 
         def testcase_removereadergroup_pop(self):
@@ -119,9 +119,9 @@ if 'winscard' == resourceManager:
             groups = PCSCReaderGroups().instance
             newgroup = 'Pinpad$Readers'
             groups.insert(0, newgroup)
-            self.assertEquals(groups, [newgroup] + groupssnapshot)
+            self.assertEqual(groups, [newgroup] + groupssnapshot)
             groups.pop(0)
-            self.assertEquals(groups, groupssnapshot)
+            self.assertEqual(groups, groupssnapshot)
 
         def testcase_addreadertogroup(self):
             """Test for adding readers to group"""
@@ -130,12 +130,12 @@ if 'winscard' == resourceManager:
             groups.insert(0, newgroup)
             for r in PCSCReader.readers('SCard$DefaultReaders'):
                 r.addtoreadergroup(newgroup)
-            self.assertEquals(
+            self.assertEqual(
                 PCSCReader.readers(
                     'SCard$DefaultReaders'),
                 PCSCReader.readers(newgroup))
             groups.pop(0)
-            self.assertEquals([], PCSCReader.readers(newgroup))
+            self.assertEqual([], PCSCReader.readers(newgroup))
 
         def testcase_removereaderfromgroup(self):
             """Test for removing readers from group"""
@@ -144,15 +144,15 @@ if 'winscard' == resourceManager:
             groups.insert(0, newgroup)
             for r in PCSCReader.readers('SCard$DefaultReaders'):
                 r.addtoreadergroup(newgroup)
-            self.assertEquals(
+            self.assertEqual(
                 PCSCReader.readers(
                     'SCard$DefaultReaders'),
                 PCSCReader.readers(newgroup))
             for r in PCSCReader.readers('SCard$DefaultReaders'):
                 r.removefromreadergroup(newgroup)
-            self.assertEquals([], PCSCReader.readers(newgroup))
+            self.assertEqual([], PCSCReader.readers(newgroup))
             groups.pop(0)
-            self.assertEquals([], PCSCReader.readers(newgroup))
+            self.assertEqual([], PCSCReader.readers(newgroup))
 
     def suite():
         suite1 = unittest.makeSuite(testcase_readergroups)

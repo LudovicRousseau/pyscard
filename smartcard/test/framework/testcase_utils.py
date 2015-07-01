@@ -38,104 +38,104 @@ class testcase_utils(unittest.TestCase):
 
     def testcase_asciitostring(self):
         """tests ASCIIToString"""
-        self.assertEquals(
+        self.assertEqual(
             toASCIIString(
                 [0x4E, 0x75, 0x6D, 0x62, 0x65, 0x72, 0x20, 0x31, 0x30, 0x31]),
             "Number 101")
 
     def testcase_bytesto338(self):
         """tests toGSM3_38Bytes"""
-        self.assertEquals(
+        self.assertEqual(
             toGSM3_38Bytes("@ùPascal"),
             [0x00, 0x06, 0x50, 0x61, 0x73, 0x63, 0x61, 0x6C])
 
     def testcase_padd(self):
         """tests padd"""
-        self.assertEquals(
+        self.assertEqual(
             [0x3B, 0x65, 0, 0, 0x9C, 0x11, 1, 1, 3, 0xFF,
              0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF],
             padd([0x3B, 0x65, 0, 0, 0x9C, 0x11, 1, 1, 3], 16))
 
-        self.assertEquals([0x3B, 0x65, 0, 0, 0x9C, 0x11, 1, 1, 3],
+        self.assertEqual([0x3B, 0x65, 0, 0, 0x9C, 0x11, 1, 1, 3],
                            padd([0x3B, 0x65, 0, 0, 0x9C, 0x11, 1, 1, 3], 9))
 
-        self.assertEquals([0x3B, 0x65, 0, 0, 0x9C, 0x11, 1, 1, 3],
+        self.assertEqual([0x3B, 0x65, 0, 0, 0x9C, 0x11, 1, 1, 3],
                            padd([0x3B, 0x65, 0, 0, 0x9C, 0x11, 1, 1, 3], 8))
 
-        self.assertEquals([0x3B, 0x65, 0, 0, 0x9C, 0x11, 1, 1, 3, 0xFF],
+        self.assertEqual([0x3B, 0x65, 0, 0, 0x9C, 0x11, 1, 1, 3, 0xFF],
                            padd([0x3B, 0x65, 0, 0, 0x9C, 0x11, 1, 1, 3], 10))
 
     def testcase_toasciibytes(self):
         """tests toASCIIBytes"""
-        self.assertEquals(
+        self.assertEqual(
             [0x4E, 0x75, 0x6D, 0x62, 0x65, 0x72, 0x20, 0x31, 0x30, 0x31],
             toASCIIBytes("Number 101"))
 
-        self.assertEquals(
+        self.assertEqual(
             toASCIIString(toASCIIBytes("Number 101")), "Number 101")
 
     def testcase_tobytestring(self):
         """tests toByteString"""
-        self.assertEquals(
+        self.assertEqual(
             [59, 101, 0, 0, 156, 17, 1, 1, 3],
             toBytes("3B 65 00 00 9C 11 01 01 03"))
-        self.assertEquals(
+        self.assertEqual(
             [59, 101, 0, 0, 156, 17, 1, 1, 3],
             toBytes("3B6500009C11010103"))
-        self.assertEquals(
+        self.assertEqual(
             [59, 101, 0, 0, 156, 17, 1, 1, 3],
             toBytes("3B65 0000 9C11 010103"))
-        self.assertEquals(
+        self.assertEqual(
             [59, 101, 0, 0, 156, 17, 1, 1, 3],
             toBytes("3B65 \t\t0000 \t9C11 \t0101\t03   \t\n"))
 
     def testcase_tohexstring(self):
         """tests toHexString"""
-        self.assertEquals(
+        self.assertEqual(
             "3B 65 00 00 9C 11 01 01 03",
             toHexString([59, 101, 0, 0, 156, 17, 1, 1, 3]))
 
         bytes = [0x3B, 0x65, 0x00, 0x00, 0x9C, 0x11, 0x01, 0x01, 0x03]
-        self.assertEquals(
+        self.assertEqual(
             "3B, 65, 00, 00, 9C, 11, 01, 01, 03",
             toHexString(bytes, COMMA))
-        self.assertEquals("3B6500009C11010103", toHexString(bytes, PACK))
-        self.assertEquals(
+        self.assertEqual("3B6500009C11010103", toHexString(bytes, PACK))
+        self.assertEqual(
             "0x3B 0x65 0x00 0x00 0x9C 0x11 0x01 0x01 0x03",
             toHexString(bytes, HEX))
-        self.assertEquals(
+        self.assertEqual(
             "0x3B, 0x65, 0x00, 0x00, 0x9C, 0x11, 0x01, 0x01, 0x03",
             toHexString(bytes, HEX | COMMA))
-        self.assertEquals(
+        self.assertEqual(
             "0X3B 0X65 0X00 0X00 0X9C 0X11 0X01 0X01 0X03",
             toHexString(bytes, HEX | UPPERCASE))
-        self.assertEquals(
+        self.assertEqual(
             "0X3B, 0X65, 0X00, 0X00, 0X9C, 0X11, 0X01, 0X01, 0X03",
             toHexString(bytes, HEX | UPPERCASE | COMMA))
 
         bytes = [59, 101, 0, 0, 156, 17, 1, 1, 3]
-        self.assertEquals(
+        self.assertEqual(
             "3B, 65, 00, 00, 9C, 11, 01, 01, 03",
             toHexString(bytes, COMMA))
-        self.assertEquals(
+        self.assertEqual(
             "3B6500009C11010103", toHexString(bytes, PACK))
-        self.assertEquals(
+        self.assertEqual(
             "0x3B 0x65 0x00 0x00 0x9C 0x11 0x01 0x01 0x03",
             toHexString(bytes, HEX))
-        self.assertEquals(
+        self.assertEqual(
             "0x3B, 0x65, 0x00, 0x00, 0x9C, 0x11, 0x01, 0x01, 0x03",
             toHexString(bytes, HEX | COMMA))
-        self.assertEquals(
+        self.assertEqual(
             "0X3B 0X65 0X00 0X00 0X9C 0X11 0X01 0X01 0X03",
             toHexString(bytes, HEX | UPPERCASE))
-        self.assertEquals(
+        self.assertEqual(
             "0X3B, 0X65, 0X00, 0X00, 0X9C, 0X11, 0X01, 0X01, 0X03",
             toHexString(bytes, HEX | UPPERCASE | COMMA))
 
     def testcase_tohexstring_empty(self):
         """tests toHexString"""
-        self.assertEquals("", toHexString())
-        self.assertEquals("", toHexString([]))
+        self.assertEqual("", toHexString())
+        self.assertEqual("", toHexString([]))
 
     def testcase_tohexstring_nobytes(self):
         """tests toHexString"""

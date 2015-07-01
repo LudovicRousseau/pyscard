@@ -50,15 +50,15 @@ class testcase_locatecards(unittest.TestCase):
 
     def setUp(self):
         hresult, self.hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
-        self.assertEquals(hresult, 0)
+        self.assertEqual(hresult, 0)
 
     def tearDown(self):
         hresult = SCardReleaseContext(self.hcontext)
-        self.assertEquals(hresult, 0)
+        self.assertEqual(hresult, 0)
 
     def test_locateCards(self):
         hresult, readers = SCardListReaders(self.hcontext, [])
-        self.assertEquals(hresult, 0)
+        self.assertEqual(hresult, 0)
 
         foundReaders = {}
         for reader in readers:
@@ -68,7 +68,7 @@ class testcase_locatecards(unittest.TestCase):
 
         if 'winscard' == resourceManager:
             hresult, cards = SCardListCards(self.hcontext, [], [])
-            self.assertEquals(hresult, 0)
+            self.assertEqual(hresult, 0)
 
             readerstates = []
             for i in range(len(readers)):
@@ -76,7 +76,7 @@ class testcase_locatecards(unittest.TestCase):
 
             hresult, newstates = SCardLocateCards(
                 self.hcontext, cards, readerstates)
-            self.assertEquals(hresult, 0)
+            self.assertEqual(hresult, 0)
 
             if -1 == platform.platform().find('Windows-7'):
                 dictexpectedreaders = {}
@@ -85,15 +85,15 @@ class testcase_locatecards(unittest.TestCase):
                 for reader, eventstate, atr in newstates:
                     if reader in dictexpectedreaders and \
                         [] != expectedATRinReader[reader]:
-                        self.assertEquals(expectedATRinReader[reader], atr)
+                        self.assertEqual(expectedATRinReader[reader], atr)
                         self.assert_(eventstate & SCARD_STATE_PRESENT)
                         self.assert_(eventstate & SCARD_STATE_CHANGED)
 
                 # 10ms delay, so that time-out always occurs
                 hresult, newstates = SCardGetStatusChange(
                     self.hcontext, 10, newstates)
-                self.assertEquals(hresult, SCARD_E_TIMEOUT)
-                self.assertEquals(
+                self.assertEqual(hresult, SCARD_E_TIMEOUT)
+                self.assertEqual(
                     SCardGetErrorMessage(hresult),
                     'The user-specified timeout value has expired. ')
 
@@ -104,7 +104,7 @@ class testcase_locatecards(unittest.TestCase):
 
             hresult, newstates = SCardGetStatusChange(
                 self.hcontext, 0, readerstates)
-            self.assertEquals(hresult, 0)
+            self.assertEqual(hresult, 0)
 
             dictexpectedreaders = {}
             for reader in expectedReaders:
@@ -112,7 +112,7 @@ class testcase_locatecards(unittest.TestCase):
             for reader, eventstate, atr in newstates:
                 if reader in dictexpectedreaders and \
                     [] != expectedATRinReader[reader]:
-                    self.assertEquals(expectedATRinReader[reader], atr)
+                    self.assertEqual(expectedATRinReader[reader], atr)
                     self.assert_(eventstate & SCARD_STATE_PRESENT)
                     self.assert_(eventstate & SCARD_STATE_CHANGED)
 

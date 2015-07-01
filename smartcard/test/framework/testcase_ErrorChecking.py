@@ -288,7 +288,7 @@ class testcase_ErrorChecking(unittest.TestCase):
             [],
             0x69,
             0x85)
-        self.assertEquals(
+        self.assertEqual(
             str(e),
             "'Status word exception: checking error - " + \
              "Conditions of use not satisfied!'")
@@ -299,7 +299,7 @@ class testcase_ErrorChecking(unittest.TestCase):
             [],
             0x6b,
             0x00)
-        self.assertEquals(
+        self.assertEqual(
             str(e), "'Status word exception: checking error - " + \
             "Incorrect parameters P1-P2!'")
 

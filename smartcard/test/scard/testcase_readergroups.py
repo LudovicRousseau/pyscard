@@ -52,25 +52,25 @@ class testcase_readergroups(unittest.TestCase):
 
     def setUp(self):
         hresult, self.hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
-        self.assertEquals(hresult, 0)
+        self.assertEqual(hresult, 0)
 
     def tearDown(self):
         hresult = SCardReleaseContext(self.hcontext)
-        self.assertEquals(hresult, 0)
+        self.assertEqual(hresult, 0)
 
     def test_listReaders(self):
 
         # list current readers and compare with expected list
         hresult, readers = SCardListReaders(self.hcontext, [])
-        self.assertEquals(hresult, 0)
+        self.assertEqual(hresult, 0)
         for i in range(len(expectedReaders)):
-            self.assertEquals(readers[i], expectedReaders[i])
+            self.assertEqual(readers[i], expectedReaders[i])
 
         # list current reader groups and compare with expected list
         hresult, readerGroups = SCardListReaderGroups(self.hcontext)
-        self.assertEquals(hresult, 0)
+        self.assertEqual(hresult, 0)
         for i in range(len(expectedGroups)):
-            self.assertEquals(readerGroups[i], expectedGroups[i])
+            self.assertEqual(readerGroups[i], expectedGroups[i])
 
         if 'winscard' == resourceManager:
             # add a new group
@@ -78,49 +78,49 @@ class testcase_readergroups(unittest.TestCase):
             expectedGroups.append(newgroup)
 
             hresult = SCardIntroduceReaderGroup(self.hcontext, newgroup)
-            self.assertEquals(hresult, 0)
+            self.assertEqual(hresult, 0)
 
             dummyreader = readers[0] + ' alias'
             hresult = SCardIntroduceReader(
                 self.hcontext, dummyreader, readers[0])
-            self.assertEquals(hresult, 0)
+            self.assertEqual(hresult, 0)
 
             hresult = SCardAddReaderToGroup(
                 self.hcontext, dummyreader, newgroup)
-            self.assertEquals(hresult, 0)
+            self.assertEqual(hresult, 0)
 
             hresult, readerGroups = SCardListReaderGroups(self.hcontext)
-            self.assertEquals(hresult, 0)
+            self.assertEqual(hresult, 0)
             for i in range(len(expectedGroups)):
-                self.assertEquals(readerGroups[i], expectedGroups[i])
+                self.assertEqual(readerGroups[i], expectedGroups[i])
 
             # list readers in new group
             hresult, newreaders = SCardListReaders(self.hcontext, [newgroup])
-            self.assertEquals(hresult, 0)
-            self.assertEquals(newreaders[0], dummyreader)
+            self.assertEqual(hresult, 0)
+            self.assertEqual(newreaders[0], dummyreader)
 
             # remove reader from new group
             hresult = SCardRemoveReaderFromGroup(
                 self.hcontext, dummyreader, newgroup)
-            self.assertEquals(hresult, 0)
+            self.assertEqual(hresult, 0)
 
             hresult, readerGroups = SCardListReaderGroups(self.hcontext)
-            self.assertEquals(hresult, 0)
+            self.assertEqual(hresult, 0)
 
             expectedGroups.remove(newgroup)
             for i in range(len(expectedGroups)):
-                self.assertEquals(readerGroups[i], expectedGroups[i])
+                self.assertEqual(readerGroups[i], expectedGroups[i])
 
             hresult = SCardForgetReaderGroup(self.hcontext, newgroup)
-            self.assertEquals(hresult, 0)
+            self.assertEqual(hresult, 0)
 
             hresult, readerGroups = SCardListReaderGroups(self.hcontext)
-            self.assertEquals(hresult, 0)
+            self.assertEqual(hresult, 0)
             for i in range(len(expectedGroups)):
-                self.assertEquals(readerGroups[i], expectedGroups[i])
+                self.assertEqual(readerGroups[i], expectedGroups[i])
 
             hresult = SCardForgetReader(self.hcontext, dummyreader)
-            self.assertEquals(hresult, 0)
+            self.assertEqual(hresult, 0)
 
 
 def suite():

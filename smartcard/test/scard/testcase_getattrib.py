@@ -51,13 +51,13 @@ class testcase_getAttrib(unittest.TestCase):
 
     def setUp(self):
         hresult, self.hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
-        self.assertEquals(hresult, 0)
+        self.assertEqual(hresult, 0)
         hresult, self.readers = SCardListReaders(self.hcontext, [])
-        self.assertEquals(hresult, 0)
+        self.assertEqual(hresult, 0)
 
     def tearDown(self):
         hresult = SCardReleaseContext(self.hcontext)
-        self.assertEquals(hresult, 0)
+        self.assertEqual(hresult, 0)
 
     def _getAttrib(self, r):
         if r < len(expectedATRs) and [] != expectedATRs[r]:
@@ -66,33 +66,33 @@ class testcase_getAttrib(unittest.TestCase):
                 self.readers[r],
                 SCARD_SHARE_SHARED,
                 SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1)
-            self.assertEquals(hresult, 0)
+            self.assertEqual(hresult, 0)
 
             try:
                 hresult, reader, state, protocol, atr = SCardStatus(hcard)
-                self.assertEquals(hresult, 0)
-                self.assertEquals(reader, expectedReaders[r])
-                self.assertEquals(atr, expectedATRs[r])
+                self.assertEqual(hresult, 0)
+                self.assertEqual(reader, expectedReaders[r])
+                self.assertEqual(atr, expectedATRs[r])
 
                 if 'SCARD_ATTR_ATR_STRING' in scard.__dict__:
                     hresult, attrib = SCardGetAttrib(
                         hcard, SCARD_ATTR_ATR_STRING)
-                    self.assertEquals(hresult, 0)
-                    self.assertEquals(expectedATRs[r], attrib)
+                    self.assertEqual(hresult, 0)
+                    self.assertEqual(expectedATRs[r], attrib)
 
                 if 'winscard' == resourceManager:
                     hresult, attrib = SCardGetAttrib(
                         hcard, SCARD_ATTR_DEVICE_SYSTEM_NAME_A)
-                    self.assertEquals(hresult, 0)
+                    self.assertEqual(hresult, 0)
                     trimmedAttrib = attrib[:-1]
-                    self.assertEquals(
+                    self.assertEqual(
                         expectedReaders[r],
                         apply(struct.pack, ['<' + 'B' * len(trimmedAttrib)] + \
                         trimmedAttrib))
 
             finally:
                 hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
-                self.assertEquals(hresult, 0)
+                self.assertEqual(hresult, 0)
 
     def test_getATR0(self):
         testcase_getAttrib._getAttrib(self, 0)

@@ -175,9 +175,9 @@ class testcase_readermonitorstress(unittest.TestCase):
         time.sleep(2 * period)
 
         for observer in observers:
-            self.assertEquals(
+            self.assertEqual(
                 observer.insertedreaderstats, insertedreaderstats)
-            self.assertEquals(
+            self.assertEqual(
                 observer.removedreaderstats, removedreaderstats)
 
 

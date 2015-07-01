@@ -61,8 +61,8 @@ class testcase_CardType(unittest.TestCase):
             if [] != expectedATRinReader[str(reader)]:
                 connection = reader.createConnection()
                 connection.connect()
-                self.assertEquals(True, ct.matches(connection.getATR()))
-                self.assertEquals(
+                self.assertEqual(True, ct.matches(connection.getATR()))
+                self.assertEqual(
                     True, ct.matches(connection.getATR(), reader))
                 connection.disconnect()
 
@@ -74,8 +74,8 @@ class testcase_CardType(unittest.TestCase):
                 ct = ATRCardType(expectedATRinReader[str(reader)])
                 connection = reader.createConnection()
                 connection.connect()
-                self.assertEquals(True, ct.matches(connection.getATR()))
-                self.assertEquals(
+                self.assertEqual(True, ct.matches(connection.getATR()))
+                self.assertEqual(
                     True, ct.matches(connection.getATR(), reader))
                 connection.disconnect()
 
@@ -90,8 +90,8 @@ class testcase_CardType(unittest.TestCase):
                 ct = ATRCardType(atr)
                 connection = reader.createConnection()
                 connection.connect()
-                self.assertEquals(False, ct.matches(connection.getATR()))
-                self.assertEquals(
+                self.assertEqual(False, ct.matches(connection.getATR()))
+                self.assertEqual(
                     False, ct.matches(connection.getATR(), reader))
                 connection.disconnect()
 
@@ -110,8 +110,8 @@ class testcase_CardType(unittest.TestCase):
                 connection.disconnect()
                 # change a bit in the last byte
                 atr[-1] = atr[-1] ^ 0xFF
-                self.assertEquals(True, ct.matches(atr))
-                self.assertEquals(True, ct.matches(atr, reader))
+                self.assertEqual(True, ct.matches(atr))
+                self.assertEqual(True, ct.matches(atr, reader))
 
     def testcase_ATRCardTypeWithMaskMismatch(self):
         """Test smartcard.ATRCardType with mask and mismatch."""
@@ -128,8 +128,8 @@ class testcase_CardType(unittest.TestCase):
                 connection.disconnect()
                 # change a bit in the :-2 byte
                 atr[-2] = atr[-2] ^ 0xFF
-                self.assertEquals(False, ct.matches(atr))
-                self.assertEquals(False, ct.matches(atr, reader))
+                self.assertEqual(False, ct.matches(atr))
+                self.assertEqual(False, ct.matches(atr, reader))
 
 
 def suite():

@@ -41,7 +41,7 @@ if 'winscard' == resourceManager:
         # a dummy card interface
         def setUp(self):
             hresult, self.hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
-            self.assertEquals(hresult, 0)
+            self.assertEqual(hresult, 0)
             self.dummycardname = 'dummycard'
             self.dummycardATR = \
                 [0x3B, 0x75, 0x94, 0x00, 0x00, 0x62, 0x02, 0x02, 0x01, 0x01]
@@ -60,7 +60,7 @@ if 'winscard' == resourceManager:
         def tearDown(self):
             testcase_listcards.__forgetinterface(self)
             hresult = SCardReleaseContext(self.hcontext)
-            self.assertEquals(hresult, 0)
+            self.assertEqual(hresult, 0)
 
         # introduce a dummy card interface
         # card ATR same as e-gate
@@ -75,12 +75,12 @@ if 'winscard' == resourceManager:
                         dummycardGUIDS,
                         self.dummycardATR,
                         self.dummycardMask)
-            self.assertEquals(hresult, 0)
+            self.assertEqual(hresult, 0)
 
         # forget dummy card interface
         def __forgetinterface(self):
             hresult = SCardForgetCardType(self.hcontext, self.dummycardname)
-            self.assertEquals(hresult, 0)
+            self.assertEqual(hresult, 0)
 
         # locate a known card
         # Cryptoflex 8k v2 is present in standard Windows 2000
@@ -90,41 +90,41 @@ if 'winscard' == resourceManager:
                   [0x3B, 0x75, 0x94, 0x00, 0x00, 0x62, 0x02, 0x02, 0x01, 0x01]
                 dmyName = ['dummycard']
                 hresult, card = SCardListCards(self.hcontext, dmyATR, [])
-                self.assertEquals(hresult, 0)
-                self.assertEquals(card, dmyName)
+                self.assertEqual(hresult, 0)
+                self.assertEqual(card, dmyName)
             elif -1 != platform.platform().find('Windows-Vista-6.0'):
                 axaltodotnetATR = \
                   [ 0x3B, 0x16, 0x96, 0x41, 0x73, 0x74, 0x72, 0x69, 0x64 ]
                 axaltodotnetName = ['Axalto Cryptoflex .NET']
                 hresult, card = SCardListCards(self.hcontext, axaltodotnetATR, [])
-                self.assertEquals(hresult, 0)
-                self.assertEquals(card, axaltodotnetName)
+                self.assertEqual(hresult, 0)
+                self.assertEqual(card, axaltodotnetName)
             else:
                 slbCryptoFlex8kv2ATR = \
                   [0x3B, 0x95, 0x15, 0x40, 0x00, 0x68, 0x01, 0x02, 0x00, 0x00]
                 slbCryptoFlex8kv2Name = ['Schlumberger Cryptoflex 8K v2']
                 hresult, card = SCardListCards(
                         self.hcontext, slbCryptoFlex8kv2ATR, [])
-                self.assertEquals(hresult, 0)
-                self.assertEquals(card, slbCryptoFlex8kv2Name)
+                self.assertEqual(hresult, 0)
+                self.assertEqual(card, slbCryptoFlex8kv2Name)
 
         # locate dummy card by interface
         def test_listdummycardbyguid(self):
             guidstolocate = self.dummycardguid2 + self.dummycardguid1
             locatedcardnames = [self.dummycardname]
             hresult, card = SCardListCards(self.hcontext, [], guidstolocate)
-            self.assertEquals(hresult, 0)
-            self.assertEquals(card, locatedcardnames)
+            self.assertEqual(hresult, 0)
+            self.assertEqual(card, locatedcardnames)
 
         # list our dummy card interfaces and check
         # that they match the introduced interfaces
         def test_listdummycardinterfaces(self):
             hresult, interfaces = SCardListInterfaces(
                 self.hcontext, self.dummycardname)
-            self.assertEquals(hresult, 0)
-            self.assertEquals(2, len(interfaces))
-            self.assertEquals(self.dummycardguid1, interfaces[0])
-            self.assertEquals(self.dummycardguid2, interfaces[1])
+            self.assertEqual(hresult, 0)
+            self.assertEqual(2, len(interfaces))
+            self.assertEqual(self.dummycardguid1, interfaces[0])
+            self.assertEqual(self.dummycardguid2, interfaces[1])
 
         # locate all cards and interfaces in the system
         def test_listallcards(self):
@@ -146,7 +146,7 @@ if 'winscard' == resourceManager:
                     'Schlumberger Cryptoflex 8K',
                     'Schlumberger Cryptoflex 8K v2']
             hresult, cards = SCardListCards(self.hcontext, [], [])
-            self.assertEquals(hresult, 0)
+            self.assertEqual(hresult, 0)
             foundCards = {}
             for i in range(len(cards)):
                 foundCards[cards[i]] = 1
@@ -173,11 +173,11 @@ if 'winscard' == resourceManager:
                 hresult, providername = SCardGetCardTypeProviderName(
                     self.hcontext, cards[i], SCARD_PROVIDER_PRIMARY)
                 if cards[i] in expectedPrimaryProviderResult:
-                    self.assertEquals(
+                    self.assertEqual(
                         hresult,
                         expectedPrimaryProviderResult[cards[i]][0])
                     if hresult == 0:
-                        self.assertEquals(
+                        self.assertEqual(
                             providername,
                             smartcard.guid.GUIDToStr(
                                 expectedPrimaryProviderResult[cards[i]][1]))
@@ -204,9 +204,9 @@ if 'winscard' == resourceManager:
                 hresult, providername = SCardGetCardTypeProviderName(
                     self.hcontext, cards[i], SCARD_PROVIDER_CSP)
                 if cards[i] in expectedProviderCSPResult:
-                    self.assertEquals(
+                    self.assertEqual(
                         hresult, expectedProviderCSPResult[cards[i]][0])
-                    self.assertEquals(
+                    self.assertEqual(
                         providername, expectedProviderCSPResult[cards[i]][1])
 
     def suite():

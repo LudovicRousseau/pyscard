@@ -65,8 +65,8 @@ class testcase_CardRequest(unittest.TestCase):
                 cr = CardRequest(timeout=10, cardType=ct)
                 cs = cr.waitforcard()
                 cs.connection.connect()
-                self.assertEquals(atr, cs.connection.getATR())
-                self.assertEquals(
+                self.assertEqual(atr, cs.connection.getATR())
+                self.assertEqual(
                     cs.connection.getReader(),
                     expectedReaderForATR[toHexString(atr)])
                 cs.connection.disconnect()
@@ -81,8 +81,8 @@ class testcase_CardRequest(unittest.TestCase):
                 cr = CardRequest(timeout=10.6, readers=[reader], cardType=ct)
                 cs = cr.waitforcard()
                 cs.connection.connect()
-                self.assertEquals(atr, cs.connection.getATR())
-                self.assertEquals(
+                self.assertEqual(atr, cs.connection.getATR())
+                self.assertEqual(
                     cs.connection.getReader(),
                     expectedReaderForATR[toHexString(atr)])
 
@@ -119,11 +119,11 @@ class testcase_CardRequest(unittest.TestCase):
                     cardServiceClass=cardservice)
                 cs = cr.waitforcard()
                 cs.connection.connect()
-                self.assertEquals(
+                self.assertEqual(
                     cs.__class__,
                     smartcard.PassThruCardService.PassThruCardService)
-                self.assertEquals(atr, cs.connection.getATR())
-                self.assertEquals(
+                self.assertEqual(atr, cs.connection.getATR())
+                self.assertEqual(
                     cs.connection.getReader(),
                     expectedReaderForATR[toHexString(atr)])
 
