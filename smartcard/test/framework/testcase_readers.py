@@ -53,42 +53,42 @@ class testcase_readers(unittest.TestCase):
     """Test smartcard framework readers factory methods"""
 
     def testcase_enoughreaders(self):
-        self.assert_(len(readers()) > 1)
+        self.assertTrue(len(readers()) > 1)
 
     def testcase_readers(self):
         foundreaders = {}
         for reader in readers():
             foundreaders[str(reader)] = 1
         for reader in expectedReaders:
-            self.assert_(reader in foundreaders)
+            self.assertTrue(reader in foundreaders)
 
     def testcase_hashreaders(self):
         foundreaders = {}
         for reader in readers():
             foundreaders[reader] = 1
         for reader in list(foundreaders.keys()):
-            self.assert_(reader in readers())
+            self.assertTrue(reader in readers())
 
     def testcase_legacyreaders(self):
         foundreaders = {}
         for reader in listReaders():
             foundreaders[reader] = 1
         for reader in expectedReaders:
-            self.assert_(reader in foundreaders)
+            self.assertTrue(reader in foundreaders)
 
     def testcase_readers_in_readergroup(self):
         foundreaders = {}
         for reader in readers(['SCard$DefaultReaders']):
             foundreaders[str(reader)] = 1
         for reader in expectedReaders:
-            self.assert_(reader in foundreaders)
+            self.assertTrue(reader in foundreaders)
 
     def testcase_readers_in_readergroup_empty(self):
         foundreaders = {}
         for reader in readers([]):
             foundreaders[str(reader)] = 1
         for reader in expectedReaders:
-            self.assert_(reader in foundreaders)
+            self.assertTrue(reader in foundreaders)
 
     if 'winscard' == resourceManager:
 
@@ -97,7 +97,7 @@ class testcase_readers(unittest.TestCase):
             for reader in readers(['dummy$group']):
                 foundreaders[reader] = 1
             for reader in expectedReaders:
-                self.assert_(not reader in foundreaders)
+                self.assertTrue(not reader in foundreaders)
             self.assertEqual(0, len(foundreaders))
 
     def testcase_readergroups(self):
@@ -105,7 +105,7 @@ class testcase_readers(unittest.TestCase):
         for readergroup in readergroups():
             foundreadergroups[readergroup] = 1
         for readergroup in expectedReaderGroups:
-            self.assert_(readergroup in foundreadergroups)
+            self.assertTrue(readergroup in foundreadergroups)
 
 
 def suite():

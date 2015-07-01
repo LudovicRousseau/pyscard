@@ -151,7 +151,7 @@ if 'winscard' == resourceManager:
             for i in range(len(cards)):
                 foundCards[cards[i]] = 1
             for i in expectedCards:
-                self.assert_(i in foundCards)
+                self.assertTrue(i in foundCards)
 
             # dummycard has a primary provider,
             # other cards have no primary provider

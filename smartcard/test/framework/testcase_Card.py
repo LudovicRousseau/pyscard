@@ -61,7 +61,7 @@ class testcase_Card(unittest.TestCase):
             mydict[card] = reader
 
         for card in list(mydict.keys()):
-            self.assert_(str(card.reader) in expectedReaders)
+            self.assertTrue(str(card.reader) in expectedReaders)
 
     def testcase_Card_FromReaders(self):
         """Create a Card from Readers and test that the response
@@ -77,7 +77,7 @@ class testcase_Card(unittest.TestCase):
                 response, sw1, sw2 = cc.transmit(SELECT + DF_TELECOM)
                 expectedSWs = {"9f 1a": 1, "9f 20": 2, "6e 0": 3}
                 self.assertEqual([], response)
-                self.assert_(
+                self.assertTrue(
                     "%x %x" % (sw1, sw2) in expectedSWs or "9f" == "%x" % sw1)
             else:
                 self.assertRaises(NoCardException, cc.connect)
@@ -96,7 +96,7 @@ class testcase_Card(unittest.TestCase):
                 response, sw1, sw2 = cc.transmit(SELECT + DF_TELECOM)
                 expectedSWs = {"9f 1a": 1, "9f 20": 2, "6e 0": 3}
                 self.assertEqual([], response)
-                self.assert_(
+                self.assertTrue(
                     "%x %x" % (sw1, sw2) in expectedSWs or "9f" == "%x" % sw1)
             else:
                 self.assertRaises(NoCardException, cc.connect)

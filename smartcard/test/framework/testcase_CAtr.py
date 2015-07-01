@@ -44,10 +44,10 @@ class testcase_CAtr(unittest.TestCase):
             0x29, 0x02, 0x01, 0x01, 0x81, 0xCD]
         self.assertEqual(a.getHistoricalBytes(), historicalbytes)
         self.assertEqual(a.getChecksum(), 0xB9)
-        self.assert_(a.checksumOK)
-        self.assert_(a.isT0Supported())
-        self.assert_(not a.isT1Supported())
-        self.assert_(a.isT15Supported())
+        self.assertTrue(a.checksumOK)
+        self.assertTrue(a.isT0Supported())
+        self.assertTrue(not a.isT1Supported())
+        self.assertTrue(a.isT15Supported())
 
     def testcase_ATR2(self):
         """Palmera Protect V2."""
@@ -55,9 +55,9 @@ class testcase_CAtr(unittest.TestCase):
         historicalbytes = [0x9C, 0x02, 0x02, 0x01, 0x02]
         self.assertEqual(a.getHistoricalBytes(), historicalbytes)
         self.assertEqual(a.getChecksum(), None)
-        self.assert_(a.isT0Supported())
-        self.assert_(not a.isT1Supported())
-        self.assert_(not a.isT15Supported())
+        self.assertTrue(a.isT0Supported())
+        self.assertTrue(not a.isT1Supported())
+        self.assertTrue(not a.isT15Supported())
 
     def testcase_ATR3(self):
         """Simera 3.13."""
@@ -65,9 +65,9 @@ class testcase_CAtr(unittest.TestCase):
         historicalbytes = [0x20, 0x02, 0x01, 0x00, 0x80, 0x0D]
         self.assertEqual(a.getHistoricalBytes(), historicalbytes)
         self.assertEqual(a.getChecksum(), None)
-        self.assert_(a.isT0Supported())
-        self.assert_(not a.isT1Supported())
-        self.assert_(not a.isT15Supported())
+        self.assertTrue(a.isT0Supported())
+        self.assertTrue(not a.isT1Supported())
+        self.assertTrue(not a.isT15Supported())
 
     def testcase_ATR4(self):
         """SIMRock'n Tree"""
@@ -76,9 +76,9 @@ class testcase_CAtr(unittest.TestCase):
         historicalbytes = [0x82, 0x30, 0x00, 0x13, 0x6C, 0x9F, 0x22]
         self.assertEqual(a.getHistoricalBytes(), historicalbytes)
         self.assertEqual(a.getChecksum(), None)
-        self.assert_(a.isT0Supported())
-        self.assert_(not a.isT1Supported())
-        self.assert_(not a.isT15Supported())
+        self.assertTrue(a.isT0Supported())
+        self.assertTrue(not a.isT1Supported())
+        self.assertTrue(not a.isT15Supported())
 
     def testcase_ATR5(self):
         """Demo Vitale online IGEA340"""
@@ -86,9 +86,9 @@ class testcase_CAtr(unittest.TestCase):
         historicalbytes = [0x52, 0x09, 0x6A, 0x90, 0x00]
         self.assertEqual(a.getHistoricalBytes(), historicalbytes)
         self.assertEqual(a.getChecksum(), None)
-        self.assert_(a.isT0Supported())
-        self.assert_(not a.isT1Supported())
-        self.assert_(not a.isT15Supported())
+        self.assertTrue(a.isT0Supported())
+        self.assertTrue(not a.isT1Supported())
+        self.assertTrue(not a.isT15Supported())
 
     def testcase_ATR6(self):
         """Simagine 2002"""
@@ -104,15 +104,15 @@ class testcase_CAtr(unittest.TestCase):
         historicalbytes = [0x9C, 0x10, 0x01, 0x00, 0x80]
         self.assertEqual(a.getHistoricalBytes(), historicalbytes)
         self.assertEqual(a.getChecksum(), 0x0D)
-        self.assert_(not a.isT0Supported())
-        self.assert_(a.isT1Supported())
-        self.assert_(not a.isT15Supported())
-        self.assert_(a.checksumOK)
-        self.assert_(a.getTB1() == 0x00)
-        self.assert_(a.getTC1() == 0x00)
-        self.assert_(a.getTD1() == 0x81)
-        self.assert_(a.TD[2 - 1] == 0x21)  # TD2
-        self.assert_(a.TB[3 - 1] == 0x45)  # TB3
+        self.assertTrue(not a.isT0Supported())
+        self.assertTrue(a.isT1Supported())
+        self.assertTrue(not a.isT15Supported())
+        self.assertTrue(a.checksumOK)
+        self.assertTrue(a.getTB1() == 0x00)
+        self.assertTrue(a.getTC1() == 0x00)
+        self.assertTrue(a.getTD1() == 0x81)
+        self.assertTrue(a.TD[2 - 1] == 0x21)  # TD2
+        self.assertTrue(a.TB[3 - 1] == 0x45)  # TB3
 
 
 def suite():

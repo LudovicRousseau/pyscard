@@ -66,7 +66,7 @@ class testcase_CardConnection(unittest.TestCase):
                 response, sw1, sw2 = cc.transmit(SELECT + DF_TELECOM)
                 expectedSWs = {"9f 1a": 1, "6e 0": 2, "9f 20": 3, "9f 22": 4}
                 self.assertEqual([], response)
-                self.assert_(
+                self.assertTrue(
                     "%x %x" % (sw1, sw2) in expectedSWs or "9f" == "%x" % sw1)
             else:
                 self.assertRaises(NoCardException, cc.connect)
@@ -84,7 +84,7 @@ class testcase_CardConnection(unittest.TestCase):
                 response, sw1, sw2 = cc.transmit(SELECT + DF_TELECOM)
                 expectedSWs = {"9f 1a": 1, "6e 0": 2, "9f 20": 3, "9f 22": 4}
                 self.assertEqual([], response)
-                self.assert_(
+                self.assertTrue(
                     "%x %x" % (sw1, sw2) in expectedSWs or "9f" == "%x" % sw1)
             else:
                 self.assertRaises(NoCardException, cc.connect)
@@ -136,7 +136,7 @@ class testcase_CardConnection(unittest.TestCase):
                 response, sw1, sw2 = cc.transmit(SELECT + DF_TELECOM)
                 expectedSWs = {"9f 1a": 1, "6e 0": 2, "9f 20": 3, "9f 22": 4}
                 self.assertEqual([], response)
-                self.assert_(
+                self.assertTrue(
                     "%x %x" % (sw1, sw2) in expectedSWs or "9f" == "%x" % sw1)
             else:
                 self.assertRaises(NoCardException, cc.connect)
@@ -155,7 +155,7 @@ class testcase_CardConnection(unittest.TestCase):
                     SELECT + DF_TELECOM, CardConnection.T0_protocol)
                 expectedSWs = {"9f 1a": 1, "6e 0": 2, "9f 20": 3, "9f 22": 4}
                 self.assertEqual([], response)
-                self.assert_(
+                self.assertTrue(
                     "%x %x" % (sw1, sw2) in expectedSWs or "9f" == "%x" % sw1)
             else:
                 self.assertRaises(NoCardException, cc.connect)

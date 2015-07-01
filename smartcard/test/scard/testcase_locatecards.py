@@ -64,7 +64,7 @@ class testcase_locatecards(unittest.TestCase):
         for reader in readers:
             foundReaders[reader] = 1
         for reader in expectedReaders:
-            self.assert_(reader in foundReaders)
+            self.assertTrue(reader in foundReaders)
 
         if 'winscard' == resourceManager:
             hresult, cards = SCardListCards(self.hcontext, [], [])
@@ -86,8 +86,8 @@ class testcase_locatecards(unittest.TestCase):
                     if reader in dictexpectedreaders and \
                         [] != expectedATRinReader[reader]:
                         self.assertEqual(expectedATRinReader[reader], atr)
-                        self.assert_(eventstate & SCARD_STATE_PRESENT)
-                        self.assert_(eventstate & SCARD_STATE_CHANGED)
+                        self.assertTrue(eventstate & SCARD_STATE_PRESENT)
+                        self.assertTrue(eventstate & SCARD_STATE_CHANGED)
 
                 # 10ms delay, so that time-out always occurs
                 hresult, newstates = SCardGetStatusChange(
@@ -113,8 +113,8 @@ class testcase_locatecards(unittest.TestCase):
                 if reader in dictexpectedreaders and \
                     [] != expectedATRinReader[reader]:
                     self.assertEqual(expectedATRinReader[reader], atr)
-                    self.assert_(eventstate & SCARD_STATE_PRESENT)
-                    self.assert_(eventstate & SCARD_STATE_CHANGED)
+                    self.assertTrue(eventstate & SCARD_STATE_PRESENT)
+                    self.assertTrue(eventstate & SCARD_STATE_CHANGED)
 
 
 def suite():

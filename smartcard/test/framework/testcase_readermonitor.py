@@ -65,7 +65,7 @@ class printobserver(ReaderObserver):
             foundreaders[str(reader)] = 1
         if {} != foundreaders:
             for reader in expectedReaders:
-                self.testcase.assert_(reader in foundreaders)
+                self.testcase.assertTrue(reader in foundreaders)
 
 
 class testthread(threading.Thread):
