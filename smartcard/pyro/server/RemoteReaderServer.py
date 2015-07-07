@@ -28,16 +28,12 @@ from __future__ import print_function
 try:
     import Pyro.core
     import Pyro.naming
-except:
+except ImportError:
     print('You need pyro (python remote objects) ' + \
           'at http://www.xs4all.nl/~irmen/pyro3/')
     import sys
     sys.exit()
 
-import signal
-import time
-
-import smartcard.System
 from smartcard.reader.Reader import Reader
 from smartcard.ReaderMonitoring import ReaderMonitor, ReaderObserver
 from smartcard.pyro.server.RemoteCardConnection import RemoteCardConnection

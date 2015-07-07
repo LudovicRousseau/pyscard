@@ -22,7 +22,6 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 from __future__ import print_function
-from smartcard.CardConnection import CardConnection
 from smartcard.CardConnectionDecorator import CardConnectionDecorator
 from smartcard.Exceptions import CardConnectionException
 from smartcard.scard import SCardConnect, SCardDisconnect

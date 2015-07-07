@@ -26,7 +26,6 @@ from __future__ import print_function
 from smartcard.CardConnection import CardConnection
 from smartcard.Exceptions import (CardConnectionException,
     NoCardException, SmartcardException)
-from smartcard.Observer import Observable
 
 from smartcard.scard import *
 
