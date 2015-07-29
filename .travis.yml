@@ -10,7 +10,11 @@ before_install:
     - sudo apt-get install -y libpcsclite-dev swig
 
 install:
-    - pip install wheel
+    - pip install -r dev-requirements.txt
+    - pip install .
 
 script:
-    - python setup.py bdist_wheel
+    - coverage run setup.py test
+
+after_success:
+    - coveralls
