@@ -106,44 +106,44 @@ def toBytes(bytestring):
 
 """GSM3.38 character conversion table."""
 __dic_GSM_3_38__ = {
-    '@': 0x00,             # @ At symbol
-    '£': 0x01,             # £ Britain pound symbol
-    '$': 0x02,             # $ Dollar symbol
-    chr(0xA5): 0x03,       # ¥ Yen symbol
-    'è': 0x04,             # è e accent grave
-    'é': 0x05,             # é e accent aigu
-    'ù': 0x06,             # ù u accent grave
-    chr(0xEC): 0x07,       # ì i accent grave
-    chr(0xF2): 0x08,       # ò o accent grave
-    chr(0xC7): 0x09,       # Ç C majuscule cedille
-    chr(0x0A): 0x0A,       # LF Line Feed
-    chr(0xD8): 0x0B,       # Ø O majuscule barré
-    chr(0xF8): 0x0C,       # ø o minuscule barré
-    chr(0x0D): 0x0D,       # CR Carriage Return
-    chr(0xC5): 0x0E,       # Å Angstroem majuscule
-    chr(0xE5): 0x0F,       # å Angstroem minuscule
-    '_': 0x11,             # underscore
-    chr(0xC6): 0x1C,       # Æ majuscule ae
-    chr(0xE6): 0x1D,       # æ minuscule ae
-    chr(0xDF): 0x1E,       # ß s dur allemand
-    chr(0xC9): 0x1F,       # É majuscule é
-    ' ': 0x20,
-    '!': 0x21,
-    '\"': 0x22,            # guillemet
-    '#': 0x23,
-    '¤': 0x24,             # ¤ carré
-    chr(0xA1): 0x40,       # ¡ point d'exclamation renversé
-    chr(0xC4): 0x5B,       # Ä majuscule A trema
-    chr(0xE4): 0x7B,       # ä minuscule a trema
-    chr(0xD6): 0x5C,       # Ö majuscule O trema
-    chr(0xF6): 0x7C,       # ö minuscule o trema
-    chr(0xD1): 0x5D,       # Ñ majuscule N tilda espagnol
-    chr(0xF1): 0x7D,       # ñ minuscule n tilda espagnol
-    chr(0xDC): 0x5E,       # Ü majuscule U trema
-    chr(0xFC): 0x7E,       # ü minuscule u trema
-    chr(0xA7): 0x5F,       # § signe paragraphe
-    chr(0xBF): 0x60,       # ¿ point interrogation renversé
-    'à': 0x7F              # a accent grave
+    u'@': 0x00,            # @ At symbol
+    u'£': 0x01,            # £ Britain pound symbol
+    u'$': 0x02,            # $ Dollar symbol
+    u'¥': 0x03,            # ¥ Yen symbol
+    u'è': 0x04,            # è e accent grave
+    u'é': 0x05,            # é e accent aigu
+    u'ù': 0x06,            # ù u accent grave
+    u'ì': 0x07,            # ì i accent grave
+    u'ò': 0x08,            # ò o accent grave
+    u'Ç': 0x09,            # Ç C majuscule cedille
+    u'\n': 0x0A,           # LF Line Feed
+    u'Ø': 0x0B,            # Ø O majuscule barré
+    u'ø': 0x0C,            # ø o minuscule barré
+    u'\r': 0x0D,           # CR Carriage Return
+    u'Å': 0x0E,            # Å Angstroem majuscule
+    u'å': 0x0F,            # å Angstroem minuscule
+    u'_': 0x11,            # underscore
+    u'Æ': 0x1C,            # Æ majuscule ae
+    u'æ': 0x1D,            # æ minuscule ae
+    u'ß': 0x1E,            # ß s dur allemand
+    u'É': 0x1F,            # É majuscule é
+    u' ': 0x20,
+    u'!': 0x21,
+    u'"': 0x22,            # guillemet
+    u'#': 0x23,
+    u'¤': 0x24,            # ¤ carré
+    u'¡': 0x40,            # ¡ point d'exclamation renversé
+    u'Ä': 0x5B,            # Ä majuscule A trema
+    u'ä': 0x7B,            # ä minuscule a trema
+    u'Ö': 0x5C,            # Ö majuscule O trema
+    u'ö': 0x7C,            # ö minuscule o trema
+    u'Ñ': 0x5D,            # Ñ majuscule N tilda espagnol
+    u'ñ': 0x7D,            # ñ minuscule n tilda espagnol
+    u'Ü': 0x5E,            # Ü majuscule U trema
+    u'ü': 0x7E,            # ü minuscule u trema
+    u'§': 0x5F,            # § signe paragraphe
+    u'¿': 0x60,            # ¿ point interrogation renversé
+    u'à': 0x7F,            # à a accent grave
 }
 
 
@@ -157,18 +157,20 @@ def toGSM3_38Bytes(stringtoconvert):
     >>> toGSM3_38Bytes("@ùPascal")
     [0, 6, 80, 97, 115, 99, 97, 108]
     """
+    if isinstance(stringtoconvert, bytes):
+        stringtoconvert = stringtoconvert.decode('iso8859-1')
 
-    bytes = []
+    result = []
     for char in stringtoconvert:
         if ((char >= "%") and (char <= "?")):
-            bytes.append(ord(char))
+            result.append(ord(char))
         elif ((char >= "A") and (char <= "Z")):
-            bytes.append(ord(char))
+            result.append(ord(char))
         elif ((char >= "a") and (char <= "z")):
-            bytes.append(ord(char))
+            result.append(ord(char))
         else:
-            bytes.append(int(__dic_GSM_3_38__[char]))
-    return bytes
+            result.append(__dic_GSM_3_38__[char])
+    return result
 
 
 def toHexString(bytes=[], format=0):
