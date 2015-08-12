@@ -1,3 +1,14 @@
+1.9.0 (August 2015)
+===================
+        * add Python3 support (Python2 is still supported)
+        * fix a lot of pylint warnings
+        * smartcard/test/* replace deprecated assert calls
+        * add tox support and coverage reports, run test suite on Travis
+        * add Travis CI support to automatically build on Unix
+        * add AppVeyor support to automatically build on Windows
+        * minor bugs fixed
+		* Big thank you to Alex Willmer for his work on pyscard
+
 1.7.0 (June 2015)
 ===========
         * PCSCCardConnection: Fix a problem with mode=SCARD_SHARE_DIRECT
