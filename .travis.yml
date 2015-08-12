@@ -1,5 +1,5 @@
 language: python
-sudo: required
+sudo: false
 
 python:
     - "2.6"
@@ -7,9 +7,11 @@ python:
     - "3.3"
     - "3.4"
 
-before_install:
-    - sudo apt-get update -qq
-    - sudo apt-get install -y libpcsclite-dev swig
+addons:
+  apt:
+    packages:
+      - libpcsclite-dev
+      - swig
 
 install:
     - pip install -r dev-requirements.txt
