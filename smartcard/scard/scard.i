@@ -448,8 +448,7 @@ static SCARDRETCODE _EndTransaction(SCARDHANDLE hcard, SCARDDWORDARG dwDispositi
 ///////////////////////////////////////////////////////////////////////////////
 static SCARDRETCODE _EstablishContext(SCARDDWORDARG dwScope, SCARDCONTEXT* phContext)
 {
-    long lRet;
-    lRet = (mySCardEstablishContext)(dwScope, NULL, NULL, phContext);
+    return (mySCardEstablishContext)(dwScope, NULL, NULL, phContext);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
