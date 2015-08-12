@@ -1180,7 +1180,11 @@ build a Python string list from a STRINGLIST
             PyErr_SetString( PyExc_TypeError, "Expected a list of strings." );
             return NULL;
         }
+#if PY_MAJOR_VERSION >= 3
+        cChars += PyUnicode_GET_LENGTH(o) + 1 ;
+#else
         cChars += strlen( PyString_AsString(o)) + 1 ;
+#endif
     }
     cChars += 1;
 
@@ -1206,8 +1210,21 @@ build a Python string list from a STRINGLIST
         for( x=0, p=psl->ac; x<cStrings; x++ )
         {
             PyObject* o = PyList_GetItem(source, x);
+#if PY_MAJOR_VERSION >= 3
+            // Convert the group name from string (unicode) to bytes (ascii)
+            PyObject * temp_bytes = PyUnicode_AsEncodedString(o, "ASCII", "strict"); // Owned reference
+            if (temp_bytes != NULL)
+            {
+                char * psz = PyBytes_AsString(temp_bytes); // Borrowed pointer
+                if (NULL == psz)
+                    return 0;
+                strcpy(p, psz);
+                Py_DECREF(temp_bytes);
+            }
+#else
             strcpy( p, PyString_AsString(o) );
-            p += strlen( PyString_AsString(o) ) + 1;
+#endif
+            p += strlen( p ) + 1;
         }
         strcpy( p, "\0" );
     }
