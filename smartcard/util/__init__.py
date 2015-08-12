@@ -209,16 +209,17 @@ def toHexString(bytes=[], format=0):
     else:
         pformat = "%-0.2X"
         if COMMA & format:
-            pformat = pformat + ","
-        pformat = pformat + " "
-        if PACK & format:
-            pformat = pformat.rstrip()
+            separator = ","
+        else:
+            separator = ""
+        if not PACK & format:
+            separator = separator + " "
         if HEX & format:
             if UPPERCASE & format:
                 pformat = "0X" + pformat
             else:
                 pformat = "0x" + pformat
-        return (''.join(map(lambda a: pformat % ((a + 256) % 256), bytes))).rstrip()
+        return (separator.join(map(lambda a: pformat % ((a + 256) % 256), bytes))).rstrip()
 
 
 # FIXME This appears to duplicate toASCIIString()
