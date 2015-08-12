@@ -97,7 +97,7 @@ def toBytes(bytestring):
     >>> toBytes("3B6500   009C1101  0103")
     [59, 101, 0, 0, 156, 17, 1, 1, 3]
     """
-    packedstring = bytestring.replace(' ', '')
+    packedstring = bytestring.replace(' ', '').replace('	','')
     try:
         return list(map(lambda x: int(''.join(x), 16), zip(*[iter(packedstring)] * 2)))
     except KeyError:
