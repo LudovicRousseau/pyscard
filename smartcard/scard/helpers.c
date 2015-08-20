@@ -100,13 +100,16 @@ static int _ReaderStateFromTuple( PyObject* o, READERSTATELIST* prl, unsigned in
 {
     char* psz;
     PyObject* o2;
+#if PY_MAJOR_VERSION >= 3
+    PyObject* temp_bytes;
+#endif
 
     // first tuple item is reader name
     o2=PyTuple_GetItem(o, 0);
 
 #if PY_MAJOR_VERSION >= 3
     // Convert the readername from string (unicode) to bytes (ascii)
-    PyObject * temp_bytes = PyUnicode_AsEncodedString(o2, "ASCII", "strict"); // Owned reference
+    temp_bytes = PyUnicode_AsEncodedString(o2, "ASCII", "strict"); // Owned reference
     if (temp_bytes != NULL)
     {
         psz = PyBytes_AsString(temp_bytes); // Borrowed pointer
