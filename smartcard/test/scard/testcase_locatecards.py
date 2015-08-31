@@ -38,8 +38,8 @@ import sys
 sys.path += ['..']
 
 try:
-    from local_config import expectedATRs, expectedReaders
-    from local_config import expectedReaderGroups, expectedATRinReader
+    from local_config import expectedReaders
+    from local_config import expectedATRinReader
 except ImportError:
     print('execute test suite first to generate the local_config.py file')
     sys.exit()
