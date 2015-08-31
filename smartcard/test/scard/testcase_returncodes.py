@@ -99,7 +99,7 @@ class testcase_returncodes(unittest.TestCase):
             SCARD_W_CARD_NOT_AUTHENTICATED,
             )
         #for e in errors:
-        #    print hex((e+0x100000000) & 0xFFFFFFFF)
+        #    print(hex((e+0x100000000) & 0xFFFFFFFF), SCardGetErrorMessage(e))
 
 
 def suite():
