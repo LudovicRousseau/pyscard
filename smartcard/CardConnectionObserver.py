@@ -61,8 +61,8 @@ class ConsoleCardConnectionObserver(CardConnectionObserver):
 
         elif 'response' == ccevent.type:
             if [] == ccevent.args[0]:
-                print('<  [] %-2X %-2X' % tuple(ccevent.args[-2:]))
+                print('<  [] %02X %02X' % tuple(ccevent.args[-2:]))
             else:
                 print('< ' +
                       toHexString(ccevent.args[0]) + " " +
-                      "%-2X %-2X" % tuple(ccevent.args[-2:]))
+                      "%02X %02X" % tuple(ccevent.args[-2:]))
