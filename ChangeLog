@@ -1,3 +1,8 @@
+1.9.1 (September 2015)
+======================
+       * Create a new version so that the upload to Pypi does _not_
+         contain the swig generated files.
+
 1.9.0 (August 2015)
 ===================
         * add Python3 support (Python2 is still supported)
@@ -7,7 +12,7 @@
         * add Travis CI support to automatically build on Unix
         * add AppVeyor support to automatically build on Windows
         * minor bugs fixed
-		* Big thank you to Alex Willmer for his work on pyscard
+        * Big thank you to Alex Willmer for his work on pyscard
 
 1.7.0 (June 2015)
 ===========
@@ -27,7 +32,7 @@
         * fixed Reader.__eq__() (Ludovic Rousseau from Bernard Paulus bug ID 3418113)
         * fixed extended APDU transmit buffer too short by 2 (Jean-Daniel Aussel from bugs ID 2914636 and 3106761)
         * make Card and Reader objects hashable (Jean-Daniel Aussel from Hans-Peter Jansen feature request and patch)
-		* convert the user guide to python-Sphinx
+        * convert the user guide to python-Sphinx
 
 
 1.6.12 (August 2010)
