@@ -21,6 +21,12 @@ class TestUtil(unittest.TestCase):
         data_in = "3B6500   009C1101  0103"
         self.assertEqual(toBytes(data_in), data_out)
 
+        data_in = '''
+                    3B 65 00
+                    00 9C 11 01
+                    01 03
+                  '''
+        self.assertEqual(toBytes(data_in), data_out)
 
     def test_padd(self):
         data_in = toBytes("3B 65 00 00 9C 11 01 01 03")
