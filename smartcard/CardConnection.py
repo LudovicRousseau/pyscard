@@ -78,7 +78,11 @@ class CardConnection(Observable):
         CardConnection.T0_protocol, CardConnection.T1_protocol,
         CardConnection.RAW_protocol, CardConnection.T15_protocol
 
-        mode: passed as-is to the PC/SC layer
+        mode: SCARD_SHARE_SHARED (default), SCARD_SHARE_EXCLUSIVE or
+        SCARD_SHARE_DIRECT
+
+        disposition: SCARD_LEAVE_CARD (default), SCARD_RESET_CARD,
+        SCARD_UNPOWER_CARD or SCARD_EJECT_CARD
         """
         Observable.setChanged(self)
         Observable.notifyObservers(self, CardConnectionEvent('connect'))
