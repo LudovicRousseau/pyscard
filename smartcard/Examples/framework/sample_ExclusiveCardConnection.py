@@ -27,7 +27,6 @@ from __future__ import print_function
 from smartcard.CardType import AnyCardType
 from smartcard.CardRequest import CardRequest
 from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver
-from smartcard.CardConnection import CardConnection
 from smartcard.util import toHexString
 
 from smartcard.ExclusiveConnectCardConnection import \
@@ -60,6 +59,7 @@ cardservice.connection.connect()
 print('ATR', toHexString(cardservice.connection.getATR()))
 
 try:
+    # lock for initiating transaction
     cardservice.connection.lock()
 
     apdu = SELECT + DF_TELECOM
@@ -69,6 +69,7 @@ try:
         apdu = GET_RESPONSE + [sw2]
         response, sw1, sw2 = cardservice.connection.transmit(apdu)
 finally:
+    # unlock connection at the end of the transaction
     cardservice.connection.unlock()
 
 import sys
