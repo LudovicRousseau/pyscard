@@ -28,7 +28,7 @@ from __future__ import print_function
 from time import sleep
 
 from smartcard.CardMonitoring import CardMonitor, CardObserver
-from smartcard.util import *
+from smartcard.util import toHexString
 
 
 # a simple card observer that prints inserted/removed cards
