@@ -27,7 +27,6 @@ from __future__ import print_function
 from smartcard.CardType import AnyCardType
 from smartcard.CardRequest import CardRequest
 from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver
-from smartcard.CardConnection import CardConnection
 from smartcard.CardConnectionDecorator import CardConnectionDecorator
 from smartcard.util import toHexString
 
