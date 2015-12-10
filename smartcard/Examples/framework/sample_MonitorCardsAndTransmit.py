@@ -30,7 +30,7 @@ from time import sleep
 
 from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver
 from smartcard.CardMonitoring import CardMonitor, CardObserver
-from smartcard.util import *
+from smartcard.util import toHexString
 
 # define the apdus used in this script
 GET_RESPONSE = [0XA0, 0XC0, 00, 00]
