@@ -156,21 +156,7 @@ The class `smartcard.ATR
 <http://pyscard.sourceforge.net/epydoc/smartcard.ATR.ATR-class.html>`_
 is a pyscard utility class that can interpret the content of an ATR:
 
-.. sourcecode:: python
-
-    #! /usr/bin/env python
-    from smartcard.ATR import ATR
-    from smartcard.util import toHexString
-
-    atr = ATR([0x3B, 0x9E, 0x95, 0x80, 0x1F, 0xC3, 0x80, 0x31, 0xA0,
-        0x73, 0xBE, 0x21, 0x13, 0x67, 0x29, 0x02, 0x01, 0x01, 0x81,0xCD,0xB9] )
-    print atr
-    print 'historical bytes: ', toHexString( atr.getHistoricalBytes() )
-    print 'checksum:', "0x%X" % atr.getChecksum()
-    print 'checksum OK:', atr.checksumOK
-    print 'T0 supported:', atr.isT0Supported()
-    print 'T1 supported:', atr.isT1Supported()
-    print 'T15 supported:', atr.isT15Supported()
+.. literalinclude:: ../Examples/framework/sample_ATR.py
 
 Which results in the following output::
 
@@ -677,6 +663,11 @@ scripts defines a small SELECT and GET RESPONSE apdu interpreter:
     < 00 00 00 00 7F 10 02 00 00 00 00 00 0D 13 00 0A 04 00 83 8A 83 8A 00 01 00 00 90 0
     >>>
 
+Full sample code
+----------------
+
+.. literalinclude:: ../Examples/framework/sample_apduTracerInterpreter.py
+
 Testing for APDU transmission errors
 ************************************
 
@@ -929,6 +920,11 @@ any exception:
     >>> errorchain[0]( [], 0x62, 0x00 )
     >>>
 
+Full sample code
+----------------
+
+.. literalinclude:: ../Examples/framework/sample_ErrorChecking.py
+
 Detecting response APDU errors for a card connection
 ----------------------------------------------------
 
@@ -1014,54 +1010,12 @@ Implementing a custom error checker requires implementing a sub-class of
 and overriding the __call__ method. The following error checker raises a
 `SecurityRelatedException
 <http://pyscard.sourceforge.net/epydoc/smartcard.sw.SWExceptions.SecurityRelatedException-class.html>`_
-exception when sw1=0x66 and sw2=0x00:
+exception when sw1=0x66 and sw2=0x00.
 
-.. sourcecode:: python
+Custom checkers can be used standalone, as in the following sample, or
+chained to other error checkers.
 
-    from smartcard.sw.ErrorChecker import ErrorChecker
-    from smartcard.sw.SWExceptions import SecurityRelatedException
-
-    class MyErrorChecker( ErrorChecker ):
-        def __call__( self, data, sw1, sw2 ):
-            if 0x66==sw1 and 0x00==sw2:
-                raise SecurityRelatedException( data, sw1, sw2 )
-
-    Custom checkers can be used standalone, as in the following sample, or chained to other error checkers:
-
-    from smartcard.CardType import AnyCardType
-    from smartcard.CardRequest import CardRequest
-
-    from smartcard.sw.ErrorCheckingChain import ErrorCheckingChain
-    from smartcard.sw.ErrorChecker import ErrorChecker
-    from smartcard.sw.SWExceptions import SecurityRelatedException
-
-    class MyErrorChecker( ErrorChecker ):
-        def __call__( self, data, sw1, sw2 ):
-            if 0x66==sw1 and 0x00==sw2:
-                raise SecurityRelatedException( data, sw1, sw2 )
-
-    # request any card
-    cardtype = AnyCardType()
-    cardrequest = CardRequest( timeout=10, cardType=cardtype )
-    cardservice = cardrequest.waitforcard()
-
-    # our error checking chain
-    errorchain=[]
-    errorchain=[ ErrorCheckingChain( [], MyErrorChecker() ) ]
-    cardservice.connection.setErrorCheckingChain( errorchain )
-
-    # send a few apdus; exceptions will occur upon errors
-    cardservice.connection.connect()
-
-    SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
-    DF_TELECOM = [0x7F, 0x10]
-    apdu = SELECT+DF_TELECOM
-    response, sw1, sw2 = cardservice.connection.transmit( apdu )
-    if sw1 == 0x9F:
-        GET_RESPONSE = [0XA0, 0XC0, 00, 00 ]
-        apdu = GET_RESPONSE + [sw2]
-        response, sw1, sw2 = cardservice.connection.transmit( apdu )
-
+.. literalinclude:: ../Examples/framework/sample_CustomErrorChecker.py
 
 Smartcard readers
 *****************
@@ -1197,32 +1151,7 @@ To monitor reader insertion/removal, simply add the observer to the
 `ReaderMonitor
 <http://pyscard.sourceforge.net/epydoc/smartcard.ReaderMonitoring.ReaderMonitor-class.html>`_:
 
-.. sourcecode:: python
-
-    from sys import stdin, exc_info
-    from time import sleep
-
-    from smartcard.ReaderMonitoring import ReaderMonitor, ReaderObserver
-
-    try:
-        print "Add or remove a smartcard reader to the system."
-        print "This program will exit in 10 seconds"
-        print ""
-        readermonitor = ReaderMonitor()
-        readerobserver = printobserver()
-        readermonitor.addObserver( readerobserver )
-
-        sleep(10)
-
-        # don't forget to remove observer, or the
-        # monitor will poll forever...
-        readermonitor.deleteObserver(readerobserver)
-
-        print 'press Enter to continue'
-        stdin.readline()
-
-    except error:
-        print exc_info()[0], ': ', exc_info()[1]
+.. literalinclude:: ../Examples/framework/sample_MonitorReaders.py
 
 Smart Cards
 ***********
@@ -1244,31 +1173,7 @@ named printobserver. To monitor card insertion/removal, simply add the
 card observer to the `CardMonitor
 <http://pyscard.sourceforge.net/epydoc/smartcard.CardMonitoring.CardMonitor-class.html>`_:
 
-.. sourcecode:: python
-
-    from smartcard.CardMonitoring import CardMonitor, CardObserver
-    from smartcard.util import *
-
-    # a simple card observer that prints inserted/removed cards
-    class printobserver( CardObserver ):
-        """A simple card observer that is notified
-        when cards are inserted/removed from the system and
-        prints the list of cards
-        """
-        def update( self, observable, (addedcards, removedcards) ):
-            for card in addedcards:
-                print "+Inserted: ", toHexString( card.atr )
-            for card in removedcards:
-                print "-Removed: ", toHexString( card.atr )
-
-    try:
-        print "Insert or remove a smartcard in the system."
-        print "This program will exit in 10 seconds"
-        print ""
-        cardmonitor = CardMonitor()
-        cardobserver = printobserver()
-        cardmonitor.addObserver( cardobserver )
-
+.. literalinclude:: ../Examples/framework/sample_MonitorCards.py
 
 Sending APDUs to a Smart Card Obtained from Card Monitoring
 ===========================================================
@@ -1279,50 +1184,14 @@ connection can be created to each Card object of the added card list for
 sending APDUS.
 
 The following sample code implements a CardObserver class named
-transmitobserver, that connects to inserted cards and transmit an APDU,
-in our case SELECT DF_TELECOM:
-
-.. sourcecode:: python
-
-    # a card observer that connects to new cards and performs a transaction, e.g. SELECT DF_TELECOM
-    class transmitobserver( CardObserver ):
-        """A card observer that is notified when cards are inserted/removed from the system,
-        connects to cards and SELECT DF_TELECOM
-        """
-        def __init__( self ):
-            self.cards=[]
-
-        def update( self, observable, (addedcards, removedcards) ):
-            for card in addedcards:
-                if card not in self.cards:
-                    self.cards+=[card]
-                    print "+Inserted: ", toHexString( card.atr )
-                    card.connection = card.createConnection()
-                    card.connection.connect()
-                    response, sw1, sw2 = card.connection.transmit( SELECT_DF_TELECOM )
-                    print "%.2x %.2x" % (sw1, sw2)
-
-            for card in removedcards:
-                print "-Removed: ", toHexString( card.atr )
-                if card in self.cards:
-                    self.cards.remove( card )
-
+selectDFTELECOMObserver, that connects to inserted cards and transmit an APDU,
+in our case SELECT DF_TELECOM.
 
 To monitor card insertion, connect to inserted cards and send the APDU,
-create an instance of transmitobserver and add it to the `CardMonitor
+create an instance of selectDFTELECOMObserver and add it to the `CardMonitor
 <http://pyscard.sourceforge.net/epydoc/smartcard.CardMonitoring.CardMonitor-class.html>`_:
 
-.. sourcecode:: python
-
-    from time import sleep
-    print "Insert or remove a smartcard in the system."
-    print "This program will exit in 100 seconds"
-    print ""
-    cardmonitor = CardMonitor()
-    cardobserver = transmitobserver()
-    cardmonitor.addObserver( cardobserver )
-
-    sleep(100)
+.. literalinclude:: ../Examples/framework/sample_MonitorCardsAndTransmit.py
 
 Connections
 ***********
@@ -1375,6 +1244,10 @@ object, use the createConnection() method of the desired card:
                     response, sw1, sw2 = card.connection.transmit( SELECT_DF_TELECOM )
                     print "%.2x %.2x" % (sw1, sw2)
 
+Full sample code
+----------------
+
+.. literalinclude:: ../Examples/framework/sample_TransmitCardObserver.py
 
 Card Connection Decorators
 ==========================
@@ -1440,6 +1313,9 @@ SecureChannelConnection, use the following construction:
 
     print 'ATR', toHexString( cardservice.connection.getATR() )
 
+Full sample code:
+
+.. literalinclude:: ../Examples/framework/sample_CardConnectionDecorator.py
 
 Exclusive Card Connection Decorator
 -----------------------------------
@@ -1479,53 +1355,7 @@ the card, i.e. a series of transmit that cannot be interupted by other
 threads' transmits. To do so, include the desired transmits between an
 lock() and unlock() method call on the ExclusiveTransmitCardConnection:
 
-.. sourcecode:: python
-
-    from smartcard.CardType import AnyCardType
-    from smartcard.CardRequest import CardRequest
-    from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver
-    from smartcard.CardConnection import CardConnection
-    from smartcard.util import toHexString
-
-    from smartcard.ExclusiveTransmitCardConnection import ExclusiveTransmitCardConnection
-
-
-    # define the apdus used in this script
-    GET_RESPONSE = [0XA0, 0XC0, 00, 00 ]
-    SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
-    DF_TELECOM = [0x7F, 0x10]
-
-    # request any card type
-    cardtype = AnyCardType()
-    cardrequest = CardRequest( timeout=5, cardType=cardtype )
-    cardservice = cardrequest.waitforcard()
-
-    # attach the console tracer
-    observer=ConsoleCardConnectionObserver()
-    cardservice.connection.addObserver( observer )
-
-    # attach our decorator
-    cardservice.connection = ExclusiveTransmitCardConnection( cardservice.connection )
-
-    # connect to the card and perform a few transmits
-    cardservice.connection.connect()
-
-    print 'ATR', toHexString( cardservice.connection.getATR() )
-
-    try:
-        # lock for initiating transaction
-        cardservice.connection.lock()
-
-        apdu = SELECT+DF_TELECOM
-        response, sw1, sw2 = cardservice.connection.transmit( apdu )
-
-        if sw1 == 0x9F:
-            apdu = GET_RESPONSE + [sw2]
-            response, sw1, sw2 = cardservice.connection.transmit( apdu )
-    finally:
-        # unlock connection at the end of the transaction
-        cardservice.connection.unlock()
-
+.. literalinclude:: ../Examples/framework/sample_ExclusiveCardConnection.py
 
 Secure Channel Card Connection Decorator
 ----------------------------------------
