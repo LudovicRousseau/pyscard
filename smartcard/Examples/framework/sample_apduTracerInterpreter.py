@@ -53,8 +53,8 @@ class TracerAndSELECTInterpreter(CardConnectionObserver):
                 print('<  []', "%-2X %-2X" % tuple(ccevent.args[-2:]))
             else:
                 print('<',
-                toHexString(ccevent.args[0]),
-                "%-2X %-2X" % tuple(ccevent.args[-2:]))
+                      toHexString(ccevent.args[0]),
+                      "%-2X %-2X" % tuple(ccevent.args[-2:]))
 
 
 # define the apdus used in this script
