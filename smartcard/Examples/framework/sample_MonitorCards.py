@@ -32,7 +32,7 @@ from smartcard.util import toHexString
 
 
 # a simple card observer that prints inserted/removed cards
-class printobserver(CardObserver):
+class PrintObserver(CardObserver):
     """A simple card observer that is notified
     when cards are inserted/removed from the system and
     prints the list of cards
@@ -50,7 +50,7 @@ if __name__ == '__main__':
     print("This program will exit in 10 seconds")
     print("")
     cardmonitor = CardMonitor()
-    cardobserver = printobserver()
+    cardobserver = PrintObserver()
     cardmonitor.addObserver(cardobserver)
 
     sleep(10)
