@@ -14,4 +14,7 @@ pypi: clean
 	rm -rf smartcard/doc/_build
 	$(PYTHON) setup.py sdist upload
 
-.PHONY: clean build pypi
+test: build
+	$(PYTHON) setup.py test
+
+.PHONY: clean build pypi test
