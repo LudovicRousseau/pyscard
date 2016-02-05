@@ -20,7 +20,7 @@ include smartcard/scard/scard.rc
 include smartcard/scard/winscarddll.c
 include smartcard/scard/winscarddll.h
 include smartcard/test/configcheck.py
-recursive-include smartcard/Examples *.txt *.py *.ico
+recursive-include smartcard/Examples *.py *.ico
 recursive-include smartcard/doc *.html *.jpg *.css *.js *.png *.txt
 recursive-include smartcard/test/framework *.txt *.py
 recursive-include smartcard/test/frameworkpcsc *.txt *.py
