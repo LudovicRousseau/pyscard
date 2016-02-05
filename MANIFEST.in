@@ -1,6 +1,8 @@
 include LICENSE
 include MANIFEST.in
+include Makefile
 include README
+include README.md
 include ACKS
 include ChangeLog
 include TODO
