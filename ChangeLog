@@ -1,3 +1,10 @@
+1.9.2 (February 2016)
+       * Fix toBytes regression
+       * Fix installation using pip
+       * improve pydoc documentation
+       * user-guide.rst: use real sample codes
+       * minor improvements
+
 1.9.1 (September 2015)
 ======================
        * Create a new version so that the upload to Pypi does _not_
