@@ -374,31 +374,29 @@ static SCARDRETCODE _SetAttrib(SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELI
     return lRetCode;
 }
 
+///////////////////////////////////////////////////////////////////////////////
+static SCARDRETCODE _Control(
+  SCARDHANDLE hcard,
+  SCARDDWORDARG controlCode,
+  BYTELIST* pblSendBuffer,
+  BYTELIST* pblRecvBuffer
+)
+{
+    SCARDRETCODE lRet;
 
+    pblRecvBuffer->ab = (unsigned char*)mem_Malloc(MAX_BUFFER_SIZE_EXTENDED*sizeof(unsigned char));
+    pblRecvBuffer->cBytes = MAX_BUFFER_SIZE_EXTENDED;
 
-    ///////////////////////////////////////////////////////////////////////////////
-    static SCARDRETCODE _Control(
-      SCARDHANDLE hcard,
-      SCARDDWORDARG controlCode,
-      BYTELIST* pblSendBuffer,
-      BYTELIST* pblRecvBuffer
-   )
-    {
-        SCARDRETCODE lRet;
-
-        pblRecvBuffer->ab = (unsigned char*)mem_Malloc(MAX_BUFFER_SIZE_EXTENDED*sizeof(unsigned char));
-        pblRecvBuffer->cBytes = MAX_BUFFER_SIZE_EXTENDED;
-
-        lRet = (mySCardControl)(
-                    hcard,
-                    controlCode,
-                    pblSendBuffer->ab,
-                    pblSendBuffer->cBytes,
-                    pblRecvBuffer->ab,
-                    pblRecvBuffer->cBytes,
-                    &pblRecvBuffer->cBytes);
-        return lRet;
-    }
+    lRet = (mySCardControl)(
+                hcard,
+                controlCode,
+                pblSendBuffer->ab,
+                pblSendBuffer->cBytes,
+                pblRecvBuffer->ab,
+                pblRecvBuffer->cBytes,
+                &pblRecvBuffer->cBytes);
+    return lRet;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 static SCARDRETCODE _BeginTransaction(SCARDHANDLE hcard)
