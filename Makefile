@@ -18,24 +18,4 @@ pypi: clean
 test: build
 	$(PYTHON) setup.py test
 
-test_install:
-	# Test installing directly from the local checkout
-	for cmd in "python setup.py install" "pip install ." "easy_install ."; do \
-		pip uninstall -y pyscard &> /dev/null; \
-		git clean -dxf &> /dev/null; \
-		$$cmd &> /dev/null; \
-		python -c "import sys; sys.path.remove(''); import smartcard"; \
-		echo "Installed using '$$cmd' - test exit code: $$?"; \
-	done
-
-	# Test installing using the sdist
-	git clean -dxf &> /dev/null
-	python setup.py sdist &>/dev/null
-	for cmd in "pip install dist/*" "easy_install dist/*"; do \
-		pip uninstall -y pyscard &> /dev/null; \
-		$$cmd &> /dev/null; \
-		python -c "import sys; sys.path.remove(''); import smartcard"; \
-		echo "Installed using '$$cmd' - test exit code: $$?"; \
-	done
-
-.PHONY: clean build pypi test test_install
+.PHONY: clean build pypi test
