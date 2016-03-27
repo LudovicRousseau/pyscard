@@ -100,12 +100,7 @@ class InstallBuildExtFirst(install):
         if self.old_and_unmanageable or self.single_version_externally_managed:
             return install_orig.install.run(self)
 
-        try:
-            have_called_from_setup = self._called_from_setup is not None
-        except AttributeError:
-            have_called_from_setup = False
-
-        if not have_called_from_setup or not self._called_from_setup(inspect.currentframe()):
+        if not self._called_from_setup(inspect.currentframe()):
             # Run in backward-compatibility mode to support bdist_* commands.
             install_orig.install.run(self)
         else:
