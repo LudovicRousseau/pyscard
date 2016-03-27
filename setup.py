@@ -27,6 +27,7 @@ from distutils.util import get_platform
 import sys
 
 from setuptools import setup, Extension
+from setuptools.command.build_py import build_py
 
 
 if sys.version_info[0:2] < (2, 6):
@@ -83,6 +84,14 @@ VERSION_STR = '%i.%i.%i' % VERSION_INFO[:3]
 VERSION_ALT = '%i,%01i,%01i,%04i' % VERSION_INFO
 
 
+class BuildPyBuildExtFirst(build_py):
+    """Workaround substitude `build_py` command for SWIG"""
+    def run(self):
+        # Run build_ext first so that SWIG generated files are included
+        self.run_command('build_ext')
+        return build_py.run(self)
+
+
 kw = {'name': "pyscard",
       'version': VERSION_STR,
       'description': "Smartcard module for Python.",
@@ -106,6 +115,7 @@ kw = {'name': "pyscard",
                          "smartcard/wx": ["resources/*.ico"],
                        },
 
+      'cmdclass': {'build_py': BuildPyBuildExtFirst},
       # the _scard.pyd extension to build
       'ext_modules': [Extension("smartcard.scard._scard",
                              define_macros=[
