@@ -24,13 +24,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 from distutils.util import get_platform
-import distutils.command.install as install_orig
-import inspect
 import sys
 
 from setuptools import setup, Extension
-from setuptools.command.bdist_egg import bdist_egg
-from setuptools.command.install import install
 
 
 if sys.version_info[0:2] < (2, 6):
@@ -87,35 +83,6 @@ VERSION_STR = '%i.%i.%i' % VERSION_INFO[:3]
 VERSION_ALT = '%i,%01i,%01i,%04i' % VERSION_INFO
 
 
-# Workaround for `pip install` and direct `setup.py install`
-class InstallBuildExtFirst(install):
-    """Workaround substitute `install` command"""
-    def run(self):
-        # Run built_ext first so that SWIG generated files are included
-        self.run_command("build_ext")
-        # Copy the rest of the logic from setuptools install so that the
-        # stack frame logic is preserved
-
-        # Explicit request for old-style install?  Just do it
-        if self.old_and_unmanageable or self.single_version_externally_managed:
-            return install_orig.install.run(self)
-
-        if not self._called_from_setup(inspect.currentframe()):
-            # Run in backward-compatibility mode to support bdist_* commands.
-            install_orig.install.run(self)
-        else:
-            self.do_egg_install()
-
-
-# Workaround for `easy_install`
-class BdistEggBuildExtFirst(bdist_egg):
-    """Workaround substitute `bdist_egg` command"""
-    def run(self):
-        # Run build_ext first so that SWIG generated files are included
-        self.run_command("build_ext")
-        return bdist_egg.run(self)
-
-
 kw = {'name': "pyscard",
       'version': VERSION_STR,
       'description': "Smartcard module for Python.",
@@ -139,10 +106,6 @@ kw = {'name': "pyscard",
                          "smartcard/wx": ["resources/*.ico"],
                        },
 
-      'cmdclass': {
-          'install': InstallBuildExtFirst,
-          'bdist_egg': BdistEggBuildExtFirst,
-      },
       # the _scard.pyd extension to build
       'ext_modules': [Extension("smartcard.scard._scard",
                              define_macros=[
