@@ -38,4 +38,4 @@ test_install:
 		echo "Installed using '$$cmd' - test exit code: $$?"; \
 	done
 
-.PHONY: clean build pypi test
+.PHONY: clean build pypi test test_install
