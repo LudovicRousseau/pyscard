@@ -72,6 +72,9 @@ class TestUtil(unittest.TestCase):
         data_out = ""
         self.assertEqual(toHexString(data_in), data_out)
 
+        data_in = 42
+        self.assertRaises(TypeError, toHexString, data_in)
+
         data_in = [ 0x3B, 0x65, 0x00, 0x00, 0x9C, 0x11, 0x01, 0x01, 0x03 ]
         data_out = "3B 65 00 00 9C 11 01 01 03"
         self.assertEqual(toHexString(data_in), data_out)
