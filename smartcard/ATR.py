@@ -26,13 +26,15 @@ from __future__ import print_function
 from smartcard.Exceptions import SmartcardException
 from smartcard.util import toHexString
 
+
 class ATR(object):
     """ATR class."""
 
     clockrateconversion = [372, 372, 558, 744, 1116, 1488, 1860, 'RFU',
-        'RFU', 512, 768, 1024, 1536, 2048, 'RFU', 'RFU', 'RFU']
+                           'RFU', 512, 768, 1024, 1536, 2048, 'RFU', 'RFU',
+                           'RFU']
     bitratefactor = ['RFU', 1, 2, 4, 8, 16, 32, 'RFU', 12, 20, 'RFU',
-        'RFU', 'RFU', 'RFU', 'RFU', 'RFU']
+                     'RFU', 'RFU', 'RFU', 'RFU', 'RFU']
     currenttable = [25, 50, 100, 'RFU']
 
     def __init__(self, bytes):
@@ -106,25 +108,25 @@ class ATR(object):
             if self.hasTB[n]:
                 self.TB[n] = self.bytes[offset + self.hasTA[n] + self.hasTB[n]]
             if self.hasTC[n]:
-                self.TC[n] = self.bytes[offset +\
-                             self.hasTA[n] +\
-                             self.hasTB[n] +\
-                             self.hasTC[n]]
+                self.TC[n] = self.bytes[offset +
+                                        self.hasTA[n] +
+                                        self.hasTB[n] +
+                                        self.hasTC[n]]
             if self.hasTD[n]:
-                self.TD[n] = self.bytes[offset +\
-                             self.hasTA[n] +\
-                             self.hasTB[n] +\
-                             self.hasTC[n] +\
-                             self.hasTD[n]]
+                self.TD[n] = self.bytes[offset +
+                                        self.hasTA[n] +
+                                        self.hasTB[n] +
+                                        self.hasTC[n] +
+                                        self.hasTD[n]]
 
             self.interfaceBytesCount += self.hasTA[n] +\
-                                        self.hasTB[n] +\
-                                        self.hasTC[n] +\
-                                        self.hasTD[n]
+                self.hasTB[n] +\
+                self.hasTC[n] +\
+                self.hasTD[n]
             TD = self.TD[n]
             hasTD = self.hasTD[n]
             offset = offset + self.hasTA[n] + self.hasTB[n] +\
-                              self.hasTC[n] + self.hasTD[n]
+                self.hasTC[n] + self.hasTD[n]
             n = n + 1
 
         # historical bytes
@@ -203,28 +205,28 @@ class ATR(object):
 
     def getBitRateFactor(self):
         """Return bit rate factor."""
-        if self.DI != None:
+        if self.DI is not None:
             return ATR.bitratefactor[self.DI]
         else:
             return 1
 
     def getClockRateConversion(self):
         """Return clock rate conversion."""
-        if self.FI != None:
+        if self.FI is not None:
             return ATR.clockrateconversion[self.FI]
         else:
             return 372
 
     def getProgrammingCurrent(self):
         """Return maximum programming current."""
-        if self.II != None:
+        if self.II is not None:
             return ATR.currenttable[self.II]
         else:
             return 50
 
     def getProgrammingVoltage(self):
         """Return programming voltage."""
-        if self.PI1 != None:
+        if self.PI1 is not None:
             return 5 * (1 + self.PI1)
         else:
             return 5
@@ -237,7 +239,7 @@ class ATR(object):
         """Returns a dictionnary of supported protocols."""
         protocols = {}
         for td in self.TD:
-            if td != None:
+            if td is not None:
                 strprotocol = "T=%d" % (td & 0x0F)
                 protocols[strprotocol] = True
         if not self.hasTD[0]:
@@ -263,13 +265,13 @@ class ATR(object):
         """Dump the details of an ATR."""
 
         for i in range(0, len(self.TA)):
-            if self.TA[i] != None:
+            if self.TA[i] is not None:
                 print("TA%d: %x" % (i + 1, self.TA[i]))
-            if self.TB[i] != None:
+            if self.TB[i] is not None:
                 print("TB%d: %x" % (i + 1, self.TB[i]))
-            if self.TC[i] != None:
+            if self.TC[i] is not None:
                 print("TC%d: %x" % (i + 1, self.TC[i]))
-            if self.TD[i] != None:
+            if self.TD[i] is not None:
                 print("TD%d: %x" % (i + 1, self.TD[i]))
 
         print('supported protocols ' + ','.join(self.getSupportedProtocols()))
@@ -279,10 +281,12 @@ class ATR(object):
         if self.getChecksum():
             print('checksum: %d' % self.getChecksum())
 
-        print('\tclock rate conversion factor: ' + str(self.getClockRateConversion()))
+        print('\tclock rate conversion factor: ' +
+              str(self.getClockRateConversion()))
         print('\tbit rate adjustment factor: ' + str(self.getBitRateFactor()))
 
-        print('\tmaximum programming current: ' + str(self.getProgrammingCurrent()))
+        print('\tmaximum programming current: ' +
+              str(self.getProgrammingCurrent()))
         print('\tprogramming voltage: ' + str(self.getProgrammingVoltage()))
 
         print('\tguard time: ' + str(self.getGuardTime()))
@@ -299,13 +303,13 @@ if __name__ == '__main__':
     """Small sample illustrating the use of ATR."""
 
     atrs = [[0x3F, 0x65, 0x25, 0x00, 0x2C, 0x09, 0x69, 0x90, 0x00],
-             [0x3F, 0x65, 0x25, 0x08, 0x93, 0x04, 0x6C, 0x90, 0x00],
-             [0x3B, 0x16, 0x94, 0x7C, 0x03, 0x01, 0x00, 0x00, 0x0D],
-             [0x3B, 0x65, 0x00, 0x00, 0x9C, 0x11, 0x01, 0x01, 0x03],
-             [0x3B, 0xE3, 0x00, 0xFF, 0x81, 0x31, 0x52, 0x45, 0xA1,
-                0xA2, 0xA3, 0x1B],
-             [0x3B, 0xE5, 0x00, 0x00, 0x81, 0x21, 0x45, 0x9C, 0x10,
-                0x01, 0x00, 0x80, 0x0D]]
+            [0x3F, 0x65, 0x25, 0x08, 0x93, 0x04, 0x6C, 0x90, 0x00],
+            [0x3B, 0x16, 0x94, 0x7C, 0x03, 0x01, 0x00, 0x00, 0x0D],
+            [0x3B, 0x65, 0x00, 0x00, 0x9C, 0x11, 0x01, 0x01, 0x03],
+            [0x3B, 0xE3, 0x00, 0xFF, 0x81, 0x31, 0x52, 0x45, 0xA1,
+             0xA2, 0xA3, 0x1B],
+            [0x3B, 0xE5, 0x00, 0x00, 0x81, 0x21, 0x45, 0x9C, 0x10,
+             0x01, 0x00, 0x80, 0x0D]]
 
     for atr in atrs:
         a = ATR(atr)
@@ -313,4 +317,3 @@ if __name__ == '__main__':
         print(a)
         a.dump()
         print(toHexString(a.getHistoricalBytes()))
-
