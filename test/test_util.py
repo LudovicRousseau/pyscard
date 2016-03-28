@@ -123,6 +123,16 @@ class TestUtil(unittest.TestCase):
         data_out = [1, 2, 3]
         self.assertEqual(BinStringToHexList(data_in), data_out)
 
+    def test_hl2bs(self):
+        data_in = [78, 117, 109, 98, 101, 114, 32, 49, 48, 49]
+        data_out = 'Number 101'
+        self.assertEqual(hl2bs(data_in), data_out)
+
+    def test_bs2hl(self):
+        data_in = 'Number 101'
+        data_out = [78, 117, 109, 98, 101, 114, 32, 49, 48, 49]
+        self.assertEqual(bs2hl(data_in), data_out)
+
 
 if __name__ == '__main__':
     unittest.main()
