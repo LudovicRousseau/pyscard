@@ -77,6 +77,42 @@ class TestUtil(unittest.TestCase):
         data_out = "3B 65 00 00 9C 11 01 01 03"
         self.assertEqual(toHexString(data_in), data_out)
 
+        data_out = "3B, 65, 00, 00, 9C, 11, 01, 01, 03"
+        self.assertEqual(toHexString(data_in, COMMA), data_out)
+
+        data_out = "0x3B 0x65 0x00 0x00 0x9C 0x11 0x01 0x01 0x03"
+        self.assertEqual(toHexString(data_in, HEX), data_out)
+
+        data_out = "0x3B, 0x65, 0x00, 0x00, 0x9C, 0x11, 0x01, 0x01, 0x03"
+        self.assertEqual(toHexString(data_in, HEX | COMMA), data_out)
+
+        data_out = "0X3B 0X65 0X00 0X00 0X9C 0X11 0X01 0X01 0X03"
+        self.assertEqual(toHexString(data_in, HEX | UPPERCASE), data_out)
+
+        data_out = "0X3B, 0X65, 0X00, 0X00, 0X9C, 0X11, 0X01, 0X01, 0X03"
+        self.assertEqual(toHexString(data_in, HEX | UPPERCASE | COMMA),
+                         data_out)
+
+        data_out = "3B6500009C11010103"
+        self.assertEqual(toHexString(data_in, PACK), data_out)
+
+        data_out = "3B,65,00,00,9C,11,01,01,03"
+        self.assertEqual(toHexString(data_in, COMMA | PACK), data_out)
+
+        data_out = "0x3B0x650x000x000x9C0x110x010x010x03"
+        self.assertEqual(toHexString(data_in, HEX | PACK), data_out)
+
+        data_out = "0x3B,0x65,0x00,0x00,0x9C,0x11,0x01,0x01,0x03"
+        self.assertEqual(toHexString(data_in, HEX | COMMA | PACK), data_out)
+
+        data_out = "0X3B0X650X000X000X9C0X110X010X010X03"
+        self.assertEqual(toHexString(data_in, HEX | UPPERCASE | PACK),
+                         data_out)
+
+        data_out = "0X3B,0X65,0X00,0X00,0X9C,0X11,0X01,0X01,0X03"
+        self.assertEqual(toHexString(data_in, HEX | UPPERCASE | COMMA |
+                                     PACK), data_out)
+
     def test_HexListToBinString(self):
         data_in = [1, 2, 3]
         data_out = "\x01\x02\x03"
