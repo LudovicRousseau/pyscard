@@ -100,7 +100,7 @@ def toBytes(bytestring):
     packedstring = bytestring.replace(' ', '').replace('	','').replace('\n', '')
     try:
         return list(map(lambda x: int(''.join(x), 16), zip(*[iter(packedstring)] * 2)))
-    except KeyError:
+    except (KeyError, ValueError):
         raise TypeError('not a string representing a list of bytes')
 
 
