@@ -3,7 +3,10 @@
 
 import sys
 import unittest
-from StringIO import StringIO
+if sys.version_info >= (3, 0):
+    from io import StringIO
+else:
+    from StringIO import StringIO
 from smartcard.ATR import ATR
 
 
