@@ -276,7 +276,8 @@ class ATR(object):
         print('T=0 supported: ' + str(self.isT0Supported()))
         print('T=1 supported: ' + str(self.isT1Supported()))
 
-        print('checksum: ' + self.getChecksum())
+        if self.getChecksum():
+            print('checksum: %d' % self.getChecksum())
 
         print('\tclock rate conversion factor: ' + str(self.getClockRateConversion()))
         print('\tbit rate adjustment factor: ' + str(self.getBitRateFactor()))
