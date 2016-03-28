@@ -28,6 +28,9 @@ class TestUtil(unittest.TestCase):
                   '''
         self.assertEqual(toBytes(data_in), data_out)
 
+        data_in = "zz"
+        self.assertRaises(TypeError, toBytes, data_in)
+
     def test_padd(self):
         data_in = toBytes("3B 65 00 00 9C 11 01 01 03")
         data_out = [0x3B, 0x65, 0, 0, 0x9C, 0x11, 1, 1, 3,
