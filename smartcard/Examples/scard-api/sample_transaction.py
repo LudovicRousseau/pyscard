@@ -40,7 +40,7 @@ try:
         hresult, readers = SCardListReaders(hcontext, [])
         if hresult != SCARD_S_SUCCESS:
             raise error(
-                'Failed to list readers:: ' + \
+                'Failed to list readers: ' + \
                 SCardGetErrorMessage(hresult))
         print('PCSC Readers:', readers)
 
