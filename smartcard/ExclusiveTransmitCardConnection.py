@@ -49,7 +49,7 @@ class ExclusiveTransmitCardConnection(CardConnectionDecorator):
                 hresult = SCardBeginTransaction(component.hcard)
                 if 0 != hresult:
                     raise CardConnectionException(
-                        'Failed to lock with SCardBeginTransaction' +\
+                        'Failed to lock with SCardBeginTransaction: ' +\
                         SCardGetErrorMessage(hresult))
                 else:
                     #print('locked')
@@ -71,7 +71,7 @@ class ExclusiveTransmitCardConnection(CardConnectionDecorator):
                                               SCARD_LEAVE_CARD)
                 if 0 != hresult:
                     raise CardConnectionException(
-                        'Failed to unlock with SCardEndTransaction' +\
+                        'Failed to unlock with SCardEndTransaction: ' +\
                         SCardGetErrorMessage(hresult))
                 else:
                     #print('unlocked')
