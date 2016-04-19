@@ -346,7 +346,7 @@ static SCARDRETCODE _GetAttrib(SCARDHANDLE hcard, SCARDDWORDARG dwAttrId, BYTELI
 {
     long lRetCode;
 
-    pbl->cBytes = 0;
+    pbl->cBytes = 65535;
     pbl->ab = NULL;
 
     lRetCode = (mySCardGetAttrib)(hcard, dwAttrId, pbl->ab, &pbl->cBytes);
