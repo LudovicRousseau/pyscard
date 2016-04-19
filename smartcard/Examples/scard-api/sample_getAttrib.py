@@ -132,7 +132,7 @@ if __name__ == '__main__':
                             print('-----------------', \
                                 attributes[i], \
                                 '-----------------')
-                            print('unsupported')
+                            print('error:', SCardGetErrorMessage(hresult))
 
                 finally:
                     hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
