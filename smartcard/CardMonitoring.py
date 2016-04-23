@@ -189,6 +189,11 @@ class CardMonitoringThread(object):
                 except:
                     # FIXME Tighten the exceptions caught by this block
                     traceback.print_exc()
+                    # Most likely raised during interpreter shutdown due
+                    # to unclean exit which failed to remove all observers.
+                    # To solve this, we set the stop event and pass the
+                    # exception to let the thread finish gracefully.
+                    self.stopEvent.set()
 
         # stop the thread by signaling stopEvent
         def stop(self):
