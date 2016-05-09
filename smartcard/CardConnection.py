@@ -210,3 +210,13 @@ class CardConnection(Observable):
 
         Subclasses must override this method for implementing get attrib."""
         pass
+
+    def __enter__(self):
+        """Enter the runtime context.
+        """
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Exit the runtime context trying to disconnect.
+        """
+        self.disconnect()
