@@ -1,3 +1,12 @@
+1.9.4 (May 2016)
+================
+    * Fix installation using pip and easy_install
+    * Avoid El Capitan SCardGetAttrib bug
+    * CardConnection: Add context management
+    * PCSCCardConnection: raise NoCardException if SCARD_E_NO_SMARTCARD
+    * Stop CardMonitor monitor thread after traceback print.
+    * minor improvements
+
 1.9.3 (March 2016)
 ==================
        * Fix SCardControl() on Windows 7
