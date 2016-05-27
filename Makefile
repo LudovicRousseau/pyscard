@@ -18,4 +18,7 @@ pypi: clean
 test: build
 	$(PYTHON) setup.py test
 
+ChangeLog.git:
+	git log --stat --decorate=short > $@
+
 .PHONY: clean build pypi test
