@@ -1415,12 +1415,11 @@ hl2bs and bs2hl) provide conversion between the two types.
 .. sourcecode:: python
 
     from smartcard.util import HexListToBinString, BinStringToHexList
+
     test_data = [ 0x01, 0x42, 0x70, 0x23 ]
     binstring = HexListToBinString( test_data )
     hexlist = BinStringToHexList( binstring )
     print binstring, hexlist
-    ?Bp# [1, 66, 112, 35]
-    Hashing
 
 pycrypto supports the following hashing algorithms: SHA-1, MD2, MD4 et
 MD5. To hash 16 bytes of data with SHA-1:
