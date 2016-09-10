@@ -1,9 +1,9 @@
-pyscard - python for smart cards
+pyscard - Python for smart cards
 ################################
 
-`pyscard - python smart card library -
-<https://sourceforge.net/projects/pyscard/>`_ is a python module adding
-smart cards support to `python <http://www.python.org/>`_.
+`pyscard - Python smart card library -
+<https://sourceforge.net/projects/pyscard/>`_ is a Python module adding
+smart cards support to `Python <http://www.python.org/>`_.
 
 `download <https://sourceforge.net/projects/pyscard/files/pyscard/>`_
 pyscard from sourceforge.net.
@@ -19,7 +19,7 @@ Pyscard consists of:
   components) also known as PC/SC, and
 
 * `smartcard <http://pyscard.sourceforge.net/epydoc/index.html>`_, a
-  higher level python framework built on top of the raw PC/SC API.
+  higher level Python framework built on top of the raw PC/SC API.
 
 .. image:: ../doc/images/pyscard.jpg
     :align: center
@@ -29,12 +29,12 @@ Documentation
 
     :ref:`pyscard_user_guide`
 
-    `smartcard reference (python smart card library)
+    `smartcard reference (Python smart card library)
     <http://pyscard.sourceforge.net/epydoc/index.html>`_
 
-    `scard reference (python PCSC wrapper)
+    `scard reference (Python PCSC wrapper)
     <http://pyscard.sourceforge.net/epydoc/smartcard.scard.scard-module.html>`_,
-    the python wrapper around PCSC
+    the Python wrapper around PCSC
 
 Samples
 *******

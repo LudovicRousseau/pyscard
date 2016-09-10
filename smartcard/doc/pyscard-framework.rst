@@ -3,10 +3,10 @@
 pyscard smartcard framework samples
 ===================================
 
-pyscard is a python module adding smart cards support to python.
+pyscard is a Python module adding smart cards support to Python.
 
 It consists of smartcard.scard, an extension module wrapping Windows
-smart card base components (also known as PCSC), and smartcard, a python
+smart card base components (also known as PCSC), and smartcard, a Python
 framework library hiding PCSC complexity.
 
 Display the ATR of inserted cards

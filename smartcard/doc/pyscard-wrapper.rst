@@ -3,16 +3,16 @@
 PCSC wrapper samples
 ====================
 
-Using the smartcard framework is the preferred way to write python smart
+Using the smartcard framework is the preferred way to write Python smart
 card application. You can however use the smartcard.scard library to
-write your python smart card application if you want to write your own
-python framework, or if you want to access some features of the SCardXXX
+write your Python smart card application if you want to write your own
+Python framework, or if you want to access some features of the SCardXXX
 C API not available in the smartcard framework.
 
 The smartcard.scard module is a native extension module wrapping Windows
 smart card base components (also known as PCSC) on Windows, and
-pcsc-lite on linux and Mac OS X, whereas the smartcard framework is a
-pure python framework hiding scard complexity and PCSC.
+pcsc-lite on Linux and Mac OS X, whereas the smartcard framework is a
+pure Python framework hiding scard complexity and PCSC.
 
 send a Control Code to a card or reader
 """""""""""""""""""""""""""""""""""""""

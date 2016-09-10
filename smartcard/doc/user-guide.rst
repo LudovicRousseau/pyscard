@@ -34,7 +34,7 @@ aware applications in Python. The smartcard module is built on top of
 the PCSC API Python wrapper module.
 
 pyscard supports Windows 2000 and XP by using the `Microsoft Smart Card
-Base <http://msdn2.microsoft.com/en-us/library/aa374731.aspx#smart_card_functions>`_ components, and linux and Mac OS X by using `PCSC-lite <http://pcsclite.alioth.debian.org/>`_.
+Base <http://msdn2.microsoft.com/en-us/library/aa374731.aspx#smart_card_functions>`_ components, and Linux and Mac OS X by using `PCSC-lite <http://pcsclite.alioth.debian.org/>`_.
 
 
 Smart Cards
@@ -47,23 +47,23 @@ Smartcards usually interface with a dedicated terminal, such as a
 point-of-sale terminal or a mobile phone. Sometime, smart cards have to
 be interfaced with personal computers. This is the case for some
 applications such as secure login, mail cyphering or digital signature,
-but also for some PC based smart card tools used to personnalize or edit
-the content of smart cards. Smart cards are interfaced with a personnal
+but also for some PC based smart card tools used to personalize or edit
+the content of smart cards. Smart cards are interfaced with a personal
 computer using a smart card reader. The smart card reader connects on
 one side to the serial port of the smart card, and on the other side to
 the PC, often nowadays thru a USB port.
 
 The PCSC workgroup has defined a standard API to interface smart card
 and smart card readers to a PC. The resulting reference implementation
-on linux and Mac OS X operating systems is `PC/SC-lite
+on Linux and Mac OS X operating systems is `PC/SC-lite
 <http://pcsclite.alioth.debian.org/>`_. All windows operating systems
 also include out of the box smart card support, usually called `PCSC
 <http://msdn2.microsoft.com/en-us/library/aa374731.aspx#smart_card_functions>`_.
 
 The PCSC API is implemented in C language, and several bridges are
 provided to access the PCSC API from different languages such as java or
-visual basic. pyscard is a python framework to develop smart card PC
-applications on linux, Mac OS X and windows. pyscard lower layers
+visual basic. pyscard is a Python framework to develop smart card PC
+applications on Linux, Mac OS X and windows. pyscard lower layers
 interface to the PCSC API to access the smart cards and smart card
 readers.
 
@@ -147,7 +147,7 @@ standard. The first bytes of the ATR describe the voltage convention
 (direct or inverse), followed by bytes describing the available
 communication interfaces and their respective parameters. These
 interface bytes are then followed by Historical Bytes which are not
-standardized, and are useful for transmitting proprietary informations
+standardized, and are useful for transmitting proprietary information
 such as the card type, the version of the embedded software, or the card
 state. Finally these historical bytes are eventually followd by a
 checksum byte.
@@ -487,7 +487,7 @@ instructions by functions, e.g.:
 Using card connection observers to trace apdu transmission
 ==========================================================
 
-The prefered solution is to implement a card connection observer, and
+The preferred solution is to implement a card connection observer, and
 register the observer with the card connection. The card connection will
 then notify the observer when card connection events occur (e.g.
 connection, disconnection, apdu command or apdu response). This is
@@ -678,7 +678,7 @@ codes are standardized in ISO7816-4, ISO7816-8 or ISO7816-9, for
 example. Other status word codes are standardized by standardization
 bodies such as Open Platform (e.g. javacard), 3GPP (e.g. SIM or USIM
 cards), or Eurocard-Mastercard-Visa (EMV) (e.g. banking cards). Finally,
-any smart card application developper can defined application related
+any smart card application developer can defined application related
 proprietary codes; for example the MUSCLE applet defines a set of
 prioprietary codes related to the MUSCLE applet features.
 
@@ -777,7 +777,7 @@ a function mytransmit, e.g.:
     disconnecting from Utimaco CardManUSB 0
     >>>
 
-The prefered solution is for testing errors is to use
+The preferred solution is for testing errors is to use
 smarcard.sw.ErrorChecker, as described in the following section.
 
 Checking APDU transmission errors with error checkers
@@ -791,7 +791,7 @@ sw1=0x68 and sw2=0x83 or 0x84 for command chaining errors. Other
 standards, like Open Platform, define additional status words error,
 e.g. sw1=0x94 and sw2=0x84.
 
-The prefered strategy for status word error checking is based around
+The preferred strategy for status word error checking is based around
 individual error checkers (smartcard.sw.ErrorChecker) that can be
 chained into an error checking chain (smartcars.sw.ErrorCheckingChain).
 
@@ -1351,7 +1351,7 @@ Exclusive Transmit Card Connection Decorator
 --------------------------------------------
 
 The ExclusiveTransmitCardConnection performs an exclusive transaction to
-the card, i.e. a series of transmit that cannot be interupted by other
+the card, i.e. a series of transmit that cannot be interrupted by other
 threads' transmits. To do so, include the desired transmits between an
 lock() and unlock() method call on the ExclusiveTransmitCardConnection:
 
@@ -1397,16 +1397,16 @@ A word on cryptography
 Smart card are security devices. As a result, smart card applications
 usually require some kind cryptography, for example to establish a
 secure channel with the smart card. One of the reference cryptographic
-modules for python is `pycrypto
-<http://www.amk.ca/python/code/crypto.html>`_, the python cryptographic
+modules for Python is `pycrypto
+<http://www.amk.ca/python/code/crypto.html>`_, the Python cryptographic
 toolkit. This section shows briefly the basics of pycrypto to give you a
-quick start to include cryptography in you python smart card
+quick start to include cryptography in your Python smart card
 applications.
 
-Bynary strings and list of bytes
+Binary strings and list of bytes
 ================================
 
-pycrypto processes binary strings, i.e. python strings that contains
+pycrypto processes binary strings, i.e. Python strings that contains
 characters such as '\01\42\70\23', whereas pyscard processes APDUs as
 list of bytes such as [0x01, 0x42, 0x70, 0x23]. The utility function
 HexListToBinString and BinStringToHexList (and their short name versions
