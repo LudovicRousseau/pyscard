@@ -116,7 +116,7 @@ APDU commands to the card with the transmit() method.
 Scripts written with the reader centric approach however have the
 following drawbacks:
 
-* the reader index or reader name is hardcoded in the scripts; the
+* the reader index or reader name is hard coded in the scripts; the
   scripts must be edited to match each user configuration; for example
   in the previous script, we would have to edit the script and change
   r[0] to r[1] for using the second reader
@@ -149,7 +149,7 @@ communication interfaces and their respective parameters. These
 interface bytes are then followed by Historical Bytes which are not
 standardized, and are useful for transmitting proprietary information
 such as the card type, the version of the embedded software, or the card
-state. Finally these historical bytes are eventually followd by a
+state. Finally these historical bytes are eventually followed by a
 checksum byte.
 
 The class `smartcard.ATR
@@ -281,10 +281,10 @@ Custom CardTypes
 
 Custom CardTypes can be created, e.g. a card type that checks the ATR
 and the historical bytes of the card. To create a custom CardType,
-deriver your CardType class from the `CardType
+derive your CardType class from the `CardType
 <http://pyscard.sourceforge.net/epydoc/smartcard.CardType.CardType-class.html>`_
 base class (or any other CardType) and override the matches() method.
-For exemple to create a DCCardType that will match cards with the direct
+For example to create a DCCardType that will match cards with the direct
 convention (first byte of ATR to 0x3b):
 
     >>> from smartcard.CardType import CardType
@@ -314,14 +314,14 @@ reader-centric approach:
 
 * the request will block or time-out if the desired card type is not
   inserted since we request the desired card type, the script is not
-  played on an unknown or uncompatible card
+  played on an unknown or incompatible card
 
 Scripts written with the card-centric approach have however the
 following drawbacks:
 
 * the script is limited to a specific card type; we have to modify the
   script if we want to execute the script on another card type. For
-  exemple, we have to modify the ATR of the card if we are using the
+  example, we have to modify the ATR of the card if we are using the
   ATRCardType. This can be partially solved by having a custom CardType
   that matches several ATRs, though.
 
@@ -329,7 +329,7 @@ Selecting the card communication protocol
 -----------------------------------------
 
 Communication parameters are mostly important for the protocol
-negociation between the smart card reader and the card. The main
+negotiation between the smart card reader and the card. The main
 smartcard protocols are the T=0 protocol and the T=1 protocol, for byte
 or block transmission, respectively. The required protocol can be
 specified at card connection or card transmission.
@@ -396,7 +396,7 @@ set of smart cards supported by the object. For example we associate a
 javacard loader class with a set of javacard smart cards. We create a
 request for the specific object, and wait until a card supported by the
 object is inserted. Once a card supported by the object is inserted, we
-perform the required function by calling the objec methods.
+perform the required function by calling the object methods.
 
 To be written...
 
@@ -535,7 +535,7 @@ returns.
     >>> cardservice.connection.addObserver( observer )
 
 On card connection events (connect, disconnect, transmit command apdu,
-receive response apdu), the card connection notifies its obersers with a
+receive response apdu), the card connection notifies its observers with a
 `CarConnectionEvent
 <http://pyscard.sourceforge.net/epydoc/smartcard.CardConnectionEvent.CardConnectionEvent-class.html>`_
 including the event type and the event data. The
@@ -583,7 +583,7 @@ disconnect, command and response apdu events:
     > A0 C0 00 00 1A
     < 00 00 00 00 7F 10 02 00 00 00 00 00 0D 13 00 0A 04 00 83 8A 83 8A 00 01 00 00 90 0
 
-A card connection observer's update methode is called upon card
+A card connection observer's update method is called upon card
 connection event, with the connection and the connection event as
 parameters. The `CardConnectionEvent
 <http://pyscard.sourceforge.net/epydoc/smartcard.CardConnectionEvent.CardConnectionEvent-class.html>`_
@@ -680,9 +680,9 @@ bodies such as Open Platform (e.g. javacard), 3GPP (e.g. SIM or USIM
 cards), or Eurocard-Mastercard-Visa (EMV) (e.g. banking cards). Finally,
 any smart card application developer can defined application related
 proprietary codes; for example the MUSCLE applet defines a set of
-prioprietary codes related to the MUSCLE applet features.
+proprietary codes related to the MUSCLE applet features.
 
-Some of these status word codes are uniques, but others have a different
+Some of these status word codes are unique, but others have a different
 meaning depending on the card type and its supported standards. For
 example, ISO7816-4 defines the error code 0x62 0x82 as "File
 Invalidated", whereas in Open Platform 2.1 the same error code is
@@ -694,7 +694,7 @@ strategies to check and report smart card status word errors.
 The brute force for testing APDU transmission errors
 ====================================================
 
-As for APDU tracing, a straightforward way of checking for errors in response APDUs during the execution of scripts is to insert testt statements after the transmit() method calls:
+As for APDU tracing, a straightforward way of checking for errors in response APDUs during the execution of scripts is to insert test statements after the transmit() method calls:
 
     >>> from smartcard.CardType import AnyCardType
     >>> from smartcard.CardRequest import CardRequest
@@ -1256,7 +1256,7 @@ APDUs are transmitted to a card using the CardConnection object. It is
 sometime useful to change transparently the behaviour of a smart card
 connection, for example to establish automatically a secure channel, or
 filter and modify on the fly some APDU commands or responses, or the
-smart card ATR. pyscard uses theDecorator design pattern to dynamically
+smart card ATR. pyscard uses the decorator design pattern to dynamically
 change the behaviour of a smart card connection. A
 CardConnectionDecorator modifies the behaviour of a CardConnection
 object. For example, the following CardConnectionDecorator overwrites
