@@ -47,25 +47,25 @@ class SimpleSCardApp(wx.App):
                   pos=(-1, -1),
                   size=(-1, -1)):
         """Constructor for simple smart card application.
-        appname: the application name
-        apppanel: the application panel to display in the application frame
-        appicon: the application icon file; the default is no icon
-        appstyle: a combination of the following styles (bitwise or |)
-                  TR_SMARTCARD: display a smartcard tree panel
-                  TR_READER: display a reader tree panel
-                  TB_SMARTCARD: display a smartcard toolbar
-                  TB_SMARTCARD: display a reader toolbar
-                  PANEL_APDUTRACER: display an APDU tracer panel
-                  default is TR_DEFAULT = TR_SMARTCARD
-        pos: the application position as a (x,y) tupple; default is (-1,-1)
-        size: the application window size as a (x,y) tuple; default is (-1,-1)
+        @param appname: the application name
+        @param apppanel: the application panel to display in the application frame
+        @param appicon: the application icon file; the default is no icon
+        @param appstyle: a combination of the following styles (bitwise or |)
+          - TR_SMARTCARD: display a smartcard tree panel
+          - TR_READER: display a reader tree panel
+          - TB_SMARTCARD: display a smartcard toolbar
+          - TB_SMARTCARD: display a reader toolbar
+          - PANEL_APDUTRACER: display an APDU tracer panel
+          - default is TR_DEFAULT = TR_SMARTCARD
+        @param pos: the application position as a (x,y) tupple; default is (-1,-1)
+        @param size: the application window size as a (x,y) tuple; default is (-1,-1)
 
-        example:
-        app = SimpleSCardApp(
+            Example:
+            C{app = SimpleSCardApp(
             appname = 'A simple smartcard application',
             apppanel = testpanel.MyPanel,
             appstyle = TR_READER | TR_SMARTCARD,
-            appicon = 'resources\mysmartcard.ico')
+            appicon = 'resources\mysmartcard.ico')}
         """
         self.appname = appname
         self.apppanel = apppanel
