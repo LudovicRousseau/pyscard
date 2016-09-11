@@ -48,21 +48,21 @@ class ISO7816_9ErrorChecker(ErrorChecker):
     """ISO7816-8 error checker.
 
     This error checker raises the following exceptions:
-    - sw1 sw2
-    - 62  82          WarningProcessingException
-    - 64  00          ExecutionErrorException
-    - 69  82          CheckingErrorException
-    - 6A  80,84,89,8A CheckingErrorException
+      - sw1 sw2
+      - 62  82          WarningProcessingException
+      - 64  00          ExecutionErrorException
+      - 69  82          CheckingErrorException
+      - 6A  80,84,89,8A CheckingErrorException
 
     This checker does not raise exceptions on undefined sw1 values, e.g.:
-    - sw1 sw2
-    - 63  any
-    - 6F  any
+      - sw1 sw2
+      - 63  any
+      - 6F  any
 
     and on undefined sw2 values, e.g.:
-    - sw1 sw2
-    - 62  81 83
-    - 64  any except 00
+      - sw1 sw2
+      - 62  81 83
+      - 64  any except 00
 
 
     Use another checker in the error checking chain, e.g., the
