@@ -54,10 +54,10 @@ class CardObserver(Observer):
     def update(self, observable, handlers):
         """Called upon reader insertion/removal.
 
-        observable:
-        handlers:
-            addedcards: list of added readers causing notification
-            removedcards: list of removed readers causing notification
+        @param observable:
+        @param handlers:
+          - addedcards: list of added readers causing notification
+          - removedcards: list of removed readers causing notification
         """
         pass
 
