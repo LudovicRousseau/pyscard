@@ -71,27 +71,27 @@ class op21_ErrorChecker(ErrorChecker):
     """Open platform 2.1 error checker.
 
     This error checker raises the following exceptions:
-    - sw1 sw2
-    - 62  83                  WarningProcessingException
-    - 63  00                  WarningProcessingException
-    - 64  00                  ExecutionErrorException
-    - 65  81                  ExecutionErrorException
-    - 67  00                  CheckingErrorException
-    - 69  82 85               CheckingErrorException
-    - 6A  80 81 82 84 86 88   CheckingErrorException
-    - 6D  00                  CheckingErrorException
-    - 6E  00                  CheckingErrorException
-    - 94  84 85               CheckingErrorException
+      - sw1 sw2
+      - 62  83                  WarningProcessingException
+      - 63  00                  WarningProcessingException
+      - 64  00                  ExecutionErrorException
+      - 65  81                  ExecutionErrorException
+      - 67  00                  CheckingErrorException
+      - 69  82 85               CheckingErrorException
+      - 6A  80 81 82 84 86 88   CheckingErrorException
+      - 6D  00                  CheckingErrorException
+      - 6E  00                  CheckingErrorException
+      - 94  84 85               CheckingErrorException
 
     This checker does not raise exceptions on undefined sw1 values, e.g.:
-    - sw1 sw2
-    - 63  any
-    - 6F  any
+      - sw1 sw2
+      - 63  any
+      - 6F  any
 
     and on undefined sw2 values, e.g.:
-    - sw1 sw2
-    - 62  81 83
-    - 64  any except 00
+      - sw1 sw2
+      - 62  81 83
+      - 64  any except 00
 
 
     Use another checker in the error checking chain to raise exceptions
