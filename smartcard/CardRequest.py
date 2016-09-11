@@ -35,23 +35,23 @@ class CardRequest(object):
         cardServiceClass=None, timeout=1):
         """Construct new CardRequest.
 
-        newcardonly:        if True, request a new card
+        @param newcardonly: if True, request a new card
                             default is False, i.e. accepts cards already
                             inserted
 
-        readers:            the list of readers to consider for
+        @param readers:     the list of readers to consider for
                             requesting a card default is to consider all
                             readers
 
-        cardType:           the smartcard.CardType.CardType to wait for;
-                            default is smartcard.CardType.AnyCardType,
+        @param cardType:    the L{smartcard.CardType.CardType} to wait for;
+                            default is L{smartcard.CardType.AnyCardType},
                             i.e. the request will succeed with any card
 
-        cardServiceClass:   the specific card service class to create
+        @param cardServiceClass: the specific card service class to create
                             and bind to the card default is to create
-                            and bind a smartcard.PassThruCardService
+                            and bind a L{smartcard.PassThruCardService}
 
-        timeout:            the time in seconds we are ready to wait for
+        @param timeout:     the time in seconds we are ready to wait for
                             connecting to the requested card.  default
                             is to wait one second to wait forever, set
                             timeout to None
