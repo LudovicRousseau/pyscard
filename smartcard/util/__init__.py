@@ -31,12 +31,12 @@ COMMA = 8
 
 def padd(bytelist, length, padding='FF'):
     """ Padds a byte list with a constant byte value (default is x0FF)
-        bytelist: the byte list to padd
-        length:   the total length of the resulting byte list;
+    @param bytelist: the byte list to padd
+    @param length: the total length of the resulting byte list;
                   no padding if length is smaller than the byte list length
-        padding:  padding value (default is 0xff)
+    @param padding: padding value (default is 0xff)
 
-        returns the padded bytelist
+    @return: the padded bytelist
 
     >>> padd([59, 101, 0, 0, 156, 17, 1, 1, 3], 16)
     [59, 101, 0, 0, 156, 17, 1, 1, 3, 255, 255, 255, 255, 255, 255, 255]
@@ -56,11 +56,11 @@ def padd(bytelist, length, padding='FF'):
 def toASCIIBytes(stringtoconvert):
     """Returns a list of ASCII bytes from a string.
 
-       stringtoconvert: the string to convert into a byte list
+    @param stringtoconvert: the string to convert into a byte list
 
-       returns a byte list of the ASCII codes of the string characters
+    @return: a byte list of the ASCII codes of the string characters
 
-       toASCIIBytes() is the reverse of toASCIIString()
+    L{toASCIIBytes()} is the reverse of L{toASCIIString()}
 
     >>> toASCIIBytes("Number 101")
     [78, 117, 109, 98, 101, 114, 32, 49, 48, 49]
@@ -72,11 +72,11 @@ def toASCIIBytes(stringtoconvert):
 def toASCIIString(bytelist):
     """Returns a string representing a list of ASCII bytes.
 
-       bytelist: list of ASCII bytes to convert into a string
+    @param bytelist: list of ASCII bytes to convert into a string
 
-       returns a string from the ASCII code list
+    @return: a string from the ASCII code list
 
-       toASCIIString() is the reverse of toASCIIBytes()
+    L{toASCIIString()} is the reverse of L{toASCIIBytes()}
 
     >>> toASCIIString([0x4E,0x75,0x6D,0x62,0x65,0x72,0x20,0x31,0x30,0x31])
     'Number 101'
@@ -150,9 +150,9 @@ __dic_GSM_3_38__ = {
 def toGSM3_38Bytes(stringtoconvert):
     """Returns a list of bytes from a string using GSM 3.38 conversion table.
 
-       stringtoconvert:     string to convert
+    @param stringtoconvert:     string to convert
 
-       returns a list of bytes
+    @return: a list of bytes
 
     >>> toGSM3_38Bytes("@ùPascal")
     [0, 6, 80, 97, 115, 99, 97, 108]
@@ -176,13 +176,13 @@ def toGSM3_38Bytes(stringtoconvert):
 def toHexString(bytes=[], format=0):
     """Returns an hex string representing bytes
 
-        bytes:  a list of bytes to stringify,
-                    e.g. [59, 22, 148, 32, 2, 1, 0, 0, 13]
-        format: a logical OR of
-                COMMA: add a comma between bytes
-                HEX: add the 0x chars before bytes
-                UPPERCASE: use 0X before bytes (need HEX)
-                PACK: remove blanks
+    @param bytes:  a list of bytes to stringify,
+                e.g. [59, 22, 148, 32, 2, 1, 0, 0, 13]
+    @param format: a logical OR of
+      - COMMA: add a comma between bytes
+      - HEX: add the 0x chars before bytes
+      - UPPERCASE: use 0X before bytes (need HEX)
+      - PACK: remove blanks
 
     >>> vals = [0x3B, 0x65, 0x00, 0x00, 0x9C, 0x11, 0x01, 0x01, 0x03]
     >>> toHexString(vals)
