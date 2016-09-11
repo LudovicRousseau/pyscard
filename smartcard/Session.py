@@ -49,8 +49,8 @@ class Session(object):
         """Session constructor. Initializes a smart card session and
         connect to the card.
 
-        readerName:         reader to connect to; default is first PCSC reader
-        cardServiceClass:   card service to bind the session to; default
+        @param readerName: reader to connect to; default is first PCSC reader
+        @param cardServiceClass: card service to bind the session to; default
                             is None
         """
 
@@ -89,9 +89,9 @@ class Session(object):
     def sendCommandAPDU(self, command):
         """Send an APDU command to the connected smartcard.
 
-        command:    list of APDU bytes, e.g. [0xA0, 0xA4, 0x00, 0x00, 0x02]
+        @param command: list of APDU bytes, e.g. [0xA0, 0xA4, 0x00, 0x00, 0x02]
 
-        returns a tuple (response, sw1, sw2) where
+        @return: a tuple (response, sw1, sw2) where
                 response is the APDU response
                 sw1, sw2 are the two status words
         """
