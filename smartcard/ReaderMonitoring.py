@@ -52,10 +52,10 @@ class ReaderObserver(Observer):
     def update(self, observable, handlers):
         """Called upon reader insertion/removal.
 
-        observable:
-        handlers:
-            addedreaders: list of added readers causing notification
-            removedreaders: list of removed readers causing notification
+        @param observable:
+        @param handlers:
+          - addedreaders: list of added readers causing notification
+          - removedreaders: list of removed readers causing notification
         """
         pass
 
