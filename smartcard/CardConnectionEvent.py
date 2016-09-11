@@ -27,14 +27,14 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 class CardConnectionEvent(object):
     """Base class for card connection events.
 
-    This event is notified by CardConnection objects.
-
-    type:   'connect', 'disconnect', 'command', 'response'
-    args:   None for 'connect' or 'disconnect'
-            command APDU byte list for 'command'
-            [response data, sw1, sw2] for 'response'
-    type:   'connect'   args:"""
+    This event is notified by CardConnection objects."""
 
     def __init__(self, type, args=None):
+        """
+        @param type:   'connect', 'disconnect', 'command', 'response'
+        @param args:   None for 'connect' or 'disconnect'
+                command APDU byte list for 'command'
+                [response data, sw1, sw2] for 'response'
+        """
         self.type = type
         self.args = args
