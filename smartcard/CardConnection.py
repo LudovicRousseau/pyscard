@@ -40,7 +40,7 @@ class CardConnection(Observable):
     def __init__(self, reader):
         """Construct a new card connection.
 
-        readerName: name of the reader in which the smartcard to connect
+        @param reader: name of the reader in which the smartcard to connect
         to is located.
         """
         Observable.__init__(self)
@@ -56,8 +56,8 @@ class CardConnection(Observable):
     def addSWExceptionToFilter(self, exClass):
         """Add a status word exception class to be filtered.
 
-        exClass: the class to filter, e.g.
-        smartcard.sw.SWException.WarningProcessingException
+        @param exClass: the class to filter, e.g.
+        L{smartcard.sw.SWException.WarningProcessingException}
 
         Filtered exceptions will not be raised when encountered in the
         error checking chain."""
@@ -74,14 +74,14 @@ class CardConnection(Observable):
 
     def connect(self, protocol=None, mode=None, disposition=None):
         """Connect to card.
-        protocol: a bit mask of the protocols to use, from
-        CardConnection.T0_protocol, CardConnection.T1_protocol,
-        CardConnection.RAW_protocol, CardConnection.T15_protocol
+        @param protocol: a bit mask of the protocols to use, from
+        L{CardConnection.T0_protocol}, L{CardConnection.T1_protocol},
+        L{CardConnection.RAW_protocol}, L{CardConnection.T15_protocol}
 
-        mode: SCARD_SHARE_SHARED (default), SCARD_SHARE_EXCLUSIVE or
+        @param mode: SCARD_SHARE_SHARED (default), SCARD_SHARE_EXCLUSIVE or
         SCARD_SHARE_DIRECT
 
-        disposition: SCARD_LEAVE_CARD (default), SCARD_RESET_CARD,
+        @param disposition: SCARD_LEAVE_CARD (default), SCARD_RESET_CARD,
         SCARD_UNPOWER_CARD or SCARD_EJECT_CARD
         """
         Observable.setChanged(self)
@@ -110,7 +110,7 @@ class CardConnection(Observable):
 
     def setErrorCheckingChain(self, errorcheckingchain):
         """Add an error checking chain.
-        errorcheckingchain: a smartcard.sw.ErrorCheckingChain object The
+        @param errorcheckingchain: a smartcard.sw.ErrorCheckingChain object The
         error checking strategies in errorchecking chain will be tested
         with each received response APDU, and a
         smartcard.sw.SWException.SWException will be raised upon
@@ -119,7 +119,7 @@ class CardConnection(Observable):
 
     def setProtocol(self, protocol):
         """Set protocol for card connection.
-        protocol: a bit mask of CardConnection.T0_protocol,
+        @param protocol: a bit mask of CardConnection.T0_protocol,
         CardConnection.T1_protocol, CardConnection.RAW_protocol,
         CardConnection.T15_protocol e.g.
         setProtocol(CardConnection.T1_protocol |
@@ -131,9 +131,9 @@ class CardConnection(Observable):
         and notify observers upon command/response APDU events.
         Subclasses must override the doTransmit() class method.
 
-        bytes:      list of bytes to transmit
+        @param bytes:      list of bytes to transmit
 
-        protocol:   the transmission protocol, from
+        @param protocol:   the transmission protocol, from
                     CardConnection.T0_protocol,
                     CardConnection.T1_protocol, or
                     CardConnection.RAW_protocol
@@ -165,9 +165,9 @@ class CardConnection(Observable):
         class method and notify observers upon command/response events.
         Subclasses must override the doControl() class method.
 
-        controlCode: command code
+        @param controlCode: command code
 
-        bytes:       list of bytes to transmit
+        @param bytes:       list of bytes to transmit
         """
         Observable.setChanged(self)
         Observable.notifyObservers(self,
@@ -193,7 +193,7 @@ class CardConnection(Observable):
     def getAttrib(self, attribId):
         """return the requested attribute
 
-        attribId: attribute id like SCARD_ATTR_VENDOR_NAME
+        @param attribId: attribute id like SCARD_ATTR_VENDOR_NAME
         """
         Observable.setChanged(self)
         Observable.notifyObservers(self,
