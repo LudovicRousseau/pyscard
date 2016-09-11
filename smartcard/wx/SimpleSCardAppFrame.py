@@ -58,17 +58,17 @@ class TreeAndUserPanelPanel(wx.Panel):
     def __init__(self, parent, apppanelclass, appstyle):
         """
         Constructor. Creates the panel with two panels:
-            the left-hand panel is holding the smartcard and/or reader tree
-            the right-hand panel is holding the application dialog
+          - the left-hand panel is holding the smartcard and/or reader tree
+          - the right-hand panel is holding the application dialog
 
-        apppanelclass: the class of the panel to instantiate in the
-                    SimpleSCardAppFrame
-        appstyle: a combination of the following styles (bitwise or |)
-                  TR_SMARTCARD: display a smartcard tree panel
-                  TR_READER: display a reader tree panel
-                  TB_SMARTCARD: display a smartcard toolbar
-                  TB_SMARTCARD: display a reader toolbar
-                  default is TR_DEFAULT = TR_SMARTCARD
+        @param apppanelclass: the class of the panel to instantiate in the
+                    L{SimpleSCardAppFrame}
+        @param appstyle: a combination of the following styles (bitwise or |)
+           - TR_SMARTCARD: display a smartcard tree panel
+           - TR_READER: display a reader tree panel
+           - TB_SMARTCARD: display a smartcard toolbar
+           - TB_SMARTCARD: display a reader toolbar
+           - default is TR_DEFAULT = TR_SMARTCARD
         """
         wx.Panel.__init__(self, parent, -1)
 
