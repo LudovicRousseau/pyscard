@@ -173,13 +173,13 @@ class PCSCCardConnection(CardConnection):
     def doTransmit(self, bytes, protocol=None):
         """Transmit an apdu to the card and return response apdu.
 
-        bytes:      command apdu to transmit (list of bytes)
+        @param bytes:    command apdu to transmit (list of bytes)
 
-        protocol:   the transmission protocol, from CardConnection.T0_protocol,
-                    CardConnection.T1_protocol,
-                    or CardConnection.RAW_protocol
+        @param protocol: the transmission protocol, from
+            CardConnection.T0_protocol, CardConnection.T1_protocol, or
+            CardConnection.RAW_protocol
 
-        return:     a tuple (response, sw1, sw2) where
+        @return:     a tuple (response, sw1, sw2) where
                     sw1 is status word 1, e.g. 0x90
                     sw2 is status word 2, e.g. 0x1A
                     response are the response bytes excluding status words
