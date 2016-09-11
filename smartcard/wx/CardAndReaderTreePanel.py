@@ -352,12 +352,12 @@ class CardAndReaderTreePanel(wx.Panel):
     def __init__(self, parent, appstyle, clientpanel):
         """Constructor. Create a smartcard and reader tree control on the
         left-hand side of the application main frame.
-        parent: the tree panel parent
-        appstyle: a combination of the following styles (bitwise or |)
-                  TR_SMARTCARD: display a smartcard tree panel
-                  TR_READER: display a reader tree panel
-                  default is TR_DEFAULT = TR_SMARTCARD
-        clientpanel: the client panel to notify of smartcard and reader events
+        @param parent: the tree panel parent
+        @param appstyle: a combination of the following styles (bitwise or |)
+          - TR_SMARTCARD: display a smartcard tree panel
+          - TR_READER: display a reader tree panel
+          - default is TR_DEFAULT = TR_SMARTCARD
+        @param clientpanel: the client panel to notify of smartcard and reader events
         """
         wx.Panel.__init__(self, parent, -1, style=wx.WANTS_CHARS)
 
