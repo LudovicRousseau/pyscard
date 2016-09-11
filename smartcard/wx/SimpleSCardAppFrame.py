@@ -261,22 +261,21 @@ class SimpleSCardAppFrame(wx.Frame):
                ):
         """
         Constructor. Creates the frame with two panels:
-            the left-hand panel is holding the smartcard and/or reader tree
-            the right-hand panel is holding the application dialog
+          - the left-hand panel is holding the smartcard and/or reader tree
+          - the right-hand panel is holding the application dialog
 
-        appname: name of the application
-        apppanelclass: the class of the panel to instantiate in the
-                       SimpleSCardAppFrame
-        appstyle: a combination of the following styles (bitwise or |)
-                  TR_SMARTCARD: display a smartcard tree panel
-                  TR_READER: display a reader tree panel
-                  TB_SMARTCARD: display a smartcard toolbar
-                  TB_SMARTCARD: display a reader toolbar
-                  PANEL_APDUTRACER: display an APDU tracer panel
-                  default is TR_DEFAULT = TR_SMARTCARD
-        pos: the application position as a (x,y) tupple; default is (-1,-1)
-        size: the application window size as a (x,y) tuple; default is (-1,-1)
-        style: the frame wx.Frame style
+        @param appname: name of the application
+        @param apppanelclass: the class of the panel to instantiate in the
+                       L{SimpleSCardAppFrame}
+        @param appstyle: a combination of the following styles (bitwise or |)
+          - TR_SMARTCARD: display a smartcard tree panel
+          - TR_READER: display a reader tree panel
+          - TB_SMARTCARD: display a smartcard toolbar
+          - TB_SMARTCARD: display a reader toolbar
+          - PANEL_APDUTRACER: display an APDU tracer panel
+          - default is TR_DEFAULT = TR_SMARTCARD
+        @param pos: the application position as a (x,y) tupple; default is (-1,-1)
+        @param size: the application window size as a (x,y) tuple; default is (-1,-1)
         """
         wx.Frame.__init__(self,
                            None,
