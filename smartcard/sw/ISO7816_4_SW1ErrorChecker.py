@@ -48,21 +48,21 @@ class ISO7816_4_SW1ErrorChecker(ErrorChecker):
     """ISO7816-4 error checker based on status word sw1 only.
 
     This error checker raises the following exceptions:
-    - sw1 sw2
-    - 62  any   WarningProcessingException
-    - 63  any   WarningProcessingException
-    - 64  any   ExecutionErrorException
-    - 65  any   ExecutionErrorException
-    - 66  any   SecurityRelatedException
-    - 67  any   CheckingErrorException
-    - 68  any   CheckingErrorException
-    - 69  any   CheckingErrorException
-    - 6a  any   CheckingErrorException
-    - 6b  any   CheckingErrorException
-    - 6c  any   CheckingErrorException
-    - 6d  any   CheckingErrorException
-    - 6e  any   CheckingErrorException
-    - 6f  any   CheckingErrorException
+      - sw1 sw2
+      - 62  any   WarningProcessingException
+      - 63  any   WarningProcessingException
+      - 64  any   ExecutionErrorException
+      - 65  any   ExecutionErrorException
+      - 66  any   SecurityRelatedException
+      - 67  any   CheckingErrorException
+      - 68  any   CheckingErrorException
+      - 69  any   CheckingErrorException
+      - 6a  any   CheckingErrorException
+      - 6b  any   CheckingErrorException
+      - 6c  any   CheckingErrorException
+      - 6d  any   CheckingErrorException
+      - 6e  any   CheckingErrorException
+      - 6f  any   CheckingErrorException
     """
 
     def __call__(self, data, sw1, sw2):
