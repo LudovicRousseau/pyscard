@@ -30,8 +30,8 @@ from smartcard.util import toHexString
 class CardType(object):
     """Abstract base class for CardTypes.
 
-    Known sub-classes: smartcard.CardType.AnyCardType
-                       smartcard.CardType.ATRCardType."""
+    Known sub-classes: L{smartcard.CardType.AnyCardType}
+    L{smartcard.CardType.ATRCardType}."""
 
     def __init__(self):
         """CardType constructor."""
@@ -40,8 +40,8 @@ class CardType(object):
     def matches(self, atr, reader=None):
         """Returns true if atr and card connected match the CardType.
 
-        atr:    the atr to chek for matching
-        reader: the reader (optional); default is None
+        @param atr:    the atr to chek for matching
+        @param reader: the reader (optional); default is None
 
         The reader can be use in some sub-classes to do advanced
         matching that require connecting to the card."""
@@ -54,8 +54,8 @@ class AnyCardType(CardType):
     def matches(self, atr, reader=None):
         """Always returns true, i.e. AnyCardType matches any card.
 
-        atr:    the atr to chek for matching
-        reader: the reader (optional); default is None"""
+        @param atr:    the atr to chek for matching
+        @param reader: the reader (optional); default is None"""
         return True
 
 
@@ -64,9 +64,9 @@ class ATRCardType(CardType):
 
     def __init__(self, atr, mask=None):
         """ATRCardType constructor.
-        atr:    the ATR of the CardType
-        mask:   an optional mask to be applied to the ATR for CardType matching
-                default is None
+        @param atr:    the ATR of the CardType
+        @param mask:   an optional mask to be applied to the ATR for
+            L{CardType} matching default is None
         """
         self.atr = list(atr)
         self.mask = mask
@@ -80,8 +80,8 @@ class ATRCardType(CardType):
     def matches(self, atr, reader=None):
         """Returns true if the atr matches the masked CardType atr.
 
-        atr:    the atr to chek for matching
-        reader: the reader (optional); default is None
+        @param atr:    the atr to chek for matching
+        @param reader: the reader (optional); default is None
 
         When atr is compared to the CardType ATR, matches returns true if
         and only if CardType.atr & CardType.mask = atr & CardType.mask,
