@@ -1,6 +1,7 @@
 # -*- coding: iso-8859-15 -*-
 """
-A wxValidator that matches APDU in hexadecimal such as:
+A wxValidator that matches APDU in hexadecimal such as::
+
     A4 A0 00 00 02
     A4A0000002
 
