@@ -83,12 +83,13 @@ class CardMonitor(object):
         by the public CardMonitor class.
         """
 
-        def __init__(self):
+        def __init__(self, newcardonly):
             Observable.__init__(self)
+            self.newcardonly = newcardonly
             if _START_ON_DEMAND_:
                 self.rmthread = None
             else:
-                self.rmthread = CardMonitoringThread(self)
+                self.rmthread = CardMonitoringThread(self, self.newcardonly)
 
         def addObserver(self, observer):
             """Add an observer.
@@ -99,7 +100,7 @@ class CardMonitor(object):
             Observable.addObserver(self, observer)
             if _START_ON_DEMAND_:
                 if self.countObservers() > 0 and self.rmthread == None:
-                    self.rmthread = CardMonitoringThread(self)
+                    self.rmthread = CardMonitoringThread(self, self.newcardonly)
             else:
                 observer.update(self, (self.rmthread.cards, []))
 
@@ -121,9 +122,9 @@ class CardMonitor(object):
     # the singleton
     instance = None
 
-    def __init__(self):
+    def __init__(self, newcardonly=True):
         if not CardMonitor.instance:
-            CardMonitor.instance = CardMonitor.__CardMonitorSingleton()
+            CardMonitor.instance = CardMonitor.__CardMonitorSingleton(newcardonly)
 
     def __getattr__(self, name):
         return getattr(self.instance, name)
@@ -141,12 +142,13 @@ class CardMonitoringThread(object):
         by the public CardMonitoringThread class.
         """
 
-        def __init__(self, observable):
+        def __init__(self, observable, newcardonly):
             Thread.__init__(self)
             self.observable = observable
             self.stopEvent = Event()
             self.stopEvent.clear()
             self.cards = []
+            self.newcardonly = newcardonly
             self.setDaemon(True)
 
         # the actual monitoring thread
@@ -170,7 +172,9 @@ class CardMonitoringThread(object):
                             removedcards.append(card)
 
                     if addedcards != [] or removedcards != []:
-                        self.cards = currentcards
+                        if self.newcardonly:
+                            # Record seen cards to skip them
+                            self.cards = currentcards
                         self.observable.setChanged()
                         self.observable.notifyObservers(
                             (addedcards, removedcards))
@@ -202,10 +206,10 @@ class CardMonitoringThread(object):
     # the singleton
     instance = None
 
-    def __init__(self, observable):
+    def __init__(self, observable, newcardonly=True):
         if not CardMonitoringThread.instance:
             CardMonitoringThread.instance = \
-               CardMonitoringThread.__CardMonitoringThreadSingleton(observable)
+               CardMonitoringThread.__CardMonitoringThreadSingleton(observable, newcardonly)
             CardMonitoringThread.instance.start()
 
     def __getattr__(self, name):

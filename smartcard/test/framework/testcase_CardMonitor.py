@@ -57,6 +57,7 @@ class printobserver(CardObserver):
     def __init__(self, obsindex, testcase):
         self.obsindex = obsindex
         self.testcase = testcase
+        self.nbcalls = 0
 
     def update(self, observable, actions):
         (addedcards, removedcards) = actions
@@ -67,22 +68,29 @@ class printobserver(CardObserver):
         for atr in expectedATRs:
             if [] != atr and {} != foundcards:
                 self.testcase.assertTrue(toHexString(atr) in foundcards)
+        self.nbcalls += 1
 
 
 class testthread(threading.Thread):
 
-    def __init__(self, obsindex, testcase):
+    def __init__(self, obsindex, testcase, newcardonly=True):
         threading.Thread.__init__(self)
         self.obsindex = obsindex
         self.testcase = testcase
-        self.cardmonitor = CardMonitor()
+        self.cardmonitor = CardMonitor(newcardonly)
         self.observer = None
 
     def run(self):
         # create and register observer
         self.observer = printobserver(self.obsindex, self.testcase)
         self.cardmonitor.addObserver(self.observer)
-        time.sleep(1)
+        # A bit more time for the card to be read multiple times
+        time.sleep(2)
+        if CardMonitor.instance.newcardonly:
+            self.assertEqual(self.cardmonitor.nbcalls, 1)
+        else:
+            # Same card detected multiple times
+            self.assertGreater(self.cardmonitor.nbcalls, 1)
         self.cardmonitor.deleteObserver(self.observer)
 
 
