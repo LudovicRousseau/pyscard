@@ -163,7 +163,8 @@ class CardMonitoringThread(object):
 
                     addedcards = []
                     for card in currentcards:
-                        if not self.cards.__contains__(card):
+                        # Always add cards as new if newcardonly is False
+                        if not self.cards.__contains__(card) or not self.newcardonly:
                             addedcards.append(card)
 
                     removedcards = []
@@ -172,9 +173,7 @@ class CardMonitoringThread(object):
                             removedcards.append(card)
 
                     if addedcards != [] or removedcards != []:
-                        if self.newcardonly:
-                            # Record seen cards to skip them
-                            self.cards = currentcards
+                        self.cards = currentcards
                         self.observable.setChanged()
                         self.observable.notifyObservers(
                             (addedcards, removedcards))
