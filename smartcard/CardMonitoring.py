@@ -45,25 +45,25 @@ _START_ON_DEMAND_ = False
 class CardObserver(Observer):
     """
     CardObserver is a base abstract class for objects that are to be notified
-    upon smartcard reader insertion/removal.
+    upon smart card insertion / removal.
     """
 
     def __init__(self):
         pass
 
     def update(self, observable, handlers):
-        """Called upon reader insertion/removal.
+        """Called upon smart card insertion / removal.
 
         @param observable:
         @param handlers:
-          - addedcards: list of added readers causing notification
-          - removedcards: list of removed readers causing notification
+          - addedcards: list of inserted smart cards causing notification
+          - removedcards: list of removed smart cards causing notification
         """
         pass
 
 
 class CardMonitor(object):
-    """Class that monitors smart card insertion/removal.
+    """Class that monitors smart card insertion / removals.
     and notify observers
 
     note: a card monitoring thread will be running
@@ -77,7 +77,7 @@ class CardMonitor(object):
     """
 
     class __CardMonitorSingleton(Observable):
-        """The real smartcard monitor class.
+        """The real smart card monitor class.
 
         A single instance of this class is created
         by the public CardMonitor class.
