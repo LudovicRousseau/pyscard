@@ -672,7 +672,11 @@ static SCARDRETCODE _Transmit(
 )
 {
     PSCARD_IO_REQUEST piorequest=NULL;
+    SCARD_IO_REQUEST unknown;
     long ret;
+
+    unknown.dwProtocol = 0;
+    unknown.cbPciLength = 0;
 
     pblRecvBuffer->ab = (unsigned char*)mem_Malloc(MAX_BUFFER_SIZE_EXTENDED*sizeof(unsigned char));
     pblRecvBuffer->cBytes = MAX_BUFFER_SIZE_EXTENDED;
@@ -690,6 +694,10 @@ static SCARDRETCODE _Transmit(
 
         case 0x04:
             piorequest=(PSCARD_IO_REQUEST)myg_prgSCardRawPci;
+            break;
+
+        case 0x00:
+            piorequest = &unknown;
             break;
 
         default:
