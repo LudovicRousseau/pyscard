@@ -689,6 +689,7 @@ static SCARDRETCODE _Transmit(
             break;
 
         case SCARD_PROTOCOL_RAW:
+        case SCARD_PROTOCOL_UNDEFINED:
             piorequest=(PSCARD_IO_REQUEST)myg_prgSCardRawPci;
             break;
 
