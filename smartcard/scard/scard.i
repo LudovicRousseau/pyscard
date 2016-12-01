@@ -681,16 +681,16 @@ static SCARDRETCODE _Transmit(
     switch(pioSendPci)
     {
         case SCARD_PROTOCOL_T0:
-            piorequest=(PSCARD_IO_REQUEST)myg_prgSCardT0Pci;
+            piorequest = myg_prgSCardT0Pci;
             break;
 
         case SCARD_PROTOCOL_T1:
-            piorequest=(PSCARD_IO_REQUEST)myg_prgSCardT1Pci;
+            piorequest = myg_prgSCardT1Pci;
             break;
 
         case SCARD_PROTOCOL_RAW:
         case SCARD_PROTOCOL_UNDEFINED:
-            piorequest=(PSCARD_IO_REQUEST)myg_prgSCardRawPci;
+            piorequest = myg_prgSCardRawPci;
             break;
 
         default:
@@ -699,7 +699,7 @@ static SCARDRETCODE _Transmit(
     }
     ret = (mySCardTransmit)(
                 hcard,
-                (PSCARD_IO_REQUEST)piorequest,
+                piorequest,
                 pblSendBuffer->ab,
                 pblSendBuffer->cBytes,
                 NULL,
