@@ -680,15 +680,15 @@ static SCARDRETCODE _Transmit(
     // keep in sync with redefinition in PcscDefs.i
     switch(pioSendPci)
     {
-        case 0x01:
+        case SCARD_PROTOCOL_T0:
             piorequest=(PSCARD_IO_REQUEST)myg_prgSCardT0Pci;
             break;
 
-        case 0x02:
+        case SCARD_PROTOCOL_T1:
             piorequest=(PSCARD_IO_REQUEST)myg_prgSCardT1Pci;
             break;
 
-        case 0x04:
+        case SCARD_PROTOCOL_RAW:
             piorequest=(PSCARD_IO_REQUEST)myg_prgSCardRawPci;
             break;
 
