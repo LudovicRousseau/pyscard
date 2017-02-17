@@ -115,8 +115,6 @@ static int _ReaderStateFromTuple( PyObject* o, READERSTATELIST* prl, unsigned in
         psz = PyBytes_AsString(temp_bytes); // Borrowed pointer
         if (NULL == psz)
             return 0;
-        psz = strdup(psz);
-        Py_DECREF(temp_bytes);
     }
     else
         return 0;
@@ -132,6 +130,10 @@ static int _ReaderStateFromTuple( PyObject* o, READERSTATELIST* prl, unsigned in
     }
     prl->ars[x].szReader = prl->aszReaderNames[x];
     strcpy( prl->aszReaderNames[x], psz );
+
+#if PY_MAJOR_VERSION >= 3
+    Py_DECREF(temp_bytes);
+#endif
 
     // second tuple item is current state
     o2=PyTuple_GetItem(o, 1);
