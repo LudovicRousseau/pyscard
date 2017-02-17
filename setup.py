@@ -79,7 +79,7 @@ else:
     platform_extra_link_args = []   # ['-ggdb']
 
 
-VERSION_INFO = (1, 9, 4, 0)
+VERSION_INFO = (1, 9, 5, 0)
 VERSION_STR = '%i.%i.%i' % VERSION_INFO[:3]
 VERSION_ALT = '%i,%01i,%01i,%04i' % VERSION_INFO
 

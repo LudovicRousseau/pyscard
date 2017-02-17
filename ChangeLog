@@ -1,3 +1,9 @@
+1.9.5 (Feb 2017)
+================
+    * SCardGetStatusChange(): fix a memory leak with Python 3
+    * SCardTransmit(): use SCARD_PCI_RAW for undefined protocol
+    * Improve epydoc documentation
+
 1.9.4 (May 2016)
 ================
     * Fix installation using pip and easy_install
