@@ -113,7 +113,7 @@
 1.6.7
 =====
         * better thread support and clean-up in ReaderMonitoringThread (Frank Aune)
-        * fixed issue on Mac OS X Leopard with dlsym loading of bad SCardControl function (Mattias Brändström)
+        * fixed issue on Mac OS X Leopard with dlsym loading of bad SCardControl function (Mattias BrÃ¤ndstrÃ¶m)
         * supported build of documentation files on linux and removed unresolved doc links (Ludovic Rousseau)
 
 1.6.6
@@ -145,8 +145,8 @@
         * better handling of protocol selection with associated test cases and added getATR_T1 example
           (issue reported by Adam Laurie for T=1 cards, and request from Yong David Huang for
           Omnikey CM5321 RFID that failed with T0|T1 mask).
-        * added handling of linux 64-bit platform and graceful exit for unsupported platform, thanks to Henryk Plötz
-        * added support for float value timeout in CardRequest, thanks to Henryk Plötz; updated test cases and a
+        * added handling of linux 64-bit platform and graceful exit for unsupported platform, thanks to Henryk PlÃ¶tz
+        * added support for float value timeout in CardRequest, thanks to Henryk PlÃ¶tz; updated test cases and a
           couple of samples with float timeouts.
 
 1.6.2
