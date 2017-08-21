@@ -26,3 +26,4 @@ recursive-include smartcard/test/framework *.txt *.py
 recursive-include smartcard/test/frameworkpcsc *.txt *.py
 recursive-include smartcard/test/scard *.txt *.py
 recursive-include smartcard/wx *.ico
+include test/*.py
