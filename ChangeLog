@@ -1,3 +1,8 @@
+1.9.6 (August 2017)
+===================
+    * include test/__init__.py in the archive tarball.
+      "make test" now works. That fixes build using Python 3.6
+
 1.9.5 (Feb 2017)
 ================
     * SCardGetStatusChange(): fix a memory leak with Python 3
