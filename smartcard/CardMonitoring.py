@@ -113,6 +113,8 @@ class CardMonitor(object):
             if _START_ON_DEMAND_:
                 if self.countObservers() == 0:
                     if self.rmthread != None:
+                        self.rmthread.stop()
+                        self.rmthread.join()
                         self.rmthread = None
 
         def __str__(self):
@@ -207,6 +209,11 @@ class CardMonitoringThread(object):
             CardMonitoringThread.instance = \
                CardMonitoringThread.__CardMonitoringThreadSingleton(observable)
             CardMonitoringThread.instance.start()
+            
+    def join(self, *args, **kwargs):
+        if self.instance:
+            self.instance.join(*args, **kwargs)
+            CardMonitoringThread.instance = None
 
     def __getattr__(self, name):
         if self.instance:
