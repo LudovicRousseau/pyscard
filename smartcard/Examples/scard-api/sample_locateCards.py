@@ -28,20 +28,21 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from __future__ import print_function
 from smartcard.scard import *
+import sys
 
 if 'winscard' == resourceManager:
 
     znewcardName = 'dummy-card'
-    znewcardATR = \
-      [0x3B, 0x77, 0x94, 0x00, 0x00, 0x82, 0x30, 0x00, 0x13, 0x6C, 0x9F, 0x22]
-    znewcardMask = \
-      [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
+    znewcardATR = [0x3B, 0x77, 0x94, 0x00, 0x00, 0x82, 0x30, 0x00, 0x13,
+                   0x6C, 0x9F, 0x22]
+    znewcardMask = [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+                    0xFF, 0xFF, 0xFF]
 
     try:
         hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
         if hresult != SCARD_S_SUCCESS:
             raise scard.error(
-                'Failed to establish context: ' + \
+                'Failed to establish context: ' +
                 SCardGetErrorMessage(hresult))
         print('Context established!')
 
@@ -49,7 +50,7 @@ if 'winscard' == resourceManager:
             hresult, readers = SCardListReaders(hcontext, [])
             if hresult != SCARD_S_SUCCESS:
                 raise scard.error(
-                    'Failed to list readers: ' + \
+                    'Failed to list readers: ' +
                     SCardGetErrorMessage(hresult))
             print('PCSC Readers:', readers)
 
@@ -57,13 +58,13 @@ if 'winscard' == resourceManager:
             hresult = SCardForgetCardType(hcontext, znewcardName)
             print('Introducing card ' + znewcardName)
             hresult = SCardIntroduceCardType(hcontext, znewcardName, [],
-                [], znewcardATR, znewcardMask)
+                                             [], znewcardATR, znewcardMask)
             if hresult != SCARD_S_SUCCESS:
                 if hresult == ERROR_ALREADY_EXISTS:
                     print('Card already exists')
                 else:
                     raise error(
-                        'Failed to introduce card type: ' + \
+                        'Failed to introduce card type: ' +
                         SCardGetErrorMessage(hresult))
 
             hresult, cards = SCardListCards(hcontext, [], [])
@@ -114,7 +115,7 @@ if 'winscard' == resourceManager:
             hresult = SCardReleaseContext(hcontext)
             if hresult != SCARD_S_SUCCESS:
                 raise error(
-                    'Failed to release context: ' + \
+                    'Failed to release context: ' +
                     SCardGetErrorMessage(hresult))
             print('Released context.')
 
@@ -125,7 +126,6 @@ elif 'pcsclite' == resourceManager:
     print('SCardLocateCards not supported by pcsc lite')
 
 
-import sys
 if 'win32' == sys.platform:
     print('press Enter to continue')
     sys.stdin.read(1)
