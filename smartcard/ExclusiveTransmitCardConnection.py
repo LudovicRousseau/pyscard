@@ -44,15 +44,15 @@ class ExclusiveTransmitCardConnection(CardConnectionDecorator):
         component = self.component
         while True:
             if isinstance(
-                component,
-                smartcard.pcsc.PCSCCardConnection.PCSCCardConnection):
+                    component,
+                    smartcard.pcsc.PCSCCardConnection.PCSCCardConnection):
                 hresult = SCardBeginTransaction(component.hcard)
                 if 0 != hresult:
                     raise CardConnectionException(
-                        'Failed to lock with SCardBeginTransaction: ' +\
+                        'Failed to lock with SCardBeginTransaction: ' +
                         SCardGetErrorMessage(hresult))
                 else:
-                    #print('locked')
+                    # print('locked')
                     pass
                 break
             if hasattr(component, 'component'):
@@ -65,16 +65,16 @@ class ExclusiveTransmitCardConnection(CardConnectionDecorator):
         component = self.component
         while True:
             if isinstance(
-                component,
-                smartcard.pcsc.PCSCCardConnection.PCSCCardConnection):
+                    component,
+                    smartcard.pcsc.PCSCCardConnection.PCSCCardConnection):
                 hresult = SCardEndTransaction(component.hcard,
                                               SCARD_LEAVE_CARD)
                 if 0 != hresult:
                     raise CardConnectionException(
-                        'Failed to unlock with SCardEndTransaction: ' +\
+                        'Failed to unlock with SCardEndTransaction: ' +
                         SCardGetErrorMessage(hresult))
                 else:
-                    #print('unlocked')
+                    # print('unlocked')
                     pass
                 break
             if hasattr(component, 'component'):
