@@ -28,6 +28,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from __future__ import print_function
 from smartcard.scard import *
+import sys
 
 if 'winscard' == resourceManager:
     # Cryptoflex 8k v2 is introduced in standard Windows 2000
@@ -37,7 +38,7 @@ if 'winscard' == resourceManager:
         hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
         if hresult != SCARD_S_SUCCESS:
             raise error(
-                'Failed to establish context: ' + \
+                'Failed to establish context: ' +
                 SCardGetErrorMessage(hresult))
         print('Context established!')
 
@@ -45,14 +46,14 @@ if 'winscard' == resourceManager:
             hresult, card = SCardListCards(hcontext, slbCryptoFlex8kv2ATR, [])
             if hresult != SCARD_S_SUCCESS:
                 raise error(
-                    'Failure to locate Schlumberger Cryptoflex 8k v2 card: ' +\
+                    'Failure to locate Schlumberger Cryptoflex 8k v2 card: ' +
                     SCardGetErrorMessage(hresult))
             print('Located by ATR:', card)
 
             hresult, cards = SCardListCards(hcontext, [], [])
             if hresult != SCARD_S_SUCCESS:
                 raise error(
-                    'Failure to list cards: ' + \
+                    'Failure to list cards: ' +
                     SCardGetErrorMessage(hresult))
             print('Cards:', cards)
 
@@ -70,7 +71,7 @@ if 'winscard' == resourceManager:
             hresult = SCardReleaseContext(hcontext)
             if hresult != SCARD_S_SUCCESS:
                 raise error(
-                    'Failed to release context: ' + \
+                    'Failed to release context: ' +
                     SCardGetErrorMessage(hresult))
             print('Released context.')
 
@@ -81,7 +82,6 @@ elif 'pcsclite' == resourceManager:
     print('SCardListCards not supported by pcsc lite')
 
 
-import sys
 if 'win32' == sys.platform:
     print('press Enter to continue')
     sys.stdin.read(1)
