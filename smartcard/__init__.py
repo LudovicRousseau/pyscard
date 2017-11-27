@@ -25,9 +25,8 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-__all__ = ['listReaders',
-             'Session']
-
 # for legacy only
 from smartcard.System import listReaders
 from smartcard.Session import Session
+
+__all__ = ['listReaders', 'Session']
