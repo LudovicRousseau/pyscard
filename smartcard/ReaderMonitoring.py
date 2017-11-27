@@ -77,7 +77,7 @@ class ReaderMonitor(Observable):
     __shared_state = {}
 
     def __init__(self, startOnDemand=True, readerProc=smartcard.System.readers,
-        period=1):
+                 period=1):
         self.__dict__ = self.__shared_state
         Observable.__init__(self)
         self.startOnDemand = startOnDemand
@@ -87,7 +87,7 @@ class ReaderMonitor(Observable):
             self.rmthread = None
         else:
             self.rmthread = ReaderMonitoringThread(self, self.readerProc,
-                self.period)
+                                                   self.period)
             self.rmthread.start()
 
     def addObserver(self, observer):
@@ -99,7 +99,8 @@ class ReaderMonitor(Observable):
         if self.startOnDemand:
             if 0 < self.countObservers():
                 if not self.rmthread:
-                    self.rmthread = ReaderMonitoringThread(self,
+                    self.rmthread = ReaderMonitoringThread(
+                        self,
                         self.readerProc, self.period)
 
                     # start reader monitoring thread in another thread to
@@ -131,10 +132,11 @@ class ReaderMonitor(Observable):
     def __str__(self):
         return self.__class__.__name__
 
+
 synchronize(ReaderMonitor,
-  "addObserver deleteObserver deleteObservers " +
-  "setChanged clearChanged hasChanged " +
-  "countObservers")
+            "addObserver deleteObserver deleteObservers " +
+            "setChanged clearChanged hasChanged " +
+            "countObservers")
 
 
 class ReaderMonitoringThread(Thread):
@@ -171,10 +173,10 @@ class ReaderMonitoringThread(Thread):
 
                     if currentReaders != self.readers:
                         for reader in currentReaders:
-                            if not reader in self.readers:
+                            if reader not in self.readers:
                                 addedReaders.append(reader)
                         for reader in self.readers:
-                            if not reader in currentReaders:
+                            if reader not in currentReaders:
                                 removedReaders.append(reader)
 
                         if addedReaders or removedReaders:
@@ -184,7 +186,7 @@ class ReaderMonitoringThread(Thread):
                                 self.readers.append(r)
                             self.observable.setChanged()
                             self.observable.notifyObservers((addedReaders,
-                                removedReaders))
+                                                            removedReaders))
 
                 # wait every second on stopEvent
                 self.stopEvent.wait(self.period)
@@ -201,6 +203,7 @@ class ReaderMonitoringThread(Thread):
     def stop(self):
         self.stopEvent.set()
         self.join()
+
 
 if __name__ == "__main__":
     print('insert or remove readers in the next 20 seconds')
