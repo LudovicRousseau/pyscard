@@ -30,8 +30,9 @@ from smartcard.util import toHexString
 
 
 class DCCardType(CardType):
-# define our custom CardType
-# this card type defines direct convention card (first atr byte equal to 0x3b)
+    # define our custom CardType
+    # this card type defines direct convention card
+    # (first atr byte equal to 0x3b)
 
     def matches(self, atr, reader=None):
         return atr[0] == 0x3B
