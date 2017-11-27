@@ -47,7 +47,7 @@ class CardConnection(Observable):
         self.reader = reader
         self.errorcheckingchain = None
         self.defaultprotocol = CardConnection.T0_protocol |\
-                                CardConnection.T1_protocol
+            CardConnection.T1_protocol
 
     def __del__(self):
         """Connect to card."""
@@ -61,7 +61,7 @@ class CardConnection(Observable):
 
         Filtered exceptions will not be raised when encountered in the
         error checking chain."""
-        if None != self.errorcheckingchain:
+        if self.errorcheckingchain is not None:
             self.errorcheckingchain[0].addFilterException(exClass)
 
     def addObserver(self, observer):
@@ -149,7 +149,7 @@ class CardConnection(Observable):
                                    CardConnectionEvent(
                                        'response',
                                        [data, sw1, sw2]))
-        if None != self.errorcheckingchain:
+        if self.errorcheckingchain is not None:
             self.errorcheckingchain[0](data, sw1, sw2)
         return data, sw1, sw2
 
@@ -180,7 +180,7 @@ class CardConnection(Observable):
                                    CardConnectionEvent(
                                        'response',
                                        data))
-        if None != self.errorcheckingchain:
+        if self.errorcheckingchain is not None:
             self.errorcheckingchain[0](data)
         return data
 
@@ -201,7 +201,7 @@ class CardConnection(Observable):
                                        'attrib',
                                        [attribId]))
         data = self.doGetAttrib(attribId)
-        if None != self.errorcheckingchain:
+        if self.errorcheckingchain is not None:
             self.errorcheckingchain[0](data)
         return data
 
