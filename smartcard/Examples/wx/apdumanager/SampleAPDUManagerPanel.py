@@ -30,18 +30,17 @@ from smartcard.wx.SimpleSCardAppEventObserver import \
     SimpleSCardAppEventObserver
 from smartcard.util import toBytes, toHexString
 
-[
-ID_TEXT_COMMAND,
-ID_TEXTCTRL_COMMAND,
-ID_TEXT_RESPONSE,
-ID_TEXTCTRL_RESPONSE,
-ID_TEXT_SW,
-ID_TEXT_SW1,
-ID_TEXTCTRL_SW1,
-ID_TEXT_SW2,
-ID_TEXTCTRL_SW2,
-ID_CARDSTATE,
-ID_TRANSMIT] = [wx.NewId() for x in range(11)]
+[ID_TEXT_COMMAND,
+ ID_TEXTCTRL_COMMAND,
+ ID_TEXT_RESPONSE,
+ ID_TEXTCTRL_RESPONSE,
+ ID_TEXT_SW,
+ ID_TEXT_SW1,
+ ID_TEXTCTRL_SW1,
+ ID_TEXT_SW2,
+ ID_TEXTCTRL_SW2,
+ ID_CARDSTATE,
+ ID_TRANSMIT] = [wx.NewId() for x in range(11)]
 
 
 class SampleAPDUManagerPanel(wx.Panel, SimpleSCardAppEventObserver):
