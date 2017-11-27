@@ -66,17 +66,17 @@ class AbstractCardRequest(object):
         self.timeout = timeout
 
         # if no CardType requeted, use AnyCardType
-        if None == self.cardType:
+        if self.cardType is None:
             self.cardType = AnyCardType()
 
         # if no card service requested, use pass-thru card service
-        if None == self.cardServiceClass:
+        if self.cardServiceClass is None:
             self.cardServiceClass = PassThruCardService
 
     def getReaders(self):
         """Returns the list or readers on which to wait for cards."""
         # if readers not given, use all readers
-        if None == self.readersAsked:
+        if self.readersAsked is None:
             return smartcard.System.readers()
         else:
             return self.readersAsked
