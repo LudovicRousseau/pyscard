@@ -55,7 +55,7 @@ class Session(object):
         """
 
         # if reader name not given, select first reader
-        if readerName == None:
+        if readerName is None:
             if len(readers()) > 0:
                 self.reader = readers()[0]
                 self.readerName = repr(self.reader)
