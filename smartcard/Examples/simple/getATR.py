@@ -29,6 +29,7 @@ from __future__ import print_function
 from smartcard.Exceptions import NoCardException
 from smartcard.System import readers
 from smartcard.util import toHexString
+import sys
 
 for reader in readers():
     try:
@@ -38,7 +39,6 @@ for reader in readers():
     except NoCardException:
         print(reader, 'no card inserted')
 
-import sys
 if 'win32' == sys.platform:
     print('press Enter to continue')
     sys.stdin.read(1)

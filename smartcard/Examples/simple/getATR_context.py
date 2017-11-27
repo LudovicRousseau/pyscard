@@ -29,6 +29,7 @@ from __future__ import print_function
 from smartcard.Exceptions import NoCardException
 from smartcard.System import readers
 from smartcard.util import toHexString
+import sys
 
 # Use a connection context
 # the connection object is automatically destroyed at the end of with block
@@ -41,9 +42,8 @@ for reader in readers():
         except NoCardException:
             print(reader, 'no card inserted')
 
-#sleep(5)
+# sleep(5)
 
-import sys
 if 'win32' == sys.platform:
     print('press Enter to continue')
     sys.stdin.read(1)

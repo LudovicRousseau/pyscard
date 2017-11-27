@@ -30,6 +30,7 @@ from smartcard.CardType import AnyCardType
 from smartcard.CardRequest import CardRequest
 from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver
 from smartcard.Exceptions import CardRequestTimeoutException
+import sys
 
 # define the apdus used in this script
 GET_RESPONSE = [0XA0, 0XC0, 00, 00]
@@ -66,7 +67,6 @@ try:
 except CardRequestTimeoutException:
     print('time-out: no card inserted during last 10s')
 
-import sys
 if 'win32' == sys.platform:
     print('press Enter to continue')
     sys.stdin.read(1)
