@@ -98,7 +98,7 @@ class CardMonitor(object):
             """
             Observable.addObserver(self, observer)
             if _START_ON_DEMAND_:
-                if self.countObservers() > 0 and self.rmthread == None:
+                if self.countObservers() > 0 and self.rmthread is None:
                     self.rmthread = CardMonitoringThread(self)
             else:
                 observer.update(self, (self.rmthread.cards, []))
@@ -112,7 +112,7 @@ class CardMonitor(object):
             Observable.deleteObserver(self, observer)
             if _START_ON_DEMAND_:
                 if self.countObservers() == 0:
-                    if self.rmthread != None:
+                    if self.rmthread is not None:
                         self.rmthread.stop()
                         self.rmthread.join()
                         self.rmthread = None
