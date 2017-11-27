@@ -29,12 +29,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 from __future__ import print_function
 from smartcard.scard import *
 import smartcard.util
+import sys
 
 if __name__ == '__main__':
     hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
     if hresult != SCARD_S_SUCCESS:
         raise error(
-            'Failed to establish context: ' + \
+            'Failed to establish context: ' +
             SCardGetErrorMessage(hresult))
     print('Context established!')
 
@@ -42,7 +43,7 @@ if __name__ == '__main__':
         hresult, readers = SCardListReaders(hcontext, [])
         if hresult != SCARD_S_SUCCESS:
             raise error(
-                'Failed to list readers: ' + \
+                'Failed to list readers: ' +
                 SCardGetErrorMessage(hresult))
         if len(readers) < 1:
             raise Exception('No smart card readers')
@@ -64,7 +65,7 @@ if __name__ == '__main__':
                 try:
                     hresult, reader, state, protocol, atr = SCardStatus(hcard)
                     if hresult != SCARD_S_SUCCESS:
-                        print('failed to get status: ' + \
+                        print('failed to get status: ' +
                               SCardGetErrorMessage(hresult))
                     print('Reader:', reader)
                     print('State:', hex(state))
@@ -76,18 +77,17 @@ if __name__ == '__main__':
                 finally:
                     hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
                     if hresult != SCARD_S_SUCCESS:
-                        print('Failed to disconnect: ' + \
-                            SCardGetErrorMessage(hresult))
+                        print('Failed to disconnect: ' +
+                              SCardGetErrorMessage(hresult))
                     print('Disconnected')
 
     finally:
         hresult = SCardReleaseContext(hcontext)
         if hresult != SCARD_S_SUCCESS:
-            raise error('Failed to release context: ' + \
-                            SCardGetErrorMessage(hresult))
+            raise error('Failed to release context: ' +
+                        SCardGetErrorMessage(hresult))
         print('Released context.')
 
-import sys
 if 'win32' == sys.platform:
     print('press Enter to continue')
     sys.stdin.read(1)
