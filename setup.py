@@ -118,22 +118,22 @@ kw = {'name': "pyscard",
       'cmdclass': {'build_py': BuildPyBuildExtFirst},
       # the _scard.pyd extension to build
       'ext_modules': [Extension("smartcard.scard._scard",
-                             define_macros=[
+                      define_macros=[
                                     ('VER_PRODUCTVERSION', VERSION_ALT),
-                                    ('VER_PRODUCTVERSION_STR', VERSION_STR)]
-                                    + platform__cc_defines,
-                             include_dirs=['smartcard/scard/'] \
-                                           + platform_include_dirs,
-                             sources=["smartcard/scard/helpers.c",
-                                      "smartcard/scard/winscarddll.c",
-                                      "smartcard/scard/scard.i"] \
-                                      + platform_sources,
-                             libraries=platform_libraries,
-                             extra_compile_args=platform_extra_compile_args,
-                             extra_link_args=platform_extra_link_args,
-                             swig_opts=['-outdir',
-                                        'smartcard/scard'] \
-                                        + platform_swig_opts)],
+                                    ('VER_PRODUCTVERSION_STR', VERSION_STR)] \
+                      + platform__cc_defines,
+                      include_dirs=['smartcard/scard/'] \
+                      + platform_include_dirs,
+                      sources=["smartcard/scard/helpers.c",
+                               "smartcard/scard/winscarddll.c",
+                               "smartcard/scard/scard.i"] \
+                                       + platform_sources,
+                      libraries=platform_libraries,
+                      extra_compile_args=platform_extra_compile_args,
+                      extra_link_args=platform_extra_link_args,
+                      swig_opts=['-outdir',
+                                 'smartcard/scard'] \
+                      + platform_swig_opts)],
       'extras_require': {
             'Gui': ['wxPython'],
             'Pyro': ['Pyro'],
@@ -144,7 +144,7 @@ kw = {'name': "pyscard",
       'classifiers': [
           'Development Status :: 5 - Production/Stable',
           'License :: OSI Approved :: GNU Lesser General Public License v2 '
-                                     'or later (LGPLv2+)',
+          'or later (LGPLv2+)',
           'Intended Audience :: Developers',
           'Operating System :: Unix',
           'Operating System :: Microsoft :: Windows',
@@ -155,7 +155,7 @@ kw = {'name': "pyscard",
           'Programming Language :: Python :: 3.4',
           'Topic :: Security',
           ]
-     }
+      }
 
 # FIXME Sourceforge downloads are unauthenticated, migrate to PyPI
 kw['download_url'] = ('http://sourceforge.net/projects/%(name)s/files'
@@ -163,4 +163,3 @@ kw['download_url'] = ('http://sourceforge.net/projects/%(name)s/files'
                       '/%(name)s-%(version)s.tar.gz/download' % kw)
 
 setup(**kw)
-
