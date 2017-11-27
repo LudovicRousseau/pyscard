@@ -67,7 +67,7 @@ try:
                             toBytes("%.8lx" % SCARD_ATTR_VENDOR_NAME))
                         if hresult != SCARD_S_SUCCESS:
                             raise error(
-                                'SCardControl failed: ' +\
+                                'SCardControl failed: ' +
                                 SCardGetErrorMessage(hresult))
                         r = ""
                         for i in range(len(response)):
@@ -81,7 +81,7 @@ try:
                             [0x02])
                         if hresult != SCARD_S_SUCCESS:
                             raise error(
-                                'SCardControl failed: ' + \
+                                'SCardControl failed: ' +
                                 SCardGetErrorMessage(hresult))
                         r = ""
                         for i in range(len(response)):
@@ -91,7 +91,7 @@ try:
                     hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
                     if hresult != SCARD_S_SUCCESS:
                         raise error(
-                            'Failed to disconnect: ' + \
+                            'Failed to disconnect: ' +
                             SCardGetErrorMessage(hresult))
                     print('Disconnected')
 
@@ -102,7 +102,7 @@ try:
         hresult = SCardReleaseContext(hcontext)
         if hresult != SCARD_S_SUCCESS:
             raise error(
-                'Failed to release context: ' + \
+                'Failed to release context: ' +
                 SCardGetErrorMessage(hresult))
         print('Released context.')
 
