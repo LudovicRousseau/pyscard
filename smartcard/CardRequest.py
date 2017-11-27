@@ -32,7 +32,7 @@ class CardRequest(object):
     """
 
     def __init__(self, newcardonly=False, readers=None, cardType=None,
-        cardServiceClass=None, timeout=1):
+                 cardServiceClass=None, timeout=1):
         """Construct new CardRequest.
 
         @param newcardonly: if True, request a new card
@@ -57,7 +57,8 @@ class CardRequest(object):
                             timeout to None
         """
         self.pcsccardrequest = PCSCCardRequest(newcardonly, readers,
-            cardType, cardServiceClass, timeout)
+                                               cardType, cardServiceClass,
+                                               timeout)
 
     def getReaders(self):
         """Returns the list or readers on which to wait for cards."""
@@ -80,6 +81,6 @@ if __name__ == '__main__':
     cr = CardRequest(timeout=10, newcardonly=True)
     cs = cr.waitforcard()
     cs.connection.connect()
-    print(cs.connection.getReader() + ' ' + toHexString(cs.connection.getATR()))
+    print(cs.connection.getReader() + ' ' +
+          toHexString(cs.connection.getATR()))
     cs.connection.disconnect()
-
