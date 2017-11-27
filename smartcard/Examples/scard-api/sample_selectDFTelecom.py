@@ -29,6 +29,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 from __future__ import print_function
 from smartcard.scard import *
 import smartcard.util
+import sys
 
 SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
 DF_TELECOM = [0x7F, 0x10]
@@ -38,7 +39,7 @@ try:
     hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
     if hresult != SCARD_S_SUCCESS:
         raise error(
-            'Failed to establish context : ' + \
+            'Failed to establish context : ' +
             SCardGetErrorMessage(hresult))
     print('Context established!')
 
@@ -46,7 +47,7 @@ try:
         hresult, readers = SCardListReaders(hcontext, [])
         if hresult != SCARD_S_SUCCESS:
             raise error(
-                'Failed to list readers: ' + \
+                'Failed to list readers: ' +
                 SCardGetErrorMessage(hresult))
         print('PCSC Readers:', readers)
 
@@ -64,7 +65,7 @@ try:
                     SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1)
                 if hresult != SCARD_S_SUCCESS:
                     raise error(
-                        'Unable to connect: ' + \
+                        'Unable to connect: ' +
                         SCardGetErrorMessage(hresult))
                 print('Connected with active protocol', dwActiveProtocol)
 
@@ -73,10 +74,10 @@ try:
                         hcard, dwActiveProtocol, SELECT + DF_TELECOM)
                     if hresult != SCARD_S_SUCCESS:
                         raise error(
-                            'Failed to transmit: ' + \
+                            'Failed to transmit: ' +
                             SCardGetErrorMessage(hresult))
-                    print('Selected DF_TELECOM: ' + \
-                            smartcard.util.toHexString(
+                    print('Selected DF_TELECOM: ' +
+                          smartcard.util.toHexString(
                                 response, smartcard.util.HEX))
                     hresult, response = SCardTransmit(
                         hcard,
@@ -84,16 +85,16 @@ try:
                         GET_RESPONSE + [response[1]])
                     if hresult != SCARD_S_SUCCESS:
                         raise error(
-                            'Failed to transmit: ' + \
+                            'Failed to transmit: ' +
                             SCardGetErrorMessage(hresult))
-                    print('GET_RESPONSE after SELECT DF_TELECOM: ' + \
-                            smartcard.util.toHexString(
+                    print('GET_RESPONSE after SELECT DF_TELECOM: ' +
+                          smartcard.util.toHexString(
                                 response, smartcard.util.HEX))
                 finally:
                     hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
                     if hresult != SCARD_S_SUCCESS:
                         raise error(
-                            'Failed to disconnect: ' + \
+                            'Failed to disconnect: ' +
                             SCardGetErrorMessage(hresult))
                     print('Disconnected')
 
@@ -104,14 +105,13 @@ try:
         hresult = SCardReleaseContext(hcontext)
         if hresult != SCARD_S_SUCCESS:
             raise error(
-                'Failed to release context: ' + \
+                'Failed to release context: ' +
                 SCardGetErrorMessage(hresult))
         print('Released context.')
 
 except error as e:
     print(e)
 
-import sys
 if 'win32' == sys.platform:
     print('press Enter to continue')
     sys.stdin.read(1)
