@@ -33,7 +33,7 @@ try:
     hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
     if hresult != SCARD_S_SUCCESS:
         raise error(
-            'Failed to establish context: ' + \
+            'Failed to establish context: ' +
             SCardGetErrorMessage(hresult))
     print('Context established!')
 
@@ -41,7 +41,7 @@ try:
         hresult, readers = SCardListReaders(hcontext, [])
         if hresult != SCARD_S_SUCCESS:
             raise error(
-                'Failed to list readers: ' + \
+                'Failed to list readers: ' +
                 SCardGetErrorMessage(hresult))
         print('PCSC Readers:', readers)
 
@@ -59,7 +59,7 @@ try:
                     SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1)
                 if hresult != SCARD_S_SUCCESS:
                     raise error(
-                        'unable to connect: ' + \
+                        'unable to connect: ' +
                         SCardGetErrorMessage(hresult))
                 print('Connected with active protocol', dwActiveProtocol)
 
@@ -67,14 +67,14 @@ try:
                     hresult = SCardBeginTransaction(hcard)
                     if hresult != SCARD_S_SUCCESS:
                         raise error(
-                            'failed to begin transaction: ' + \
+                            'failed to begin transaction: ' +
                             SCardGetErrorMessage(hresult))
                     print('Beginning transaction')
 
                     hresult, reader, state, protocol, atr = SCardStatus(hcard)
                     if hresult != SCARD_S_SUCCESS:
                         raise error(
-                            'failed to get status: ' + \
+                            'failed to get status: ' +
                             SCardGetErrorMessage(hresult))
                     print('ATR:', end=' ')
                     for i in range(len(atr)):
@@ -85,14 +85,14 @@ try:
                     hresult = SCardEndTransaction(hcard, SCARD_LEAVE_CARD)
                     if hresult != SCARD_S_SUCCESS:
                         raise error(
-                            'failed to end transaction: ' + \
+                            'failed to end transaction: ' +
                             SCardGetErrorMessage(hresult))
                     print('Transaction ended')
 
                     hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
                     if hresult != SCARD_S_SUCCESS:
                         raise error(
-                            'failed to disconnect: ' + \
+                            'failed to disconnect: ' +
                             SCardGetErrorMessage(hresult))
                     print('Disconnected')
             except error as message:
@@ -102,7 +102,7 @@ try:
         hresult = SCardReleaseContext(hcontext)
         if hresult != SCARD_S_SUCCESS:
             raise error(
-                'failed to release context: ' + \
+                'failed to release context: ' +
                 SCardGetErrorMessage(hresult))
         print('Released context.')
 
