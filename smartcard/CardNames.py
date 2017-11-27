@@ -85,7 +85,7 @@ class CardNames(object):
     def __init__(self):
         """Constructor: create a single instance of __readergroups on
         first call"""
-        if None == CardNames.instance:
+        if CardNames.instance is None:
             CardNames.instance = __CardNames__()
 
     def __getattr__(self, name):
