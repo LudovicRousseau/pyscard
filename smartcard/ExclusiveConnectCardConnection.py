@@ -43,26 +43,26 @@ class ExclusiveConnectCardConnection(CardConnectionDecorator):
         CardConnectionDecorator.connect(self, protocol, mode, disposition)
         component = self.component
         while True:
-            if isinstance(
-                component,
-                smartcard.pcsc.PCSCCardConnection.PCSCCardConnection):
+            if isinstance(component,
+                          smartcard.pcsc.PCSCCardConnection.PCSCCardConnection):
                 pcscprotocol = PCSCCardConnection.translateprotocolmask(
                     protocol)
                 if 0 == pcscprotocol:
                     pcscprotocol = component.getProtocol()
 
-                if None != component.hcard:
+                if component.hcard is not None:
                     hresult = SCardDisconnect(component.hcard,
                                               SCARD_LEAVE_CARD)
                     if hresult != 0:
-                        raise CardConnectionException('Failed to disconnect: '
-                            + SCardGetErrorMessage(hresult))
+                        raise CardConnectionException(
+                                'Failed to disconnect: ' +
+                                SCardGetErrorMessage(hresult))
                 hresult, component.hcard, dwActiveProtocol = SCardConnect(
                     component.hcontext, str(component.reader),
                     SCARD_SHARE_EXCLUSIVE, pcscprotocol)
                 if hresult != 0:
                     raise CardConnectionException(
-                        'Failed to connect with SCARD_SHARE_EXCLUSIVE' +\
+                        'Failed to connect with SCARD_SHARE_EXCLUSIVE' +
                         SCardGetErrorMessage(hresult))
                 # print('reconnected exclusive')
                 break
