@@ -76,8 +76,8 @@ class Observable(Synchronization):
     def countObservers(self):
             return len(self.obs)
 
+
 synchronize(Observable,
-    "addObserver deleteObserver deleteObservers " +
-    "setChanged clearChanged hasChanged " +
-    "countObservers")
-#:~
+            "addObserver deleteObserver deleteObservers " +
+            "setChanged clearChanged hasChanged " +
+            "countObservers")
