@@ -53,9 +53,9 @@ elif 'cygwin-' in get_platform():
 
 elif 'macosx-10.' in get_platform():
     if 'macosx-10.6' in get_platform():
-        macosx_define = '__LEOPARD__' # Snow Leopard, Python 2.6
+        macosx_define = '__LEOPARD__'  # Snow Leopard, Python 2.6
     else:
-        macosx_define = '__LION__' # Lion (and above), Python 2.7
+        macosx_define = '__LION__'  # Lion (and above), Python 2.7
     platform__cc_defines = [('PCSCLITE', '1'),
                             ('__APPLE__', '1'),
                             (macosx_define, '1')]
