@@ -29,6 +29,7 @@ from __future__ import print_function
 from smartcard.scard import *
 from smartcard.util import toASCIIBytes
 from smartcard.pcsc.PCSCExceptions import *
+import sys
 
 
 def can_do_verify_pin(hCard):
@@ -51,33 +52,32 @@ def parse_get_feature_request(hCard, feature):
     while len(response) > 0:
         tag = response[0]
         if feature == tag:
-            return (((((response[2] << 8) + \
-                        response[3]) << 8) + \
-                        response[4]) << 8) + \
-                        response[5]
+            return (((((response[2] << 8) +
+                    response[3]) << 8) +
+                    response[4]) << 8) + response[5]
         response = response[6:]
 
 
 def verifypin(hCard, control=None):
-    if None == control:
+    if control is None:
         control = can_do_verify_pin(hCard)
-        if None == control:
+        if control is None:
             raise Exception("Not a pinpad")
 
     command = [0x00,  # bTimerOut
-            0x00,  # bTimerOut2
-            0x82,  # bmFormatString
-            0x04,  # bmPINBlockString
-            0x00,  # bmPINLengthFormat
-            0x08, 0x04,  # wPINMaxExtraDigit
-            0x02,  # bEntryValidationCondition
-            0x01,  # bNumberMessage
-            0x04, 0x09,  # wLangId
-            0x00,  # bMsgIndex
-            0x00, 0x00, 0x00,  # bTeoPrologue
-            13, 0, 0, 0,  # ulDataLength
-            0x00, 0x20, 0x00, 0x00, 0x08, 0x30, 0x30, 0x30, 0x30, 0x30,
-            0x30, 0x30, 0x30]  # abData
+               0x00,  # bTimerOut2
+               0x82,  # bmFormatString
+               0x04,  # bmPINBlockString
+               0x00,  # bmPINLengthFormat
+               0x08, 0x04,  # wPINMaxExtraDigit
+               0x02,  # bEntryValidationCondition
+               0x01,  # bNumberMessage
+               0x04, 0x09,  # wLangId
+               0x00,  # bMsgIndex
+               0x00, 0x00, 0x00,  # bTeoPrologue
+               13, 0, 0, 0,  # ulDataLength
+               0x00, 0x20, 0x00, 0x00, 0x08, 0x30, 0x30, 0x30, 0x30, 0x30,
+               0x30, 0x30, 0x30]  # abData
     hresult, response = SCardControl(hcard, control, command)
     if hresult != SCARD_S_SUCCESS:
         raise BaseSCardException(hresult)
@@ -112,7 +112,7 @@ try:
 
                 try:
                     SELECT = [0x00, 0xA4, 0x04, 0x00, 0x06, 0xA0, 0x00,
-                        0x00, 0x00, 0x18, 0xFF]
+                              0x00, 0x00, 0x18, 0xFF]
                     hresult, response = SCardTransmit(
                         hcard,
                         dwActiveProtocol,
@@ -148,7 +148,6 @@ try:
 except error as e:
     print(e)
 
-import sys
 if 'win32' == sys.platform:
     print('press Enter to continue')
     sys.stdin.read(1)
