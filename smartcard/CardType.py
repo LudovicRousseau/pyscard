@@ -70,7 +70,7 @@ class ATRCardType(CardType):
         """
         self.atr = list(atr)
         self.mask = mask
-        if None == mask:
+        if mask is None:
             self.maskedatr = self.atr
         else:
             if len(self.atr) != len(self.mask):
@@ -90,7 +90,7 @@ class ATRCardType(CardType):
         if len(atr) != len(self.atr):
             return not True
 
-        if None != self.mask:
+        if self.mask is not None:
             maskedatr = list(map(lambda x, y: x & y, list(atr), self.mask))
         else:
             maskedatr = atr
@@ -105,4 +105,3 @@ if __name__ == '__main__':
     connection.connect()
     atrct = ATRCardType([0x3B, 0x16, 0x94, 0x20, 0x02, 0x01, 0x00, 0x00, 0x0D])
     print(atrct.matches(connection.getATR()))
-
