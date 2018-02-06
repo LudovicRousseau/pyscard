@@ -108,6 +108,29 @@ for k in list(Properties.keys()):
     Properties[Properties[k]] = k
 
 
+def parseFeatureRequest(response):
+    """ Get the list of Part10 features supported by the reader.
+
+    @param response: result of CM_IOCTL_GET_FEATURE_REQUEST commmand
+
+    @rtype: list
+    @return: a list of list [[tag1, value1], [tag2, value2]]
+    """
+    features = []
+    while (len(response) > 0):
+        tag = response[0]
+        control = ((((((response[2] << 8) +
+                        response[3]) << 8) +
+                        response[4]) << 8) +
+                        response[5])
+        try:
+            features.append([Features[tag], control])
+        except KeyError:
+            pass
+        del response[:6]
+    return features
+
+
 def getFeatureRequest(cardConnection):
     """ Get the list of Part10 features supported by the reader.
 
@@ -117,19 +140,7 @@ def getFeatureRequest(cardConnection):
     @return: a list of list [[tag1, value1], [tag2, value2]]
     """
     response = cardConnection.control(CM_IOCTL_GET_FEATURE_REQUEST, [])
-    features = []
-    while (len(response) > 0):
-        tag = response[0]
-        control = (((((response[2] << 8) + \
-                      response[3]) << 8) + \
-                      response[4]) << 8) + \
-                      response[5]
-        try:
-            features.append([Features[tag], control])
-        except KeyError:
-            pass
-        del response[:6]
-    return features
+    return parseFeatureRequest(response)
 
 
 def hasFeature(featureList, feature):
