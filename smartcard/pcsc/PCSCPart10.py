@@ -202,6 +202,16 @@ def getTlvProperties(cardConnection, featureList=None, controlCode=None):
         return {'raw': []}
 
     response = cardConnection.control(controlCode, [])
+    return parseTlvProperties(response)
+
+
+def parseTlvProperties(response):
+    """ return the GET_TLV_PROPERTIES structure
+
+    @param response: result of  L{FEATURE_GET_TLV_PROPERTIES}
+
+    @rtype: dict
+    @return: a dict """
     d = {
             'raw': response,
         }
