@@ -247,13 +247,14 @@ def parseTlvProperties(response):
 
     return d
 
+
 if __name__ == '__main__':
     """Small sample illustrating the use of PCSCPart10."""
     from smartcard.pcsc.PCSCReader import PCSCReader
     cc = PCSCReader.readers()[0].createConnection()
     cc.connect(mode=SCARD_SHARE_DIRECT)
 
-    #print(cc.control(CM_IOCTL_GET_FEATURE_REQUEST))
+    # print(cc.control(CM_IOCTL_GET_FEATURE_REQUEST))
     features = getFeatureRequest(cc)
     print(features)
 
@@ -269,4 +270,3 @@ if __name__ == '__main__':
     properties = getTlvProperties(cc)
     for k, v in list(properties.items()):
         print(" %s: %s" % (k, v))
-
