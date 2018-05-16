@@ -150,11 +150,7 @@ nb of historical bytes: 5
 
     def test_ATR_TS(self):
         atr = [0x42]
-        with self.assertRaises(SmartcardException) as cm:
-            a = ATR(atr)
-        the_exception = cm.exception
-        print(the_exception)
-        self.assertEqual(str(the_exception), "invalid TS 0x42")
+        self.assertRaises(SmartcardException, ATR, atr)
 
     def test_ATR_get(self):
         atr = "3B F2 95 12 34 01 36 06"
