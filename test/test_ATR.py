@@ -5,6 +5,7 @@ import sys
 import unittest
 from smartcard.ATR import ATR
 from smartcard.Exceptions import SmartcardException
+from smartcard.util import toBytes
 
 if sys.version_info >= (3, 0):
     from io import StringIO
@@ -154,6 +155,17 @@ nb of historical bytes: 5
         the_exception = cm.exception
         print(the_exception)
         self.assertEqual(str(the_exception), "invalid TS 0x42")
+
+    def test_ATR_get(self):
+        atr = "3B F2 95 12 34 01 36 06"
+        a = ATR(toBytes(atr))
+        self.assertEqual(a.getTA1(), 0x95)
+        self.assertEqual(a.getTB1(), 0x12)
+        self.assertEqual(a.getTC1(), 0x34)
+        self.assertEqual(a.getTD1(), 0x01)
+        self.assertEqual(a.getHistoricalBytes(), [0x36, 0x06])
+        self.assertFalse(a.isT15Supported())
+        self.assertEqual(str(a), atr)
 
 if __name__ == '__main__':
     unittest.main(buffer=True)
