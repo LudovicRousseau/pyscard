@@ -4,6 +4,8 @@
 import sys
 import unittest
 from smartcard.ATR import ATR
+from smartcard.Exceptions import SmartcardException
+
 if sys.version_info >= (3, 0):
     from io import StringIO
 else:
@@ -144,6 +146,14 @@ nb of historical bytes: 5
         a.dump()
         output = sys.stdout.getvalue()
         self.assertEqual(output, data_out)
+
+    def test_ATR_TS(self):
+        atr = [0x42]
+        with self.assertRaises(SmartcardException) as cm:
+            a = ATR(atr)
+        the_exception = cm.exception
+        print(the_exception)
+        self.assertEqual(str(the_exception), "invalid TS 0x42")
 
 if __name__ == '__main__':
     unittest.main(buffer=True)
