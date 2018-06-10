@@ -7,12 +7,19 @@
 
 import unittest
 from smartcard.scard import *
+from distutils.util import get_platform
 
 
 class TestError(unittest.TestCase):
 
     def test_SCardGetErrorMessage(self):
         res = SCardGetErrorMessage(SCARD_S_SUCCESS)
+
+        # do not test on Windows
+        # the error messages are different and localized
+        if get_platform() in ('win32', 'win-amd64'):
+            return
+
         expected = "Command successful."
         self.assertEqual(res, expected)
 
