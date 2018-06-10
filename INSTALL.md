@@ -3,8 +3,11 @@ pyscard: smartcard library for python
 
 https://pyscard.sourceforge.io/
 
-Copyright 2001-2012 gemalto
-Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
+Copyright 2001-2012 Gemalto
+
+Authors:
+- Jean-Daniel Aussel, jean-daniel.aussel@gemalto.com
+- Ludovic Rousseau, ludovic.rousseau@free.fr
 
 This file is part of pyscard.
 
@@ -32,8 +35,8 @@ python framework with objects wrapping PCSC API.
 
 Documentation
 -------------
-All documentation is provided in the smartcard/doc directory of the
-source distribution.  Examples are provided in the smartcard/Examples
+All documentation is provided in the `smartcard/doc` directory of the
+source distribution.  Examples are provided in the `smartcard/Examples`
 directory of the source distribution.  The binary distribution does not
 include any documentation, tests scripts or examples.
 
@@ -69,7 +72,7 @@ download Microsoft Visual C++ Compiler for Python 2.7
 2. download the source distribution
 
 The source distribution is available as `pyscard-1.7.<xx>.zip` for windows,
-and ` pyscard-1.7.<xx>.tar.gz`  for GNU/Linux.
+and `pyscard-1.7.<xx>.tar.gz` for GNU/Linux.
 
 3. unzip the source distribution, open a console and type the following:
 
