@@ -26,7 +26,7 @@ pyscard is a python module adding smart cards support to python.
 
 It consists of the smartcard.scard module, an extension module wrapping
 Windows smart card base components (also known as PCSC) on Windows, and
-PCSC lite on linux and OS X, and of the smartcard module, a
+PCSC lite on GNU/Linux and macOS, and of the smartcard module, a
 python framework with objects wrapping PCSC API.
 
 
@@ -69,7 +69,7 @@ download Microsoft Visual C++ Compiler for Python 2.7
 2. download the source distribution
 
 The source distribution is available as `pyscard-1.7.<xx>.zip` for windows,
-and ` pyscard-1.7.<xx>.tar.gz`  for linux.
+and ` pyscard-1.7.<xx>.tar.gz`  for GNU/Linux.
 
 3. unzip the source distribution, open a console and type the following:
 
@@ -83,11 +83,11 @@ your python distribution, e.g. `c:\python25\Lib\site-packages\smartcard`.
 This install procedure does not install the documentation, examples or test
 files.
 
-Installation on linux
----------------------
+Installation on GNU/Linux
+-------------------------
 
-Installing on linux from the binary distribution
-------------------------------------------------
+Installing on GNU/Linux from the binary distribution
+----------------------------------------------------
 
 1. download the binary distribution
 
@@ -100,8 +100,8 @@ names similar to `pyscard-1.7.<xx>-1.i386.rpm` for the rpm distribution, or
 With root privilege from a terminal, extract the archive from /, or
 install the rpm.
 
-Installing on linux from the source distribution
-------------------------------------------------
+Installing on GNU/Linux from the source distribution
+----------------------------------------------------
 
 1. you will need gcc, swig (http://www.swig.org), and pcsc-lite
 (https://pcsclite.apdu.fr/)
@@ -141,7 +141,7 @@ Installing on macOS from the source distribution
 
 1. you will need swig (http://www.swig.org) and Xcode
 (https://developer.apple.com/xcode/);
-pcsc-lite is available out of the box on Max OS X
+pcsc-lite is available out of the box on macOS.
 
 2. download the source distribution
 
