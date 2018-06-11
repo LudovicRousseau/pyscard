@@ -28,7 +28,11 @@ class TestError(unittest.TestCase):
         self.assertEqual(res, expected)
 
         res = SCardGetErrorMessage(1)
-        expected = "Unkown error: 0x00000001"
+        # macOS bug not yet fixed
+        if get_platform().startswith('macosx-'):
+            expected = "Unkown error: 0x00000001"
+        else:
+            expected = "Unknown error: 0x00000001"
         self.assertEqual(res, expected)
 
 
