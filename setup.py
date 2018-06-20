@@ -113,7 +113,7 @@ kw = {'name': "pyscard",
                    ],
       'package_dir': {"": "."},
       'package_data': {
-                         "smartcard/wx": ["resources/*.ico"],
+                         "smartcard.wx": ["resources/*.ico"],
                        },
 
       'cmdclass': {'build_py': BuildPyBuildExtFirst},
