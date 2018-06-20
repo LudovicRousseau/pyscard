@@ -1,3 +1,12 @@
+1.9.7 (June 2018)
+=================
+    * Modify CardMonitoring's deleteObserver method to cleanly remove threads
+    * Python 3: fix smartcard/Synchronization.py
+    * Python 3: Fix SCardGetErrorMessage() on Windows
+    * PCSCPart10: add parseFeatureRequest(), parseTlvProperties()
+    * Fix PEP8 warnings
+	* Minor documentation improvements
+
 1.9.6 (August 2017)
 ===================
     * include test/__init__.py in the archive tarball.
