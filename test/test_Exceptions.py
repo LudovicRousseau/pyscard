@@ -41,7 +41,7 @@ class TestUtil(unittest.TestCase):
         self.assertEqual(exc.hresult, 0)
 
         exc = ListReadersException(SCARD_E_NO_SERVICE)
-        self.assertEqual(exc.hresult, 0x8010001D)
+        self.assertEqual(exc.hresult, 0x8010001DL)
         text = str(exc)
         self.assertEqual(text, "Failed to list readers: Service not available. (0x8010001D)")
 
