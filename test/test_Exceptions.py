@@ -8,6 +8,7 @@
 import unittest
 from smartcard.Exceptions import *
 from smartcard.scard import *
+from distutils.util import get_platform
 
 
 class TestUtil(unittest.TestCase):
@@ -21,12 +22,20 @@ class TestUtil(unittest.TestCase):
         exc = ListReadersException(0)
         self.assertEqual(exc.hresult, 0)
         text = str(exc)
-        self.assertEqual(text, "Failed to list readers: Command successful. (0x00000000)")
+        if get_platform().startswith('win'):
+            expected = "Failed to list readers: The operation completed successfully.  (0x00000000)"
+        else:
+            expected = "Failed to list readers: Command successful. (0x00000000)"
+        self.assertEqual(text, expected)
 
         exc = ListReadersException(0x42)
         self.assertEqual(exc.hresult, 0x42)
         text = str(exc)
-        self.assertEqual(text, "Failed to list readers: Unknown error: 0x00000042 (0x00000042)")
+        if get_platform().startswith('win'):
+            expected = "Failed to list readers: The network resource type is not correct.  (0x00000042)"
+        else:
+            expected = "Failed to list readers: Unknown error: 0x00000042 (0x00000042)"
+        self.assertEqual(text, expected)
 
         exc = ListReadersException(SCARD_S_SUCCESS)
         self.assertEqual(exc.hresult, 0)
