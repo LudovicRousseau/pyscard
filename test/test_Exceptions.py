@@ -22,28 +22,23 @@ class TestUtil(unittest.TestCase):
         exc = ListReadersException(0)
         self.assertEqual(exc.hresult, 0)
         text = str(exc)
-        if get_platform().startswith('win'):
-            expected = "Failed to list readers: The operation completed successfully.  (0x00000000)"
-        else:
-            expected = "Failed to list readers: Command successful. (0x00000000)"
-        self.assertEqual(text, expected)
+        if not get_platform().startswith('win'):
+            self.assertEqual(text, "Failed to list readers: Command successful. (0x00000000)")
 
         exc = ListReadersException(0x42)
         self.assertEqual(exc.hresult, 0x42)
         text = str(exc)
-        if get_platform().startswith('win'):
-            expected = "Failed to list readers: The network resource type is not correct.  (0x00000042)"
-        else:
-            expected = "Failed to list readers: Unknown error: 0x00000042 (0x00000042)"
-        self.assertEqual(text, expected)
+        if get_platform().startswith('linux'):
+            self.assertEqual(text, "Failed to list readers: Unknown error: 0x00000042 (0x00000042)")
 
         exc = ListReadersException(SCARD_S_SUCCESS)
         self.assertEqual(exc.hresult, 0)
 
         exc = ListReadersException(SCARD_E_NO_SERVICE)
-        self.assertEqual(exc.hresult, 0x8010001DL)
+        self.assertEqual(exc.hresult, SCARD_E_NO_SERVICE)
         text = str(exc)
-        self.assertEqual(text, "Failed to list readers: Service not available. (0x8010001D)")
+        if get_platform().startswith('linux'):
+            self.assertEqual(text, "Failed to list readers: Service not available. (0x8010001D)")
 
     def test_NoReadersException(self):
         exc = NoReadersException()
