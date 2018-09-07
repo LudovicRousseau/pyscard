@@ -118,9 +118,7 @@ class PCSCCardConnection(CardConnection):
         if hresult != 0:
             self.hcard = None
             if hresult in (SCARD_W_REMOVED_CARD, SCARD_E_NO_SMARTCARD):
-                raise NoCardException(
-                    'Unable to connect: ' + \
-                    SCardGetErrorMessage(hresult))
+                raise NoCardException('Unable to connect', hresult=hresult)
             else:
                 raise CardConnectionException(
                     'Unable to connect with protocol: ' + \

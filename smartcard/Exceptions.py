@@ -24,6 +24,8 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
+from smartcard.scard import SCardGetErrorMessage
+
 
 class SmartcardException(Exception):
     """Base class for smartcard exceptions.
@@ -32,7 +34,17 @@ class SmartcardException(Exception):
     shield scard (i.e. PCSC) exceptions raised by the scard module.
 
     """
-    pass
+    def __init__(self, message="", hresult=-1, *args):
+        super(SmartcardException, self).__init__(message, *args)
+        self.hresult = int(hresult)
+
+    def __str__(self):
+        text = super(SmartcardException, self).__str__()
+        if self.hresult != -1:
+            text += ": %s (0x%08X)" % (SCardGetErrorMessage(self.hresult), self.hresult)
+
+        return text
+
 
 
 class CardConnectionException(SmartcardException):
@@ -61,33 +73,31 @@ class CardServiceException(SmartcardException):
 class InvalidATRMaskLengthException(SmartcardException):
     """Raised when an ATR mask does not match an ATR length."""
 
-    def __init__(self, *args):
-        SmartcardException.__init__(self,
-                                    'Invalid ATR mask length: ', *args)
+    def __init__(self, mask):
+        SmartcardException.__init__(self, 'Invalid ATR mask length: %s'
+            %mask)
 
 
 class InvalidReaderException(SmartcardException):
     """Raised when trying to acces an invalid smartcard reader."""
 
-    def __init__(self, *args):
-        SmartcardException.__init__(self, 'Invalid reader: ', *args)
+    def __init__(self, readername):
+        SmartcardException.__init__(self, 'Invalid reader: %s' % readername)
 
 
 class ListReadersException(SmartcardException):
     """Raised when smartcard readers cannot be listed."""
 
-    def __init__(self, *args):
-        SmartcardException.__init__(self, 'Failed to list readers', *args)
+    def __init__(self, hresult):
+        SmartcardException.__init__(self, 'Failed to list readers',
+                hresult=hresult)
 
 
 class NoCardException(SmartcardException):
     """Raised when no card in is present in reader."""
 
-    def __init__(self, *args):
-        SmartcardException.__init__(
-            self,
-            'Unable to connect to card or no card in reader',
-            *args)
+    def __init__(self, message, hresult):
+        SmartcardException.__init__(self, message, hresult=hresult)
 
 
 class NoReadersException(SmartcardException):
