@@ -37,6 +37,8 @@ from smartcard.Observer import Observer
 from smartcard.Observer import Observable
 
 from smartcard.CardRequest import CardRequest
+from smartcard.Exceptions import SmartcardException
+from smartcard.scard import SCARD_E_NO_SERVICE
 
 _START_ON_DEMAND_ = False
 
@@ -188,14 +190,15 @@ class CardMonitoringThread(object):
                 except AttributeError:
                     pass
 
-                except:
+                except SmartcardException as exc:
                     # FIXME Tighten the exceptions caught by this block
                     traceback.print_exc()
                     # Most likely raised during interpreter shutdown due
                     # to unclean exit which failed to remove all observers.
                     # To solve this, we set the stop event and pass the
                     # exception to let the thread finish gracefully.
-                    self.stopEvent.set()
+                    if exc.hresult == SCARD_E_NO_SERVICE:
+                        self.stopEvent.set()
 
         # stop the thread by signaling stopEvent
         def stop(self):
