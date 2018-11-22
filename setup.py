@@ -69,17 +69,14 @@ elif 'macosx-10.' in get_platform():
                                    '-arch', 'x86_64', '-ggdb']
     platform_extra_link_args = ['-arch', 'i386', '-arch', 'x86_64', '-ggdb']
 
-# Other (GNU/Linux, OpenBSD, etc.)
+# Other (GNU/Linux, BSD, etc.)
 #
 else:
     platform__cc_defines = [('PCSCLITE', '1')]
     platform_swig_opts = ['-DPCSCLITE']
     platform_sources = []
     platform_libraries = []
-    if 'openbsd' in get_platform():
-        platform_include_dirs = ['/usr/local/include/PCSC']
-    else:
-        platform_include_dirs = ['/usr/include/PCSC']
+    platform_include_dirs = ['/usr/include/PCSC', '/usr/local/include/PCSC']
     platform_extra_compile_args = []    # ['-ggdb', '-O0']
     platform_extra_link_args = []   # ['-ggdb']
 
