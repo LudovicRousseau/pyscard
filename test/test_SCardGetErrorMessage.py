@@ -30,7 +30,7 @@ class TestError(unittest.TestCase):
 
         res = SCardGetErrorMessage(1)
         # macOS bug not yet fixed
-        if get_platform() < 'macosx-10.13':
+        if get_platform().startswith('macosx-') and get_platform() < 'macosx-10.13':
             expected = "Unkown error: 0x00000001"
         else:
             expected = "Unknown error: 0x00000001"
