@@ -723,12 +723,12 @@ As for APDU tracing, a straightforward way of checking for errors in response AP
     < [] 6E 0
     >>>
     >>> if sw1 in range(0x61, 0x6f):
-    ... print "Error: sw1: %x sw2: %x" % (sw1, sw2)
+    ...     print "Error: sw1: %x sw2: %x" % (sw1, sw2)
     ...
     Error: sw1: 6e sw2: 0
     >>> if sw1 == 0x9F:
-    ... apdu = GET_RESPONSE + [sw2]
-    ... response, sw1, sw2 = cardservice.connection.transmit( apdu )
+    ...     apdu = GET_RESPONSE + [sw2]
+    ...     response, sw1, sw2 = cardservice.connection.transmit( apdu )
     ...
     >>> cardservice.connection.disconnect()
     disconnecting from Utimaco CardManUSB 0
@@ -745,10 +745,10 @@ a function mytransmit, e.g.:
     >>> from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver
     >>>
     >>> def mytransmit( connection, apdu ):
-    ... response, sw1, sw2 = connection.transmit( apdu )
-    ... if sw1 in range(0x61, 0x6f):
-    ... print "Error: sw1: %x sw2: %x" % (sw1, sw2)
-    ... return response, sw1, sw2
+    ...     response, sw1, sw2 = connection.transmit( apdu )
+    ...     if sw1 in range(0x61, 0x6f):
+    ...         print "Error: sw1: %x sw2: %x" % (sw1, sw2)
+    ...     return response, sw1, sw2
     ...
     >>>
     >>> GET_RESPONSE = [0XA0, 0XC0, 00, 00 ]
@@ -773,8 +773,8 @@ a function mytransmit, e.g.:
     Error: sw1: 6e sw2: 0
     >>>
     >>> if sw1 == 0x9F:
-    ... apdu = GET_RESPONSE + [sw2]
-    ... response, sw1, sw2 = mytransmit( cardservice.connection, apdu )
+    ...     apdu = GET_RESPONSE + [sw2]
+    ...     response, sw1, sw2 = mytransmit( cardservice.connection, apdu )
     ...
     >>> cardservice.connection.disconnect()
     disconnecting from Utimaco CardManUSB 0
