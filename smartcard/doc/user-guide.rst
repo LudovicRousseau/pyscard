@@ -9,6 +9,9 @@ Copyright
 | Copyright 2001-2009 `Gemalto <http://www.gemalto.com/>`_
 | Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
 
+| Copyright 2007-2018
+| Author: Ludovic Rousseau, mailto:ludovic.rousseau@free.fr
+
 This file is part of pyscard.
 
 pyscard is free software; you can redistribute it and/or modify it under
