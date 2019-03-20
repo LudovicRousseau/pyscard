@@ -52,12 +52,12 @@ Installation on windows
 Installing on windows from the binary distribution
 --------------------------------------------------
 
-1. download the binary msi installer or self-executable installer
+1. download the binary msi installer or self-executable installer from https://sourceforge.net/projects/pyscard/files/pyscard/
 2. execute the installer
 
 The binary msi installer and self-executable installer are packaged for
 a specific version of python, and have name similar to
-`pyscard-1.7.<xx>.win32-py2.7.msi` and `pyscard-1.7.<xx>.win32-py2.7.exe`.
+`pyscard-1.9.<xx>.win32-py2.7.msi` and `pyscard-1.9.<xx>.win32-py2.7.exe`.
 
 
 Installing on windows from the source distribution
@@ -69,10 +69,21 @@ Visual Studio 2008 is required for building the C language wrapper. You can
 download Microsoft Visual C++ Compiler for Python 2.7
 (http://aka.ms/vcpython27).
 
+You can install swig using:
+
+* Install the chocolately package manager
+* Open a powershell as administrator mode, run
+```
+choco install swig
+```
+* Then in the same window, install pyscard by
+```
+pip install pyscard
+```
+
 2. download the source distribution
 
-The source distribution is available as `pyscard-1.7.<xx>.zip` for windows,
-and `pyscard-1.7.<xx>.tar.gz` for GNU/Linux.
+The source distribution is available `pyscard-1.9.<xx>.tar.gz` for Windows and GNU/Linux.
 
 3. unzip the source distribution, open a console and type the following:
 
@@ -86,82 +97,30 @@ your python distribution, e.g. `c:\python25\Lib\site-packages\smartcard`.
 This install procedure does not install the documentation, examples or test
 files.
 
-Installation on GNU/Linux
--------------------------
+Installation on GNU/Linux or macOS
+----------------------------------
 
-Installing on GNU/Linux from the binary distribution
-----------------------------------------------------
-
-1. download the binary distribution
-
-The binary distribution is either an archive file or a rpm file, with
-names similar to `pyscard-1.7.<xx>-1.i386.rpm` for the rpm distribution, or
-`pyscard-1.7.<xx>.linux-i686.tar.gz` for the archive distribution.
-
-2. untar the binary distribution
-
-With root privilege from a terminal, extract the archive from /, or
-install the rpm.
-
-Installing on GNU/Linux from the source distribution
-----------------------------------------------------
+Installing on GNU/Linux or macOS from the source distribution
+-------------------------------------------------------------
 
 1. you will need gcc, swig (http://www.swig.org), and pcsc-lite
 (https://pcsclite.apdu.fr/)
 
 2. download the source distribution
 
-The source distribution is available as `pyscard-1.7.<xx>.zip` or
-`pyscard-1.7.<xx>.tar.gz`.
+The source distribution is available as `pyscard-1.9.<xx>.tar.gz`.
 
 3. untar the source distribution
 
 4. from a terminal with root privileges, type the following:
 
 ```
-/usr/bin/python setup.py build_ext install
+sudo python setup.py install
 ```
 
 This will build pyscard and install it in the site-packages directory of
 your python distribution, e.g.
 `/usr/lib/python2.7/site-packages/smartcard`.
-
-Installation on macOS
----------------------
-
-Installing on macOS from the binary distribution
-------------------------------------------------
-
-1. download the binary distribution
-
-The binary distribution is an archive file, with a name similar to
-`pyscard-1.7.<xx>-py-2.7-macosx10.7.mpkg`.
-
-2. Open the package and proceed with installation.
-
-Installing on macOS from the source distribution
--------------------------------------------------
-
-1. you will need swig (http://www.swig.org) and Xcode
-(https://developer.apple.com/xcode/);
-pcsc-lite is available out of the box on macOS.
-
-2. download the source distribution
-
-The source distribution is available as `pyscard-1.7.<xx>.zip` or
-`pyscard-1.7.<xx>.tar.gz`.
-
-3. untar or unzip the source distribution
-
-4. from a terminal, type the following:
-
-```
-sudo python setup.py build_ext install
-```
-
-This will build pyscard and install it in the site-packages directory of
-your python distribution, e.g. `/Library/Python/2.7/lib/site-packages/smartcard`.
-
 
 Developer documentation, unit tests and examples
 ------------------------------------------------
@@ -190,8 +149,8 @@ setup.py build_ext bdist_wininst
 ```
 
 This will build the msi installer and self-executable installer in the
-dist directory, with names similar to `pyscard-1.7.<xx>.win32-py2.7.msi` and
-`pyscard-1.7.<xx>.win32-py2.7.exe`.
+dist directory, with names similar to `pyscard-1.9.<xx>.win32-py2.7.msi` and
+`pyscard-1.9.<xx>.win32-py2.7.exe`.
 
 Building a binary distribution for GNU/Linux
 --------------------------------------------
@@ -207,7 +166,7 @@ command in a terminal:
 /usr/bin/python setup.py build_ext bdist
 ```
 
-This will build a package similar to `pyscard-1.7.<xx>.linux-i686.tar.gz`
+This will build a package similar to `pyscard-1.9.<xx>.linux-i686.tar.gz`
 containing a tree
 
 Building a binary distribution for macOS
@@ -229,5 +188,5 @@ python setup.py build_ext
 bdist_mpkg setup.py
 ```
 
-This will build package `pyscard-1.7.<xx>-py-2.7-macosx10.7.mpkg` in the dist
+This will build package `pyscard-1.9.<xx>-py-2.7-macosx10.7.mpkg` in the dist
 directory.
