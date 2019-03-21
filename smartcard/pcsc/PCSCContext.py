@@ -42,6 +42,9 @@ class PCSCContext(object):
         def getContext(self):
             return self.hcontext
 
+        def releaseContext(self):
+            return SCardReleaseContext(self.hcontext)
+
     # the singleton
     mutex = RLock()
     instance = None
@@ -50,10 +53,23 @@ class PCSCContext(object):
         PCSCContext.mutex.acquire()
         try:
             if not PCSCContext.instance:
-                PCSCContext.instance = PCSCContext.__PCSCContextSingleton()
+                self.renewContext()
         finally:
             PCSCContext.mutex.release()
 
     def __getattr__(self, name):
         if self.instance:
             return getattr(self.instance, name)
+
+    def renewContext():
+        PCSCContext.mutex.acquire()
+        try:
+            if PCSCContext.instance is not None:
+                PCSCContext.instance.releaseContext()
+
+            PCSCContext.instance = PCSCContext.__PCSCContextSingleton()
+        finally:
+            PCSCContext.mutex.release()
+
+        return PCSCContext.instance.getContext()
+    renewContext = staticmethod(renewContext)

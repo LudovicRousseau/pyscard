@@ -70,6 +70,11 @@ class CardServiceException(SmartcardException):
     pass
 
 
+class CardServiceStoppedException(SmartcardException):
+    """Raised when the CardService was stopped"""
+    pass
+
+
 class InvalidATRMaskLengthException(SmartcardException):
     """Raised when an ATR mask does not match an ATR length."""
 
