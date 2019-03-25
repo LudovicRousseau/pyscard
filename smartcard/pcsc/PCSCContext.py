@@ -53,7 +53,7 @@ class PCSCContext(object):
         PCSCContext.mutex.acquire()
         try:
             if not PCSCContext.instance:
-                self.establish_new_context()
+                self.renewContext()
         finally:
             PCSCContext.mutex.release()
 
@@ -61,7 +61,7 @@ class PCSCContext(object):
         if self.instance:
             return getattr(self.instance, name)
 
-    def establish_new_context():
+    def renewContext():
         PCSCContext.mutex.acquire()
         try:
             if PCSCContext.instance is not None:
@@ -72,4 +72,4 @@ class PCSCContext(object):
             PCSCContext.mutex.release()
 
         return PCSCContext.instance.getContext()
-    establish_new_context = staticmethod(establish_new_context)
+    renewContext = staticmethod(renewContext)
