@@ -71,5 +71,5 @@ class PCSCContext(object):
         finally:
             PCSCContext.mutex.release()
 
-        return PCSCContext.instance
+        return PCSCContext.instance.getContext()
     establish_new_context = staticmethod(establish_new_context)
