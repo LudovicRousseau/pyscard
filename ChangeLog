@@ -1,3 +1,11 @@
+1.9.8 (March 2018)
+==================
+    * SmartcardException: store the PC/SC return code in hresult
+    * CardMonitoring: stop the looping only if PCSC exited
+    * setup: support build on OpenBSD, and other BSD
+    * Fix Windows 10 SCARD_E_SERVICE_STOPPED from SCardListReaders()
+    * Minor documentation improvements
+
 1.9.7 (June 2018)
 =================
     * Modify CardMonitoring's deleteObserver method to cleanly remove threads
@@ -5,7 +13,7 @@
     * Python 3: Fix SCardGetErrorMessage() on Windows
     * PCSCPart10: add parseFeatureRequest(), parseTlvProperties()
     * Fix PEP8 warnings
-	* Minor documentation improvements
+    * Minor documentation improvements
 
 1.9.6 (August 2017)
 ===================
