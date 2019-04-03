@@ -38,7 +38,7 @@ class TestUtil(unittest.TestCase):
         self.assertEqual(exc.hresult, SCARD_E_NO_SERVICE)
         text = str(exc)
         if get_platform().startswith('linux'):
-            self.assertEqual(text, "Failed to list readers: Service not available. (0x8010001D)")
+            self.assertEqual(text, "Failed to list readers: Service not available. (0x%08X)" % SCARD_E_NO_SERVICE)
 
     def test_NoReadersException(self):
         exc = NoReadersException()
