@@ -1,4 +1,5 @@
 1.9.9 (August 2019)
+===================
     * Makefile: use twine to upload to pypi.python.org
     * test: fix Exception test on 32-bits CPU
     * test: correctly handle macOS versions older than 10.10
