@@ -1,4 +1,4 @@
-1.9.8 (March 2018)
+1.9.8 (March 2019)
 ==================
     * SmartcardException: store the PC/SC return code in hresult
     * CardMonitoring: stop the looping only if PCSC exited
