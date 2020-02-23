@@ -35,23 +35,22 @@ from setuptools.command.build_py import build_py
 if sys.version_info[0:2] < (2, 6):
     raise RuntimeError("pyscard requires Python 2.6+ to build.")
 
+platform_include_dirs = []
+platform_sources = []
+platform_libraries = []
+platform_extra_compile_args = []    # ['-ggdb', '-O0']
+platform_extra_link_args = []   # ['-ggdb']
+
 if get_platform() in ('win32', 'win-amd64'):
     platform__cc_defines = [('WIN32', '100')]
     platform_swig_opts = ['-DWIN32']
     platform_sources = ['smartcard/scard/scard.rc']
     platform_libraries = ['winscard']
-    platform_include_dirs = []
-    platform_extra_compile_args = []
-    platform_extra_link_args = []
 
 elif 'cygwin-' in get_platform():
     platform__cc_defines = [('WIN32', '100')]
     platform_swig_opts = ['-DWIN32']
-    platform_sources = []
     platform_libraries = ['winscard']
-    platform_include_dirs = []
-    platform_extra_compile_args = []
-    platform_extra_link_args = []
 
 elif 'macosx-10.' in get_platform():
     if 'macosx-10.6' in get_platform():
@@ -62,22 +61,13 @@ elif 'macosx-10.' in get_platform():
                             ('__APPLE__', '1'),
                             (macosx_define, '1')]
     platform_swig_opts = ['-DPCSCLITE', '-D__APPLE__', '-D' + macosx_define]
-    platform_sources = []
-    platform_libraries = []
-    platform_include_dirs = []
-    platform_extra_compile_args = []
-    platform_extra_link_args = []
 
 # Other (GNU/Linux, etc.)
 #
 else:
     platform__cc_defines = [('PCSCLITE', '1')]
     platform_swig_opts = ['-DPCSCLITE']
-    platform_sources = []
-    platform_libraries = []
     platform_include_dirs = ['/usr/include/PCSC', '/usr/local/include/PCSC']
-    platform_extra_compile_args = []    # ['-ggdb', '-O0']
-    platform_extra_link_args = []   # ['-ggdb']
 
 
 VERSION_INFO = (1, 9, 9, 0)
