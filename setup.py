@@ -65,8 +65,8 @@ elif 'macosx-10.' in get_platform():
     platform_sources = []
     platform_libraries = []
     platform_include_dirs = []
-    platform_extra_compile_args = ['-v', '-ggdb']
-    platform_extra_link_args = ['-ggdb']
+    platform_extra_compile_args = []
+    platform_extra_link_args = []
 
 # Other (GNU/Linux, etc.)
 #
