@@ -48,6 +48,10 @@ class TestUtil(unittest.TestCase):
         data_out = "Number 101"
         self.assertEqual(toASCIIString(data_in), data_out)
 
+        data_in = [0x01, 0x20, 0x80, 0x7E, 0xF0]
+        data_out = ". .~."
+        self.assertEqual(toASCIIString(data_in), data_out)
+
     def test_toGSM3_38Bytes(self):
         data_in = "@Pascal"
         data_out = [0x00, 0x50, 0x61, 0x73, 0x63, 0x61, 0x6C]

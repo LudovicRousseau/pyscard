@@ -80,9 +80,18 @@ def toASCIIString(bytelist):
 
     >>> toASCIIString([0x4E,0x75,0x6D,0x62,0x65,0x72,0x20,0x31,0x30,0x31])
     'Number 101'
+    >>> toASCIIString([0x01, 0x20, 0x80, 0x7E, 0xF0])
+    ". .~."
     """
 
-    return ''.join(map(chr, bytelist))
+    res = list()
+    for b in bytelist:
+        if b < 32 or b > 127:
+            c = '.'
+        else:
+            c = chr(b)
+        res.append(c)
+    return ''.join(res)
 
 
 def toBytes(bytestring):
