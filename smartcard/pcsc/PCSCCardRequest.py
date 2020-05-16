@@ -84,6 +84,7 @@ class PCSCCardRequest(AbstractCardRequest):
     def getReaderNames(self):
         """Returns the list or PCSC readers on which to wait for cards."""
 
+        self.hcontext = PCSCContext().getContext()
         # get inserted readers
         hresult, pcscreaders = SCardListReaders(self.hcontext, [])
         if 0 != hresult and SCARD_E_NO_READERS_AVAILABLE != hresult:

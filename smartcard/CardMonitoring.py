@@ -198,7 +198,8 @@ class CardMonitoringThread(object):
                     # To solve this, we set the stop event and pass the
                     # exception to let the thread finish gracefully.
                     if exc.hresult == SCARD_E_NO_SERVICE:
-                        self.stopEvent.set()
+                        pass
+                        # self.stopEvent.set()
 
         # stop the thread by signaling stopEvent
         def stop(self):
