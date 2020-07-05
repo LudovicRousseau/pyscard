@@ -31,14 +31,8 @@ class TestError(unittest.TestCase):
         res = SCardGetErrorMessage(1)
         expected = "Unknown error: 0x00000001"
         # macOS bug not yet fixed
-        if get_platform().startswith('macosx-'):
-            version = get_platform()  # something like 'macosx-10.14-x86_64'
-            version = version.split('-')[1]  # '10.14'
-            major, minor = map(int, version.split('.'))  # (10, 14)
-            if major == 10 and minor < 13:
-                expected = "Unkown error: 0x00000001"
-
-        self.assertEqual(res, expected)
+        macos_bug_expected = "Unkown error: 0x00000001"
+        self.assertIn(res, [expected, macos_bug_expected])
 
 
 if __name__ == '__main__':
