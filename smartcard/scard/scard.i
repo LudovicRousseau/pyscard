@@ -649,6 +649,7 @@ static SCARDRETCODE _Status(
             lRetCode=SCARD_E_NO_MEMORY;
             break;
         }
+        pszReaderName->sz[0] = '\0';
         lRetCode = (mySCardStatusA)(
             hcard,
             (LPTSTR)pszReaderName->sz,
