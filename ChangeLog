@@ -1,3 +1,10 @@
+2.0.0 (September 2020)
+======================
+
+   * SCardStatus(): Fix a crash in case of PC/SC error
+   * toASCIIString(): replace non-ASCII char by '.'
+   * remove i386 (32-bits) support on macOS
+
 1.9.9 (August 2019)
 ===================
     * Makefile: use twine to upload to pypi.python.org
