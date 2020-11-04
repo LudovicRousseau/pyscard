@@ -202,6 +202,10 @@ class PCSCCardConnection(CardConnection):
                 dictProtocolHeader[pcscprotocolheader] + '. ' + \
                 SCardGetErrorMessage(hresult))
 
+        if len(response) < 2:
+            raise CardConnectionException(
+                'Card returned no valid response')
+
         sw1 = (response[-2] + 256) % 256
         sw2 = (response[-1] + 256) % 256
 
