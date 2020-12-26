@@ -1,4 +1,4 @@
-PYTHON ?= python
+PYTHON ?= python3
 
 build:
 	$(PYTHON) setup.py build
