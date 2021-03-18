@@ -137,6 +137,54 @@ class PCSCCardConnection(CardConnection):
                     protocol = eval("CardConnection.%s_protocol" % dictProtocol[p])
         PCSCCardConnection.setProtocol(self, protocol)
 
+    def reconnect(self, protocol=None, mode=None, disposition=None):
+        """Reconnect to the card.
+
+        If protocol is not specified, connect with the default
+        connection protocol.
+
+        If mode is not specified, connect with SCARD_SHARE_SHARED.
+
+        If disposition is not specified, do a warm reset (SCARD_RESET_CARD)"""
+        CardConnection.reconnect(self, protocol)
+        if self.hcard == None:
+            raise CardConnectionException('Card not connected')
+
+        pcscprotocol = translateprotocolmask(protocol)
+        if 0 == pcscprotocol:
+            pcscprotocol = self.getProtocol()
+
+        if mode == None:
+            mode = SCARD_SHARE_SHARED
+
+        # store the way to dispose the card
+        if disposition == None:
+            disposition = SCARD_RESET_CARD
+        self.disposition = disposition
+
+        hresult, dwActiveProtocol = SCardReconnect(self.hcard, mode, pcscprotocol, self.disposition)
+        if hresult != 0:
+            self.hcard = None
+            if hresult in (SCARD_W_REMOVED_CARD, SCARD_E_NO_SMARTCARD):
+                raise NoCardException('Unable to reconnect', hresult=hresult)
+            else:
+                raise CardConnectionException(
+                    'Unable to reconnect with protocol: ' + \
+                    dictProtocol[pcscprotocol] + '. ' + \
+                    SCardGetErrorMessage(hresult))
+
+        protocol = 0
+        if dwActiveProtocol == SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1:
+            # special case for T0 | T1
+            # this happen when mode=SCARD_SHARE_DIRECT and no protocol is
+            # then negociated with the card
+            protocol = CardConnection.T0_protocol | CardConnection.T1_protocol
+        else:
+            for p in dictProtocol:
+                if p == dwActiveProtocol:
+                    protocol = eval("CardConnection.%s_protocol" % dictProtocol[p])
+        PCSCCardConnection.setProtocol(self, protocol)
+
     def disconnect(self):
         """Disconnect from the card."""
 

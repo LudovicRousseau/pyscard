@@ -87,6 +87,21 @@ class CardConnection(Observable):
         Observable.setChanged(self)
         Observable.notifyObservers(self, CardConnectionEvent('connect'))
 
+    def reconnect(self, protocol=None, mode=None, disposition=None):
+        """Reconnect to card.
+        @param protocol: a bit mask of the protocols to use, from
+        L{CardConnection.T0_protocol}, L{CardConnection.T1_protocol},
+        L{CardConnection.RAW_protocol}, L{CardConnection.T15_protocol}
+
+        @param mode: SCARD_SHARE_SHARED (default), SCARD_SHARE_EXCLUSIVE or
+        SCARD_SHARE_DIRECT
+
+        @param disposition: SCARD_LEAVE_CARD, SCARD_RESET_CARD (default),
+        SCARD_UNPOWER_CARD or SCARD_EJECT_CARD
+        """
+        Observable.setChanged(self)
+        Observable.notifyObservers(self, CardConnectionEvent('reconnect'))
+
     def disconnect(self):
         """Disconnect from card."""
         Observable.setChanged(self)
