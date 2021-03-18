@@ -53,6 +53,9 @@ class ConsoleCardConnectionObserver(CardConnectionObserver):
         if 'connect' == ccevent.type:
             print('connecting to ' + cardconnection.getReader())
 
+        elif 'reconnect' == ccevent.type:
+            print('reconnecting to ' + cardconnection.getReader())
+
         elif 'disconnect' == ccevent.type:
             print('disconnecting from ' + cardconnection.getReader())
 

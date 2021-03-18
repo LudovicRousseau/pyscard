@@ -53,6 +53,10 @@ class CardConnectionDecorator(CardConnection):
         """call inner component connect"""
         self.component.connect(protocol, mode, disposition)
 
+    def reconnect(self, protocol=None, mode=None, disposition=None):
+        """call inner component connect"""
+        self.component.reconnect(protocol, mode, disposition)
+
     def disconnect(self):
         """call inner component disconnect"""
         self.component.disconnect()

@@ -31,8 +31,8 @@ class CardConnectionEvent(object):
 
     def __init__(self, type, args=None):
         """
-        @param type:   'connect', 'disconnect', 'command', 'response'
-        @param args:   None for 'connect' or 'disconnect'
+        @param type:   'connect', 'reconnect', 'disconnect', 'command', 'response'
+        @param args:   None for 'connect', 'reconnect' or 'disconnect'
                 command APDU byte list for 'command'
                 [response data, sw1, sw2] for 'response'
         """
