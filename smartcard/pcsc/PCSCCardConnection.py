@@ -147,6 +147,9 @@ class PCSCCardConnection(CardConnection):
 
         If disposition is not specified, do a warm reset (SCARD_RESET_CARD)"""
         CardConnection.reconnect(self, protocol)
+        if self.hcard == None:
+            raise CardConnectionException('Card not connected')
+
         pcscprotocol = translateprotocolmask(protocol)
         if 0 == pcscprotocol:
             pcscprotocol = self.getProtocol()
@@ -156,10 +159,8 @@ class PCSCCardConnection(CardConnection):
 
         # store the way to dispose the card
         if disposition == None:
-            if self.disposition == None:
-                self.disposition = SCARD_RESET_CARD
-        else:
-            self.disposition = disposition
+            disposition = SCARD_RESET_CARD
+        self.disposition = disposition
 
         hresult, dwActiveProtocol = SCardReconnect(self.hcard, mode, pcscprotocol, self.disposition)
         if hresult != 0:
@@ -303,4 +304,3 @@ if __name__ == '__main__':
     print("%r %x %x" % cc.transmit(SELECT + DF_TELECOM))
 
     print(cc.control(CM_IOCTL_GET_FEATURE_REQUEST, []))
-
