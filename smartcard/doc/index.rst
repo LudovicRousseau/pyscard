@@ -32,11 +32,11 @@ Architecture
 Pyscard consists of:
 
 * `smartcard.scard
-  <http://pyscard.sourceforge.net/epydoc/smartcard.scard.scard-module.html>`_,
+  <https://pyscard.sourceforge.io/epydoc/smartcard.scard.scard-module.html>`_,
   an extension module wrapping the WinSCard API (smart card base
   components) also known as PC/SC, and
 
-* `smartcard <http://pyscard.sourceforge.net/epydoc/index.html>`_, a
+* `smartcard <https://pyscard.sourceforge.io/epydoc/index.html>`_, a
   higher level Python framework built on top of the raw PC/SC API.
 
 .. image:: ../doc/images/pyscard.jpg
@@ -48,10 +48,10 @@ Documentation
     :ref:`pyscard_user_guide`
 
     `smartcard reference (Python smart card library)
-    <http://pyscard.sourceforge.net/epydoc/index.html>`_
+    <https://pyscard.sourceforge.io/epydoc/index.html>`_
 
     `scard reference (Python PCSC wrapper)
-    <http://pyscard.sourceforge.net/epydoc/smartcard.scard.scard-module.html>`_,
+    <https://pyscard.sourceforge.io/epydoc/smartcard.scard.scard-module.html>`_,
     the Python wrapper around PCSC
 
 Samples
