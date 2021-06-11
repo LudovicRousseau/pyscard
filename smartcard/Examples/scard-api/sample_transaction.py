@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 """
 Sample for python PCSC wrapper module: perform a simple transaction
 

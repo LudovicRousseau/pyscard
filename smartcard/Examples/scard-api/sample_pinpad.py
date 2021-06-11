@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 """
 Sample for python PCSC wrapper module: send a Control Code to a card or
 reader

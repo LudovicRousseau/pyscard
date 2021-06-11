@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 """
 Sample script that monitors smartcard insertion/removal and select
 DF_TELECOM on inserted cards

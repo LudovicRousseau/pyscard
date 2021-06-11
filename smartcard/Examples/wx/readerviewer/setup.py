@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 """
 Setup script to build a standalone readerviewer.exe executable on windows
 using py2exe. Run: python.exe setup.py py2exe, to build executable file.

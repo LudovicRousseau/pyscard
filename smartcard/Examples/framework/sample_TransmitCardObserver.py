@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 """
 Sample script that monitors card insertions,
 connects to cards and transmit an apdu

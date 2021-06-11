@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 """Unit test suite for scard python module.
 
 __author__ = "http://www.gemalto.com"

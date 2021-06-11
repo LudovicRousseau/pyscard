@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 """Manual unit tests for smartcard.CardRequest
 
 __author__ = "http://www.gemalto.com"

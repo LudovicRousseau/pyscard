@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 """
 Sample for python PCSC wrapper module: get card ATR in first pcsc reader
 

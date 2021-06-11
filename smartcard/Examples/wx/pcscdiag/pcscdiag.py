@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 """
 Example wxPython application that displays readers and inserted cards ATRs.
 This example displays a snapshot of the readers and cards, there is no

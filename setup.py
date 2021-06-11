@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 """Setup file for distutils
 
 __author__ = "http://www.gemalto.com"

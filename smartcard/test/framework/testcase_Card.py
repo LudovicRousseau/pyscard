@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 """Unit tests for smartcard.Card
 
 This test case can be executed individually, or with all other test cases

@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 """Simple smart card reader monitoring application.
 
 __author__ = "http://www.gemalto.com"

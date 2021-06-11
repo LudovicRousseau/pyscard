@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 """
 Sample script that tries to select the DF_TELECOM on all inserted cards.
 

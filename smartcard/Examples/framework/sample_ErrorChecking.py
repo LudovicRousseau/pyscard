@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 """Sample script for APDU error checking.
 
 __author__ = "http://www.gemalto.com"

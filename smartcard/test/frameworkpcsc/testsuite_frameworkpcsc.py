@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 """Unit test suite for smartcard python framework over pcsc.
 
 __author__ = "http://www.gemalto.com"

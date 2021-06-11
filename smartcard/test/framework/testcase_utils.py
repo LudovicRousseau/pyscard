@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # -*- coding: iso-8859-1 -*-
 """Unit tests for smartcard.utils
 

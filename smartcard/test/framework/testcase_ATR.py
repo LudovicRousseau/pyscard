@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 """Unit tests for testing that we have at least two cards for the test suite.
 
 This test case can be executed individually, or with all other test cases
