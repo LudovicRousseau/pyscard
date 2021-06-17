@@ -52,7 +52,7 @@ elif 'cygwin-' in get_platform():
     platform_swig_opts = ['-DWIN32']
     platform_libraries = ['winscard']
 
-elif 'macosx-10.' in get_platform():
+elif 'macosx-' in get_platform():
     if 'macosx-10.6' in get_platform():
         macosx_define = '__LEOPARD__'  # Snow Leopard, Python 2.6
     else:
