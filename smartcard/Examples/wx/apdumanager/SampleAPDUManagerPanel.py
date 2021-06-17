@@ -1,3 +1,4 @@
+#! /usr/bin/env python3
 # -*- coding: iso-8859-15 -*-
 """
 Simple panel that defines a dialog to send APDUs to a card.
