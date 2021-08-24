@@ -27,7 +27,7 @@ class TestUtil(unittest.TestCase):
         exc = ListReadersException(0x42)
         self.assertEqual(exc.hresult, 0x42)
         text = str(exc)
-        if get_platform().startswith('linux'):
+        if not get_platform().startswith('win'):
             self.assertEqual(text, "Failed to list readers: Unknown error: 0x00000042 (0x00000042)")
 
         exc = ListReadersException(SCARD_S_SUCCESS)
@@ -36,7 +36,7 @@ class TestUtil(unittest.TestCase):
         exc = ListReadersException(SCARD_E_NO_SERVICE)
         self.assertEqual(exc.hresult, SCARD_E_NO_SERVICE)
         text = str(exc)
-        if get_platform().startswith('linux'):
+        if not get_platform().startswith('win'):
             self.assertEqual(text, "Failed to list readers: Service not available. (0x%08X)" % SCARD_E_NO_SERVICE)
 
     def test_NoReadersException(self):
