@@ -41,7 +41,11 @@ class SmartcardException(Exception):
     def __str__(self):
         text = super(SmartcardException, self).__str__()
         if self.hresult != -1:
-            text += ": %s (0x%08X)" % (SCardGetErrorMessage(self.hresult), self.hresult)
+            hresult = self.hresult
+            if hresult < 0:
+                # convert 0x-7FEFFFE3 into 0x8010001D
+                hresult += 0x100000000
+            text += ": %s (0x%08X)" % (SCardGetErrorMessage(self.hresult), hresult)
 
         return text
 
