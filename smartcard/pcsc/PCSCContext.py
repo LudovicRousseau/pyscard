@@ -52,7 +52,8 @@ class PCSCContext(object):
     def __init__(self):
         PCSCContext.mutex.acquire()
         try:
-            self.renewContext()
+            if not PCSCContext.instance:
+                self.renewContext()
         finally:
             PCSCContext.mutex.release()
 
