@@ -89,7 +89,9 @@ class PCSCCardRequest(AbstractCardRequest):
 
         # get inserted readers
         hresult, pcscreaders = SCardListReaders(self.hcontext, [])
-        if 0 != hresult and SCARD_E_NO_READERS_AVAILABLE != hresult:
+        if hresult in [SCARD_E_NO_READERS_AVAILABLE, SCARD_E_SERVICE_STOPPED]:
+            return []
+        if SCARD_S_SUCCESS != hresult:
             raise ListReadersException(hresult)
 
         readers = []
