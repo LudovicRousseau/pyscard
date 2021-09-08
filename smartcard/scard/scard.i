@@ -152,9 +152,9 @@ Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #else // !PCSCLITE
 // SCARD_CTL_CODE defined in WinSmCrd.h included by Win32 winscard.h
 // MAX_BUFFER_SIZE_EXTENDED is pcsc-lite specific
-// Windows 7 does not support more than 65544 bytes for SCardControl()
-// See https://github.com/LudovicRousseau/pyscard/issues/19
-#define MAX_BUFFER_SIZE_EXTENDED   65544 
+// Issues on Lenovo laptop with NXP reader for higher values
+// See https://github.com/LudovicRousseau/pyscard/issues/100
+#define MAX_BUFFER_SIZE_EXTENDED   65535 
 #endif //PCSCLITE
 
 #include "pcsctypes.h"
