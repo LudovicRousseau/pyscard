@@ -1,3 +1,14 @@
+2.0.2 (September 2021)
+======================
+
+   * Fix an issue in ReaderMonitor() that failed to enumerate readers
+     on macOS
+   * getReaderNames(): handle SCARD_E_SERVICE_STOPPED on Windows
+     generated on last reader removal
+   * Restrict MAX_BUFFER_SIZE_EXTENDED to 65535 and fix an issue on
+     Lenovo laptops with NXP NFC readers
+   * SmartcardException: display a positive PCSC error code
+
 2.0.1 (June 2021)
 =================
 
