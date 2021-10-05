@@ -1,4 +1,8 @@
 # https://github.com/Shayennn/KOBThaiID/blob/master/dump.py
+#
+# Ubuntu 20.04 
+# sudo apt install swig libpcsclite-dev   pcscd python3-pyscard python-pil
+
 
 from smartcard.CardType import AnyCardType
 from smartcard.CardConnection import CardConnection
@@ -45,9 +49,9 @@ for d in DATA:
 			response, sw1, sw2 = cardservice.connection.transmit( apdu )
 			result = ""
 			for i in response:
-        ch=chr(i).encode('cp1252')
-        tx=ch.decode('tis-620') 
-        result = result+tx
+                            ch=chr(i).encode('cp1252')
+                            tx=ch.decode('tis-620') 
+                            result = result+tx
 			f2.write(result.rstrip()+"\n")
 response, sw1, sw2 = cardservice.connection.transmit( [0x80, 0xb0, 0x01, 123, 0x02, 0x00, (256-122)] )
 if sw1 == 0x61:
