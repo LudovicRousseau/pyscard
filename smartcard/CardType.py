@@ -50,6 +50,9 @@ class CardType(object):
 class AnyCardType(CardType):
     """The AnyCardType matches any card."""
 
+    def __init__(self):
+        super().__init__()
+
     def matches(self, atr, reader=None):
         """Always returns true, i.e. AnyCardType matches any card.
 
@@ -67,6 +70,7 @@ class ATRCardType(CardType):
         @param mask:   an optional mask to be applied to the ATR for
             L{CardType} matching default is None
         """
+        super().__init__()
         self.atr = list(atr)
         self.mask = mask
         if mask is None:
