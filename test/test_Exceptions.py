@@ -57,6 +57,14 @@ class TestUtil(unittest.TestCase):
         text = str(exc)
         self.assertEqual(text, "")
 
+    def test_hresult(self):
+        hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+        self.assertEqual(hresult, SCARD_S_SUCCESS)
+
+        hresult, hcard, dwActiveProtocol = SCardConnect(
+            hcontext, "INVALID READER NAME", SCARD_SHARE_SHARED, SCARD_PROTOCOL_ANY
+        )
+        self.assertEqual(hresult, SCARD_E_UNKNOWN_READER)
 
 if __name__ == '__main__':
     unittest.main()
