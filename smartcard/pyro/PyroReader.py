@@ -34,6 +34,7 @@ class PyroReader(Reader):
     def __init__(self, readername):
         """Constructs a new Remote Reader client implementation from a
         Pyro URI."""
+        super().__init__(readername)
         ns = Pyro.naming.NameServerLocator().getNS()
         self.uri = ns.resolve(':pyscard.smartcard.readers.' + readername)
         self.reader = Pyro.core.getAttrProxyForURI(self.uri)
