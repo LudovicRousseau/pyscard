@@ -22,3 +22,5 @@ Travis CI: [![Build Status](https://travis-ci.com/LudovicRousseau/pyscard.svg?br
 AppVeyor: [![Build status](https://ci.appveyor.com/api/projects/status/c97dsaodpcwkm0ra?svg=true)](https://ci.appveyor.com/project/LudovicRousseau/pyscard)
 
 Coveralls: [![Coverage Status](https://coveralls.io/repos/LudovicRousseau/pyscard/badge.svg?branch=master&service=github)](https://coveralls.io/github/LudovicRousseau/pyscard?branch=master)
+
+lgtm: [![Total alerts](https://img.shields.io/lgtm/alerts/g/LudovicRousseau/pyscard.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/LudovicRousseau/pyscard/alerts/) [![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/LudovicRousseau/pyscard.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/LudovicRousseau/pyscard/context:cpp) [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/LudovicRousseau/pyscard.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/LudovicRousseau/pyscard/context:python)
