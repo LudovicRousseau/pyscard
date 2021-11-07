@@ -32,7 +32,7 @@ from smartcard.scard import *
 def translateprotocolmask(protocol):
     """Translate CardConnection protocol mask into PCSC protocol mask."""
     pcscprotocol = 0
-    if None != protocol:
+    if protocol is not None:
         if CardConnection.T0_protocol & protocol:
             pcscprotocol |= SCARD_PROTOCOL_T0
         if CardConnection.T1_protocol & protocol:
@@ -47,7 +47,7 @@ def translateprotocolmask(protocol):
 def translateprotocolheader(protocol):
     """Translate protocol into PCSC protocol header."""
     pcscprotocol = 0
-    if None != protocol:
+    if protocol is not None:
         if CardConnection.T0_protocol == protocol:
             pcscprotocol = SCARD_PCI_T0
         if CardConnection.T1_protocol == protocol:
@@ -104,11 +104,11 @@ class PCSCCardConnection(CardConnection):
         if 0 == pcscprotocol:
             pcscprotocol = self.getProtocol()
 
-        if mode == None:
+        if mode is None:
             mode = SCARD_SHARE_SHARED
 
         # store the way to dispose the card
-        if disposition == None:
+        if disposition is None:
             disposition = SCARD_UNPOWER_CARD
         self.disposition = disposition
 
@@ -146,18 +146,18 @@ class PCSCCardConnection(CardConnection):
 
         If disposition is not specified, do a warm reset (SCARD_RESET_CARD)"""
         CardConnection.reconnect(self, protocol)
-        if self.hcard == None:
+        if self.hcard is None:
             raise CardConnectionException('Card not connected')
 
         pcscprotocol = translateprotocolmask(protocol)
         if 0 == pcscprotocol:
             pcscprotocol = self.getProtocol()
 
-        if mode == None:
+        if mode is None:
             mode = SCARD_SHARE_SHARED
 
         # store the way to dispose the card
-        if disposition == None:
+        if disposition is None:
             disposition = SCARD_RESET_CARD
         self.disposition = disposition
 
@@ -195,7 +195,7 @@ class PCSCCardConnection(CardConnection):
             CardConnection.disconnect(self)
         except TypeError:
             pass
-        if None != self.hcard:
+        if self.hcard is not None:
             hresult = SCardDisconnect(self.hcard, self.disposition)
             if hresult != 0:
                 raise CardConnectionException(
@@ -206,7 +206,7 @@ class PCSCCardConnection(CardConnection):
     def getATR(self):
         """Return card ATR"""
         CardConnection.getATR(self)
-        if None == self.hcard:
+        if self.hcard is None:
             raise CardConnectionException('Card not connected')
         hresult, reader, state, protocol, atr = SCardStatus(self.hcard)
         if hresult != 0:
@@ -229,7 +229,7 @@ class PCSCCardConnection(CardConnection):
                     sw2 is status word 2, e.g. 0x1A
                     response are the response bytes excluding status words
         """
-        if None == protocol:
+        if protocol is None:
             protocol = self.getProtocol()
         CardConnection.doTransmit(self, bytes, protocol)
         pcscprotocolheader = translateprotocolheader(protocol)
@@ -239,7 +239,7 @@ class PCSCCardConnection(CardConnection):
                 'CardConnection.T0_protocol, ' + \
                 'CardConnection.T1_protocol, or ' + \
                 'CardConnection.RAW_protocol')
-        if None == self.hcard:
+        if self.hcard is None:
             raise CardConnectionException('Card not connected')
         hresult, response = SCardTransmit(
             self.hcard, pcscprotocolheader, bytes)
