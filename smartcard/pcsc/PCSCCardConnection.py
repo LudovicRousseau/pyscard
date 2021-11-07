@@ -303,4 +303,3 @@ if __name__ == '__main__':
     print("%r %x %x" % cc.transmit(SELECT + DF_TELECOM))
 
     print(cc.control(CM_IOCTL_GET_FEATURE_REQUEST, []))
-
