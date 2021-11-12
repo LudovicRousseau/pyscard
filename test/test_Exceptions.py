@@ -28,7 +28,10 @@ class TestUtil(unittest.TestCase):
         self.assertEqual(exc.hresult, 0x42)
         text = str(exc)
         if not get_platform().startswith('win'):
-            self.assertEqual(text, "Failed to list readers: Unknown error: 0x00000042 (0x00000042)")
+            expected = "Failed to list readers: Unknown error: 0x00000042 (0x00000042)"
+            macos_bug_expected = expected.replace("Unknown", "Unkown")
+            print(expected, macos_bug_expected)
+            self.assertIn(text, [expected, macos_bug_expected])
 
         exc = ListReadersException(SCARD_S_SUCCESS)
         self.assertEqual(exc.hresult, 0)
