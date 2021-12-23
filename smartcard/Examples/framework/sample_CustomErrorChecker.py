@@ -77,7 +77,7 @@ if __name__ == '__main__':
             apdu = GET_RESPONSE + [sw2]
             response, sw1, sw2 = cardservice.connection.transmit(apdu)
     except SWException as e:
-        print(e, "%x %x" % (e.sw1, e.sw2))
+        print(e, "{:x} {:x}".format(e.sw1, e.sw2))
 
         cardservice.connection.disconnect()
 

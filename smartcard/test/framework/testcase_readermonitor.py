@@ -100,7 +100,7 @@ class testcase_readermonitor(unittest.TestCase):
 
 def suite():
     suite1 = unittest.makeSuite(testcase_readermonitorthread)
-    return unittest.TestSuite((suite1))
+    return unittest.TestSuite(suite1)
 
 
 if __name__ == '__main__':

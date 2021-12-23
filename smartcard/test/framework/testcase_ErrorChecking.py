@@ -281,7 +281,7 @@ class testcase_ErrorChecking(unittest.TestCase):
         """Test correct exception error message."""
         ecs = ISO7816_4ErrorChecker()
 
-        e = self.failUnlessRaises(
+        e = self.assertRaises(
             smartcard.sw.SWExceptions.CheckingErrorException,
             ecs,
             [],
@@ -292,7 +292,7 @@ class testcase_ErrorChecking(unittest.TestCase):
             "'Status word exception: checking error - " + \
              "Conditions of use not satisfied!'")
 
-        e = self.failUnlessRaises(
+        e = self.assertRaises(
             smartcard.sw.SWExceptions.CheckingErrorException,
             ecs,
             [],
@@ -330,7 +330,7 @@ class testcase_ErrorChecking(unittest.TestCase):
 
 def suite():
     suite1 = unittest.makeSuite(testcase_ErrorChecking)
-    return unittest.TestSuite((suite1))
+    return unittest.TestSuite(suite1)
 
 
 if __name__ == '__main__':

@@ -205,7 +205,7 @@ class testcase_manualCardRequest(unittest.TestCase, CardObserver):
 
 def suite():
     suite1 = unittest.makeSuite(testcase_manualCardRequest)
-    return unittest.TestSuite((suite1))
+    return unittest.TestSuite(suite1)
 
 
 if __name__ == '__main__':

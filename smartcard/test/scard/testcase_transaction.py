@@ -96,7 +96,7 @@ class testcase_transaction(unittest.TestCase):
 
 def suite():
     suite1 = unittest.makeSuite(testcase_transaction)
-    return unittest.TestSuite((suite1))
+    return unittest.TestSuite(suite1)
 
 
 if __name__ == '__main__':

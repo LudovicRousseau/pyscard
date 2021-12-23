@@ -46,7 +46,7 @@ class SimpleSCardApp(wx.App):
                   appicon=None,
                   pos=(-1, -1),
                   size=(-1, -1)):
-        """Constructor for simple smart card application.
+        r"""Constructor for simple smart card application.
         @param appname: the application name
         @param apppanel: the application panel to display in the application frame
         @param appicon: the application icon file; the default is no icon

@@ -50,7 +50,7 @@ class transmitobserver(CardObserver):
                 card.connection.connect()
                 response, sw1, sw2 = card.connection.transmit(
                     SELECT_DF_TELECOM)
-                print("%.2x %.2x" % (sw1, sw2))
+                print("{:.2x} {:.2x}".format(sw1, sw2))
 
         for card in removedcards:
             print("-Removed: ", toHexString(card.atr))

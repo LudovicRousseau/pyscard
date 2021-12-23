@@ -139,7 +139,7 @@ class testcase_CardRequest(unittest.TestCase):
 
 def suite():
     suite1 = unittest.makeSuite(testcase_CardRequest)
-    return unittest.TestSuite((suite1))
+    return unittest.TestSuite(suite1)
 
 
 if __name__ == '__main__':

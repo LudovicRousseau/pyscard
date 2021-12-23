@@ -45,7 +45,7 @@ class SmartcardException(Exception):
             if hresult < 0:
                 # convert 0x-7FEFFFE3 into 0x8010001D
                 hresult += 0x100000000
-            text += ": %s (0x%08X)" % (SCardGetErrorMessage(self.hresult), hresult)
+            text += ": {} (0x{:08X})".format(SCardGetErrorMessage(self.hresult), hresult)
 
         return text
 

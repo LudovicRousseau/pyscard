@@ -47,7 +47,7 @@ if __name__ == '__main__':
     connection.connect()
 
     data, sw1, sw2 = connection.transmit(SELECT_APPLET)
-    print("Select Applet: %02X %02X" % (sw1, sw2))
+    print("Select Applet: {:02X} {:02X}".format(sw1, sw2))
 
     data, sw1, sw2 = connection.transmit(GET_TIME)
-    print("Get Time: %02X %02X" % (sw1, sw2))
+    print("Get Time: {:02X} {:02X}".format(sw1, sw2))

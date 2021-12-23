@@ -156,7 +156,7 @@ if 'winscard' == resourceManager:
 
     def suite():
         suite1 = unittest.makeSuite(testcase_readergroups)
-        return unittest.TestSuite((suite1))
+        return unittest.TestSuite(suite1)
 
 
 if __name__ == '__main__':

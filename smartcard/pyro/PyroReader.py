@@ -86,6 +86,6 @@ if __name__ == '__main__':
             connection.connect()
             print(toHexString(connection.getATR()))
             data, sw1, sw2 = connection.transmit(SELECT + DF_TELECOM)
-            print("%X %X" % (sw1, sw2))
+            print("{:X} {:X}".format(sw1, sw2))
         except NoCardException as x:
             print('no card in reader')

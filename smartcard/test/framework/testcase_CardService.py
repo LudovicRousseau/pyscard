@@ -66,12 +66,12 @@ class testcase_CardService(unittest.TestCase):
                 expectedSWs = {"9f 1a": 1, "6e 0": 2, "9f 20": 3, "9f 22": 4}
                 self.assertEqual([], response)
                 self.assertTrue(
-                    "%x %x" % (sw1, sw2) in expectedSWs or "9f" == "%x" % sw1)
+                    "{:x} {:x}".format(sw1, sw2) in expectedSWs or "9f" == "%x" % sw1)
 
 
 def suite():
     suite1 = unittest.makeSuite(testcase_CardService)
-    return unittest.TestSuite((suite1))
+    return unittest.TestSuite(suite1)
 
 
 if __name__ == '__main__':

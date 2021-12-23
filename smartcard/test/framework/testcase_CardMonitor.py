@@ -101,7 +101,7 @@ class testcase_cardmonitor(unittest.TestCase):
 
 def suite():
     suite1 = unittest.makeSuite(testcase_cardmonitorthread)
-    return unittest.TestSuite((suite1))
+    return unittest.TestSuite(suite1)
 
 
 if __name__ == '__main__':
