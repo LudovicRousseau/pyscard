@@ -41,6 +41,10 @@ environment:
       PYTHON_VERSION: "3.9.x"
       PYTHON_ARCH: "64"
 
+    - PYTHON: "C:\\Python310-x64"
+      PYTHON_VERSION: "3.10.x"
+      PYTHON_ARCH: "64"
+
 install:
   # Install non-python dependencies using chocolatey package manager
   - choco install -y swig
