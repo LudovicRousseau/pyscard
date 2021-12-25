@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 from smartcard.scard import *
-from smartcard.util import toBytes, toHexString
+from smartcard.util import toBytes, toHexString, toASCIIString
 
 try:
     hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
@@ -68,10 +68,7 @@ try:
                             raise error(
                                 'SCardControl failed: ' +
                                 SCardGetErrorMessage(hresult))
-                        r = ""
-                        for i in range(len(response)):
-                            r += "%c" % response[i]
-                        print('SCARD_ATTR_VENDOR_NAME:', r)
+                        print('SCARD_ATTR_VENDOR_NAME:', toASCIIString(response))
                     elif 'pcsclite' == resourceManager:
                         # get feature request
                         hresult, response = SCardControl(
