@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 from smartcard.scard import *
-from smartcard.util import toBytes
+from smartcard.util import toBytes, toHexString
 
 try:
     hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
@@ -73,19 +73,16 @@ try:
                             r += "%c" % response[i]
                         print('SCARD_ATTR_VENDOR_NAME:', r)
                     elif 'pcsclite' == resourceManager:
-                        # get firmware on Gemplus readers
+                        # get feature request
                         hresult, response = SCardControl(
                             hcard,
-                            SCARD_CTL_CODE(1),
-                            [0x02])
+                            SCARD_CTL_CODE(3400),
+                            [])
                         if hresult != SCARD_S_SUCCESS:
                             raise error(
                                 'SCardControl failed: ' +
                                 SCardGetErrorMessage(hresult))
-                        r = ""
-                        for i in range(len(response)):
-                            r += "%c" % response[i]
-                        print('Control:', r)
+                        print('CM_IOCTL_GET_FEATURE_REQUEST:', toHexString(response))
                 finally:
                     hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
                     if hresult != SCARD_S_SUCCESS:
