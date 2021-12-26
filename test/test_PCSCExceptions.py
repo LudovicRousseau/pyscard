@@ -1,0 +1,73 @@
+# -*- coding: utf-8 -*-
+
+# to execute:
+# $ cd test
+# $ python -m unittest
+
+import unittest
+from smartcard.pcsc.PCSCExceptions import *
+from smartcard.scard import *
+from distutils.util import get_platform
+
+
+class TestUtil(unittest.TestCase):
+
+    def test_ListReadersException(self):
+        exc = ListReadersException(0)
+        self.assertEqual(exc.hresult, 0)
+        text = str(exc)
+        if not get_platform().startswith('win'):
+            self.assertEqual(text, "Failed to list readers: Command successful. (0x00000000)")
+
+        exc = ListReadersException(0x42)
+        self.assertEqual(exc.hresult, 0x42)
+        text = str(exc)
+        if not get_platform().startswith('win'):
+            expected = "Failed to list readers: Unknown error: 0x00000042 (0x00000042)"
+            macos_bug_expected = expected.replace("Unknown", "Unkown")
+            print(expected, macos_bug_expected)
+            self.assertIn(text, [expected, macos_bug_expected])
+
+        exc = ListReadersException(SCARD_S_SUCCESS)
+        self.assertEqual(exc.hresult, 0)
+
+        exc = ListReadersException(SCARD_E_NO_SERVICE)
+        self.assertEqual(exc.hresult, SCARD_E_NO_SERVICE)
+        text = str(exc)
+        if not get_platform().startswith('win'):
+            self.assertEqual(text, "Failed to list readers: Service not available. (0x8010001D)")
+
+    def test_EstablishContextException(self):
+        exc = EstablishContextException(SCARD_E_NO_SERVICE)
+        self.assertEqual(exc.hresult, SCARD_E_NO_SERVICE)
+        text = str(exc)
+        self.assertEqual(text, "Failed to establish context: Service not available. (0x8010001D)")
+
+    def test_IntroduceReaderException(self):
+        exc = IntroduceReaderException(SCARD_E_DUPLICATE_READER, "foobar")
+        self.assertEqual(exc.hresult, SCARD_E_DUPLICATE_READER)
+        text = str(exc)
+        self.assertEqual(text, "Failed to introduce a new reader: foobar: Reader already exists. (0x8010001B)")
+
+    def test_RemoveReaderFromGroupException(self):
+        exc = RemoveReaderFromGroupException(SCARD_E_INVALID_HANDLE,
+            "readername", "readergroup")
+        self.assertEqual(exc.hresult, SCARD_E_INVALID_HANDLE)
+        text = str(exc)
+        self.assertEqual(text, "Failed to remove reader: readername from group: readergroup: Invalid handle. (0x80100003)")
+
+    def test_AddReaderToGroupException(self):
+        exc = AddReaderToGroupException(SCARD_E_INVALID_HANDLE,
+                "reader", "group")
+        self.assertEqual(exc.hresult, SCARD_E_INVALID_HANDLE)
+        text = str(exc)
+        self.assertEqual(text, "Failed to add reader: reader to group: group: Invalid handle. (0x80100003)")
+
+    def test_ReleaseContextException(self):
+        exc = ReleaseContextException(SCARD_E_INVALID_HANDLE)
+        self.assertEqual(exc.hresult, SCARD_E_INVALID_HANDLE)
+        text = str(exc)
+        self.assertEqual(text, "Failed to release context: Invalid handle. (0x80100003)")
+
+if __name__ == '__main__':
+    unittest.main()
