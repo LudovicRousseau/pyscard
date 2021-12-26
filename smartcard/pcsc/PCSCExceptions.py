@@ -36,65 +36,70 @@ class BaseSCardException(Exception):
 
     """
 
-    def __init__(self, hresult):
+    def __init__(self, message="", hresult=-1, *args):
         """Constructor that stores the pcsc error status."""
+        super().__init__(message, *args)
+        if message:
+            self.message = message
+        else:
+            self.message = "scard exception: "
         self.hresult = hresult
 
     def __str__(self):
         """Returns a string representation of the exception."""
-        return repr("scard exception: " +
-            smartcard.scard.SCardGetErrorMessage(self.hresult))
+        text = super().__str__()
+        if self.hresult != -1:
+            hresult = self.hresult
+            if hresult < 0:
+                # convert 0x-7FEFFFE3 into 0x8010001D
+                hresult += 0x100000000
+            text += ": {} (0x{:08X})".format(smartcard.scard.SCardGetErrorMessage(self.hresult), hresult)
+        return text
 
 
 class AddReaderToGroupException(BaseSCardException):
     """Raised when scard fails to add a new reader to a PCSC reader group."""
 
     def __init__(self, hresult, readername="", groupname=""):
-        BaseSCardException.__init__(self, hresult)
+        super().__init__(message='Failed to add reader: ' + readername +
+            ' to group: ' + groupname,
+                hresult=hresult)
         self.readername = readername
         self.groupname = groupname
-
-    def __str__(self):
-        return repr('Failure to add reader: ' + self.readername +
-            ' to group: ' + self.groupname + ' ' +
-            smartcard.scard.SCardGetErrorMessage(self.hresult))
 
 
 class EstablishContextException(BaseSCardException):
     """Raised when scard failed to establish context with PCSC."""
 
-    def __str__(self):
-        """Returns a string representation of the exception."""
-        return repr('Failure to establish context: ' +
-            smartcard.scard.SCardGetErrorMessage(self.hresult))
+    def __init__(self, hresult):
+        super().__init__(message='Failed to establish context',
+                hresult=hresult)
 
 
 class ListReadersException(BaseSCardException):
     """Raised when scard failed to list readers."""
 
-    def __str__(self):
-        return repr('Failure to list readers: ' +
-            smartcard.scard.SCardGetErrorMessage(self.hresult))
+    def __init__(self, hresult):
+        super().__init__(message='Failed to list readers',
+                hresult=hresult)
 
 
 class IntroduceReaderException(BaseSCardException):
     """Raised when scard fails to introduce a new reader to PCSC."""
 
     def __init__(self, hresult, readername=""):
-        BaseSCardException.__init__(self, hresult)
+        super().__init__(
+                message='Failed to introduce a new reader: ' + readername,
+                hresult=hresult)
         self.readername = readername
-
-    def __str__(self):
-        return repr('Failure to introduce a new reader: ' + self.readername
-            + ' ' + smartcard.scard.SCardGetErrorMessage(self.hresult))
 
 
 class ReleaseContextException(BaseSCardException):
     """Raised when scard failed to release PCSC context."""
 
-    def __str__(self):
-        return repr('Failure to release context: ' +
-            smartcard.scard.SCardGetErrorMessage(self.hresult))
+    def __init__(self, hresult):
+        super().__init__(message='Failed to release context',
+                hresult=hresult)
 
 
 class RemoveReaderFromGroupException(BaseSCardException):
@@ -104,11 +109,10 @@ class RemoveReaderFromGroupException(BaseSCardException):
         BaseSCardException.__init__(self, hresult)
         self.readername = readername
         self.groupname = groupname
+        super().__init__(message='Failed to remove reader: ' + readername +
+            ' from group: ' + groupname,
+                hresult=hresult)
 
-    def __str__(self):
-        return repr('Failure to remove reader: ' + self.readername +
-            ' from group: ' + self.groupname + ' ' +
-            smartcard.scard.SCardGetErrorMessage(self.hresult))
 
 if __name__ == "__main__":
     try:
