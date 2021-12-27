@@ -81,7 +81,7 @@ class PCSCCardRequest(AbstractCardRequest):
         self.hcontext = PCSCContext().getContext()
 
     def getReaderNames(self):
-        """Returns the list or PCSC readers on which to wait for cards."""
+        """Returns the list of PCSC readers on which to wait for cards."""
 
         # renew the context in case PC/SC was stopped
         # this happens on Windows when the last reader is disconnected
