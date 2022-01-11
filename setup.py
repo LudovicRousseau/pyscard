@@ -26,6 +26,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 from distutils.util import get_platform
+import shlex
+import subprocess
 import sys
 
 from setuptools import setup, Extension
@@ -67,8 +69,11 @@ elif 'macosx-' in get_platform():
 else:
     platform__cc_defines = [('PCSCLITE', '1')]
     platform_swig_opts = ['-DPCSCLITE']
-    platform_include_dirs = ['/usr/include/PCSC', '/usr/local/include/PCSC']
-
+    try:
+        pkg_config_cflags = subprocess.check_output(['pkg-config', '--cflags', 'libpcsclite'])
+        platform_extra_compile_args += shlex.split(pkg_config_cflags.decode())
+    except:
+        platform_include_dirs = ['/usr/include/PCSC', '/usr/local/include/PCSC']
 
 VERSION_INFO = (2, 0, 2, 0)
 VERSION_STR = '%i.%i.%i' % VERSION_INFO[:3]
