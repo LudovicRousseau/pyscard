@@ -34,9 +34,6 @@ from setuptools import setup, Extension
 from setuptools.command.build_py import build_py
 
 
-if sys.version_info[0:2] < (2, 6):
-    raise RuntimeError("pyscard requires Python 2.6+ to build.")
-
 platform_include_dirs = []
 platform_sources = []
 platform_libraries = []
