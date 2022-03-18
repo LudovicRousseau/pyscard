@@ -1,3 +1,8 @@
+2.0.3 (March 2022)
+   * PCSCExceptions: include error code in the message
+   * getReaderNames(): fix Windows 10 issue when the last reader is
+     disconnected
+
 2.0.2 (September 2021)
 ======================
 
