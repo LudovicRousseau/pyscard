@@ -197,11 +197,11 @@ class PCSCCardConnection(CardConnection):
             pass
         if self.hcard is not None:
             hresult = SCardDisconnect(self.hcard, self.disposition)
+            self.hcard = None
             if hresult != 0:
                 raise CardConnectionException(
                     'Failed to disconnect: ' + \
                     SCardGetErrorMessage(hresult))
-            self.hcard = None
 
     def getATR(self):
         """Return card ATR"""
