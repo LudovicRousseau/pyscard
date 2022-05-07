@@ -86,7 +86,7 @@ class PCSCCardConnection(CardConnection):
         # can disappear before __del__ is called
         self.disconnect()
         hresult = SCardReleaseContext(self.hcontext)
-        if hresult != 0:
+        if hresult != 0 and hresult != SCARD_E_INVALID_VALUE:
             raise CardConnectionException(
                 'Failed to release context: ' + \
                 SCardGetErrorMessage(hresult))
