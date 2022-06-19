@@ -6,6 +6,7 @@
 
 import unittest
 from smartcard.Exceptions import *
+from smartcard.pcsc.PCSCExceptions import *
 from smartcard.scard import *
 from distutils.util import get_platform
 
@@ -69,6 +70,29 @@ class TestUtil(unittest.TestCase):
             self.assertEqual(hresult, SCARD_E_UNKNOWN_READER)
         else:
             self.assertEqual(hresult, SCARD_E_NO_SERVICE)
+
+    # PCSC exceptions
+    def test_EstablishContextException(self):
+        exc= EstablishContextException(SCARD_E_NOT_TRANSACTED)
+        self.assertEqual(exc.hresult, SCARD_E_NOT_TRANSACTED)
+        text = str(exc)
+        if get_platform().startswith('win'):
+            expected = "An attempt was made to end a non-existent transaction. "
+        else:
+            expected = "Transaction failed."
+        expected = "Failed to establish context: " + expected + " (0x80100016)"
+        self.assertEqual(text, expected)
+
+    def test_BaseSCardException(self):
+        exc= BaseSCardException(message="foo", hresult=SCARD_E_NOT_TRANSACTED)
+        self.assertEqual(exc.hresult, SCARD_E_NOT_TRANSACTED)
+        text = str(exc)
+        if get_platform().startswith('win'):
+            expected = "An attempt was made to end a non-existent transaction. "
+        else:
+            expected = "Transaction failed."
+        expected = "foo: " + expected + " (0x80100016)"
+        self.assertEqual(text, expected)
 
 if __name__ == '__main__':
     unittest.main()
