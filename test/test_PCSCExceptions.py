@@ -96,5 +96,15 @@ class TestUtil(unittest.TestCase):
             expected = "Failed to release context: Invalid handle. (0x80100003)"
         self.assertEqual(text, expected)
 
+    def test_BaseSCardException(self):
+        exc = BaseSCardException(SCARD_E_UNKNOWN_READER)
+        self.assertEqual(exc.hresult, SCARD_E_UNKNOWN_READER)
+        text = str(exc)
+        if get_platform().startswith('win'):
+            expected = "scard exception: The specified reader name is not recognized.  (0x80100009)"
+        else:
+            expected = "scard exception: Unknown reader specified. (0x80100009)"
+        self.assertEqual(text, expected)
+
 if __name__ == '__main__':
     unittest.main()
