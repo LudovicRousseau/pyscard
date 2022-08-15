@@ -25,7 +25,7 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-from distutils.util import get_platform
+import platform
 import shlex
 import subprocess
 import sys
@@ -40,18 +40,13 @@ platform_libraries = []
 platform_extra_compile_args = []    # ['-ggdb', '-O0']
 platform_extra_link_args = []   # ['-ggdb']
 
-if get_platform() in ('win32', 'win-amd64'):
+if platform.system() == 'Windows':
     platform__cc_defines = [('WIN32', '100')]
     platform_swig_opts = ['-DWIN32']
     platform_sources = ['smartcard/scard/scard.rc']
     platform_libraries = ['winscard']
 
-elif 'cygwin-' in get_platform():
-    platform__cc_defines = [('WIN32', '100')]
-    platform_swig_opts = ['-DWIN32']
-    platform_libraries = ['winscard']
-
-elif 'macosx-' in get_platform():
+elif platform.system() == 'Darwin':
     platform__cc_defines = [('PCSCLITE', '1'),
                             ('__APPLE__', '1')]
     platform_swig_opts = ['-DPCSCLITE', '-D__APPLE__']
