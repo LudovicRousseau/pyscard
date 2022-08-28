@@ -8,7 +8,7 @@ import unittest
 from smartcard.Exceptions import *
 from smartcard.pcsc.PCSCExceptions import *
 from smartcard.scard import *
-from distutils.util import get_platform
+import platform
 
 
 class TestUtil(unittest.TestCase):
@@ -22,13 +22,13 @@ class TestUtil(unittest.TestCase):
         exc = ListReadersException(0)
         self.assertEqual(exc.hresult, 0)
         text = str(exc)
-        if not get_platform().startswith('win'):
+        if platform.system() != 'Windows':
             self.assertEqual(text, "Failed to list readers: Command successful. (0x00000000)")
 
         exc = ListReadersException(0x42)
         self.assertEqual(exc.hresult, 0x42)
         text = str(exc)
-        if not get_platform().startswith('win'):
+        if platform.system() != 'Windows':
             expected = "Failed to list readers: Unknown error: 0x00000042 (0x00000042)"
             macos_bug_expected = expected.replace("Unknown", "Unkown")
             print(expected, macos_bug_expected)
@@ -40,7 +40,7 @@ class TestUtil(unittest.TestCase):
         exc = ListReadersException(SCARD_E_NO_SERVICE)
         self.assertEqual(exc.hresult, SCARD_E_NO_SERVICE)
         text = str(exc)
-        if not get_platform().startswith('win'):
+        if platform.system() != 'Windows':
             self.assertEqual(text, "Failed to list readers: Service not available. (0x8010001D)")
 
     def test_NoReadersException(self):
@@ -76,7 +76,7 @@ class TestUtil(unittest.TestCase):
         exc= EstablishContextException(SCARD_E_NOT_TRANSACTED)
         self.assertEqual(exc.hresult, SCARD_E_NOT_TRANSACTED)
         text = str(exc)
-        if get_platform().startswith('win'):
+        if platform.system() == 'Windows':
             expected = "An attempt was made to end a non-existent transaction. "
         else:
             expected = "Transaction failed."
@@ -87,7 +87,7 @@ class TestUtil(unittest.TestCase):
         exc= BaseSCardException(message="foo", hresult=SCARD_E_NOT_TRANSACTED)
         self.assertEqual(exc.hresult, SCARD_E_NOT_TRANSACTED)
         text = str(exc)
-        if get_platform().startswith('win'):
+        if platform.system() == 'Windows':
             expected = "An attempt was made to end a non-existent transaction. "
         else:
             expected = "Transaction failed."
