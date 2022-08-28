@@ -1,3 +1,9 @@
+2.0.4 (August 2022)
+==================
+   * Fix a problem on PCSCCardConnection.disconnect
+   * Add support of BaseSCardException(hresult) format
+   * Do not use deprecated distutils anymore
+
 2.0.3 (March 2022)
 ==================
    * PCSCExceptions: include error code in the message
