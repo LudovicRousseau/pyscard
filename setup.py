@@ -1,5 +1,5 @@
 #! /usr/bin/env python3
-"""Setup file for distutils
+"""Setup file for setuptools
 
 __author__ = "http://www.gemalto.com"
 

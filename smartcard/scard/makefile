@@ -2,7 +2,7 @@
 # Copyright 2001-2012 gemalto
 # Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
 #
-# A little makefile to build the python extension outside of distutils
+# A little makefile to build the python extension outside of setuptools
 # on windows for easy debugging.
 #
 # This file is part of pyscard.

@@ -43,7 +43,7 @@ include any documentation, tests scripts or examples.
 
 Installation
 ------------
-The pyscard library is packaged using the standard distutils python
+The pyscard library is packaged using the standard setuptools python
 module.
 
 Installation on windows
