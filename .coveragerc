@@ -1,5 +1,6 @@
 [run]
 source = smartcard
+relative_files = True
 
 [report]
 exclude_lines =

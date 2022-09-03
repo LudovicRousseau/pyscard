@@ -53,3 +53,17 @@ jobs:
         run: |
           find build
           PYTHON=python3 make test
+
+      - name: coverage
+        shell: bash
+        run: |
+          coverage erase
+          coverage run setup.py test
+          coverage report
+
+      - name: Covealls
+        if: matrix.os == 'ubuntu-latest'
+        uses: AndreMiras/coveralls-python-action@develop
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
