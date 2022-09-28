@@ -1,3 +1,7 @@
+2.0.5 (Septembre 2022)
+======================
+   * New version just because I failed the previous upload to https://pypi.org/
+
 2.0.4 (August 2022)
 ==================
    * Fix a problem on PCSCCardConnection.disconnect
