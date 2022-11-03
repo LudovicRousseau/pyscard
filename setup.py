@@ -44,7 +44,8 @@ platform_extra_link_args = []   # ['-ggdb']
 if platform.system() == 'Windows':
     platform__cc_defines = [('WIN32', '100')]
     platform_swig_opts = ['-DWIN32']
-    platform_sources = ['smartcard/scard/scard.rc'] if 'mingw' not in get_platform() else []
+    if 'mingw' not in get_platform():
+        platform_sources = ['smartcard/scard/scard.rc']
     platform_libraries = ['winscard']
 
 elif platform.system() == 'Darwin':
