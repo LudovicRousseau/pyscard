@@ -57,9 +57,9 @@ jobs:
       - name: coverage
         shell: bash
         run: |
-          coverage erase
-          coverage run setup.py test
-          coverage report
+          python3 -m coverage erase
+          python3 -m coverage run setup.py test
+          python3 -m coverage report
 
       - name: Covealls
         if: matrix.os == 'ubuntu-latest'
