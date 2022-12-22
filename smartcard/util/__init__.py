@@ -203,6 +203,7 @@ def toHexString(bytes=[], format=0):
     >>> toHexString(vals, HEX | COMMA)
     '0x3B, 0x65, 0x00, 0x00, 0x9C, 0x11, 0x01, 0x01, 0x03'
     >>> toHexString(vals, PACK)
+    '3B6500009C11010103'
     >>> toHexString(vals, HEX | UPPERCASE)
     '0X3B 0X65 0X00 0X00 0X9C 0X11 0X01 0X01 0X03'
     >>> toHexString(vals, HEX | UPPERCASE | COMMA)
