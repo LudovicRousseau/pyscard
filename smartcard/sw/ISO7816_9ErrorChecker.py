@@ -72,10 +72,12 @@ class ISO7816_9ErrorChecker(ErrorChecker):
     def __call__(self, data, sw1, sw2):
         """Called to test data, sw1 and sw2 for error.
 
-        @param data:       apdu response data
-        @param sw1, sw2:   apdu data status words
+        Derived classes must raise a L{smartcard.sw.SWExceptions} upon error.
 
-        Derived classes must raise a L{smartcard.sw.SWException} upon error."""
+        @param data:       apdu response data
+        @param sw1:        apdu data status word 1
+        @param sw2:        apdu data status word 2
+        """
         if sw1 in iso7816_9SW:
             exception, sw2dir = iso7816_9SW[sw1]
             if type(sw2dir) == type({}):
