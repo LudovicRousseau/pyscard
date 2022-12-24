@@ -29,7 +29,7 @@ class ErrorChecker(object):
     Error checking strategies are chained into an L{ErrorCheckingChain} to
     implement a Chain of Responsibility. Each strategy in the chain is
     called until an error is  detected. The strategy raises a
-    L{smartcard.sw.SWException} exception when an error is detected.
+    L{smartcard.sw.SWExceptions} exception when an error is detected.
 
     Implementation derived from Bruce Eckel, Thinking in Python. The
     L{ErrorCheckingChain} implements the Chain Of Responsibility design
@@ -39,8 +39,10 @@ class ErrorChecker(object):
     def __call__(data, sw1, sw2):
         """Called to test data, sw1 and sw2 for error.
 
-        @param data:       apdu response data
-        @param sw1, sw2:   apdu data status words
+        Derived classes must raise a L{smartcard.sw.SWExceptions} upon error.
 
-        Derived classes must raise a L{smartcard.sw.SWException} upon error."""
+        @param data:       apdu response data
+        @param sw1:        apdu data status word 1
+        @param sw2:        apdu data status word 2
+        """
         pass
