@@ -68,7 +68,8 @@ class ISO7816_4_SW1ErrorChecker(ErrorChecker):
         """Called to test data, sw1 and sw2 for error.
 
         @param data:       apdu response data
-        @param sw1, sw2:   apdu data status words
+        @param sw1:        apdu data status word 1
+        @param sw2:        apdu data status word 2
         """
         if sw1 in iso7816_4SW1:
             exception = iso7816_4SW1[sw1]
