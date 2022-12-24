@@ -29,7 +29,7 @@ from sys import exc_info
 class ErrorCheckingChain(object):
     """The error checking chain is a list of response apdu status word
     (sw1, sw2) error check strategies. Each strategy in the chain is
-    called until an error is detected. A L{smartcard.sw.SWException}
+    called until an error is detected. A L{smartcard.sw.SWExceptions}
     exception is raised when an error is detected. No exception is
     raised if no error is detected.
 
