@@ -27,14 +27,14 @@ PCSC SCardXXX API.
 The smartcard.scard module is the lower layer of the pyscard
 framework that provides a higher level interface.
 
-You should avoid using the smartcard.scard package directly, and use the
+You should avoid using the L{smartcard.scard} package directly, and use the
 pyscard directly because:
 
  - smartcard.scard being a C wrapper, the code tends to look like C code
    written in python syntax
 
  - the smartcard package provides higher level abstractions (e.g.
-   CardType, CardConnection), and makes programming easier since it is
+   L{CardType}, L{CardConnection}), and makes programming easier since it is
    totally written in Python
 
 You can still use the smartcard.scard package if you want to write your
@@ -52,52 +52,53 @@ around the PCSC-lite library.
 
 
 The smartcard.scard module provides mapping for the following API functions,
-depending on the Operating System:
+depending on the Operating System::
 
-=============================== ======= =======
-Function                        Windows  Linux 
-                                         OS X  
-=============================== ======= =======
-GetOpenCardName                                
-SCardAddReaderToGroup              Y           
-SCardBeginTransaction              Y       Y   
-SCardCancel                        Y       Y   
-SCardConnect                       Y       Y   
-SCardControl                       Y       Y   
-SCardDisconnect                    Y       Y   
-SCardEndTransaction                Y       Y   
-SCardEstablishConteYt              Y       Y   
-SCardForgetCardType                Y           
-SCardForgetReader                  Y           
-SCardForgetReaderGroup             Y           
-SCardFreeMemory                                
-SCardGetAttrib                     Y       Y   
-SCardGetCardTypeProviderName       Y           
-SCardGetErrorMessage               Y           
-SCardGetProviderId                             
-SCardGetStatusChange               Y       Y   
-SCardIntroduceCardType             Y           
-SCardIntroduceReader               Y           
-SCardIntroduceReaderGroup          Y           
-SCardIsValidConteYt                Y       Y   
-SCardListCards                     Y           
-SCardListInterfaces                Y           
-SCardListReaderGroups              Y       Y   
-SCardListReaders                   Y       Y   
-SCardLocateCards                   Y           
-SCardReconnect                     Y       Y   
-SCardReleaseConteYt                Y       Y   
-SCardRemoveReaderFromGroup         Y           
-SCardSetAttrib                     Y       Y   
-SCardSetCartTypeProviderName                   
-SCardStatus                        Y       Y   
-SCardTransmit                      Y       Y   
-SCardUIDlgSelectCard                           
-=============================== ======= =======
+    =============================== ======= =======
+    Function                        Windows  Linux 
+                                             OS X  
+    =============================== ======= =======
+    GetOpenCardName                                
+    SCardAddReaderToGroup              Y           
+    SCardBeginTransaction              Y       Y   
+    SCardCancel                        Y       Y   
+    SCardConnect                       Y       Y   
+    SCardControl                       Y       Y   
+    SCardDisconnect                    Y       Y   
+    SCardEndTransaction                Y       Y   
+    SCardEstablishConteYt              Y       Y   
+    SCardForgetCardType                Y           
+    SCardForgetReader                  Y           
+    SCardForgetReaderGroup             Y           
+    SCardFreeMemory                                
+    SCardGetAttrib                     Y       Y   
+    SCardGetCardTypeProviderName       Y           
+    SCardGetErrorMessage               Y           
+    SCardGetProviderId                             
+    SCardGetStatusChange               Y       Y   
+    SCardIntroduceCardType             Y           
+    SCardIntroduceReader               Y           
+    SCardIntroduceReaderGroup          Y           
+    SCardIsValidConteYt                Y       Y   
+    SCardListCards                     Y           
+    SCardListInterfaces                Y           
+    SCardListReaderGroups              Y       Y   
+    SCardListReaders                   Y       Y   
+    SCardLocateCards                   Y           
+    SCardReconnect                     Y       Y   
+    SCardReleaseConteYt                Y       Y   
+    SCardRemoveReaderFromGroup         Y           
+    SCardSetAttrib                     Y       Y   
+    SCardSetCartTypeProviderName                   
+    SCardStatus                        Y       Y   
+    SCardTransmit                      Y       Y   
+    SCardUIDlgSelectCard                           
+    =============================== ======= =======
 
 Comments, bug reports, improvements welcome.
 
 -------------------------------------------------------------------------------
+
 Copyright 2001-2012 gemalto
 @Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
 @Author: Ludovic Rousseau, mailto:ludovic.rousseau@free.fr
@@ -117,13 +118,12 @@ License for more details.
 You should have received a copy of the GNU Lesser General Public License
 along with pyscard; if not, write to the Free Software Foundation,
 Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-
 "
 %enddef
 
 %module(docstring=DOCSTRING, package="smartcard.scard") scard
 
-%feature("autodoc", "3");
+%feature("autodoc", "1");
 
 %{
 #ifdef WIN32
@@ -1169,17 +1169,17 @@ SCARDRETCODE _RemoveReaderFromGroup(
     ///////////////////////////////////////////////////////////////////////////////
     %define DOCSTRING_ISVALIDCONTEXT
     "
-    This function determines whether a smart card context handle is still
-    valid.  After a smart card context handle has been set by
-    SCardEstablishContext(), it may become not valid if the resource manager
-    service has been shut down.
+This function determines whether a smart card context handle is still
+valid.  After a smart card context handle has been set by
+L{SCardEstablishContext()}, it may become not valid if the resource manager
+service has been shut down.
 
-    from smartcard.scard import *
-    hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
-    hresult = SCardIsValidContext(hcontext)
-    if hresult != SCARD_S_SUCCESS:
-        raise error, 'Invalid context: ' + SCardGetErrorMessage(hresult)
-    ...
+>>> from smartcard.scard import *
+>>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+>>> hresult = SCardIsValidContext(hcontext)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise error, 'Invalid context: ' + SCardGetErrorMessage(hresult)
+>>> ...
     "
     %enddef
     %feature("docstring") DOCSTRING_ISVALIDCONTEXT;
@@ -1189,13 +1189,11 @@ SCARDRETCODE _RemoveReaderFromGroup(
     ///////////////////////////////////////////////////////////////////////////////
     %define DOCSTRING_GETATTRIB
     "
+This function get an attribute from the IFD Handler.
 
-    This function get an attribute from the IFD Handler.
-
-    The possible attributes are:
-
+The possible attributes are::
     ======================================== ======= =======
-    Attribute                                Windows  PSCS  
+    Attribute                                Windows  PCSC  
                                                       lite
     ======================================== ======= =======
     SCARD_ATTR_ASYNC_PROTOCOL_TYPES                     Y   
@@ -1244,18 +1242,18 @@ SCARDRETCODE _RemoveReaderFromGroup(
     SCARD_ATTR_VENDOR_NAME                      Y       Y   
     ======================================== ======= =======
 
-    Not all the dwAttrId values listed above may be implemented in the IFD
-    Handler you are using.  And some dwAttrId values not listed here may be
-    implemented.
+Not all the dwAttrId values listed above may be implemented in the IFD
+Handler you are using.  And some dwAttrId values not listed here may be
+implemented.
 
 
-    from smartcard.scard import *
-    ... establish context and connect to card ...
-    hresult, attrib = SCardGetAttrib(hcard, SCARD_ATTR_ATR_STRING)
-    if hresult == SCARD_S_SUCCESS:
-        for j in attrib:
-             print '0x%.2X' % attrib,
-    ...
+>>> from smartcard.scard import *
+>>> ... establish context and connect to card ...
+>>> hresult, attrib = SCardGetAttrib(hcard, SCARD_ATTR_ATR_STRING)
+>>> if hresult == SCARD_S_SUCCESS:
+>>>     for j in attrib:
+>>>          print '0x%.2X' % attrib,
+>>> ...
     "
     %enddef
     %feature("docstring") DOCSTRING_GETATTRIB;
@@ -1265,15 +1263,13 @@ SCARDRETCODE _RemoveReaderFromGroup(
     ///////////////////////////////////////////////////////////////////////////////
     %define DOCSTRING_SETATTRIB
     "
+This function sets an attribute from the IFD Handler. Not all
+attributes are supported by all readers nor can they be set at all
+times.
 
-    This function sets an attribute from the IFD Handler. Not all
-    attributes are supported by all readers nor can they be set at all
-    times.
-
-    The possible attributes are:
-
+The possible attributes are::
     ======================================== ======= =======
-    Attribute                                Windows  PSCS  
+    Attribute                                Windows  PCSC  
                                                       lite
     ======================================== ======= =======
     SCARD_ATTR_ASYNC_PROTOCOL_TYPES                     Y   
@@ -1322,17 +1318,16 @@ SCARDRETCODE _RemoveReaderFromGroup(
     SCARD_ATTR_VENDOR_NAME                      Y       Y   
     ======================================== ======= =======
 
-    Not all the dwAttrId values listed above may be implemented in the IFD
-    Handler you are using.  And some dwAttrId values not listed here may be
-    implemented.
+Not all the dwAttrId values listed above may be implemented in the
+IFD Handler you are using.  And some dwAttrId values not listed here
+may be implemented.
 
-
-    from smartcard.scard import *
-    ... establish context and connect to card ...
-    hresult, attrib = SCardSetAttrib(hcard, SCARD_ATTR_VENDOR_NAME, ['G', 'e', 'm', 'a', 'l', 't', 'o'])
-    if hresult != SCARD_S_SUCCESS:
-         print 'Failed to set attribute'
-    ...
+>>> from smartcard.scard import *
+>>> ... establish context and connect to card ...
+>>> hresult, attrib = SCardSetAttrib(hcard, SCARD_ATTR_VENDOR_NAME, ['G', 'e', 'm', 'a', 'l', 't', 'o'])
+>>> if hresult != SCARD_S_SUCCESS:
+>>>      print 'Failed to set attribute'
+>>> ...
     "
     %enddef
     %feature("docstring") DOCSTRING_SETATTRIB;
@@ -1343,18 +1338,17 @@ SCARDRETCODE _RemoveReaderFromGroup(
     ///////////////////////////////////////////////////////////////////////////////
     %define DOCSTRING_CONTROL
     "
-    This function sends a control command to the reader connected to by
-    SCardConnect().  It returns a result and the control response.
+This function sends a control command to the reader connected to by
+L{SCardConnect()}.  It returns a result and the control response.
 
-
-    from smartcard.scard import *
-    hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
-    hresult, hcard, dwActiveProtocol = SCardConnect(
-         hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
-    CMD = [0x12, 0x34]
-    hresult, response = SCardControl(hcard, 42, CMD)
-    if hresult != SCARD_S_SUCCESS:
-        raise error, 'Failed to control: ' + SCardGetErrorMessage(hresult)
+>>> from smartcard.scard import *
+>>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+>>> hresult, hcard, dwActiveProtocol = SCardConnect(
+>>>      hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
+>>> CMD = [0x12, 0x34]
+>>> hresult, response = SCardControl(hcard, 42, CMD)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise error, 'Failed to control: ' + SCardGetErrorMessage(hresult)
     "
     %enddef
     %feature("docstring") DOCSTRING_CONTROL;
@@ -1382,16 +1376,16 @@ sure that another application will not change the current file.  If
 another application has a lock on this reader or this application is in
 SCARD_SHARE_EXCLUSIVE there will be no action taken.
 
-from smartcard.scard import *
-... establish context ...
-hresult, hcard, dwActiveProtocol = SCardConnect(
-    hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
-if hresult!=SCARD_S_SUCCESS:
-    raise error, 'unable to connect: ' + SCardGetErrorMessage(hresult)
-hresult = SCardBeginTransaction(hcard)
-if hresult != SCARD_S_SUCCESS:
-    raise error, 'failed to begin transaction: ' + SCardGetErrorMessage(hresult)
-...
+>>> from smartcard.scard import *
+>>> ... establish context ...
+>>> hresult, hcard, dwActiveProtocol = SCardConnect(
+>>>     hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
+>>> if hresult!=SCARD_S_SUCCESS:
+>>>     raise error, 'unable to connect: ' + SCardGetErrorMessage(hresult)
+>>> hresult = SCardBeginTransaction(hcard)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise error, 'failed to begin transaction: ' + SCardGetErrorMessage(hresult)
+>>> ...
 "
 %enddef
 %feature("docstring") DOCSTRING_BEGINTRANSACTION;
@@ -1402,13 +1396,13 @@ SCARDRETCODE _BeginTransaction(SCARDHANDLE hcard);
 %define DOCSTRING_CANCEL
 "
 This function cancels all pending blocking requests on the
-ScardGetStatusChange() function.
+L{SCardGetStatusChange()} function.
 
-from smartcard.scard import *
-... establish context ...
-hresult = SCardCancel(hcard)
-if hresult != SCARD_S_SUCCESS:
-    raise error, 'failed to cancel pending actions: ' + SCardGetErrorMessage(hresult)
+>>> from smartcard.scard import *
+>>> ... establish context ...
+>>> hresult = SCardCancel(hcard)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise error, 'failed to cancel pending actions: ' + SCardGetErrorMessage(hresult)
 ..."
 %enddef
 %feature("docstring") DOCSTRING_CANCEL;
@@ -1419,32 +1413,33 @@ SCARDRETCODE _Cancel(SCARDCONTEXT hcontext);
 %define DOCSTRING_CONNECT
 "
 This function establishes a connection to the friendly name of the reader
-specified in szReader.  The first connection will power up and perform a
-reset on the card.
+specified in readername.  The first connection will power up and
+perform a reset on the card.
 
-Value of dwShareMode    Meaning
-SCARD_SHARE_SHARED      This application will allow others to share the reader
-SCARD_SHARE_EXCLUSIVE   This application will NOT allow others to share the reader
-SCARD_SHARE_DIRECT      Direct control of the reader, even without a card
+Value of dwShareMode:
+ - SCARD_SHARE_SHARED      This application will allow others to share the reader
+ - SCARD_SHARE_EXCLUSIVE   This application will NOT allow others to share the reader
+ - SCARD_SHARE_DIRECT      Direct control of the reader, even without a card
 
-SCARD_SHARE_DIRECT can be used before using SCardControl() to send control
-commands to the reader even if a card is not present in the reader.
+SCARD_SHARE_DIRECT can be used before using L{SCardControl()} to
+send control commands to the reader even if a card is not present in
+the reader.
 
-Value of dwPreferredProtocols   Meaning
-SCARD_PROTOCOL_T0               Use the T=0 protocol
-SCARD_PROTOCOL_T1               Use the T=1 protocol
-SCARD_PROTOCOL_RAW              Use with memory type cards
+Value of dwPreferredProtocols:
+ - SCARD_PROTOCOL_T0               Use the T=0 protocol
+ - SCARD_PROTOCOL_T1               Use the T=1 protocol
+ - SCARD_PROTOCOL_RAW              Use with memory type cards
 
-from smartcard.scard import *
-... establish context ...
-hresult, readers = SCardListReaders(hcontext, 'NULL')
-if hresult != SCARD_S_SUCCESS:
-    raise error, 'Failed to list readers:: ' + SCardGetErrorMessage(hresult)
-hresult, hcard, dwActiveProtocol = SCardConnect(
-    hcontext, readers[0], SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
-if hresult != SCARD_S_SUCCESS:
-    raise error, 'unable to connect: ' + SCardGetErrorMessage(hresult)
-...
+>>> from smartcard.scard import *
+>>> ... establish context ...
+>>> hresult, readers = SCardListReaders(hcontext, 'NULL')
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise error, 'Failed to list readers:: ' + SCardGetErrorMessage(hresult)
+>>> hresult, hcard, dwActiveProtocol = SCardConnect(
+>>>     hcontext, readers[0], SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise error, 'unable to connect: ' + SCardGetErrorMessage(hresult)
+>>> ...
 "
 %enddef
 %feature("docstring") DOCSTRING_CONNECT;
@@ -1469,20 +1464,20 @@ SCARDRETCODE _Connect(
 %define DOCSTRING_DISCONNECT
 "
 This function terminates a connection to the connection made through
-SCardConnect.  disposition can have the following values:
+L{SCardConnect()}.  disposition can have the following values:
 
-Value of disposition    Meaning
-SCARD_LEAVE_CARD        Do nothing
-SCARD_RESET_CARD        Reset the card (warm reset)
-SCARD_UNPOWER_CARD      Unpower the card (cold reset)
-SCARD_EJECT_CARD        Eject the card
+Value of disposition:
+ - SCARD_LEAVE_CARD        Do nothing
+ - SCARD_RESET_CARD        Reset the card (warm reset)
+ - SCARD_UNPOWER_CARD      Unpower the card (cold reset)
+ - SCARD_EJECT_CARD        Eject the card
 
-from smartcard.scard import *
-... establish context and connect to card ...
-hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
-if hresult != SCARD_S_SUCCESS:
-    raise error, 'failed to disconnect: ' + SCardGetErrorMessage(hresult)
-...
+>>> from smartcard.scard import *
+>>> ... establish context and connect to card ...
+>>> hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise error, 'failed to disconnect: ' + SCardGetErrorMessage(hresult)
+>>> ...
 "
 %enddef
 %feature("docstring") DOCSTRING_DISCONNECT;
@@ -1492,23 +1487,22 @@ SCARDRETCODE _Disconnect(SCARDHANDLE hcard, SCARDDWORDARG dwDisposition);
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_ENDTRANSACTION
 "
-
 This function ends a previously begun transaction.  The calling
 application must be the owner of the previously begun transaction or an
 error will occur.  disposition can have the following values: The
 disposition action is not currently used in this release.
 
-Value of disposition    Meaning
-SCARD_LEAVE_CARD        Do nothing
-SCARD_RESET_CARD        Reset the card
-SCARD_UNPOWER_CARD      Unpower the card
-SCARD_EJECT_CARD        Eject the card
+Value of disposition:
+ - SCARD_LEAVE_CARD        Do nothing
+ - SCARD_RESET_CARD        Reset the card
+ - SCARD_UNPOWER_CARD      Unpower the card
+ - SCARD_EJECT_CARD        Eject the card
 
-from smartcard.scard import *
-... establish context, connect to card, begin transaction ...
-hresult = SCardEndTransaction(hcard, SCARD_LEAVE_CARD)
-if hresult != SCARD_S_SUCCESS:
-    raise error, 'failed to end transaction: ' + SCardGetErrorMessage(hresult)
+>>> from smartcard.scard import *
+>>> ... establish context, connect to card, begin transaction ...
+>>> hresult = SCardEndTransaction(hcard, SCARD_LEAVE_CARD)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise error, 'failed to end transaction: ' + SCardGetErrorMessage(hresult)
 "
 %enddef
 %feature("docstring") DOCSTRING_ENDTRANSACTION;
@@ -1521,17 +1515,16 @@ SCARDRETCODE _EndTransaction(SCARDHANDLE hcard, SCARDDWORDARG dwDisposition);
 This function creates a communication context to the PC/SC Resource
 Manager.  This must be the first function called in a PC/SC application.
 
-Value of dwScope        Meaning
-SCARD_SCOPE_USER        Operations performed within the scope of the User
-SCARD_SCOPE_TERMINAL    Not used
-SCARD_SCOPE_GLOBAL      Not used
-SCARD_SCOPE_SYSTEM      Operations performed within the scope of the system
+Value of dwScope:
+ - SCARD_SCOPE_USER        Operations performed within the scope of the User
+ - SCARD_SCOPE_TERMINAL    Not used
+ - SCARD_SCOPE_GLOBAL      Not used
+ - SCARD_SCOPE_SYSTEM      Operations performed within the scope of the system
 
-
-from smartcard.scard import *
-hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
-if hresult != SCARD_S_SUCCESS:
-    raise error, 'Failed to establish context: ' + SCardGetErrorMessage(hresult)
+>>> from smartcard.scard import *
+>>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise error, 'Failed to establish context: ' + SCardGetErrorMessage(hresult)
 "
 %enddef
 %feature("docstring") DOCSTRING_ESTABLISHCONTEXT;
@@ -1542,7 +1535,6 @@ SCARDRETCODE _EstablishContext(SCARDDWORDARG dwScope, SCARDCONTEXT* phcontext);
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_GETSTATUSCHANGE
 "
-
 This function receives a structure or list of tuples containing reader
 states. A READERSTATE hast three fields (readername, state, atr).
 It then blocks for a change in state to occur on any of the OR'd
@@ -1551,36 +1543,35 @@ dwTimeout or forever if INFINITE is used.  The new event state will be
 contained in state.  A status change might be a card insertion or
 removal event, a change in ATR, etc.
 
-Value of state              Meaning
-SCARD_STATE_UNAWARE         The application is unaware of the current state, and would like to know. The use of this value results in an immediate return from state transition monitoring services. This is represented by all bits set to zero
-SCARD_STATE_IGNORE          This reader should be ignored
-SCARD_STATE_CHANGED         There is a difference between the state believed by the application, and the state known by the resource manager. When this bit is set, the application may assume a significant state change has occurred on this reader
-SCARD_STATE_UNKNOWN         The given reader name is not recognized by the resource manager. If this bit is set, then SCARD_STATE_CHANGED and SCARD_STATE_IGNORE will also be set
-SCARD_STATE_UNAVAILABLE     The actual state of this reader is not available. If this bit is set, then all the following bits are clear
-SCARD_STATE_EMPTY           There is no card in the reader. If this bit is set, all the following bits will be clear
-SCARD_STATE_PRESENT         There is a card in the reader
-SCARD_STATE_ATRMATCH        There is a card in the reader with an ATR matching one of the target cards. If this bit is set, SCARD_STATE_PRESENT will also be set. This bit is only returned on the SCardLocateCards function
-SCARD_STATE_EXCLUSIVE       The card in the reader is allocated for exclusive use by another application. If this bit is set, SCARD_STATE_PRESENT will also be set
-SCARD_STATE_INUSE           The card in the reader is in use by one or more other applications, but may be connected to in shared mode. If this bit is set, SCARD_STATE_PRESENT will also be set
-SCARD_STATE_MUTE            There is an unresponsive card in the reader
+Value of state:
+ - SCARD_STATE_UNAWARE         The application is unaware of the current state, and would like to know. The use of this value results in an immediate return from state transition monitoring services. This is represented by all bits set to zero
+ - SCARD_STATE_IGNORE          This reader should be ignored
+ - SCARD_STATE_CHANGED         There is a difference between the state believed by the application, and the state known by the resource manager. When this bit is set, the application may assume a significant state change has occurred on this reader
+ - SCARD_STATE_UNKNOWN         The given reader name is not recognized by the resource manager. If this bit is set, then SCARD_STATE_CHANGED and SCARD_STATE_IGNORE will also be set
+ - SCARD_STATE_UNAVAILABLE     The actual state of this reader is not available. If this bit is set, then all the following bits are clear
+ - SCARD_STATE_EMPTY           There is no card in the reader. If this bit is set, all the following bits will be clear
+ - SCARD_STATE_PRESENT         There is a card in the reader
+ - SCARD_STATE_ATRMATCH        There is a card in the reader with an ATR matching one of the target cards. If this bit is set, SCARD_STATE_PRESENT will also be set. This bit is only returned on the SCardLocateCards function
+ - SCARD_STATE_EXCLUSIVE       The card in the reader is allocated for exclusive use by another application. If this bit is set, SCARD_STATE_PRESENT will also be set
+ - SCARD_STATE_INUSE           The card in the reader is in use by one or more other applications, but may be connected to in shared mode. If this bit is set, SCARD_STATE_PRESENT will also be set
+ - SCARD_STATE_MUTE            There is an unresponsive card in the reader
 
-
-from smartcard.scard import *
-hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
-hresult, readers = SCardListReaders(hcontext, [])
-readerstates = []
-cards = [ 'Schlumberger Cryptoflex 4k', 'Schlumberger Cryptoflex 8k', 'Schlumberger Cryptoflex 8k v2' ]
-for i in xrange(len(readers)):
-    readerstates += [ (readers[i], SCARD_STATE_UNAWARE) ]
-hresult, newstates = SCardLocateCards(hcontext, cards, readerstates)
-print '----- Please insert or remove a card ------------'
-hresult, newstates = SCardGetStatusChange(hcontext, INFINITE, newstates)
-for i in newstates
-     reader, eventstate, atr = i
-    if eventstate & SCARD_STATE_ATRMATCH:
-        print '\tCard found'
-    if eventstate & SCARD_STATE_EMPTY:
-        print '\tReader empty'
+>>> from smartcard.scard import *
+>>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+>>> hresult, readers = SCardListReaders(hcontext, [])
+>>> readerstates = []
+>>> cards = [ 'Schlumberger Cryptoflex 4k', 'Schlumberger Cryptoflex 8k', 'Schlumberger Cryptoflex 8k v2' ]
+>>> for i in xrange(len(readers)):
+>>>     readerstates += [ (readers[i], SCARD_STATE_UNAWARE) ]
+>>> hresult, newstates = SCardLocateCards(hcontext, cards, readerstates)
+>>> print '----- Please insert or remove a card ------------'
+>>> hresult, newstates = SCardGetStatusChange(hcontext, INFINITE, newstates)
+>>> for i in newstates
+>>>      reader, eventstate, atr = i
+>>>     if eventstate & SCARD_STATE_ATRMATCH:
+>>>         print '	Card found'
+>>>     if eventstate & SCARD_STATE_EMPTY:
+>>>         print '	Reader empty'
 "
 %enddef
 %feature("docstring") DOCSTRING_GETSTATUSCHANGE;
@@ -1600,13 +1591,13 @@ This function returns a list of currently available readers on the system.
 A list of group can be provided in input to list readers in a given
 group only.
 
-from smartcard.scard import *
-hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
-hresult, readers = SCardListReaders(hcontext, [])
-if hresult != SCARD_S_SUCCESS:
-    raise error, 'Failed to list readers: ' + SCardGetErrorMessage(hresult)
-print 'PCSC Readers: ', readers
-hresult, readers = SCardListReaders(hcontext, ['SCard$T1ProtocolReaders', 'SCard$MyOwnGroup']
+>>> from smartcard.scard import *
+>>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+>>> hresult, readers = SCardListReaders(hcontext, [])
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise error, 'Failed to list readers: ' + SCardGetErrorMessage(hresult)
+>>> print 'PCSC Readers: ', readers
+>>> hresult, readers = SCardListReaders(hcontext, ['SCard$T1ProtocolReaders', 'SCard$MyOwnGroup']
 ...
 "
 %enddef
@@ -1627,12 +1618,12 @@ SCARDRETCODE _ListReaders(
 This function returns a list of currently available reader groups on the
 system.
 
-from smartcard.scard import *
-hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
-hresult, readerGroups = SCardListReaderGroups(hcontext)
-if hresult != SCARD_S_SUCCESS:
-    raise error, 'Unable to list reader groups: ' + SCardGetErrorMessage(hresult)
-print 'PCSC Reader groups: ', readerGroups
+>>> from smartcard.scard import *
+>>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+>>> hresult, readerGroups = SCardListReaderGroups(hcontext)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise error, 'Unable to list reader groups: ' + SCardGetErrorMessage(hresult)
+>>> print 'PCSC Reader groups: ', readerGroups
 "
 %enddef
 %feature("docstring") DOCSTRING_LISTREADERGROUPS;
@@ -1642,40 +1633,38 @@ SCARDRETCODE _ListReaderGroups(SCARDCONTEXT hcontext, STRINGLIST* READERGROUPSOU
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_RECONNECT
 "
-
 This function reestablishes a connection to a reader that was previously
-connected to using SCardConnect().  In a multi application environment it
+connected to using L{SCardConnect()}.  In a multi application environment it
 is possible for an application to reset the card in shared mode.  When
 this occurs any other application trying to access certain commands will
 be returned the value SCARD_W_RESET_CARD.  When this occurs
-SCardReconnect() must be called in order to acknowledge that the card was
+L{SCardReconnect()} must be called in order to acknowledge that the card was
 reset and allow it to change it's state accordingly.
 
-Value of dwShareMode    Meaning
-SCARD_SHARE_SHARED      This application will allow others to share the reader
-SCARD_SHARE_EXCLUSIVE   This application will NOT allow others to share the reader
+Value of dwShareMode:
+ - SCARD_SHARE_SHARED      This application will allow others to share the reader
+ - SCARD_SHARE_EXCLUSIVE   This application will NOT allow others to share the reader
 
-Value of dwPreferredProtocols   Meaning
-SCARD_PROTOCOL_T0               Use the T=0 protocol
-SCARD_PROTOCOL_T1               Use the T=1 protocol
-SCARD_PROTOCOL_RAW              Use with memory type cards
+Value of dwPreferredProtocols:
+ - SCARD_PROTOCOL_T0               Use the T=0 protocol
+ - SCARD_PROTOCOL_T1               Use the T=1 protocol
+ - SCARD_PROTOCOL_RAW              Use with memory type cards
 
 dwPreferredProtocols is a bit mask of acceptable protocols for the connection. You can use (SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1) if you do not have a preferred protocol.
 
-Value of dwInitialization   Meaning
-SCARD_LEAVE_CARD            Do nothing
-SCARD_RESET_CARD            Reset the card (warm reset)
-SCARD_UNPOWER_CARD          Unpower the card (cold reset)
-SCARD_EJECT_CARD            Eject the card
+Value of dwInitialization:
+ - SCARD_LEAVE_CARD            Do nothing
+ - SCARD_RESET_CARD            Reset the card (warm reset)
+ - SCARD_UNPOWER_CARD          Unpower the card (cold reset)
+ - SCARD_EJECT_CARD            Eject the card
 
-
-from smartcard.scard import *
-hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
-hresult, hcard, dwActiveProtocol = SCardConnect(
-    hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
-hresult, activeProtocol = SCardReconnect(hcard, SCARD_SHARE_EXCLUSIVE,
-    SCARD_PROTOCOL_T0, SCARD_RESET_CARD)
-...
+>>> from smartcard.scard import *
+>>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+>>> hresult, hcard, dwActiveProtocol = SCardConnect(
+>>>     hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
+>>> hresult, activeProtocol = SCardReconnect(hcard, SCARD_SHARE_EXCLUSIVE,
+>>>     SCARD_PROTOCOL_T0, SCARD_RESET_CARD)
+>>> ...
 "
 %enddef
 %feature("docstring") DOCSTRING_RECONNECT;
@@ -1711,34 +1700,33 @@ hcard.  The reader friendly name is returned, as well as the state,
 protocol and ATR.  The state is a DWORD possibly OR'd with the following
 values:
 
-Value of pdwState   Meaning
-SCARD_ABSENT        There is no card in the reader
-SCARD_PRESENT       There is a card in the reader, but it has not been moved into position for use
-SCARD_SWALLOWED     There is a card in the reader in position for use. The card is not powered
-SCARD_POWERED       Power is being provided to the card, but the reader driver is unaware of the mode of the card
-SCARD_NEGOTIABLE    The card has been reset and is awaiting PTS negotiation
-SCARD_SPECIFIC      The card has been reset and specific communication protocols have been established
+Value of pdwState:
+ - SCARD_ABSENT        There is no card in the reader
+ - SCARD_PRESENT       There is a card in the reader, but it has not been moved into position for use
+ - SCARD_SWALLOWED     There is a card in the reader in position for use. The card is not powered
+ - SCARD_POWERED       Power is being provided to the card, but the reader driver is unaware of the mode of the card
+ - SCARD_NEGOTIABLE    The card has been reset and is awaiting PTS negotiation
+ - SCARD_SPECIFIC      The card has been reset and specific communication protocols have been established
 
-Value of pdwProtocol    Meaning
-SCARD_PROTOCOL_T0       Use the T=0 protocol
-SCARD_PROTOCOL_T1       Use the T=1 protocol
+Value of pdwProtocol:
+ - SCARD_PROTOCOL_T0       Use the T=0 protocol
+ - SCARD_PROTOCOL_T1       Use the T=1 protocol
 
-
-from smartcard.scard import *
-hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
-hresult, hcard, dwActiveProtocol = SCardConnect(
-         hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
-hresult, reader, state, protocol, atr = SCardStatus(hcard)
-if hresult != SCARD_S_SUCCESS:
-    raise error, 'failed to get status: ' + SCardGetErrorMessage(hresult)
-print 'Reader: ', reader
-print 'State: ', state
-print 'Protocol: ', protocol
-print 'ATR: ',
-for i in xrange(len(atr)):
-    print '0x%.2X' % i,
-print ""
-...
+>>> from smartcard.scard import *
+>>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+>>> hresult, hcard, dwActiveProtocol = SCardConnect(
+>>>          hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
+>>> hresult, reader, state, protocol, atr = SCardStatus(hcard)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise error, 'failed to get status: ' + SCardGetErrorMessage(hresult)
+>>> print 'Reader: ', reader
+>>> print 'State: ', state
+>>> print 'Protocol: ', protocol
+>>> print 'ATR: ',
+>>> for i in xrange(len(atr)):
+>>>     print '0x%.2X' % i,
+>>> print ""
+>>> ...
 "
 %enddef
 %feature("docstring") DOCSTRING_STATUS;
@@ -1761,23 +1749,22 @@ SCARDRETCODE _Status(
 %define DOCSTRING_TRANSMIT
 "
 This function sends an APDU to the smart card contained in the reader
-connected to by SCardConnect().
+connected to by L{SCardConnect()}.
 It returns a result and the card APDU response.
 
-Value of pioSendPci     Meaning
-SCARD_PCI_T0            Pre-defined T=0 PCI structure
-SCARD_PCI_T1            Pre-defined T=1 PCI structure
+Value of pioSendPci:
+ - SCARD_PCI_T0            Pre-defined T=0 PCI structure
+ - SCARD_PCI_T1            Pre-defined T=1 PCI structure
 
-
-from smartcard.scard import *
-hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
-hresult, hcard, dwActiveProtocol = SCardConnect(
-     hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
-SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
-DF_TELECOM = [0x7F, 0x10]
-hresult, response = SCardTransmit(hcard, SCARD_PCI_T0, SELECT + DF_TELECOM)
-if hresult != SCARD_S_SUCCESS:
-    raise error, 'Failed to transmit: ' + SCardGetErrorMessage(hresult)
+>>> from smartcard.scard import *
+>>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+>>> hresult, hcard, dwActiveProtocol = SCardConnect(
+>>>      hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
+>>> SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
+>>> DF_TELECOM = [0x7F, 0x10]
+>>> hresult, response = SCardTransmit(hcard, SCARD_PCI_T0, SELECT + DF_TELECOM)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise error, 'Failed to transmit: ' + SCardGetErrorMessage(hresult)
 "
 %enddef
 %feature("docstring") DOCSTRING_TRANSMIT;
@@ -1799,10 +1786,10 @@ SCARDRETCODE _Transmit(
 "
 This function returns the value of a control code
 
-from smartcard.scard import *
-...
-CM_IOCTL_GET_FEATURE_REQUEST = SCARD_CTL_CODE(3400)
-...
+>>> from smartcard.scard import *
+>>> ...
+>>> CM_IOCTL_GET_FEATURE_REQUEST = SCARD_CTL_CODE(3400)
+>>> ...
 "
 %enddef
 %feature("docstring") DOCSTRING_SCARD_CTL_CODE;
@@ -1814,12 +1801,12 @@ long _SCARD_CTL_CODE(long code);
 "
 This function return a human readable text for the given PC/SC error code.
 
-from smartcard.scard import *
-...
-hresult, response = SCardTransmit(hcard, SCARD_PCI_T0, SELECT + DF_TELECOM)
-if hresult != SCARD_S_SUCCESS:
-    raise error, 'Failed to transmit: ' + SCardGetErrorMessage(hresult)
-...
+>>> from smartcard.scard import *
+>>> ...
+>>> hresult, response = SCardTransmit(hcard, SCARD_PCI_T0, SELECT + DF_TELECOM)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise error, 'Failed to transmit: ' + SCardGetErrorMessage(hresult)
+>>> ...
 "
 %enddef
 %feature("docstring") DOCSTRING_GETERRORMESSAGE;
