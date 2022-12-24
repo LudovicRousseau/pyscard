@@ -57,7 +57,7 @@ class CardConnection(Observable):
         """Add a status word exception class to be filtered.
 
         @param exClass: the class to filter, e.g.
-        L{smartcard.sw.SWException.WarningProcessingException}
+        L{smartcard.sw.SWExceptions.WarningProcessingException}
 
         Filtered exceptions will not be raised when encountered in the
         error checking chain."""
