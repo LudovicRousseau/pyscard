@@ -35,7 +35,6 @@ from smartcard.scard import *
 
 class CardService(object):
     """Card service abstract class.
-    Known subclasses: smartcard.PassThruCardService
     """
 
     def __init__(self, connection, cardname=None):

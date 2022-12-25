@@ -31,9 +31,7 @@ class AbstractCardRequest(object):
     """The base class for xxxCardRequest classes.
 
     A CardRequest is used for waitForCard() invocations and specifies what
-    kind of smart card an application is waited for.
-
-    Known subclasses: smartcard.pcsc.PCSCCardRequest"""
+    kind of smart card an application is waited for."""
 
     def __init__(self, newcardonly=False, readers=None,
                  cardType=None, cardServiceClass=None, timeout=1):

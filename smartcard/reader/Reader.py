@@ -28,8 +28,6 @@ class Reader(object):
 
     The reader class is responsible for creating connections
     with a card.
-
-    Known subclasses: PCSCReader
     """
 
     def __init__(self, readername):

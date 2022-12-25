@@ -8,9 +8,6 @@ Class support for "observer" pattern.
 
 The observer class is the base class
 for all smartcard package observers.
-
-Known subclasses: L{smartcard.ReaderMonitoring.ReaderObserver}
-
 """
 
 from smartcard.Synchronization import *

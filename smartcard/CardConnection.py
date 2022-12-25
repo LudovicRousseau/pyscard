@@ -29,8 +29,6 @@ from smartcard.Observer import Observable
 
 class CardConnection(Observable):
     """Card connection abstract class.
-
-    Known subclasses: smartcard.pcsc.PCSCCardConnection
     """
     T0_protocol = 0x00000001
     T1_protocol = 0x00000002
