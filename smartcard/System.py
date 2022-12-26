@@ -51,7 +51,7 @@ def readergroups():
 def listReaders():
     """Returns the list of smartcard readers.
 
-    Deprecated - Use smartcard.System.readers() instead.
+    Deprecated - Use L{smartcard.System.readers()} instead.
     """
     zreaders = []
     for reader in readers():
