@@ -40,7 +40,7 @@ class CardService(object):
     def __init__(self, connection, cardname=None):
         """Construct a new card service and bind to a smart card in a reader.
 
-        connection:     the CardConnection used to access the smart card
+        @param connection:     the CardConnection used to access the smart card
         """
         self.connection = connection
         self.cardname = cardname

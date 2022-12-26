@@ -70,11 +70,11 @@ class CardMonitor(object):
     note: a card monitoring thread will be running
     as long as the card monitor has observers, or CardMonitor.stop()
     is called. Do not forget to delete all your observers by
-    calling deleteObserver, or your program will run forever...
+    calling L{deleteObserver}, or your program will run forever...
 
     Uses the singleton pattern from Thinking in Python
     Bruce Eckel, http://mindview.net/Books/TIPython to make sure
-    there is only one CardMonitor.
+    there is only one L{CardMonitor}.
     """
 
     class __CardMonitorSingleton(Observable):
@@ -107,7 +107,7 @@ class CardMonitor(object):
         def deleteObserver(self, observer):
             """Remove an observer.
 
-            We delete the CardMonitoringThread reference when there
+            We delete the L{CardMonitoringThread} reference when there
             are no more observers.
             """
             Observable.deleteObserver(self, observer)
@@ -141,7 +141,7 @@ class CardMonitoringThread(object):
         """The real card monitoring thread class.
 
         A single instance of this class is created
-        by the public CardMonitoringThread class.
+        by the public L{CardMonitoringThread} class.
         """
 
         def __init__(self, observable):

@@ -63,11 +63,11 @@ class CardConnection(Observable):
             self.errorcheckingchain[0].addFilterException(exClass)
 
     def addObserver(self, observer):
-        """Add a CardConnection observer."""
+        """Add a L{CardConnection} observer."""
         Observable.addObserver(self, observer)
 
     def deleteObserver(self, observer):
-        """Remove a CardConnection observer."""
+        """Remove a L{CardConnection} observer."""
         Observable.deleteObserver(self, observer)
 
     def connect(self, protocol=None, mode=None, disposition=None):
@@ -174,9 +174,10 @@ class CardConnection(Observable):
         pass
 
     def control(self, controlCode, bytes=[]):
-        """Send a control command and buffer.  Internally calls doControl()
-        class method and notify observers upon command/response events.
-        Subclasses must override the doControl() class method.
+        """Send a control command and buffer.  Internally calls
+        L{doControl()} class method and notify observers upon
+        command/response events.  Subclasses must override the
+        L{doControl()} class method.
 
         @param controlCode: command code
 

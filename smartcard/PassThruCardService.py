@@ -36,7 +36,7 @@ class PassThruCardService(CardService.CardService):
     def __init__(self, connection, cardname=None):
         """Construct a pass-thru card service.
 
-        connection:     the CardConnection used to access the smart card
+        @param connection:     the CardConnection used to access the smart card
         """
         CardService.CardService.__init__(self, connection, cardname)
 

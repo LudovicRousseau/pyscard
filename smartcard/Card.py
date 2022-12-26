@@ -31,8 +31,8 @@ class Card(object):
 
     def __init__(self, reader, atr):
         """Card constructor.
-        reader: reader in which the card is inserted
-        atr: ATR of the card"""
+        @param reader: reader in which the card is inserted
+        @param atr: ATR of the card"""
         self.reader = reader
         self.atr = atr
 

@@ -30,15 +30,15 @@ import smartcard.pcsc
 
 
 class ExclusiveTransmitCardConnection(CardConnectionDecorator):
-    '''This decorator uses SCardBeginTransaction/SCardEndTransaction to
-    preserve other processes of threads to access the card during
-    transmit().'''
+    '''This decorator uses
+    L{SCardBeginTransaction}/L{SCardEndTransaction} to preserve other
+    processes of threads to access the card during transmit().'''
 
     def __init__(self, cardconnection):
         CardConnectionDecorator.__init__(self, cardconnection)
 
     def lock(self):
-        '''Lock card with SCardBeginTransaction.'''
+        '''Lock card with L{SCardBeginTransaction}.'''
 
         component = self.component
         while True:
@@ -60,7 +60,7 @@ class ExclusiveTransmitCardConnection(CardConnectionDecorator):
                 break
 
     def unlock(self):
-        '''Unlock card with SCardEndTransaction.'''
+        '''Unlock card with L{SCardEndTransaction}.'''
         component = self.component
         while True:
             if isinstance(

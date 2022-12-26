@@ -33,9 +33,9 @@ def readers(groups=[]):
 
     If group is not specified, returns the list of all smartcard readers.
 
-    import smartcard
-    r=smartcard.readers()
-    r=smartcard.readers(['SCard$DefaultReaders', 'MyReaderGroup'])
+    >>> import smartcard
+    >>> r=smartcard.readers()
+    >>> r=smartcard.readers(['SCard$DefaultReaders', 'MyReaderGroup'])
     """
 
     return smartcard.reader.ReaderFactory.ReaderFactory.readers(groups)

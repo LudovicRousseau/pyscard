@@ -33,15 +33,15 @@ class Session(object):
 
     This is an example of use of the Session object:
 
-    import smartcard
-    reader=smartcard.listReaders()
-    s = smartcard.Session(reader[0])
-    SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
-    DF_TELECOM = [0x7F, 0x10]
-    data, sw1, sw2 = s.sendCommandAPDU(SELECT+DF_TELECOM)
-    print(data, sw1, sw2)
-    s.close()
-    print(`s`)
+    >>> import smartcard
+    >>> reader=smartcard.listReaders()
+    >>> s = smartcard.Session(reader[0])
+    >>> SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
+    >>> DF_TELECOM = [0x7F, 0x10]
+    >>> data, sw1, sw2 = s.sendCommandAPDU(SELECT+DF_TELECOM)
+    >>> print(data, sw1, sw2)
+    >>> s.close()
+    >>> print(`s`)
     """
 
     def __init__(self, readerName=None, cardServiceClass=None):

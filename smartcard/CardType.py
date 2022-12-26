@@ -37,7 +37,7 @@ class CardType(object):
         pass
 
     def matches(self, atr, reader=None):
-        """Returns true if atr and card connected match the CardType.
+        """Returns true if atr and card connected match the L{CardType}.
 
         @param atr:    the atr to chek for matching
         @param reader: the reader (optional); default is None

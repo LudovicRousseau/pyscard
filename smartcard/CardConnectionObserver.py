@@ -33,14 +33,14 @@ from smartcard.Observer import Observer
 class CardConnectionObserver(Observer):
     """
     CardConnectionObserver is a base class for objects that are to be notified
-    upon CardConnection events.
+    upon L{CardConnection} events.
     """
 
     def update(self, cardconnection, cardconnectionevent):
         """Called upon CardConnection event.
 
-        cardconnection:         the observed card connection object
-        cardconnectionevent:    the CardConnectionEvent sent by the connection
+        @param cardconnection:         the observed card connection object
+        @param cardconnectionevent:    the CardConnectionEvent sent by the connection
         """
         pass
 

@@ -37,7 +37,7 @@ class __CardNames__(Synchronization):
 
     Stores card names and card types into a bsddb hash database.
 
-    The smartcard.CardNames.CardNames singleton manages the creation
+    The L{smartcard.CardNames.CardNames} singleton manages the creation
     of the unique instance of this class.
     """
 
@@ -76,7 +76,7 @@ synchronize(__CardNames__, "add delete dump find")
 
 class CardNames(object):
     """The CardNames organizes cards by a unique name and an associated
-    smartcard.CardType.CardType."""
+    L{smartcard.CardType.CardType}."""
 
     """The single instance of __CardNames__"""
     instance = None
