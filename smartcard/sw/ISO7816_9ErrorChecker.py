@@ -65,7 +65,7 @@ class ISO7816_9ErrorChecker(ErrorChecker):
 
 
     Use another checker in the error checking chain, e.g., the
-    ISO7816_4SW1ErrorChecker or ISO7816_4ErrorChecker, to raise
+    L{ISO7816_4_SW1ErrorChecker} or L{ISO7816_4ErrorChecker}, to raise
     exceptions on these undefined values.
     """
 

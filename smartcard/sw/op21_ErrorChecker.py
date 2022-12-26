@@ -71,16 +71,16 @@ class op21_ErrorChecker(ErrorChecker):
 
     This error checker raises the following exceptions:
       - sw1 sw2
-      - 62  83                  WarningProcessingException
-      - 63  00                  WarningProcessingException
-      - 64  00                  ExecutionErrorException
-      - 65  81                  ExecutionErrorException
-      - 67  00                  CheckingErrorException
-      - 69  82 85               CheckingErrorException
-      - 6A  80 81 82 84 86 88   CheckingErrorException
-      - 6D  00                  CheckingErrorException
-      - 6E  00                  CheckingErrorException
-      - 94  84 85               CheckingErrorException
+      - 62  83                  L{WarningProcessingException}
+      - 63  00                  L{WarningProcessingException}
+      - 64  00                  L{ExecutionErrorException}
+      - 65  81                  L{ExecutionErrorException}
+      - 67  00                  L{CheckingErrorException}
+      - 69  82 85               L{CheckingErrorException}
+      - 6A  80 81 82 84 86 88   L{CheckingErrorException}
+      - 6D  00                  L{CheckingErrorException}
+      - 6E  00                  L{CheckingErrorException}
+      - 94  84 85               L{CheckingErrorException}
 
     This checker does not raise exceptions on undefined sw1 values, e.g.:
       - sw1 sw2

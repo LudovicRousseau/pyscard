@@ -48,20 +48,20 @@ class ISO7816_4_SW1ErrorChecker(ErrorChecker):
 
     This error checker raises the following exceptions:
       - sw1 sw2
-      - 62  any   WarningProcessingException
-      - 63  any   WarningProcessingException
-      - 64  any   ExecutionErrorException
-      - 65  any   ExecutionErrorException
-      - 66  any   SecurityRelatedException
-      - 67  any   CheckingErrorException
-      - 68  any   CheckingErrorException
-      - 69  any   CheckingErrorException
-      - 6a  any   CheckingErrorException
-      - 6b  any   CheckingErrorException
-      - 6c  any   CheckingErrorException
-      - 6d  any   CheckingErrorException
-      - 6e  any   CheckingErrorException
-      - 6f  any   CheckingErrorException
+      - 62  any   L{WarningProcessingException}
+      - 63  any   L{WarningProcessingException}
+      - 64  any   L{ExecutionErrorException}
+      - 65  any   L{ExecutionErrorException}
+      - 66  any   L{SecurityRelatedException}
+      - 67  any   L{CheckingErrorException}
+      - 68  any   L{CheckingErrorException}
+      - 69  any   L{CheckingErrorException}
+      - 6a  any   L{CheckingErrorException}
+      - 6b  any   L{CheckingErrorException}
+      - 6c  any   L{CheckingErrorException}
+      - 6d  any   L{CheckingErrorException}
+      - 6e  any   L{CheckingErrorException}
+      - 6f  any   L{CheckingErrorException}
     """
 
     def __call__(self, data, sw1, sw2):

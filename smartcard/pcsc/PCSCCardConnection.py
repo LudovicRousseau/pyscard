@@ -70,7 +70,7 @@ class PCSCCardConnection(CardConnection):
     def __init__(self, reader):
         """Construct a new PCSC card connection.
 
-        reader: the reader in which the smartcard to connect to is located.
+        @param reader: the reader in which the smartcard to connect to is located.
         """
         CardConnection.__init__(self, reader)
         self.hcard = None
@@ -262,11 +262,11 @@ class PCSCCardConnection(CardConnection):
     def doControl(self, controlCode, bytes=[]):
         """Transmit a control command to the reader and return response.
 
-        controlCode: control command
+        @param controlCode: control command
 
-        bytes:       command data to transmit (list of bytes)
+        @param bytes:       command data to transmit (list of bytes)
 
-        return:      response are the response bytes (if any)
+        @return:      response are the response bytes (if any)
         """
         CardConnection.doControl(self, controlCode, bytes)
         hresult, response = SCardControl(self.hcard, controlCode, bytes)
@@ -280,9 +280,9 @@ class PCSCCardConnection(CardConnection):
     def doGetAttrib(self, attribId):
         """get an attribute
 
-        attribId: Identifier for the attribute to get
+        @param attribId: Identifier for the attribute to get
 
-        return:   response are the attribute byte array
+        @return:   response are the attribute byte array
         """
         CardConnection.doGetAttrib(self, attribId)
         hresult, response = SCardGetAttrib(self.hcard, attribId)
