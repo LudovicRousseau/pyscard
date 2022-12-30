@@ -4,7 +4,7 @@ set -e
 
 cd $(dirname $0)
 
-rm -r html
+rm -rf html
 
 # Sphinx
 make html
