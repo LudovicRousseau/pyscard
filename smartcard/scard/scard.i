@@ -931,10 +931,10 @@ if hresult != SCARD_S_SUCCESS:
 for i in cards:
     hresult, providername = SCardGetCardTypeProviderName(hcontext, i, SCARD_PROVIDER_PRIMARY)
     if hresult == SCARD_S_SUCCESS:
-         print providername
+         print(providername)
     hresult, providername = SCardGetCardTypeProviderName(hcontext, i, SCARD_PROVIDER_CSP)
     if hresult == SCARD_S_SUCCESS:
-         print providername
+         print(providername)
 ...
 "
 %enddef
@@ -1079,7 +1079,7 @@ if hresult ! =SCARD_S_SUCCESS:
 hresult, cards = SCardListCards(hcontext, [], [])
 if hresult != SCARD_S_SUCCESS:
     raise error, 'Failure to list cards: ' + SCardGetErrorMessage(hresult)
-print 'Cards: ', cards
+print('Cards: ', cards)
 ...
 "
 %enddef
@@ -1114,16 +1114,16 @@ for i in xrange(len(readers)):
 hresult, newstates = SCardLocateCards(hcontext, cards, readerstates)
 for i in newstates:
     reader, eventstate, atr = i
-    print reader,
+    print(reader,)
     for b in atr:
-        print '0x%.2X' % b,
-    print ""
+        print('0x%.2X' % b, end='')
+    print("")
     if eventstate & SCARD_STATE_ATRMATCH:
-        print 'Card found'
+        print('Card found')
     if eventstate & SCARD_STATE_EMPTY:
-        print 'Reader empty'
+        print('Reader empty')
     if eventstate & SCARD_STATE_PRESENT:
-        print 'Card present in reader'
+        print('Card present in reader')
 ...
 "
 %enddef
@@ -1175,11 +1175,17 @@ L{SCardEstablishContext()}, it may become not valid if the resource manager
 service has been shut down.
 
 >>> from smartcard.scard import *
+>>> from smartcard.pcsc import *
+>>> 
+>>> # establish context
 >>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.EstablishContextException(hresult)
+>>> 
+>>> # valid context?
 >>> hresult = SCardIsValidContext(hcontext)
 >>> if hresult != SCARD_S_SUCCESS:
->>>     raise error, 'Invalid context: ' + SCardGetErrorMessage(hresult)
->>> ...
+>>>     raise PCSCExceptions.BaseSCardException(hresult)
     "
     %enddef
     %feature("docstring") DOCSTRING_ISVALIDCONTEXT;
@@ -1246,14 +1252,30 @@ Not all the dwAttrId values listed above may be implemented in the IFD
 Handler you are using.  And some dwAttrId values not listed here may be
 implemented.
 
-
 >>> from smartcard.scard import *
->>> ... establish context and connect to card ...
+>>> from smartcard.pcsc import *
+>>> 
+>>> # establish context
+>>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.EstablishContextException(hresult)
+>>> 
+>>> # list readers
+>>> hresult, readers = SCardListReaders(hcontext, [])
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.ListReadersException(hresult)
+>>> 
+>>> # connect
+>>> hresult, hcard, dwActiveProtocol = SCardConnect(
+>>>     hcontext, readers[0], SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.BaseSCardException(hresult)
+>>> 
+>>> # get attribute
 >>> hresult, attrib = SCardGetAttrib(hcard, SCARD_ATTR_ATR_STRING)
->>> if hresult == SCARD_S_SUCCESS:
->>>     for j in attrib:
->>>          print '0x%.2X' % attrib,
->>> ...
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.BaseSCardException(hresult)
+>>> print(attrib)
     "
     %enddef
     %feature("docstring") DOCSTRING_GETATTRIB;
@@ -1326,7 +1348,7 @@ may be implemented.
 >>> ... establish context and connect to card ...
 >>> hresult, attrib = SCardSetAttrib(hcard, SCARD_ATTR_VENDOR_NAME, ['G', 'e', 'm', 'a', 'l', 't', 'o'])
 >>> if hresult != SCARD_S_SUCCESS:
->>>      print 'Failed to set attribute'
+>>>      print('Failed to set attribute')
 >>> ...
     "
     %enddef
@@ -1342,13 +1364,29 @@ This function sends a control command to the reader connected to by
 L{SCardConnect()}.  It returns a result and the control response.
 
 >>> from smartcard.scard import *
+>>> from smartcard.pcsc import *
+>>> 
+>>> # establish context
 >>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.EstablishContextException(hresult)
+>>> 
+>>> # list readers
+>>> hresult, readers = SCardListReaders(hcontext, [])
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.ListReadersException(hresult)
+>>> 
+>>> # connect
 >>> hresult, hcard, dwActiveProtocol = SCardConnect(
->>>      hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
+>>>     hcontext, readers[0], SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.BaseSCardException(hresult)
+>>> 
+>>> # control
 >>> CMD = [0x12, 0x34]
 >>> hresult, response = SCardControl(hcard, 42, CMD)
 >>> if hresult != SCARD_S_SUCCESS:
->>>     raise error, 'Failed to control: ' + SCardGetErrorMessage(hresult)
+>>>     raise PCSCExceptions.BaseSCardException(hresult)
     "
     %enddef
     %feature("docstring") DOCSTRING_CONTROL;
@@ -1372,20 +1410,34 @@ L{SCardConnect()}.  It returns a result and the control response.
 This function establishes a temporary exclusive access mode for doing a
 series of commands or transaction.  You might want to use this when you
 are selecting a few files and then writing a large file so you can make
-sure that another application will not change the current file.  If
-another application has a lock on this reader or this application is in
-SCARD_SHARE_EXCLUSIVE there will be no action taken.
+sure that another application will not change the current file.
+
+If another application has a lock on this reader or this application is
+in SCARD_SHARE_EXCLUSIVE there will be no action taken.
 
 >>> from smartcard.scard import *
->>> ... establish context ...
+>>> from smartcard.pcsc import *
+>>> 
+>>> # establish context
+>>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.EstablishContextException(hresult)
+>>> 
+>>> # list readers
+>>> hresult, readers = SCardListReaders(hcontext, [])
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.ListReadersException(hresult)
+>>> 
+>>> # connect
 >>> hresult, hcard, dwActiveProtocol = SCardConnect(
->>>     hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
->>> if hresult!=SCARD_S_SUCCESS:
->>>     raise error, 'unable to connect: ' + SCardGetErrorMessage(hresult)
+>>>     hcontext, readers[0], SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.BaseSCardException(hresult)
+>>> 
+>>> # begin transaction
 >>> hresult = SCardBeginTransaction(hcard)
 >>> if hresult != SCARD_S_SUCCESS:
->>>     raise error, 'failed to begin transaction: ' + SCardGetErrorMessage(hresult)
->>> ...
+>>>     raise PCSCExceptions.BaseSCardException(hresult)
 "
 %enddef
 %feature("docstring") DOCSTRING_BEGINTRANSACTION;
@@ -1399,10 +1451,11 @@ This function cancels all pending blocking requests on the
 L{SCardGetStatusChange()} function.
 
 >>> from smartcard.scard import *
+>>> from smartcard.pcsc import *
 >>> ... establish context ...
 >>> hresult = SCardCancel(hcard)
 >>> if hresult != SCARD_S_SUCCESS:
->>>     raise error, 'failed to cancel pending actions: ' + SCardGetErrorMessage(hresult)
+>>>     raise PCSCExceptions.BaseSCardException(hresult)
 ..."
 %enddef
 %feature("docstring") DOCSTRING_CANCEL;
@@ -1431,15 +1484,23 @@ Value of dwPreferredProtocols:
  - SCARD_PROTOCOL_RAW              Use with memory type cards
 
 >>> from smartcard.scard import *
->>> ... establish context ...
->>> hresult, readers = SCardListReaders(hcontext, 'NULL')
+>>> from smartcard.pcsc import *
+>>> 
+>>> # establish context
+>>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
 >>> if hresult != SCARD_S_SUCCESS:
->>>     raise error, 'Failed to list readers:: ' + SCardGetErrorMessage(hresult)
+>>>     raise PCSCExceptions.EstablishContextException(hresult)
+>>> 
+>>> # list readers
+>>> hresult, readers = SCardListReaders(hcontext, [])
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.ListReadersException(hresult)
+>>> 
+>>> # connect
 >>> hresult, hcard, dwActiveProtocol = SCardConnect(
 >>>     hcontext, readers[0], SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
 >>> if hresult != SCARD_S_SUCCESS:
->>>     raise error, 'unable to connect: ' + SCardGetErrorMessage(hresult)
->>> ...
+>>>     raise PCSCExceptions.BaseSCardException(hresult)
 "
 %enddef
 %feature("docstring") DOCSTRING_CONNECT;
@@ -1464,7 +1525,7 @@ SCARDRETCODE _Connect(
 %define DOCSTRING_DISCONNECT
 "
 This function terminates a connection to the connection made through
-L{SCardConnect()}.  disposition can have the following values:
+L{SCardConnect()}.
 
 Value of disposition:
  - SCARD_LEAVE_CARD        Do nothing
@@ -1473,11 +1534,28 @@ Value of disposition:
  - SCARD_EJECT_CARD        Eject the card
 
 >>> from smartcard.scard import *
->>> ... establish context and connect to card ...
+>>> from smartcard.pcsc import *
+>>> 
+>>> # establish context
+>>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.EstablishContextException(hresult)
+>>> 
+>>> # list readers
+>>> hresult, readers = SCardListReaders(hcontext, [])
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.ListReadersException(hresult)
+>>> 
+>>> # connect
+>>> hresult, hcard, dwActiveProtocol = SCardConnect(
+>>>     hcontext, readers[0], SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.BaseSCardException(hresult)
+>>> 
+>>> # disconnect
 >>> hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
 >>> if hresult != SCARD_S_SUCCESS:
->>>     raise error, 'failed to disconnect: ' + SCardGetErrorMessage(hresult)
->>> ...
+>>>     raise PCSCExceptions.BaseSCardException(hresult)
 "
 %enddef
 %feature("docstring") DOCSTRING_DISCONNECT;
@@ -1489,8 +1567,7 @@ SCARDRETCODE _Disconnect(SCARDHANDLE hcard, SCARDDWORDARG dwDisposition);
 "
 This function ends a previously begun transaction.  The calling
 application must be the owner of the previously begun transaction or an
-error will occur.  disposition can have the following values: The
-disposition action is not currently used in this release.
+error will occur.
 
 Value of disposition:
  - SCARD_LEAVE_CARD        Do nothing
@@ -1499,10 +1576,33 @@ Value of disposition:
  - SCARD_EJECT_CARD        Eject the card
 
 >>> from smartcard.scard import *
->>> ... establish context, connect to card, begin transaction ...
+>>> from smartcard.pcsc import *
+>>> 
+>>> # establish context
+>>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.EstablishContextException(hresult)
+>>> 
+>>> # list readers
+>>> hresult, readers = SCardListReaders(hcontext, [])
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.ListReadersException(hresult)
+>>> 
+>>> # connect
+>>> hresult, hcard, dwActiveProtocol = SCardConnect(
+>>>     hcontext, readers[0], SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.BaseSCardException(hresult)
+>>> 
+>>> # begin transaction
+>>> hresult = SCardBeginTransaction(hcard)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.BaseSCardException(hresult)
+>>> 
+>>> # end transaction
 >>> hresult = SCardEndTransaction(hcard, SCARD_LEAVE_CARD)
 >>> if hresult != SCARD_S_SUCCESS:
->>>     raise error, 'failed to end transaction: ' + SCardGetErrorMessage(hresult)
+>>>     raise PCSCExceptions.BaseSCardException(hresult)
 "
 %enddef
 %feature("docstring") DOCSTRING_ENDTRANSACTION;
@@ -1513,7 +1613,7 @@ SCARDRETCODE _EndTransaction(SCARDHANDLE hcard, SCARDDWORDARG dwDisposition);
 %define DOCSTRING_ESTABLISHCONTEXT
 "
 This function creates a communication context to the PC/SC Resource
-Manager.  This must be the first function called in a PC/SC application.
+Manager.  This must be the first PC/SC function called in a PC/SC application.
 
 Value of dwScope:
  - SCARD_SCOPE_USER        Operations performed within the scope of the User
@@ -1522,9 +1622,12 @@ Value of dwScope:
  - SCARD_SCOPE_SYSTEM      Operations performed within the scope of the system
 
 >>> from smartcard.scard import *
+>>> from smartcard.pcsc import *
+>>> 
+>>> # establish context
 >>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
 >>> if hresult != SCARD_S_SUCCESS:
->>>     raise error, 'Failed to establish context: ' + SCardGetErrorMessage(hresult)
+>>>     raise PCSCExceptions.EstablishContextException(hresult)
 "
 %enddef
 %feature("docstring") DOCSTRING_ESTABLISHCONTEXT;
@@ -1557,21 +1660,40 @@ Value of state:
  - SCARD_STATE_MUTE            There is an unresponsive card in the reader
 
 >>> from smartcard.scard import *
+>>> from smartcard.pcsc import *
+>>> 
+>>> # establish context
 >>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.EstablishContextException(hresult)
+>>> 
+>>> # list readers
 >>> hresult, readers = SCardListReaders(hcontext, [])
->>> readerstates = []
->>> cards = [ 'Schlumberger Cryptoflex 4k', 'Schlumberger Cryptoflex 8k', 'Schlumberger Cryptoflex 8k v2' ]
->>> for i in xrange(len(readers)):
->>>     readerstates += [ (readers[i], SCARD_STATE_UNAWARE) ]
->>> hresult, newstates = SCardLocateCards(hcontext, cards, readerstates)
->>> print '----- Please insert or remove a card ------------'
->>> hresult, newstates = SCardGetStatusChange(hcontext, INFINITE, newstates)
->>> for i in newstates
->>>      reader, eventstate, atr = i
->>>     if eventstate & SCARD_STATE_ATRMATCH:
->>>         print '	Card found'
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.ListReadersException(hresult)
+>>> 
+>>> # get status change
+>>> readerstates = list()
+>>> for reader in readers:
+>>>     readerstates.append((reader, SCARD_STATE_UNAWARE))
+>>> 
+>>> hresult, newstates = SCardGetStatusChange(hcontext, INFINITE, readerstates)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.BaseSCardException(hresult)
+>>> for state in newstates:
+>>>     reader, eventstate, atr = state
+>>>     print(f'Reader: {reader}:', end='')
+>>>     if eventstate & SCARD_STATE_PRESENT:
+>>>         print(' Card present')
 >>>     if eventstate & SCARD_STATE_EMPTY:
->>>         print '	Reader empty'
+>>>         print(' Reader empty')
+>>> 
+>>> print('insert or remove a card')
+>>> # wait for card move
+>>> readerstates = newstates
+>>> hresult, newstates = SCardGetStatusChange(hcontext, INFINITE, readerstates)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.BaseSCardException(hresult)
 "
 %enddef
 %feature("docstring") DOCSTRING_GETSTATUSCHANGE;
@@ -1592,13 +1714,19 @@ A list of group can be provided in input to list readers in a given
 group only.
 
 >>> from smartcard.scard import *
+>>> from smartcard.pcsc import *
+>>> 
+>>> # establish context
 >>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.EstablishContextException(hresult)
+>>> 
+>>> # list readers
 >>> hresult, readers = SCardListReaders(hcontext, [])
 >>> if hresult != SCARD_S_SUCCESS:
->>>     raise error, 'Failed to list readers: ' + SCardGetErrorMessage(hresult)
->>> print 'PCSC Readers: ', readers
->>> hresult, readers = SCardListReaders(hcontext, ['SCard$T1ProtocolReaders', 'SCard$MyOwnGroup']
-...
+>>>     raise PCSCExceptions.ListReadersException(hresult)
+>>> for reader in readers:
+>>>     print(reader)
 "
 %enddef
 %feature("docstring") DOCSTRING_LISTREADERS;
@@ -1619,11 +1747,17 @@ This function returns a list of currently available reader groups on the
 system.
 
 >>> from smartcard.scard import *
+>>> from smartcard.pcsc import *
+>>> 
+>>> # establish context
 >>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.EstablishContextException(hresult)
+>>> 
 >>> hresult, readerGroups = SCardListReaderGroups(hcontext)
 >>> if hresult != SCARD_S_SUCCESS:
->>>     raise error, 'Unable to list reader groups: ' + SCardGetErrorMessage(hresult)
->>> print 'PCSC Reader groups: ', readerGroups
+>>>     raise PCSCExceptions.BaseSCardException(hresult)
+>>> print('PCSC Reader groups:', readerGroups)
 "
 %enddef
 %feature("docstring") DOCSTRING_LISTREADERGROUPS;
@@ -1659,12 +1793,28 @@ Value of dwInitialization:
  - SCARD_EJECT_CARD            Eject the card
 
 >>> from smartcard.scard import *
+>>> from smartcard.pcsc import *
+>>> 
+>>> # establish context
 >>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.EstablishContextException(hresult)
+>>> 
+>>> # list readers
+>>> hresult, readers = SCardListReaders(hcontext, [])
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.ListReadersException(hresult)
+>>> 
+>>> # connect
 >>> hresult, hcard, dwActiveProtocol = SCardConnect(
->>>     hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
->>> hresult, activeProtocol = SCardReconnect(hcard, SCARD_SHARE_EXCLUSIVE,
->>>     SCARD_PROTOCOL_T0, SCARD_RESET_CARD)
->>> ...
+>>>     hcontext, readers[0], SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.BaseSCardException(hresult)
+>>> 
+>>> # reconnect
+>>> hresult, activeProtocol = SCardReconnect(hcard, SCARD_SHARE_EXCLUSIVE, SCARD_PROTOCOL_T0, SCARD_RESET_CARD)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.BaseSCardException(hresult)
 "
 %enddef
 %feature("docstring") DOCSTRING_RECONNECT;
@@ -1686,6 +1836,20 @@ SCARDRETCODE _Reconnect(
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_RELEASECONTEXT
 "
+Release a PC/SC context estabished by L{SCardEstablishContext()}.
+
+>>> from smartcard.scard import *
+>>> from smartcard.pcsc import *
+>>> 
+>>> # establish context
+>>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.EstablishContextException(hresult)
+>>> 
+>>> # release context
+>>> hresult = SCardReleaseContext(hcontext)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.ReleaseContextException(hresult)
 "
 %enddef
 %feature("docstring") DOCSTRING_RELEASECONTEXT;
@@ -1713,20 +1877,33 @@ Value of pdwProtocol:
  - SCARD_PROTOCOL_T1       Use the T=1 protocol
 
 >>> from smartcard.scard import *
+>>> from smartcard.pcsc import *
+>>> from smartcard.util import toHexString
+>>> 
+>>> # establish context
 >>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.EstablishContextException(hresult)
+>>> 
+>>> # list readers
+>>> hresult, readers = SCardListReaders(hcontext, [])
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.ListReadersException(hresult)
+>>> 
+>>> # connect
 >>> hresult, hcard, dwActiveProtocol = SCardConnect(
->>>          hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
+>>>     hcontext, readers[0], SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.BaseSCardException(hresult)
+>>> 
+>>> # status
 >>> hresult, reader, state, protocol, atr = SCardStatus(hcard)
 >>> if hresult != SCARD_S_SUCCESS:
->>>     raise error, 'failed to get status: ' + SCardGetErrorMessage(hresult)
->>> print 'Reader: ', reader
->>> print 'State: ', state
->>> print 'Protocol: ', protocol
->>> print 'ATR: ',
->>> for i in xrange(len(atr)):
->>>     print '0x%.2X' % i,
->>> print ""
->>> ...
+>>>     raise PCSCExceptions.BaseSCardException(hresult)
+>>> print('Reader:', reader)
+>>> print('State: 0x%04X' % state)
+>>> print('Protocol:', protocol)
+>>> print('ATR:', toHexString(atr))
 "
 %enddef
 %feature("docstring") DOCSTRING_STATUS;
@@ -1757,14 +1934,32 @@ Value of pioSendPci:
  - SCARD_PCI_T1            Pre-defined T=1 PCI structure
 
 >>> from smartcard.scard import *
+>>> from smartcard.pcsc import *
+>>> from smartcard.util import toHexString
+>>> 
+>>> # establish context
 >>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.EstablishContextException(hresult)
+>>> 
+>>> # list readers
+>>> hresult, readers = SCardListReaders(hcontext, [])
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.ListReadersException(hresult)
+>>> 
+>>> # connect
 >>> hresult, hcard, dwActiveProtocol = SCardConnect(
->>>      hcontext, 'SchlumbergerSema Reflex USB v.2 0', SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
+>>>     hcontext, readers[0], SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise PCSCExceptions.BaseSCardException(hresult)
+>>> 
+>>> # transmit
 >>> SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
 >>> DF_TELECOM = [0x7F, 0x10]
 >>> hresult, response = SCardTransmit(hcard, SCARD_PCI_T0, SELECT + DF_TELECOM)
 >>> if hresult != SCARD_S_SUCCESS:
->>>     raise error, 'Failed to transmit: ' + SCardGetErrorMessage(hresult)
+>>>     raise PCSCExceptions.BaseSCardException(hresult)
+>>> print(toHexString(response))
 "
 %enddef
 %feature("docstring") DOCSTRING_TRANSMIT;
@@ -1805,7 +2000,7 @@ This function return a human readable text for the given PC/SC error code.
 >>> ...
 >>> hresult, response = SCardTransmit(hcard, SCARD_PCI_T0, SELECT + DF_TELECOM)
 >>> if hresult != SCARD_S_SUCCESS:
->>>     raise error, 'Failed to transmit: ' + SCardGetErrorMessage(hresult)
+>>>     print('Failed to transmit:', SCardGetErrorMessage(hresult))
 >>> ...
 "
 %enddef
