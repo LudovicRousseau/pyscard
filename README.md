@@ -17,7 +17,5 @@ Low level API samples: See https://pyscard.sourceforge.io/pyscard-wrapper.html#w
 
 Continuous Integration status
 -----------------------------
-AppVeyor: [![Build status](https://ci.appveyor.com/api/projects/status/c97dsaodpcwkm0ra?svg=true)](https://ci.appveyor.com/project/LudovicRousseau/pyscard)
-
 Coveralls: [![Coverage Status](https://coveralls.io/repos/LudovicRousseau/pyscard/badge.svg?branch=master&service=github)](https://coveralls.io/github/LudovicRousseau/pyscard?branch=master)
 
