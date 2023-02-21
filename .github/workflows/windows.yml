@@ -33,8 +33,6 @@ jobs:
       run: |
         python setup.py sdist
         python setup.py bdist
-        python setup.py bdist_wininst
-        python setup.py bdist_msi
         python setup.py bdist_wheel
         python setup.py install
 
