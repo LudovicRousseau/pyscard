@@ -6,6 +6,7 @@ https://pyscard.sourceforge.io/
 Copyright 2001-2012 Gemalto
 
 Authors:
+
 - Jean-Daniel Aussel, jean-daniel.aussel@gemalto.com
 - Ludovic Rousseau, ludovic.rousseau@free.fr
 
@@ -27,7 +28,7 @@ along with pyscard; if not, write to the Free Software Foundation, Inc.,
 
 pyscard is a python module adding smart cards support to python.
 
-It consists of the smartcard.scard module, an extension module wrapping
+It consists of the `smartcard.scard` module, an extension module wrapping
 Windows smart card base components (also known as PCSC) on Windows, and
 PCSC lite on GNU/Linux and macOS, and of the smartcard module, a
 python framework with objects wrapping PCSC API.
@@ -52,22 +53,15 @@ Installation on windows
 Installing on windows from the binary distribution
 --------------------------------------------------
 
-1. download the binary msi installer or self-executable installer from https://sourceforge.net/projects/pyscard/files/pyscard/
-2. execute the installer
-
-The binary msi installer and self-executable installer are packaged for
-a specific version of python, and have name similar to
-`pyscard-1.9.<xx>.win32-py2.7.msi` and `pyscard-1.9.<xx>.win32-py2.7.exe`.
-
+Use pip:
+```
+pip install pyscard
+```
 
 Installing on windows from the source distribution
 ---------------------------------------------------
 
-1. you will need swig from (http://www.swig.org), and a C compiler.
-
-Visual Studio 2008 is required for building the C language wrapper. You can
-download Microsoft Visual C++ Compiler for Python 2.7
-(http://aka.ms/vcpython27).
+1. you will need [swig](http://www.swig.org), and a C compiler.
 
 You can install swig using:
 
@@ -127,8 +121,8 @@ Developer documentation, unit tests and examples
 The developer documentation is in the smartcard/doc directory of the
 source distribution.
 
-Examples are located in the smartcard/Examples directory, and the pyunit
-unit tests in the smartcard/test directory.
+Examples are located in the `smartcard/Examples/` directory, and the pyunit
+unit tests in the `smartcard/test/` directory.
 
 Build instructions for packagers
 --------------------------------
@@ -144,13 +138,10 @@ In the root directory of the source distribution, execute the following
 command in a console:
 
 ```
-setup.py build_ext bdist_msi
-setup.py build_ext bdist_wininst
+python setup.py build_ext bdist_wheel
 ```
 
-This will build the msi installer and self-executable installer in the
-dist directory, with names similar to `pyscard-1.9.<xx>.win32-py2.7.msi` and
-`pyscard-1.9.<xx>.win32-py2.7.exe`.
+This will build the wheel installer with a name similar to `pyscard-2.0.5-cp311-cp311-win_amd64.whl`.
 
 Building a binary distribution for GNU/Linux
 --------------------------------------------
@@ -163,7 +154,7 @@ In the root directory of the source distribution, execute the following
 command in a terminal:
 
 ```
-/usr/bin/python setup.py build_ext bdist
+python setup.py build_ext bdist
 ```
 
 This will build a package similar to `pyscard-1.9.<xx>.linux-i686.tar.gz`
@@ -174,19 +165,13 @@ Building a binary distribution for macOS
 
 To build a binary distribution from the source distribution, you will
 need swig and Xcode (same requirements as for installing from the source
-distribution) and bdist_mpkg 0.5.0+ (http://pypi.python.org/pypi/bdist_mpkg/).
+distribution).
 
-Install bdist_mpkg by executing the bdist_mpkg setup.py script with
-build and install as arguments, i.e. from the root directory of the
-bdist_mpkg source distribution enter: python setup.py build install.
-
-From the root directory of the pyscard source distribution,
-i.e. in the src directory, execute the following commands in a terminal:
+From the root directory of the pyscard source distribution execute the following commands in a terminal:
 
 ```
-python setup.py build_ext
-bdist_mpkg setup.py
+python setup.py build_ext bdist_wheel
 ```
 
-This will build package `pyscard-1.9.<xx>-py-2.7-macosx10.7.mpkg` in the dist
-directory.
+This will build package `pyscard-2.0.5-cp311-cp311-macosx_12_0_x86_64.whl`
+in the `dist/` directory.
