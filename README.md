@@ -10,6 +10,13 @@ Documentation
 -------------
 https://pyscard.sourceforge.io/user-guide.html#pyscard-user-guide
 
+Installation
+------------
+
+Use `python3 -m pip install pyscard`
+
+See [INSTALL.md](INSTALL.md) for more details.
+
 Samples
 -------
 High level API samples: See https://pyscard.sourceforge.io/pyscard-framework.html#framework-samples
