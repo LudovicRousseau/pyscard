@@ -129,6 +129,8 @@ try:
 
                     hresult, response = verifypin(hcard, cmd_verify)
                     print('Control:', response)
+                except Exception as ex:
+                    print("Exception:", ex)
                 finally:
                     hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
                     if hresult != SCARD_S_SUCCESS:
