@@ -137,8 +137,8 @@ try:
                         raise BaseSCardException(hresult)
                     print('Disconnected')
 
-            except error as message:
-                print(error, message)
+            except BaseSCardException as ex:
+                print("SCard Exception:", ex)
 
     finally:
         hresult = SCardReleaseContext(hcontext)
