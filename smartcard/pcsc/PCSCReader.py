@@ -46,6 +46,8 @@ def __PCSCreaders__(hcontext, groups=[]):
             readers = []
         elif hresult == SCARD_E_SERVICE_STOPPED:
             raise CardServiceStoppedException()
+        elif hresult == SCARD_E_NO_SERVICE:
+            raise CardServiceNotFoundException()
         else:
             raise ListReadersException(hresult)
 
@@ -110,7 +112,7 @@ class PCSCReader(Reader):
 
         try:
             pcsc_readers = __PCSCreaders__(hcontext, groups)
-        except CardServiceStoppedException:
+        except (CardServiceStoppedException, CardServiceNotFoundException):
             hcontext = PCSCContext.renewContext()
             pcsc_readers = __PCSCreaders__(hcontext, groups)
 
