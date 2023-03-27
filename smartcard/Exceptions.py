@@ -78,6 +78,10 @@ class CardServiceStoppedException(SmartcardException):
     """Raised when the CardService was stopped"""
     pass
 
+class CardServiceNotFoundException(SmartcardException):
+    """Raised when the CardService is not found"""
+    pass
+
 
 class InvalidATRMaskLengthException(SmartcardException):
     """Raised when an ATR mask does not match an ATR length."""
