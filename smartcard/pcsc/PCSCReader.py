@@ -112,11 +112,7 @@ class PCSCReader(Reader):
 
         try:
             pcsc_readers = __PCSCreaders__(hcontext, groups)
-        except CardServiceStoppedException:
-            hcontext = PCSCContext.renewContext()
-            pcsc_readers = __PCSCreaders__(hcontext, groups)
-
-        except CardServiceNotFoundException:
+        except (CardServiceStoppedException, CardServiceNotFoundException):
             hcontext = PCSCContext.renewContext()
             pcsc_readers = __PCSCreaders__(hcontext, groups)
 
