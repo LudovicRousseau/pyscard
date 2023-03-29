@@ -1,9 +1,9 @@
 include ACKS
 include ChangeLog
+include INSTALL.md
 include LICENSE
 include MANIFEST.in
 include Makefile
-include README
 include README.md
 include TODO
 include smartcard/scard/PcscDefs.i
