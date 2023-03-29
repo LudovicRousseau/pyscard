@@ -78,7 +78,7 @@ BYTELIST* SCardHelper_PyByteListToBYTELIST(PyObject* source);
 void SCardHelper_PrintByteList( BYTELIST* apsz );
 
 // ERRORSTRING helpers
-void SCardHelper_OutErrorStringAsPyObject( ERRORSTRING* source, PyObject** ptarget );
+void SCardHelper_OutErrorStringAsPyObject( ERRORSTRING source, PyObject** ptarget );
 
 // GUIDLIST helpers
 void SCardHelper_AppendGuidListToPyObject( GUIDLIST* source, PyObject** ptarget );

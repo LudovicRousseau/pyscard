@@ -717,7 +717,7 @@ static long _SCARD_CTL_CODE(long code)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-static ERRORSTRING* _GetErrorMessage(long lErrCode)
+static ERRORSTRING _GetErrorMessage(long lErrCode)
 {
     #ifdef WIN32
     #define _NO_SERVICE_MSG "The Smart card resource manager is not running."
@@ -750,7 +750,7 @@ static ERRORSTRING* _GetErrorMessage(long lErrCode)
         return ppszError;
     #endif // WIN32
     #ifdef PCSCLITE
-        return (ERRORSTRING*)myPcscStringifyError(lErrCode);
+        return myPcscStringifyError(lErrCode);
     #endif // PCSCLITE
 }
 
@@ -2006,7 +2006,7 @@ This function return a human readable text for the given PC/SC error code.
 %enddef
 %feature("docstring") DOCSTRING_GETERRORMESSAGE;
 %rename(SCardGetErrorMessage) _GetErrorMessage(long lErrCode);
-ERRORSTRING* _GetErrorMessage(long lErrCode);
+ERRORSTRING _GetErrorMessage(long lErrCode);
 
 
 %inline

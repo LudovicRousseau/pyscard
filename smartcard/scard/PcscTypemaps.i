@@ -97,7 +97,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 // release ERRORSTRING OUTPUT argument.
 // on pcsc-lite, the error string is not allocated,
 // i.e. nothing to do.
-%typemap(ret) ERRORSTRING*
+%typemap(ret) ERRORSTRING
 {
     #ifdef WIN32
     if(NULL!=$1)
@@ -112,7 +112,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 }
 
 // builds a Python string from a STRING
-%typemap(out) ERRORSTRING*
+%typemap(out) ERRORSTRING
 {
     SCardHelper_OutErrorStringAsPyObject( $1, &$result );
 }

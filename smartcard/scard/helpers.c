@@ -299,7 +299,7 @@ dump a byte list
 
 /**=======================================================================**/
 void SCardHelper_OutErrorStringAsPyObject(
-    ERRORSTRING* source, PyObject** ptarget )
+    ERRORSTRING source, PyObject** ptarget )
 /*===========================================================================
 Builds a Python string from an ERRORSTRING
 ===========================================================================*/
@@ -309,9 +309,9 @@ Builds a Python string from an ERRORSTRING
     if( NULL!=source )
     {
 #if (PY_MAJOR_VERSION >= 3) && defined(WIN32)
-        pystr = PyUnicode_Decode( (char*)source, strlen(source), "cp1250" , NULL);
+        pystr = PyUnicode_Decode( source, strlen(source), "cp1250" , NULL);
 #else
-        pystr = PyString_FromString( (char*)source );
+        pystr = PyString_FromString( source );
 #endif
         *ptarget = pystr;
     }
