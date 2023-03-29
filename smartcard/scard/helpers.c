@@ -703,10 +703,13 @@ dump a reader state list
         }
         printf("\n");
 
+#ifdef WIN32
+		// SCARD_STATE_UNAWARE is 0 on Unix
         if(prl->ars[i].dwEventState & SCARD_STATE_UNAWARE)
         {
             printf("Card state unaware\n");
         }
+#endif
         if(prl->ars[i].dwEventState & SCARD_STATE_IGNORE)
         {
             printf("Card state ignore\n");
