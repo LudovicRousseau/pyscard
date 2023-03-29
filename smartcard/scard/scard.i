@@ -73,7 +73,7 @@ depending on the Operating System::
     SCardFreeMemory                                
     SCardGetAttrib                     Y       Y   
     SCardGetCardTypeProviderName       Y           
-    SCardGetErrorMessage               Y           
+    SCardGetErrorMessage               Y       Y   
     SCardGetProviderId                             
     SCardGetStatusChange               Y       Y   
     SCardIntroduceCardType             Y           
