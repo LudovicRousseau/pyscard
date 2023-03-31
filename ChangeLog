@@ -1,3 +1,7 @@
+2.0.7 (March 2023)
+==================
+   * do not include the generated HTML documentation in the archive
+
 2.0.6 (March 2023)
 ==================
    * handle SCARD_E_NO_SERVICE on Windows (on lmast reader removal)
