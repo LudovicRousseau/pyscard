@@ -1,3 +1,10 @@
+2.0.6 (March 2023)
+==================
+   * handle SCARD_E_NO_SERVICE on Windows (on lmast reader removal)
+   * add support of MSYS2/mingw environment on Windows
+   * improve documentation
+   * minor changes
+
 2.0.5 (Septembre 2022)
 ======================
    * New version just because I failed the previous upload to https://pypi.org/
