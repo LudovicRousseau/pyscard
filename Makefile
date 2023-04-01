@@ -20,7 +20,8 @@ pypi: clean
 	python3 -m twine upload dist/*
 
 test: build
-	$(PYTHON) setup.py test
+	cd smartcard/scard && ln -sf ../../build/lib.*/smartcard/scard/_scard*.so
+	$(PYTHON) -m unittest discover -v
 
 ChangeLog.git:
 	git log --stat --decorate=short > $@
