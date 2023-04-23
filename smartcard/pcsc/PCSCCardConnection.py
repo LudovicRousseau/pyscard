@@ -78,7 +78,7 @@ class PCSCCardConnection(CardConnection):
         if hresult != 0:
             raise CardConnectionException(
                 'Failed to establish context : ' + \
-                SCardGetErrorMessage(hresult))
+                SCardGetErrorMessage(hresult), hresult=hresult)
 
     def __del__(self):
         """Destructor. Clean PCSC connection resources."""
@@ -89,7 +89,7 @@ class PCSCCardConnection(CardConnection):
         if hresult != 0 and hresult != SCARD_E_INVALID_VALUE:
             raise CardConnectionException(
                 'Failed to release context: ' + \
-                SCardGetErrorMessage(hresult))
+                SCardGetErrorMessage(hresult), hresult=hresult)
         CardConnection.__del__(self)
 
     def connect(self, protocol=None, mode=None, disposition=None):
@@ -122,7 +122,7 @@ class PCSCCardConnection(CardConnection):
                 raise CardConnectionException(
                     'Unable to connect with protocol: ' + \
                     dictProtocol[pcscprotocol] + '. ' + \
-                    SCardGetErrorMessage(hresult))
+                    SCardGetErrorMessage(hresult), hresult=hresult)
 
         protocol = 0
         if dwActiveProtocol == SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1:
@@ -147,7 +147,8 @@ class PCSCCardConnection(CardConnection):
         If disposition is not specified, do a warm reset (SCARD_RESET_CARD)"""
         CardConnection.reconnect(self, protocol)
         if self.hcard is None:
-            raise CardConnectionException('Card not connected')
+            raise CardConnectionException('Card not connected',
+                                          hresult=hresult)
 
         pcscprotocol = translateprotocolmask(protocol)
         if 0 == pcscprotocol:
@@ -170,7 +171,7 @@ class PCSCCardConnection(CardConnection):
                 raise CardConnectionException(
                     'Unable to reconnect with protocol: ' + \
                     dictProtocol[pcscprotocol] + '. ' + \
-                    SCardGetErrorMessage(hresult))
+                    SCardGetErrorMessage(hresult), hresult=hresult)
 
         protocol = 0
         if dwActiveProtocol == SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1:
@@ -201,18 +202,19 @@ class PCSCCardConnection(CardConnection):
             if hresult != 0:
                 raise CardConnectionException(
                     'Failed to disconnect: ' + \
-                    SCardGetErrorMessage(hresult))
+                    SCardGetErrorMessage(hresult), hresult=hresult)
 
     def getATR(self):
         """Return card ATR"""
         CardConnection.getATR(self)
         if self.hcard is None:
-            raise CardConnectionException('Card not connected')
+            raise CardConnectionException('Card not connected',
+                                          hresult=hresult)
         hresult, reader, state, protocol, atr = SCardStatus(self.hcard)
         if hresult != 0:
             raise CardConnectionException(
                 'Failed to get status: ' + \
-                SCardGetErrorMessage(hresult))
+                SCardGetErrorMessage(hresult), hresult=hresult)
         return atr
 
     def doTransmit(self, bytes, protocol=None):
@@ -247,11 +249,11 @@ class PCSCCardConnection(CardConnection):
             raise CardConnectionException(
                 'Failed to transmit with protocol ' + \
                 dictProtocolHeader[pcscprotocolheader] + '. ' + \
-                SCardGetErrorMessage(hresult))
+                SCardGetErrorMessage(hresult), hresult=hresult)
 
         if len(response) < 2:
             raise CardConnectionException(
-                'Card returned no valid response')
+                'Card returned no valid response', hresult=hresult)
 
         sw1 = (response[-2] + 256) % 256
         sw2 = (response[-1] + 256) % 256
@@ -272,7 +274,8 @@ class PCSCCardConnection(CardConnection):
         hresult, response = SCardControl(self.hcard, controlCode, bytes)
         if hresult != 0:
             raise SmartcardException(
-                'Failed to control ' + SCardGetErrorMessage(hresult))
+                'Failed to control ' + SCardGetErrorMessage(hresult),
+                hresult=hresult)
 
         data = [(x + 256) % 256 for x in response]
         return list(data)
@@ -288,7 +291,8 @@ class PCSCCardConnection(CardConnection):
         hresult, response = SCardGetAttrib(self.hcard, attribId)
         if hresult != 0:
             raise SmartcardException(
-                'Failed to getAttrib ' + SCardGetErrorMessage(hresult))
+                'Failed to getAttrib ' + SCardGetErrorMessage(hresult),
+                hresult=hresult)
         return response
 
 

@@ -156,7 +156,7 @@ class PCSCCardRequest(AbstractCardRequest):
             SCARD_E_UNKNOWN_READER != hresult:
                 raise CardRequestException(
                     'Failed to SCardGetStatusChange ' + \
-                    SCardGetErrorMessage(hresult))
+                    SCardGetErrorMessage(hresult), hresult=hresult)
 
         # in case of timeout or reader disappearing,
         # the content of the states is useless
@@ -213,7 +213,7 @@ class PCSCCardRequest(AbstractCardRequest):
             # time-out
             if SCARD_E_TIMEOUT == hresult:
                 if evt.isSet():
-                    raise CardRequestTimeoutException()
+                    raise CardRequestTimeoutException(hresult=hresult)
 
             # reader vanished before or during the call
             elif SCARD_E_UNKNOWN_READER == hresult:
@@ -224,7 +224,7 @@ class PCSCCardRequest(AbstractCardRequest):
                 timer.cancel()
                 raise CardRequestException(
                     'Failed to get status change ' + \
-                    SCardGetErrorMessage(hresult))
+                    SCardGetErrorMessage(hresult), hresult=hresult)
 
             # something changed!
             else:
@@ -314,7 +314,7 @@ class PCSCCardRequest(AbstractCardRequest):
             # time-out
             if SCARD_E_TIMEOUT == hresult:
                 if evt.isSet():
-                    raise CardRequestTimeoutException()
+                    raise CardRequestTimeoutException(hresult=hresult)
 
             # the reader was unplugged during the loop
             elif SCARD_E_UNKNOWN_READER == hresult:
@@ -325,7 +325,7 @@ class PCSCCardRequest(AbstractCardRequest):
                 timer.cancel()
                 raise CardRequestException(
                     'Failed to get status change ' + \
-                    SCardGetErrorMessage(hresult))
+                    SCardGetErrorMessage(hresult), hresult=hresult)
 
             # something changed!
             else:

@@ -45,9 +45,9 @@ def __PCSCreaders__(hcontext, groups=[]):
         if hresult == SCARD_E_NO_READERS_AVAILABLE:
             readers = []
         elif hresult == SCARD_E_SERVICE_STOPPED:
-            raise CardServiceStoppedException()
+            raise CardServiceStoppedException(hresult=hresult)
         elif hresult == SCARD_E_NO_SERVICE:
-            raise CardServiceNotFoundException()
+            raise CardServiceNotFoundException(hresult=hresult)
         else:
             raise ListReadersException(hresult)
 
