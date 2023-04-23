@@ -22,8 +22,11 @@ class TestUtil(unittest.TestCase):
         exc = ListReadersException(0)
         self.assertEqual(exc.hresult, 0)
         text = str(exc)
-        if platform.system() != 'Windows':
-            self.assertEqual(text, "Failed to list readers: Command successful. (0x00000000)")
+        if platform.system() == 'Windows':
+            expected = "Failed to list readers: The operation completed successfully.  (0x00000000)"
+        else:
+            expected = "Failed to list readers: Command successful. (0x00000000)"
+        self.assertEqual(text, expected)
 
         exc = ListReadersException(0x42)
         self.assertEqual(exc.hresult, 0x42)
@@ -31,7 +34,6 @@ class TestUtil(unittest.TestCase):
         if platform.system() != 'Windows':
             expected = "Failed to list readers: Unknown error: 0x00000042 (0x00000042)"
             macos_bug_expected = expected.replace("Unknown", "Unkown")
-            print(expected, macos_bug_expected)
             self.assertIn(text, [expected, macos_bug_expected])
 
         exc = ListReadersException(SCARD_S_SUCCESS)
@@ -40,8 +42,12 @@ class TestUtil(unittest.TestCase):
         exc = ListReadersException(SCARD_E_NO_SERVICE)
         self.assertEqual(exc.hresult, SCARD_E_NO_SERVICE)
         text = str(exc)
-        if platform.system() != 'Windows':
-            self.assertEqual(text, "Failed to list readers: Service not available. (0x8010001D)")
+        if platform.system() == 'Windows':
+            expected = "Failed to list readers: The Smart Card Resource Manager is not running.  (0x8010001D)"
+        else:
+            expected = "Failed to list readers: Service not available. (0x8010001D)"
+
+        self.assertEqual(text, expected)
 
     def test_NoReadersException(self):
         exc = NoReadersException()
@@ -64,7 +70,12 @@ class TestUtil(unittest.TestCase):
         exc = CardConnectionException("foo", SCARD_W_REMOVED_CARD)
         self.assertEqual(exc.hresult, SCARD_W_REMOVED_CARD)
         text = str(exc)
-        self.assertEqual(text, "foo: Card was removed. (0x80100069)")
+        if platform.system() == 'Windows':
+            expected = "foo: The smart card has been removed, so that further communication is not possible.  (0x80100069)"
+        else:
+            expected = "foo: Card was removed. (0x80100069)"
+
+        self.assertEqual(text, expected)
 
     def test_hresult(self):
         hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
