@@ -56,10 +56,15 @@ class TestUtil(unittest.TestCase):
         self.assertEqual(text, "Invalid reader: foobar")
 
     def test_CardConnectionException(self):
-        exc= CardConnectionException()
+        exc = CardConnectionException()
         self.assertEqual(exc.hresult, -1)
         text = str(exc)
         self.assertEqual(text, "")
+
+        exc = CardConnectionException("foo", SCARD_W_REMOVED_CARD)
+        self.assertEqual(exc.hresult, SCARD_W_REMOVED_CARD)
+        text = str(exc)
+        self.assertEqual(text, "foo: Card was removed. (0x80100069)")
 
     def test_hresult(self):
         hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
