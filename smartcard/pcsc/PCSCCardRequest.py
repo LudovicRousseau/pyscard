@@ -47,23 +47,23 @@ class PCSCCardRequest(AbstractCardRequest):
                  cardType=None, cardServiceClass=None, timeout=1):
         """Construct new PCSCCardRequest.
 
-        @param newcardonly: if True, request a new card default is
-        False, i.e. accepts cards already inserted
+        @param newcardonly: if C{True}, request a new card. default is
+        C{False}, i.e. accepts cards already inserted
 
         @param readers: the list of readers to consider for requesting a
         card default is to consider all readers
 
-        @param cardType: the CardType class to wait for; default is
-        AnyCardType, i.e.  the request will returns with new or already
+        @param cardType: the L{CardType} class to wait for; default is
+        L{AnyCardType}, i.e.  the request will returns with new or already
         inserted cards
 
         @param cardServiceClass: the specific card service class to
         create and bind to the card default is to create and bind a
-        PassThruCardService
+        L{PassThruCardService}
 
         @param timeout: the time in seconds we are ready to wait for
         connecting to the requested card.  default is to wait one second
-        to wait forever, set timeout to None
+        to wait forever, set timeout to C{None}
         """
         AbstractCardRequest.__init__(
             self, newcardonly, readers, cardType, cardServiceClass, timeout)

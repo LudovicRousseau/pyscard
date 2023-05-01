@@ -110,10 +110,10 @@ for k in list(Properties.keys()):
 def parseFeatureRequest(response):
     """ Get the list of Part10 features supported by the reader.
 
-    @param response: result of CM_IOCTL_GET_FEATURE_REQUEST commmand
+    @param response: result of L{CM_IOCTL_GET_FEATURE_REQUEST} commmand
 
     @rtype: list
-    @return: a list of list [[tag1, value1], [tag2, value2]]
+    @return: a list of list C{[[tag1, value1], [tag2, value2]]}
     """
     features = []
     while (len(response) > 0):
@@ -136,7 +136,7 @@ def getFeatureRequest(cardConnection):
     @param cardConnection: L{CardConnection} object
 
     @rtype: list
-    @return: a list of list [[tag1, value1], [tag2, value2]]
+    @return: a list of list C{[[tag1, value1], [tag2, value2]]}
     """
     response = cardConnection.control(CM_IOCTL_GET_FEATURE_REQUEST, [])
     return parseFeatureRequest(response)
@@ -156,7 +156,7 @@ def hasFeature(featureList, feature):
 
 
 def getPinProperties(cardConnection, featureList=None, controlCode=None):
-    """ return the PIN_PROPERTIES structure
+    """ return the C{PIN_PROPERTIES} structure
 
     @param cardConnection: L{CardConnection} object
     @param featureList: feature list as returned by L{getFeatureRequest()}
@@ -184,7 +184,7 @@ def getPinProperties(cardConnection, featureList=None, controlCode=None):
 
 
 def getTlvProperties(cardConnection, featureList=None, controlCode=None):
-    """ return the GET_TLV_PROPERTIES structure
+    """ return the C{GET_TLV_PROPERTIES} structure
 
     @param cardConnection: L{CardConnection} object
     @param featureList: feature list as returned by L{getFeatureRequest()}

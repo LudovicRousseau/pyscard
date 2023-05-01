@@ -31,9 +31,16 @@ class CardConnection(Observable):
     """Card connection abstract class.
     """
     T0_protocol = 0x00000001
+    """ protocol T=0 """
+
     T1_protocol = 0x00000002
+    """ protocol T=1 """
+
     RAW_protocol = 0x00010000
+    """ protocol RAW (direct access to the reader) """
+
     T15_protocol = 0x00000008
+    """ protocol T=15 """
 
     def __init__(self, reader):
         """Construct a new card connection.
@@ -43,9 +50,12 @@ class CardConnection(Observable):
         """
         Observable.__init__(self)
         self.reader = reader
+        """ reader name """
         self.errorcheckingchain = None
+        """ see L{setErrorCheckingChain} """
         self.defaultprotocol = CardConnection.T0_protocol |\
             CardConnection.T1_protocol
+        """ see L{setProtocol} and L{getProtocol} """
 
     def __del__(self):
         """Connect to card."""
@@ -76,11 +86,14 @@ class CardConnection(Observable):
         L{CardConnection.T0_protocol}, L{CardConnection.T1_protocol},
         L{CardConnection.RAW_protocol}, L{CardConnection.T15_protocol}
 
-        @param mode: SCARD_SHARE_SHARED (default), SCARD_SHARE_EXCLUSIVE or
-        SCARD_SHARE_DIRECT
+        @param mode: C{smartcard.scard.SCARD_SHARE_SHARED} (default),
+        C{smartcard.scard.SCARD_SHARE_EXCLUSIVE} or
+        C{smartcard.scard.SCARD_SHARE_DIRECT}
 
-        @param disposition: SCARD_LEAVE_CARD (default), SCARD_RESET_CARD,
-        SCARD_UNPOWER_CARD or SCARD_EJECT_CARD
+        @param disposition: C{smartcard.scard.SCARD_LEAVE_CARD}
+        (default), C{smartcard.scard.SCARD_RESET_CARD},
+        C{smartcard.scard.SCARD_UNPOWER_CARD} or
+        C{smartcard.scard.SCARD_EJECT_CARD}
         """
         Observable.setChanged(self)
         Observable.notifyObservers(self, CardConnectionEvent('connect'))
@@ -91,11 +104,14 @@ class CardConnection(Observable):
         L{CardConnection.T0_protocol}, L{CardConnection.T1_protocol},
         L{CardConnection.RAW_protocol}, L{CardConnection.T15_protocol}
 
-        @param mode: SCARD_SHARE_SHARED (default), SCARD_SHARE_EXCLUSIVE or
-        SCARD_SHARE_DIRECT
+        @param mode: C{smartcard.scard.SCARD_SHARE_SHARED} (default),
+        C{smartcard.scard.SCARD_SHARE_EXCLUSIVE} or
+        C{smartcard.scard.SCARD_SHARE_DIRECT}
 
-        @param disposition: SCARD_LEAVE_CARD, SCARD_RESET_CARD (default),
-        SCARD_UNPOWER_CARD or SCARD_EJECT_CARD
+        @param disposition: C{smartcard.scard.SCARD_LEAVE_CARD},
+        C{smartcard.scard.SCARD_RESET_CARD} (default),
+        C{smartcard.scard.SCARD_UNPOWER_CARD} or
+        C{smartcard.scard.SCARD_EJECT_CARD}
         """
         Observable.setChanged(self)
         Observable.notifyObservers(self, CardConnectionEvent('reconnect'))
@@ -112,8 +128,8 @@ class CardConnection(Observable):
     def getProtocol(self):
         """Return bit mask for the protocol of connection, or None if no
         protocol set.  The return value is a bit mask of
-        CardConnection.T0_protocol, CardConnection.T1_protocol,
-        CardConnection.RAW_protocol, CardConnection.T15_protocol
+        L{CardConnection.T0_protocol}, L{CardConnection.T1_protocol},
+        L{CardConnection.RAW_protocol}, L{CardConnection.T15_protocol}
         """
         return self.defaultprotocol
 
@@ -123,33 +139,34 @@ class CardConnection(Observable):
 
     def setErrorCheckingChain(self, errorcheckingchain):
         """Add an error checking chain.
-        @param errorcheckingchain: a smartcard.sw.ErrorCheckingChain object The
-        error checking strategies in errorchecking chain will be tested
-        with each received response APDU, and a
-        smartcard.sw.SWException.SWException will be raised upon
+        @param errorcheckingchain: a L{smartcard.sw.ErrorCheckingChain}
+        object The error checking strategies in errorchecking chain will
+        be tested with each received response APDU, and a
+        L{smartcard.sw.SWExceptions.SWException} will be raised upon
         error."""
         self.errorcheckingchain = errorcheckingchain
 
     def setProtocol(self, protocol):
         """Set protocol for card connection.
-        @param protocol: a bit mask of CardConnection.T0_protocol,
-        CardConnection.T1_protocol, CardConnection.RAW_protocol,
-        CardConnection.T15_protocol e.g.
-        setProtocol(CardConnection.T1_protocol |
-        CardConnection.T0_protocol) """
+        @param protocol: a bit mask of L{CardConnection.T0_protocol},
+        L{CardConnection.T1_protocol}, L{CardConnection.RAW_protocol},
+        L{CardConnection.T15_protocol}
+
+        >>> setProtocol(CardConnection.T1_protocol | CardConnection.T0_protocol)
+        """
         self.defaultprotocol = protocol
 
     def transmit(self, bytes, protocol=None):
-        """Transmit an apdu. Internally calls doTransmit() class method
+        """Transmit an apdu. Internally calls L{doTransmit()} class method
         and notify observers upon command/response APDU events.
-        Subclasses must override the doTransmit() class method.
+        Subclasses must override the L{doTransmit()} class method.
 
         @param bytes:      list of bytes to transmit
 
         @param protocol:   the transmission protocol, from
-                    CardConnection.T0_protocol,
-                    CardConnection.T1_protocol, or
-                    CardConnection.RAW_protocol
+                    L{CardConnection.T0_protocol},
+                    L{CardConnection.T1_protocol}, or
+                    L{CardConnection.RAW_protocol}
         """
         Observable.setChanged(self)
         Observable.notifyObservers(self,
@@ -207,7 +224,8 @@ class CardConnection(Observable):
     def getAttrib(self, attribId):
         """return the requested attribute
 
-        @param attribId: attribute id like SCARD_ATTR_VENDOR_NAME
+        @param attribId: attribute id like
+        C{smartcard.scard.SCARD_ATTR_VENDOR_NAME}
         """
         Observable.setChanged(self)
         Observable.notifyObservers(self,

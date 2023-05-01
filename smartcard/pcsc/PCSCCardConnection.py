@@ -30,7 +30,7 @@ from smartcard.scard import *
 
 
 def translateprotocolmask(protocol):
-    """Translate CardConnection protocol mask into PCSC protocol mask."""
+    """Translate L{CardConnection} protocol mask into PCSC protocol mask."""
     pcscprotocol = 0
     if protocol is not None:
         if CardConnection.T0_protocol & protocol:
@@ -98,7 +98,8 @@ class PCSCCardConnection(CardConnection):
         If protocol is not specified, connect with the default
         connection protocol.
 
-        If mode is not specified, connect with SCARD_SHARE_SHARED."""
+        If mode is not specified, connect with
+        C{smartcard.scard.SCARD_SHARE_SHARED}."""
         CardConnection.connect(self, protocol)
         pcscprotocol = translateprotocolmask(protocol)
         if 0 == pcscprotocol:
@@ -142,9 +143,11 @@ class PCSCCardConnection(CardConnection):
         If protocol is not specified, connect with the default
         connection protocol.
 
-        If mode is not specified, connect with SCARD_SHARE_SHARED.
+        If mode is not specified, connect with
+        C{smartcard.scard.SCARD_SHARE_SHARED}.
 
-        If disposition is not specified, do a warm reset (SCARD_RESET_CARD)"""
+        If disposition is not specified, do a warm reset
+        (C{smartcard.scard.SCARD_RESET_CARD})"""
         CardConnection.reconnect(self, protocol)
         if self.hcard is None:
             raise CardConnectionException('Card not connected',
@@ -223,13 +226,13 @@ class PCSCCardConnection(CardConnection):
         @param bytes:    command apdu to transmit (list of bytes)
 
         @param protocol: the transmission protocol, from
-            CardConnection.T0_protocol, CardConnection.T1_protocol, or
-            CardConnection.RAW_protocol
+            L{CardConnection.T0_protocol}, L{CardConnection.T1_protocol}, or
+            L{CardConnection.RAW_protocol}
 
         @return:     a tuple (response, sw1, sw2) where
-                    sw1 is status word 1, e.g. 0x90
-                    sw2 is status word 2, e.g. 0x1A
-                    response are the response bytes excluding status words
+                    - response are the response bytes excluding status words
+                    - sw1 is status word 1, e.g. 0x90
+                    - sw2 is status word 2, e.g. 0x1A
         """
         if protocol is None:
             protocol = self.getProtocol()
