@@ -156,7 +156,7 @@ state. Finally these historical bytes are eventually followed by a
 checksum byte.
 
 The class `smartcard.ATR
-<https://pyscard.sourceforge.io/epydoc/smartcard.ATR.ATR-class.html>`_
+<apidocs/smartcard.ATR.ATR.html>`_
 is a pyscard utility class that can interpret the content of an ATR:
 
 .. literalinclude:: ../Examples/framework/sample_ATR.py
@@ -212,13 +212,13 @@ The following scripts requests a card with a known ATR::
     >>>
 
 To request a card with a know ATR, you must first create an `ATRCardType
-<https://pyscard.sourceforge.io/epydoc/smartcard.CardType.ATRCardType-class.html>`_
+<apidocs/smartcard.CardType.ATRCardType.html>`_
 object with the desired ATR::
 
     >>> cardtype = ATRCardType( toBytes( "3B 16 94 20 02 01 00 00 0D" ) )
 
 And then create a `CardRequest
-<https://pyscard.sourceforge.io/epydoc/smartcard.CardRequest.CardRequest-class.html>`_
+<apidocs/smartcard.CardRequest.CardRequest.html>`_
 for this card type. In the sample, we request a time-out of 1 second.
 
     >>> cardrequest = CardRequest( timeout=1, cardType=cardtype )
@@ -233,14 +233,14 @@ APDU commands to the card, as with the reader centric approach.
 
 If necessary, the reader used for the connection can be accessed thru
 the `CardConnection
-<https://pyscard.sourceforge.io/epydoc/smartcard.CardConnection.CardConnection-class.html>`_
+<apidocs/smartcard.CardConnection.CardConnection.html>`_
 object:
 
     >>> print cardservice.connection.getReader()
     SchlumbergerSema Reflex USB v.2 0
 
 The `ATRCardType
-<https://pyscard.sourceforge.io/epydoc/smartcard.CardType.ATRCardType-class.html>`_
+<apidocs/smartcard.CardType.ATRCardType.html>`_
 also supports masks:
 
     >>> from smartcard.CardType import ATRCardType
@@ -262,7 +262,7 @@ Requesting any card
 -------------------
 
 The `AnyCardType
-<https://pyscard.sourceforge.io/epydoc/smartcard.CardType.AnyCardType-class.html>`_
+<apidocs/smartcard.CardType.AnyCardType.html>`_
 is useful for requesting any card in any reader:
 
     >>> from smartcard.CardType import AnyCardType
@@ -285,7 +285,7 @@ Custom CardTypes
 Custom CardTypes can be created, e.g. a card type that checks the ATR
 and the historical bytes of the card. To create a custom CardType,
 derive your CardType class from the `CardType
-<https://pyscard.sourceforge.io/epydoc/smartcard.CardType.CardType-class.html>`_
+<apidocs/smartcard.CardType.CardType.html>`_
 base class (or any other CardType) and override the matches() method.
 For example to create a DCCardType that will match cards with the direct
 convention (first byte of ATR to 0x3b):
@@ -530,7 +530,7 @@ illustrated in the following script:
     >>>
 
 In this script, a `ConsoleCardConnectionObserver
-<https://pyscard.sourceforge.io/epydoc/smartcard.CardConnectionObserver.ConsoleCardConnectionObserver-class.html>`_
+<apidocs/smartcard.CardConnectionObserver.ConsoleCardConnectionObserver.html>`_
 is attached to the card service connection once the watiforcard() call
 returns.
 
@@ -540,10 +540,10 @@ returns.
 On card connection events (connect, disconnect, transmit command apdu,
 receive response apdu), the card connection notifies its observers with a
 `CarConnectionEvent
-<https://pyscard.sourceforge.io/epydoc/smartcard.CardConnectionEvent.CardConnectionEvent-class.html>`_
+<apidocs/smartcard.CardConnectionEvent.CardConnectionEvent.html>`_
 including the event type and the event data. The
 `ConsoleCardConnectionObserver
-<https://pyscard.sourceforge.io/epydoc/smartcard.CardConnectionObserver.ConsoleCardConnectionObserver-class.html>`_
+<apidocs/smartcard.CardConnectionObserver.ConsoleCardConnectionObserver.html>`_
 is a simple observer that will print on the console the card connection
 events. The class definition is the following:
 
@@ -589,7 +589,7 @@ disconnect, command and response apdu events:
 A card connection observer's update method is called upon card
 connection event, with the connection and the connection event as
 parameters. The `CardConnectionEvent
-<https://pyscard.sourceforge.io/epydoc/smartcard.CardConnectionEvent.CardConnectionEvent-class.html>`_
+<apidocs/smartcard.CardConnectionEvent.CardConnectionEvent.html>`_
 class definition is the following:
 
 .. sourcecode:: python
@@ -802,7 +802,7 @@ Error checkers
 --------------
 
 An error checker is a class deriving from `ErrorChecker
-<https://pyscard.sourceforge.io/epydoc/smartcard.sw.ErrorChecker.ErrorChecker-class.html>`_
+<apidocs/smartcard.sw.ErrorChecker.ErrorChecker.html>`_
 that checks for recognized sw1, sw2 error conditions when called, and
 raises an exception when finding such condition. This is illustrated in
 the following sample:
@@ -827,7 +827,7 @@ Error checking chains
 ---------------------
 
 Error checkers can be chained into `error checking chain
-<https://pyscard.sourceforge.io/epydoc/smartcard.sw.ErrorCheckingChain.ErrorCheckingChain-class.html>`_.
+<apidocs/smartcard.sw.ErrorCheckingChain.ErrorCheckingChain.html>`_.
 Each checker in the chain is called until an error condition is met, in
 which case an exception is raised. This is illustrated in the following
 sample:
@@ -903,7 +903,7 @@ exception to the error checking chain::
 
 The first call to the error chain with sw1 sw2 = 62 00 raises a
 `WarningProcessingException
-<https://pyscard.sourceforge.io/epydoc/smartcard.sw.SWExceptions.WarningProcessingException-class.html>`_.
+<apidocs/smartcard.sw.SWExceptions.WarningProcessingException.html>`_.
 
 ::
 
@@ -913,7 +913,7 @@ The first call to the error chain with sw1 sw2 = 62 00 raises a
     ...
 
 After adding a filter for `WarningProcessingException
-<https://pyscard.sourceforge.io/epydoc/smartcard.sw.SWExceptions.WarningProcessingException-class.html>`_,
+<apidocs/smartcard.sw.SWExceptions.WarningProcessingException.html>`_,
 the second call to the error chain with sw1 sw2 = 62 00 does not raise
 any exception:
 
@@ -999,7 +999,7 @@ whereas executing the script on a non-SIM card will result in:
     disconnecting from Utimaco CardManUSB 0
 
 To implement an error checking chain, create an `ErrorCheckingChain
-<https://pyscard.sourceforge.io/epydoc/smartcard.sw.ErrorCheckingChain.ErrorCheckingChain-class.html>`_
+<apidocs/smartcard.sw.ErrorCheckingChain.ErrorCheckingChain.html>`_
 object with the desired error checking strategies, and set this chain
 object as the card connection error checking chain. The card connection
 will use the chain for error checking upon reception of a response apdu:
@@ -1009,10 +1009,10 @@ Writing a custom error checker
 
 Implementing a custom error checker requires implementing a sub-class of
 `op21_ErrorChecker
-<https://pyscard.sourceforge.io/epydoc/smartcard.sw.op21_ErrorChecker.op21_ErrorChecker-class.html>`_,
+<apidocs/smartcard.sw.op21_ErrorChecker.op21_ErrorChecker.html>`_,
 and overriding the __call__ method. The following error checker raises a
 `SecurityRelatedException
-<https://pyscard.sourceforge.io/epydoc/smartcard.sw.SWExceptions.SecurityRelatedException-class.html>`_
+<apidocs/smartcard.sw.SWExceptions.SecurityRelatedException.html>`_
 exception when sw1=0x66 and sw2=0x00.
 
 Custom checkers can be used standalone, as in the following sample, or
@@ -1126,11 +1126,11 @@ Monitoring readers
 
 You can monitor the insertion or removal of readers using the
 `ReaderObserver
-<https://pyscard.sourceforge.io/epydoc/smartcard.ReaderMonitoring.ReaderObserver-class.html>`_
+<apidocs/smartcard.ReaderMonitoring.ReaderObserver.html>`_
 interface.
 
 To monitor reader insertion, create a `ReaderObserver
-<https://pyscard.sourceforge.io/epydoc/smartcard.ReaderMonitoring.ReaderObserver-class.html>`_
+<apidocs/smartcard.ReaderMonitoring.ReaderObserver.html>`_
 object that implements an update() method that will be called upon
 reader/insertion removal. The following sample code implements a
 ReaderObserver that simply prints the inserted/removed readers on the
@@ -1152,7 +1152,7 @@ standard output:
 
 To monitor reader insertion/removal, simply add the observer to the
 `ReaderMonitor
-<https://pyscard.sourceforge.io/epydoc/smartcard.ReaderMonitoring.ReaderMonitor-class.html>`_:
+<apidocs/smartcard.ReaderMonitoring.ReaderMonitor.html>`_:
 
 .. literalinclude:: ../Examples/framework/sample_MonitorReaders.py
 
@@ -1164,17 +1164,17 @@ Monitoring Smart Cards
 
 You can monitor the insertion or removal of cards using the
 `CardObserver
-<https://pyscard.sourceforge.io/epydoc/smartcard.CardMonitoring.CardObserver-class.html>`_
+<apidocs/smartcard.CardMonitoring.CardObserver.html>`_
 interface.
 
 To monitor card insertion and removal, create a `CardObserver
-<https://pyscard.sourceforge.io/epydoc/smartcard.CardMonitoring.CardObserver-class.html>`_
+<apidocs/smartcard.CardMonitoring.CardObserver.html>`_
 object that implements an update() method that will be called upon card
 insertion/removal. The following sample code implements a CardObserver
 that simply prints the inserted/removed cards on the standard output,
 named printobserver. To monitor card insertion/removal, simply add the
 card observer to the `CardMonitor
-<https://pyscard.sourceforge.io/epydoc/smartcard.CardMonitoring.CardMonitor-class.html>`_:
+<apidocs/smartcard.CardMonitoring.CardMonitor.html>`_:
 
 .. literalinclude:: ../Examples/framework/sample_MonitorCards.py
 
@@ -1192,7 +1192,7 @@ in our case SELECT DF_TELECOM.
 
 To monitor card insertion, connect to inserted cards and send the APDU,
 create an instance of selectDFTELECOMObserver and add it to the `CardMonitor
-<https://pyscard.sourceforge.io/epydoc/smartcard.CardMonitoring.CardMonitor-class.html>`_:
+<apidocs/smartcard.CardMonitoring.CardMonitor.html>`_:
 
 .. literalinclude:: ../Examples/framework/sample_MonitorCardsAndTransmit.py
 
@@ -1231,7 +1231,7 @@ Creating Connection from CardMonitoring
 =======================================
 
 The `update
-<https://pyscard.sourceforge.io/pyscard-usersguide.html#monitoringsmartcards>`_
+<apidocs/smartcard.CardMonitoring.CardObserver.html#update>`_
 method of a CardObserver receives a tuple with a list of connected cards
 and a list of removed cards. To create a CardConnection from a card
 object, use the createConnection() method of the desired card:
