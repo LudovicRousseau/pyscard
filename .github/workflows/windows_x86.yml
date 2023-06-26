@@ -1,0 +1,45 @@
+name: Windows Build
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        architecture: x86
+
+    - name: Install build tools
+      run: |
+        python --version
+        python -c "import struct; print(struct.calcsize('P') * 8)"
+        python -m pip install --upgrade pip
+        pip install -r dev-requirements.txt
+
+        choco install swig --version 2.0.12 --allow-empty-checksums --yes --limit-output
+        swig -version
+
+    - name: Build
+      run: |
+        python setup.py sdist
+        python setup.py bdist
+        python setup.py bdist_wheel
+        python setup.py install
+
+    - name: Tests
+      run: python setup.py test
+
+    - uses: actions/upload-artifact@v3
+      with:
+        path: dist
