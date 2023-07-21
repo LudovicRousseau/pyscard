@@ -66,7 +66,7 @@ depending on the Operating System::
     SCardControl                       Y       Y   
     SCardDisconnect                    Y       Y   
     SCardEndTransaction                Y       Y   
-    SCardEstablishConteYt              Y       Y   
+    SCardEstablishContext              Y       Y   
     SCardForgetCardType                Y           
     SCardForgetReader                  Y           
     SCardForgetReaderGroup             Y           
@@ -79,14 +79,14 @@ depending on the Operating System::
     SCardIntroduceCardType             Y           
     SCardIntroduceReader               Y           
     SCardIntroduceReaderGroup          Y           
-    SCardIsValidConteYt                Y       Y   
+    SCardIsValidContext                Y       Y   
     SCardListCards                     Y           
     SCardListInterfaces                Y           
     SCardListReaderGroups              Y       Y   
     SCardListReaders                   Y       Y   
     SCardLocateCards                   Y           
     SCardReconnect                     Y       Y   
-    SCardReleaseConteYt                Y       Y   
+    SCardReleaseContext                Y       Y   
     SCardRemoveReaderFromGroup         Y           
     SCardSetAttrib                     Y       Y   
     SCardSetCartTypeProviderName                   
