@@ -33,6 +33,7 @@ from sysconfig import get_platform
 
 from setuptools import setup, Extension
 from setuptools.command.build_py import build_py
+from distutils.spawn import find_executable
 
 
 platform_include_dirs = []
@@ -63,6 +64,11 @@ else:
         platform_extra_compile_args += shlex.split(pkg_config_cflags.decode())
     except:
         platform_include_dirs = ['/usr/include/PCSC', '/usr/local/include/PCSC']
+
+if find_executable("swig") is None:
+    print("Install swig and try again")
+    print("")
+    sys.exit(1)
 
 VERSION_INFO = (2, 0, 7, 0)
 VERSION_STR = '%i.%i.%i' % VERSION_INFO[:3]
