@@ -30,10 +30,10 @@ import shlex
 import subprocess
 import sys
 from sysconfig import get_platform
+from shutil import which
 
 from setuptools import setup, Extension
 from setuptools.command.build_py import build_py
-from distutils.spawn import find_executable
 
 
 platform_include_dirs = []
@@ -65,11 +65,6 @@ else:
     except:
         platform_include_dirs = ['/usr/include/PCSC', '/usr/local/include/PCSC']
 
-if find_executable("swig") is None:
-    print("Install swig and try again")
-    print("")
-    sys.exit(1)
-
 VERSION_INFO = (2, 0, 7, 0)
 VERSION_STR = '%i.%i.%i' % VERSION_INFO[:3]
 VERSION_ALT = '%i,%01i,%01i,%04i' % VERSION_INFO
@@ -78,6 +73,10 @@ VERSION_ALT = '%i,%01i,%01i,%04i' % VERSION_INFO
 class BuildPyBuildExtFirst(build_py):
     """Workaround substitude `build_py` command for SWIG"""
     def run(self):
+        if which("swig") is None:
+            print("Install swig and try again")
+            print("")
+            exit(1)
         # Run build_ext first so that SWIG generated files are included
         self.run_command('build_ext')
         return build_py.run(self)
