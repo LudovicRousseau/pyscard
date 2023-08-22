@@ -1,4 +1,5 @@
 PYTHON ?= python3
+COVERAGE ?= python3-coverage
 
 build:
 	$(PYTHON) setup.py build
@@ -23,6 +24,12 @@ pypi: clean
 test: build
 	cd smartcard/scard && ln -sf ../../build/lib.*/smartcard/scard/_scard*.so
 	$(PYTHON) -m unittest discover -v
+
+coverage:
+	$(COVERAGE) erase
+	$(COVERAGE) run -m unittest discover
+	$(COVERAGE) report
+	$(COVERAGE) html
 
 ChangeLog.git:
 	git log --stat --decorate=short > $@
