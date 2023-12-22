@@ -22,15 +22,13 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-import imp
 import os.path
 import sys
 
 
 def main_is_frozen():
     return(hasattr(sys, "frozen") or \
-           hasattr(sys, "importers") or \
-           imp.is_frozen("__main__"))
+           hasattr(sys, "importers"))
 
 
 ICO_SMARTCARD = None
