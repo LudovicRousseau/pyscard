@@ -3,3 +3,4 @@ coveralls
 wheel
 build
 setuptools
+pytest

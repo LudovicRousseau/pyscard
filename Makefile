@@ -23,7 +23,7 @@ pypi: clean
 
 test:
 	$(PYTHON) -m pip install --editable .
-	$(PYTHON) -m unittest discover -v
+	pytest
 
 coverage:
 	$(COVERAGE) erase

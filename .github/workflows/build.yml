@@ -57,7 +57,7 @@ jobs:
         run: |
           source temp/bin/activate
           python3 -m coverage erase
-          python3 -m coverage run setup.py test
+          python3 -m coverage run $PYTHON -m pytest
           python3 -m coverage report
 
       - name: Covealls
