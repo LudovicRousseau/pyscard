@@ -40,23 +40,22 @@ jobs:
 
       - name: build
         shell: bash
-        run: PYTHON=python3 make
-
-      - name: test prep
-        shell: bash
         run: |
-          pip3 install -r dev-requirements.txt
-          pip3 install .
+          python3 -m venv temp
+          source temp/bin/activate
+          pip install -r dev-requirements.txt 
+          make
 
       - name: test run
         shell: bash
         run: |
-          find build
-          PYTHON=python3 make test
+          source temp/bin/activate
+          make test
 
       - name: coverage
         shell: bash
         run: |
+          source temp/bin/activate
           python3 -m coverage erase
           python3 -m coverage run setup.py test
           python3 -m coverage report
