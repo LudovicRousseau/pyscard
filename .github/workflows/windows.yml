@@ -33,10 +33,8 @@ jobs:
 
     - name: Build
       run: |
-        python setup.py sdist
-        python setup.py bdist
-        python setup.py bdist_wheel
-        python setup.py install
+        python -m build
+        python -m pip install .
 
     - name: Tests
       run: python setup.py test
