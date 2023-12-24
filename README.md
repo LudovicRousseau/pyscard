@@ -19,8 +19,8 @@ See [INSTALL.md](INSTALL.md) for more details.
 
 Samples
 -------
-High level API samples: See https://pyscard.sourceforge.io/pyscard-framework.html#framework-samples
-Low level API samples: See https://pyscard.sourceforge.io/pyscard-wrapper.html#wrapper-samples
+- High level API samples: See https://pyscard.sourceforge.io/pyscard-framework.html#framework-samples
+- Low level API samples: See https://pyscard.sourceforge.io/pyscard-wrapper.html#wrapper-samples
 
 Continuous Integration status
 -----------------------------
