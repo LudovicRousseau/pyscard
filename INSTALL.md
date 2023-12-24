@@ -118,7 +118,7 @@ your python distribution, e.g.
 
 Developer documentation, unit tests and examples
 ------------------------------------------------
-The developer documentation is in the smartcard/doc directory of the
+The developer documentation is in the `smartcard/doc/` directory of the
 source distribution.
 
 Examples are located in the `smartcard/Examples/` directory, and the pyunit
@@ -138,10 +138,10 @@ In the root directory of the source distribution, execute the following
 command in a console:
 
 ```
-python setup.py build_ext bdist_wheel
+python -m build
 ```
 
-This will build the wheel installer with a name similar to `pyscard-2.0.5-cp311-cp311-win_amd64.whl`.
+This will build the wheel installer with a name similar to `pyscard-2.0.5-cp311-cp311-win_amd64.whl` in the `dist/`directory.
 
 Building a binary distribution for GNU/Linux
 --------------------------------------------
@@ -154,11 +154,13 @@ In the root directory of the source distribution, execute the following
 command in a terminal:
 
 ```
-python setup.py build_ext bdist
+python3 -m venv temp
+source temp/bin/activate
+pip3 install -r dev-requirements.txt
+python3 -m build
 ```
 
-This will build a package similar to `pyscard-1.9.<xx>.linux-i686.tar.gz`
-containing a tree
+This will build a wheel installer with a name similar to `pyscard-2.0.7-cp310-cp310-linux_x86_64.whl` and a source code archive `pyscard-2.0.7.tar.gz` in the `dist/`directory.
 
 Building a binary distribution for macOS
 ----------------------------------------
@@ -167,11 +169,4 @@ To build a binary distribution from the source distribution, you will
 need swig and Xcode (same requirements as for installing from the source
 distribution).
 
-From the root directory of the pyscard source distribution execute the following commands in a terminal:
-
-```
-python setup.py build_ext bdist_wheel
-```
-
-This will build package `pyscard-2.0.5-cp311-cp311-macosx_12_0_x86_64.whl`
-in the `dist/` directory.
+The steps are then the same as for GNU/Linux.
