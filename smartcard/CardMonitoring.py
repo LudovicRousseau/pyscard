@@ -28,7 +28,7 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-from threading import Thread, Event
+from threading import Thread, Event, Lock
 from time import sleep
 import traceback
 
@@ -123,10 +123,12 @@ class CardMonitor(object):
 
     # the singleton
     instance = None
+    lock = Lock()
 
     def __init__(self):
-        if not CardMonitor.instance:
-            CardMonitor.instance = CardMonitor.__CardMonitorSingleton()
+        with CardMonitor.lock:
+            if not CardMonitor.instance:
+                CardMonitor.instance = CardMonitor.__CardMonitorSingleton()
 
     def __getattr__(self, name):
         return getattr(self.instance, name)
