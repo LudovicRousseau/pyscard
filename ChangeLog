@@ -1,3 +1,13 @@
+2.0.8 (march 2024)
+==================
+   * Make CardMonitor() thread safe on Python 3.12
+   * Add hresult value in exceptions
+   * Improve documentation
+   * Check swig is installed on build
+   * Remove use of imp module for wx (GUI)
+   * Makefile: modernize use of setup.py
+   * Minor changes
+
 2.0.7 (March 2023)
 ==================
    * do not include the generated HTML documentation in the archive
