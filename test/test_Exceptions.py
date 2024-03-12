@@ -110,5 +110,13 @@ class TestUtil(unittest.TestCase):
         expected = "foo: " + expected + " (0x80100016)"
         self.assertEqual(text, expected)
 
+    def test_wrongType(self):
+        # SCardEstablishContext() argument should be int or long
+        with self.assertRaises(TypeError):
+            hresult, hcontext = SCardEstablishContext([0])
+
+        with self.assertRaises(TypeError):
+            hresult, hcontext = SCardEstablishContext("foo")
+
 if __name__ == '__main__':
     unittest.main()
