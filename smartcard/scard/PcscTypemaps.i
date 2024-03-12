@@ -335,7 +335,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 %typemap(in) SCARDDWORDARG INPUT(SCARDDWORDARG)
 {
     $1 =  SCardHelper_PySCardDwordArgToSCARDDWORDARG( $input );
-    if (-1 == $1)
+    if ((SCARDDWORDARG)-1 == $1)
         goto fail;
 }
 
