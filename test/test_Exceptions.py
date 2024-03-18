@@ -118,5 +118,17 @@ class TestUtil(unittest.TestCase):
         with self.assertRaises(TypeError):
             hresult, hcontext = SCardEstablishContext("foo")
 
+    def test_CardRequestTimeoutException(self):
+        exc = CardRequestTimeoutException()
+        self.assertEqual(str(exc), "Time-out during card request")
+        exc = CardRequestTimeoutException(SCARD_E_NOT_TRANSACTED)
+        if platform.system() == 'Windows':
+            expected = "Time-out during card request: An attempt was made to end a non-existent transaction.  (0x80100016)"
+        else:
+            expected = "Time-out during card request: Transaction failed. (0x80100016)"
+        self.assertEqual(str(exc), expected)
+        exc = CardRequestTimeoutException(hresult=SCARD_E_NOT_TRANSACTED)
+        self.assertEqual(str(exc), expected)
+
 if __name__ == '__main__':
     unittest.main()
