@@ -64,9 +64,10 @@ class CardRequestException(SmartcardException):
 class CardRequestTimeoutException(SmartcardException):
     """Raised when a CardRequest times out."""
 
-    def __init__(self, *args):
+    def __init__(self, hresult=-1, *args):
         SmartcardException.__init__(self,
-                                    "Time-out during card request", *args)
+                                    "Time-out during card request",
+                                    hresult=hresult, *args)
 
 
 class CardServiceException(SmartcardException):
