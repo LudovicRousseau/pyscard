@@ -1,3 +1,8 @@
+2.0.9 (April 2024)
+==================
+   * fix a bug with CardRequestTimeoutException introduced in 2.0.8
+   * Minor changes
+
 2.0.8 (march 2024)
 ==================
    * Make CardMonitor() thread safe on Python 3.12
