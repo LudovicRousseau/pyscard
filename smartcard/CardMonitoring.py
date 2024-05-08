@@ -180,17 +180,6 @@ class CardMonitoringThread(object):
                         self.observable.notifyObservers(
                             (addedcards, removedcards))
 
-                # when CardMonitoringThread.__del__() is invoked in
-                # response to shutdown, e.g., when execution of the
-                # program is done, other globals referenced by the
-                # __del__() method may already have been deleted.
-                # this causes ReaderMonitoringThread.run() to except
-                # with a TypeError or AttributeError
-                except TypeError:
-                    pass
-                except AttributeError:
-                    pass
-
                 except SmartcardException as exc:
                     # FIXME Tighten the exceptions caught by this block
                     traceback.print_exc()
@@ -222,13 +211,6 @@ class CardMonitoringThread(object):
     def __getattr__(self, name):
         if self.instance:
             return getattr(self.instance, name)
-
-    # commented to avoid bad clean-up sequence of python where __del__
-    # is called when some objects it uses are already gargabe collected
-    # def __del__(self):
-    #    if CardMonitoringThread.instance!=None:
-    #        CardMonitoringThread.instance.stop()
-    #        CardMonitoringThread.instance = None
 
 
 if __name__ == "__main__":
