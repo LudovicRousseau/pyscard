@@ -1,3 +1,8 @@
+2.0.10 (June 2024)
+==================
+   * add 'swig' in pyproject.toml build requires
+   * CardMonitoringThread(): do not catch unexpected exceptions
+
 2.0.9 (April 2024)
 ==================
    * fix a bug with CardRequestTimeoutException introduced in 2.0.8
