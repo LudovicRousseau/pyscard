@@ -1,5 +1,5 @@
 PYTHON ?= python3
-COVERAGE ?= python3-coverage
+COVERAGE ?= coverage
 
 build:
 	$(PYTHON) -m build
