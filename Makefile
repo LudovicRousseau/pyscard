@@ -4,6 +4,9 @@ COVERAGE ?= python3-coverage
 build:
 	$(PYTHON) -m build
 
+install: clean
+	$(PYTHON) -m pip install --editable .
+
 clean:
 	$(PYTHON) setup.py clean
 	rm -rf build
@@ -21,8 +24,7 @@ pypi: clean
 	$(PYTHON) -m build
 	python3 -m twine upload dist/*
 
-test:
-	$(PYTHON) -m pip install --editable .
+test: install
 	pytest
 
 coverage:
