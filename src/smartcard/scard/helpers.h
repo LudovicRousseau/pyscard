@@ -88,7 +88,6 @@ void SCardHelper_PrintGuidList( GUIDLIST* apsz );
 // READERSTATELIST helpers
 void SCardHelper_AppendReaderStateListToPyObject( READERSTATELIST* source, PyObject** ptarget );
 READERSTATELIST* SCardHelper_PyReaderStateListToREADERSTATELIST(PyObject* source);
-void SCardHelper_PrintReaderStateList( READERSTATELIST* apsz );
 
 // SCARDCONTEXT helpers
 void SCardHelper_AppendSCardContextToPyObject( SCARDCONTEXT source, PyObject** ptarget );
