@@ -37,7 +37,9 @@ jobs:
         python -m pip install .
 
     - name: Tests
-      run: python setup.py test
+      run: |
+        cd test
+        python -m unittest
 
     - uses: actions/upload-artifact@v3
       with:
