@@ -96,17 +96,16 @@ connection:
 .. sourcecode:: python
 
     >>> from smartcard.System import readers
-    >>> from smartcard.util import toHexString
     >>>
     >>> r=readers()
-    >>> print r
+    >>> print(r)
     ['SchlumbergerSema Reflex USB v.2 0', 'Utimaco CardManUSB 0']
     >>> connection = r[0].createConnection()
     >>> connection.connect()
     >>> SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
     >>> DF_TELECOM = [0x7F, 0x10]
     >>> data, sw1, sw2 = connection.transmit( SELECT + DF_TELECOM )
-    >>> print "%x %x" % (sw1, sw2)
+    >>> print("%x %x" % (sw1, sw2))
     9f 1a
     >>>
 
@@ -201,13 +200,13 @@ The following scripts requests a card with a known ATR::
     >>> cardservice = cardrequest.waitforcard()
     >>>
     >>> cardservice.connection.connect()
-    >>> print toHexString( cardservice.connection.getATR() )
+    >>> print(toHexString(cardservice.connection.getATR()))
     3B 16 94 20 02 01 00 00 0D
     >>>
     >>> SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
     >>> DF_TELECOM = [0x7F, 0x10]
     >>> data, sw1, sw2 = cardservice.connection.transmit( SELECT + DF_TELECOM )
-    >>> print "%x %x" % (sw1, sw2)
+    >>> print("%x %x" % (sw1, sw2))
     9f 1a
     >>>
 
@@ -229,14 +228,14 @@ The card service connection attribute can be used thereafter to transmit
 APDU commands to the card, as with the reader centric approach.
 
     >>> cardservice.connection.connect()
-    >>> print toHexString( cardservice.connection.getATR() )
+    >>> print(toHexString(cardservice.connection.getATR()))
 
 If necessary, the reader used for the connection can be accessed thru
 the `CardConnection
 <apidocs/smartcard.CardConnection.CardConnection.html>`_
 object:
 
-    >>> print cardservice.connection.getReader()
+    >>> print(cardservice.connection.getReader())
     SchlumbergerSema Reflex USB v.2 0
 
 The `ATRCardType
@@ -252,7 +251,7 @@ also supports masks:
     >>> cardservice = cardrequest.waitforcard()
     >>>
     >>> cardservice.connection.connect()
-    >>> print toHexString( cardservice.connection.getATR() )
+    >>> print(toHexString( cardservice.connection.getATR()))
     3B 16 94 20 02 01 00 00 0D
 
 Other CardTypes are available, and new CardTypes can be created, as
@@ -274,9 +273,9 @@ is useful for requesting any card in any reader:
     >>> cardservice = cardrequest.waitforcard()
     >>>
     >>> cardservice.connection.connect()
-    >>> print toHexString( cardservice.connection.getATR() )
+    >>> print(toHexString(cardservice.connection.getATR()))
     3B 16 94 20 02 01 00 00 0D
-    >>> print cardservice.connection.getReader()
+    >>> print(cardservice.connection.getReader())
     SchlumbergerSema Reflex USB v.2 0
 
 Custom CardTypes
@@ -303,9 +302,9 @@ convention (first byte of ATR to 0x3b):
     >>> cardservice = cardrequest.waitforcard()
     >>>
     >>> cardservice.connection.connect()
-    >>> print toHexString( cardservice.connection.getATR() )
+    >>> print(toHexString( cardservice.connection.getATR() ))
     3B 16 94 20 02 01 00 00 0D
-    >>> print cardservice.connection.getReader()
+    >>> print(cardservice.connection.getReader())
     SchlumbergerSema Reflex USB v.2 0
     >>>
 
@@ -351,9 +350,9 @@ protocol, you can pass the required protocol to the connect() method.
     >>> cardservice = cardrequest.waitforcard()
     >>>
     >>> cardservice.connection.connect( CardConnection.T1_protocol )
-    >>> print toHexString( cardservice.connection.getATR() )
+    >>> print(toHexString( cardservice.connection.getATR() ))
     3B 16 94 20 02 01 00 00 0D
-    >>> print cardservice.connection.getReader()
+    >>> print(cardservice.connection.getReader())
     SchlumbergerSema Reflex USB v.2 0
 
 Alternatively, you can specify the required protocol in the
@@ -362,7 +361,7 @@ CardConnection transmit() method:
     >>> from smartcard.CardType import AnyCardType
     >>> from smartcard.CardConnection import CardConnection
     >>> from smartcard.CardRequest import CardRequest
-    >>> from smartcard.util import toHexString, toBytes
+    >>> from smartcard.util import toHexString
     >>>
     >>> cardtype = AnyCardType()
     >>> cardrequest = CardRequest( timeout=1, cardType=cardtype )
@@ -374,18 +373,18 @@ CardConnection transmit() method:
     >>> DF_TELECOM = [0x7F, 0x10]
     >>>
     >>> apdu = SELECT+DF_TELECOM
-    >>> print 'sending ' + toHexString(apdu)
+    >>> print('sending ' + toHexString(apdu))
     sending A0 A4 00 00 02 7F 10
     >>> response, sw1, sw2 = cardservice.connection.transmit( apdu, CardConnection.T1_protocol )
-    >>> print 'response: ', response, ' status words: ', "%x %x" % (sw1, sw2)
+    >>> print('response: ', response, ' status words: ', "%x %x" % (sw1, sw2))
     response: [] status words: 9f 1a
     >>>
     >>> if sw1 == 0x9F:
     ...     GET_RESPONSE = [0XA0, 0XC0, 00, 00 ]
     ...     apdu = GET_RESPONSE + [sw2]
-    ...     print 'sending ' + toHexString(apdu)
+    ...     print('sending ' + toHexString(apdu))
     ...     response, sw1, sw2 = cardservice.connection.transmit( apdu )
-    ...     print 'response: ', toHexString(response), ' status words: ', "%x %x" % (sw1, sw2)
+    ...     print('response: ', toHexString(response), ' status words: ', "%x %x" % (sw1, sw2))
     ...
     sending A0 C0 00 00 1A
     response: 00 00 00 00 7F 10 02 00 00 00 00 00 0D 13 00 0A 04 00 83 8A 83 8A 00 01 00 00 status words: 90 0
@@ -426,18 +425,18 @@ print statements around the transmit() method calls:
     >>> DF_TELECOM = [0x7F, 0x10]
     >>>
     >>> apdu = SELECT+DF_TELECOM
-    >>> print 'sending ' + toHexString(apdu)
+    >>> print('sending ' + toHexString(apdu))
     sending A0 A4 00 00 02 7F 10
     >>> response, sw1, sw2 = cardservice.connection.transmit( apdu )
-    >>> print 'response: ', response, ' status words: ', "%x %x" % (sw1, sw2)
+    >>> print('response: ', response, ' status words: ', "%x %x" % (sw1, sw2))
     response: [] status words: 9f 1a
     >>>
     >>> if sw1 == 0x9F:
     ...     GET_RESPONSE = [0XA0, 0XC0, 00, 00 ]
     ...     apdu = GET_RESPONSE + [sw2]
-    ...     print 'sending ' + toHexString(apdu)
+    ...     print('sending ' + toHexString(apdu))
     ...     response, sw1, sw2 = cardservice.connection.transmit( apdu )
-    ...     print 'response: ', toHexString(response), ' status words: ', "%x %x" % (sw1, sw2)
+    ...     print('response: ', toHexString(response), ' status words: ', "%x %x" % (sw1, sw2))
     ...
     sending A0 C0 00 00 1A
     response: 00 00 00 00 7F 10 02 00 00 00 00 00 0D 13 00 0A 04 00 83 8A 83 8A 00 01 00 00 status words: 90 0
@@ -463,11 +462,11 @@ instructions by functions, e.g.:
     >>> DF_TELECOM = [0x7F, 0x10]
     >>>
     >>> def trace_command(apdu):
-    ...     print 'sending ' + toHexString(apdu)
+    ...     print('sending ' + toHexString(apdu))
     ...
     >>> def trace_response( response, sw1, sw2 ):
     ...     if None==response: response=[]
-    ...     print 'response: ', toHexString(response), ' status words: ', "%x %x" % (sw1, sw2)
+    ...     print('response: ', toHexString(response), ' status words: ', "%x %x" % (sw1, sw2))
     ...
     >>> apdu = SELECT+DF_TELECOM
     >>> trace_command(apdu)
@@ -523,7 +522,7 @@ illustrated in the following script:
     ...     apdu = GET_RESPONSE + [sw2]
     ...     response, sw1, sw2 = cardservice.connection.transmit( apdu )
     ... else:
-    ...     print 'no DF_TELECOM'
+    ...     print('no DF_TELECOM')
     ...
     > A0 C0 00 00 1A
     < 00 00 00 00 7F 10 02 00 00 00 00 00 0D 13 00 0A 04 00 83 8A 83 8A 00 01 00 00 90 0
@@ -553,19 +552,19 @@ events. The class definition is the following:
         def update( self, cardconnection, ccevent ):
 
             if 'connect'==ccevent.type:
-                print 'connecting to ' + cardconnection.getReader()
+                print('connecting to', cardconnection.getReader())
 
             elif 'disconnect'==ccevent.type:
-                print 'disconnecting from ' + cardconnection.getReader()
+                print('disconnecting from', cardconnection.getReader())
 
             elif 'command'==ccevent.type:
-                print '> ', toHexString( ccevent.args[0] )
+                print('>', toHexString( ccevent.args[0] ))
 
             elif 'response'==ccevent.type:
                 if []==ccevent.args[0]:
-                    print '< [] ', "%-2X %-2X" % tuple(ccevent.args[-2:])
+                    print('< []', "%-2X %-2X" % tuple(ccevent.args[-2:]))
                 else:
-            print '< ', toHexString(ccevent.args[0]), "%-2X %-2X" % tuple(ccevent.args[-2:])
+            print('<', toHexString(ccevent.args[0]), "%-2X %-2X" % tuple(ccevent.args[-2:]))
 
 The console card connection observer is thus printing the connect,
 disconnect, command and response apdu events:
@@ -581,7 +580,7 @@ disconnect, command and response apdu events:
     ...     apdu = GET_RESPONSE + [sw2]
     ...     response, sw1, sw2 = cardservice.connection.transmit( apdu )
     ... else:
-    ...     print 'no DF_TELECOM'
+    ...     print('no DF_TELECOM')
     ...
     > A0 C0 00 00 1A
     < 00 00 00 00 7F 10 02 00 00 00 00 00 0D 13 00 0A 04 00 83 8A 83 8A 00 01 00 00 90 0
@@ -622,19 +621,19 @@ scripts defines a small SELECT and GET RESPONSE apdu interpreter:
     >>> class TracerAndSELECTInterpreter( CardConnectionObserver ):
     ...     def update( self, cardconnection, ccevent ):
     ...         if 'connect'==ccevent.type:
-    ...             print 'connecting to ' + cardconnection.getReader()
+    ...             print('connecting to', cardconnection.getReader())
     ...         elif 'disconnect'==ccevent.type:
-    ...             print 'disconnecting from ' + cardconnection.getReader()
+    ...             print('disconnecting from', cardconnection.getReader())
     ...         elif 'command'==ccevent.type:
     ...             str=toHexString(ccevent.args[0])
     ...             str = replace( str , "A0 A4 00 00 02", "SELECT" )
     ...             str = replace( str , "A0 C0 00 00", "GET RESPONSE" )
-    ...             print '> ', str
+    ...             print('>', str)
     ...         elif 'response'==ccevent.type:
     ...             if []==ccevent.args[0]:
-    ...                 print '< [] ', "%-2X %-2X" % tuple(ccevent.args[-2:])
+    ...                 print('< []', "%-2X %-2X" % tuple(ccevent.args[-2:]))
     ...             else:
-    ...                 print '< ', toHexString(ccevent.args[0]), "%-2X %-2X" % tuple(ccevent.args[-2:])
+    ...                 print('<', toHexString(ccevent.args[0]), "%-2X %-2X" % tuple(ccevent.args[-2:]))
     ...
     >>>
     >>> GET_RESPONSE = [0XA0, 0XC0, 00, 00 ]
@@ -660,7 +659,7 @@ scripts defines a small SELECT and GET RESPONSE apdu interpreter:
     ...     apdu = GET_RESPONSE + [sw2]
     ...     response, sw1, sw2 = cardservice.connection.transmit( apdu )
     ... else:
-    ...     print 'no DF_TELECOM'
+    ...     print('no DF_TELECOM')
     ...
     > GET RESPONSE 1A
     < 00 00 00 00 7F 10 02 00 00 00 00 00 0D 13 00 0A 04 00 83 8A 83 8A 00 01 00 00 90 0
@@ -723,7 +722,7 @@ As for APDU tracing, a straightforward way of checking for errors in response AP
     < [] 6E 0
     >>>
     >>> if sw1 in range(0x61, 0x6f):
-    ...     print "Error: sw1: %x sw2: %x" % (sw1, sw2)
+    ...     print("Error: sw1: %x sw2: %x" % (sw1, sw2))
     ...
     Error: sw1: 6e sw2: 0
     >>> if sw1 == 0x9F:
@@ -747,7 +746,7 @@ a function mytransmit, e.g.:
     >>> def mytransmit( connection, apdu ):
     ...     response, sw1, sw2 = connection.transmit( apdu )
     ...     if sw1 in range(0x61, 0x6f):
-    ...         print "Error: sw1: %x sw2: %x" % (sw1, sw2)
+    ...         print("Error: sw1: %x sw2: %x" % (sw1, sw2))
     ...     return response, sw1, sw2
     ...
     >>>
@@ -972,7 +971,7 @@ To detect APDU response errors during transmission, simply set the error checkin
             apdu = GET_RESPONSE + [sw2]
             response, sw1, sw2 = cardservice.connection.transmit( apdu )
     except SWException, e:
-        print str(e)
+        print(str(e))
 
 
 Executing the previous script on a SIM card will cause an output similar to:
@@ -1030,7 +1029,7 @@ The easiest way to retrieve the list of smartcard readers is the
 smartcard.System.readers() function:
 
     >>> import smartcard.System
-    >>> print smartcard.System.readers()
+    >>> print(smartcard.System.readers())
     ['Schlumberger e-gate 0', 'SchlumbergerSema Reflex USB v.2 0', 'Utimaco CardManUSB 0']
     >>>
 
@@ -1044,7 +1043,7 @@ Readers can be organized in reader groups. To retrieve the smartcard
 reader groups, use readergroups():
 
     >>> import smartcard.System
-    >>> print smartcard.System.readergroups()
+    >>> print(smartcard.System.readergroups())
     ['SCard$DefaultReaders']
     >>>
 
@@ -1053,10 +1052,10 @@ group, simply use the + operator, e.g.:
 
     >>> from smartcard.System import readergroups
     >>> g=readergroups()
-    >>> print g
+    >>> print(g)
     ['SCard$DefaultReaders']
     >>> g+='Biometric$Readers'
-    >>> print g
+    >>> print(g)
     ['SCard$DefaultReaders', 'Biometric$Readers']
     >>>
 
@@ -1064,10 +1063,10 @@ You can also use the append and insert methods, as well as the + operator, e.g.:
 
     >>> from smartcard.System import readergroups
     >>> g=readergroups()
-    >>> print g
+    >>> print(g)
     ['SCard$DefaultReaders']
     >>> g=g+['Biometric$Readers','Pinpad$Readers']
-    >>> print g
+    >>> print(g)
     ['SCard$DefaultReaders', 'Biometric$Readers', 'Pinpad$Readers']
     >>>
 
@@ -1075,11 +1074,11 @@ or
 
     >>> from smartcard.System import readergroups
     >>> g=readergroups()
-    >>> print g
+    >>> print(g)
     ['SCard$DefaultReaders']
     >>> g.append('Biometric$Readers')
     >>> g.insert(1,'Pinpad$Readers')
-    >>> print g
+    >>> print(g)
     ['SCard$DefaultReaders', 'Pinpad$Readers', 'Biometric$Readers']
     >>>
 
@@ -1101,7 +1100,7 @@ reader groups, including pop() or remove():
     >>> from smartcard.System import readergroups, addreadertogroups, readers
     >>> g=readergroups()
     >>> g+='USB$Readers'
-    >>> print g
+    >>> print(g)
     ['SCard$DefaultReaders', 'USB$Readers']
     >>> g.pop(1)
     'USB$Readers'
@@ -1114,7 +1113,7 @@ or
     >>> from smartcard.System import readergroups, addreadertogroups, readers
     >>> g=readergroups()
     >>> g+='USB$Readers'
-    >>> print g
+    >>> print(g)
     ['SCard$DefaultReaders', 'USB$Readers']
     >>> readergroups().remove('USB$Readers')
     >>> readergroups()
@@ -1146,8 +1145,8 @@ standard output:
         prints the list of readers
         """
         def update( self, observable, (addedreaders, removedreaders) ):
-            print "Added readers", addedreaders
-            print "Removed readers", removedreaders
+            print("Added readers", addedreaders)
+            print("Removed readers", removedreaders)
   
 
 To monitor reader insertion/removal, simply add the observer to the
@@ -1219,9 +1218,9 @@ service was required:
     >>> cardservice = cardrequest.waitforcard()
     >>>
     >>> cardservice.connection.connect()
-    >>> print toHexString( cardservice.connection.getATR() )
+    >>> print(toHexString( cardservice.connection.getATR() ))
     3B 16 94 20 02 01 00 00 0D
-    >>> print cardservice.connection.getReader()
+    >>> print(cardservice.connection.getReader())
     SchlumbergerSema Reflex USB v.2 0
 
 Each CardService has a connection attribute, which is a CardConnection
@@ -1241,11 +1240,11 @@ object, use the createConnection() method of the desired card:
     class myobserver( CardObserver ):
         def update( self, observable, (addedcards, removedcards) ):
             for card in addedcards:
-                    print "+Inserted: ", toHexString( card.atr )
+                    print("+Inserted: ", toHexString( card.atr ))
                     card.connection = card.createConnection()
                     card.connection.connect()
                     response, sw1, sw2 = card.connection.transmit( SELECT_DF_TELECOM )
-                    print "%.2x %.2x" % (sw1, sw2)
+                    print("%.2x %.2x" % (sw1, sw2))
 
 Full sample code
 ----------------
@@ -1299,7 +1298,7 @@ card connection object:
     # connect to the card and perform a few transmits
     cardservice.connection.connect()
 
-    print 'ATR', toHexString( cardservice.connection.getATR() )
+    print('ATR', toHexString( cardservice.connection.getATR() ))
 
 
 Decorators can be nested. For example to nest a FakeATRConnection with a
@@ -1314,7 +1313,7 @@ SecureChannelConnection, use the following construction:
     # connect to the card and perform a few transmits
     cardservice.connection.connect()
 
-    print 'ATR', toHexString( cardservice.connection.getATR() )
+    print('ATR', toHexString( cardservice.connection.getATR() ))
 
 Full sample code:
 
@@ -1348,7 +1347,7 @@ SCardConnect with the SCARD_SHARE_EXCLUSIVE attribute.
     # connect to the card and perform a few transmits
     cardservice.connection.connect()
 
-    print 'ATR', toHexString( cardservice.connection.getATR() )
+    print('ATR', toHexString( cardservice.connection.getATR() ))
 
 Exclusive Transmit Card Connection Decorator
 --------------------------------------------
@@ -1378,12 +1377,12 @@ cyphered and each response APDU is uncyphered:
 
         def cypher( self, bytes ):
             '''Cypher mock-up; you would include the secure channel logics here.'''
-            print 'cyphering', toHexString( bytes )
+            print('cyphering', toHexString( bytes ))
             return bytes
 
         def uncypher( self, data ):
             '''Uncypher mock-up; you would include the secure channel logics here.'''
-            print 'uncyphering', toHexString( data )
+            print('uncyphering', toHexString( data ))
             return data
 
         def transmit( self, bytes, protocol=None ):
@@ -1422,7 +1421,7 @@ hl2bs and bs2hl) provide conversion between the two types.
     test_data = [ 0x01, 0x42, 0x70, 0x23 ]
     binstring = HexListToBinString( test_data )
     hexlist = BinStringToHexList( binstring )
-    print binstring, hexlist
+    print(binstring, hexlist)
 
 pycrypto supports the following hashing algorithms: SHA-1, MD2, MD4 et
 MD5. To hash 16 bytes of data with SHA-1:
@@ -1439,7 +1438,7 @@ MD5. To hash 16 bytes of data with SHA-1:
     zhash = SHA.new( binstring )
     hash_as_string = zhash.digest()[:16]
     hash_as_bytes = BinStringToHexList( hash_as_string )
-    print hash_as_string, ',', toHexString( hash_as_bytes, PACK )
+    print(hash_as_string, ',', toHexString( hash_as_bytes, PACK ))
 
 To perform MD5 hashing, just replace SHA by MD5 in the previous script.
 
@@ -1465,5 +1464,5 @@ mode:
 
     encrypted_as_string = zdes.encrypt( message_as_binstring )
     decrypted_as_string = zdes.decrypt( encrypted_as_string )
-    print message_as_binstring, encrypted_as_string, decrypted_as_string
+    print(message_as_binstring, encrypted_as_string, decrypted_as_string)
 
