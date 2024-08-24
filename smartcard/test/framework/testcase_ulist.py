@@ -34,11 +34,11 @@ from smartcard.ulist import ulist
 class C(ulist):
 
     def __onadditem__(self, item):
-        #print '+', item
+        # print('+', item)
         pass
 
     def __onremoveitem__(self, item):
-        #print '-', item
+        # print('-', item)
         pass
 
 

@@ -62,7 +62,6 @@ def checklocalconfig():
         except NoCardException:
             expectedATRs.append([])
     f.write('expectedATRs = ')
-    #for atr in expectedATRs: print `toHexString(atr)`
     f.write(repr(expectedATRs) + '\n')
 
     f.write('expectedATRinReader = {}\n')
