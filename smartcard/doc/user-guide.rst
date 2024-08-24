@@ -97,14 +97,14 @@ connection:
 
     >>> from smartcard.System import readers
     >>>
-    >>> r=readers()
+    >>> r = readers()
     >>> print(r)
     ['SchlumbergerSema Reflex USB v.2 0', 'Utimaco CardManUSB 0']
     >>> connection = r[0].createConnection()
     >>> connection.connect()
     >>> SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
     >>> DF_TELECOM = [0x7F, 0x10]
-    >>> data, sw1, sw2 = connection.transmit( SELECT + DF_TELECOM )
+    >>> data, sw1, sw2 = connection.transmit(SELECT + DF_TELECOM)
     >>> print("%x %x" % (sw1, sw2))
     9f 1a
     >>>
@@ -195,8 +195,8 @@ The following scripts requests a card with a known ATR::
     >>> from smartcard.CardRequest import CardRequest
     >>> from smartcard.util import toHexString, toBytes
     >>>
-    >>> cardtype = ATRCardType( toBytes( "3B 16 94 20 02 01 00 00 0D" ) )
-    >>> cardrequest = CardRequest( timeout=1, cardType=cardtype )
+    >>> cardtype = ATRCardType(toBytes("3B 16 94 20 02 01 00 00 0D"))
+    >>> cardrequest = CardRequest(timeout=1, cardType=cardtype)
     >>> cardservice = cardrequest.waitforcard()
     >>>
     >>> cardservice.connection.connect()
@@ -205,7 +205,7 @@ The following scripts requests a card with a known ATR::
     >>>
     >>> SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
     >>> DF_TELECOM = [0x7F, 0x10]
-    >>> data, sw1, sw2 = cardservice.connection.transmit( SELECT + DF_TELECOM )
+    >>> data, sw1, sw2 = cardservice.connection.transmit(SELECT + DF_TELECOM)
     >>> print("%x %x" % (sw1, sw2))
     9f 1a
     >>>
@@ -214,13 +214,13 @@ To request a card with a know ATR, you must first create an `ATRCardType
 <apidocs/smartcard.CardType.ATRCardType.html>`_
 object with the desired ATR::
 
-    >>> cardtype = ATRCardType( toBytes( "3B 16 94 20 02 01 00 00 0D" ) )
+    >>> cardtype = ATRCardType(toBytes("3B 16 94 20 02 01 00 00 0D"))
 
 And then create a `CardRequest
 <apidocs/smartcard.CardRequest.CardRequest.html>`_
 for this card type. In the sample, we request a time-out of 1 second.
 
-    >>> cardrequest = CardRequest( timeout=1, cardType=cardtype )
+    >>> cardrequest = CardRequest(timeout=1, cardType=cardtype)
     >>> cardservice = cardrequest.waitforcard()
 
 The waitforcard() will either return with a card service or a time-out.
@@ -246,12 +246,12 @@ also supports masks:
     >>> from smartcard.CardRequest import CardRequest
     >>> from smartcard.util import toHexString, toBytes
     >>>
-    >>> cardtype = ATRCardType( toBytes( "3B 15 94 20 02 01 00 00 0F" ), toBytes( "00 00 FF FF FF FF FF FF 00" ) )
-    >>> cardrequest = CardRequest( timeout=1, cardType=cardtype )
+    >>> cardtype = ATRCardType(toBytes("3B 15 94 20 02 01 00 00 0F"), toBytes("00 00 FF FF FF FF FF FF 00"))
+    >>> cardrequest = CardRequest(timeout=1, cardType=cardtype)
     >>> cardservice = cardrequest.waitforcard()
     >>>
     >>> cardservice.connection.connect()
-    >>> print(toHexString( cardservice.connection.getATR()))
+    >>> print(toHexString(cardservice.connection.getATR()))
     3B 16 94 20 02 01 00 00 0D
 
 Other CardTypes are available, and new CardTypes can be created, as
@@ -269,7 +269,7 @@ is useful for requesting any card in any reader:
     >>> from smartcard.util import toHexString
     >>>
     >>> cardtype = AnyCardType()
-    >>> cardrequest = CardRequest( timeout=1, cardType=cardtype )
+    >>> cardrequest = CardRequest(timeout=1, cardType=cardtype)
     >>> cardservice = cardrequest.waitforcard()
     >>>
     >>> cardservice.connection.connect()
@@ -294,15 +294,15 @@ convention (first byte of ATR to 0x3b):
     >>> from smartcard.util import toHexString
     >>>
     >>> class DCCardType(CardType):
-    ...      def matches( self, atr, reader=None ):
-    ...          return atr[0]==0x3B
+    ...      def matches(self, atr, reader=None):
+    ...          return atr[0] == 0x3B
     ...
     >>> cardtype = DCCardType()
-    >>> cardrequest = CardRequest( timeout=1, cardType=cardtype )
+    >>> cardrequest = CardRequest(timeout=1, cardType=cardtype)
     >>> cardservice = cardrequest.waitforcard()
     >>>
     >>> cardservice.connection.connect()
-    >>> print(toHexString( cardservice.connection.getATR() ))
+    >>> print(toHexString(cardservice.connection.getATR()))
     3B 16 94 20 02 01 00 00 0D
     >>> print(cardservice.connection.getReader())
     SchlumbergerSema Reflex USB v.2 0
@@ -346,11 +346,11 @@ protocol, you can pass the required protocol to the connect() method.
     >>> from smartcard.util import toHexString
     >>>
     >>> cardtype = AnyCardType()
-    >>> cardrequest = CardRequest( timeout=1, cardType=cardtype )
+    >>> cardrequest = CardRequest(timeout=1, cardType=cardtype)
     >>> cardservice = cardrequest.waitforcard()
     >>>
-    >>> cardservice.connection.connect( CardConnection.T1_protocol )
-    >>> print(toHexString( cardservice.connection.getATR() ))
+    >>> cardservice.connection.connect(CardConnection.T1_protocol)
+    >>> print(toHexString(cardservice.connection.getATR()))
     3B 16 94 20 02 01 00 00 0D
     >>> print(cardservice.connection.getReader())
     SchlumbergerSema Reflex USB v.2 0
@@ -364,7 +364,7 @@ CardConnection transmit() method:
     >>> from smartcard.util import toHexString
     >>>
     >>> cardtype = AnyCardType()
-    >>> cardrequest = CardRequest( timeout=1, cardType=cardtype )
+    >>> cardrequest = CardRequest(timeout=1, cardType=cardtype)
     >>> cardservice = cardrequest.waitforcard()
     >>>
     >>> cardservice.connection.connect()
@@ -372,19 +372,19 @@ CardConnection transmit() method:
     >>> SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
     >>> DF_TELECOM = [0x7F, 0x10]
     >>>
-    >>> apdu = SELECT+DF_TELECOM
+    >>> apdu = SELECT + DF_TELECOM
     >>> print('sending ' + toHexString(apdu))
     sending A0 A4 00 00 02 7F 10
-    >>> response, sw1, sw2 = cardservice.connection.transmit( apdu, CardConnection.T1_protocol )
-    >>> print('response: ', response, ' status words: ', "%x %x" % (sw1, sw2))
+    >>> response, sw1, sw2 = cardservice.connection.transmit(apdu, CardConnection.T1_protocol)
+    >>> print('response:', response, ' status words:', "%x %x" % (sw1, sw2))
     response: [] status words: 9f 1a
     >>>
     >>> if sw1 == 0x9F:
-    ...     GET_RESPONSE = [0XA0, 0XC0, 00, 00 ]
+    ...     GET_RESPONSE = [0XA0, 0XC0, 00, 00]
     ...     apdu = GET_RESPONSE + [sw2]
     ...     print('sending ' + toHexString(apdu))
-    ...     response, sw1, sw2 = cardservice.connection.transmit( apdu )
-    ...     print('response: ', toHexString(response), ' status words: ', "%x %x" % (sw1, sw2))
+    ...     response, sw1, sw2 = cardservice.connection.transmit(apdu)
+    ...     print('response:', toHexString(response), ' status words:', "%x %x" % (sw1, sw2))
     ...
     sending A0 C0 00 00 1A
     response: 00 00 00 00 7F 10 02 00 00 00 00 00 0D 13 00 0A 04 00 83 8A 83 8A 00 01 00 00 status words: 90 0
@@ -415,8 +415,8 @@ print statements around the transmit() method calls:
     >>> from smartcard.CardRequest import CardRequest
     >>> from smartcard.util import toHexString, toBytes
     >>>
-    >>> cardtype = ATRCardType( toBytes( "3B 16 94 20 02 01 00 00 0D" ) )
-    >>> cardrequest = CardRequest( timeout=1, cardType=cardtype )
+    >>> cardtype = ATRCardType(toBytes("3B 16 94 20 02 01 00 00 0D"))
+    >>> cardrequest = CardRequest(timeout=1, cardType=cardtype)
     >>> cardservice = cardrequest.waitforcard()
     >>>
     >>> cardservice.connection.connect()
@@ -424,19 +424,19 @@ print statements around the transmit() method calls:
     >>> SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
     >>> DF_TELECOM = [0x7F, 0x10]
     >>>
-    >>> apdu = SELECT+DF_TELECOM
+    >>> apdu = SELECT + DF_TELECOM
     >>> print('sending ' + toHexString(apdu))
     sending A0 A4 00 00 02 7F 10
-    >>> response, sw1, sw2 = cardservice.connection.transmit( apdu )
-    >>> print('response: ', response, ' status words: ', "%x %x" % (sw1, sw2))
+    >>> response, sw1, sw2 = cardservice.connection.transmit(apdu)
+    >>> print('response:', response, ' status words:', "%x %x" % (sw1, sw2))
     response: [] status words: 9f 1a
     >>>
     >>> if sw1 == 0x9F:
-    ...     GET_RESPONSE = [0XA0, 0XC0, 00, 00 ]
+    ...     GET_RESPONSE = [0XA0, 0XC0, 00, 00]
     ...     apdu = GET_RESPONSE + [sw2]
     ...     print('sending ' + toHexString(apdu))
-    ...     response, sw1, sw2 = cardservice.connection.transmit( apdu )
-    ...     print('response: ', toHexString(response), ' status words: ', "%x %x" % (sw1, sw2))
+    ...     response, sw1, sw2 = cardservice.connection.transmit(apdu)
+    ...     print('response:', toHexString(response), ' status words:', "%x %x" % (sw1, sw2))
     ...
     sending A0 C0 00 00 1A
     response: 00 00 00 00 7F 10 02 00 00 00 00 00 0D 13 00 0A 04 00 83 8A 83 8A 00 01 00 00 status words: 90 0
@@ -452,8 +452,8 @@ instructions by functions, e.g.:
     >>> from smartcard.CardRequest import CardRequest
     >>> from smartcard.util import toHexString, toBytes
     >>>
-    >>> cardtype = ATRCardType( toBytes( "3B 16 94 20 02 01 00 00 0D" ) )
-    >>> cardrequest = CardRequest( timeout=1, cardType=cardtype )
+    >>> cardtype = ATRCardType(toBytes("3B 16 94 20 02 01 00 00 0D"))
+    >>> cardrequest = CardRequest(timeout=1, cardType=cardtype)
     >>> cardservice = cardrequest.waitforcard()
     >>>
     >>> cardservice.connection.connect()
@@ -464,23 +464,23 @@ instructions by functions, e.g.:
     >>> def trace_command(apdu):
     ...     print('sending ' + toHexString(apdu))
     ...
-    >>> def trace_response( response, sw1, sw2 ):
-    ...     if None==response: response=[]
-    ...     print('response: ', toHexString(response), ' status words: ', "%x %x" % (sw1, sw2))
+    >>> def trace_response(response, sw1, sw2):
+    ...     if None == response: response = []
+    ...     print('response:', toHexString(response), ' status words:', "%x %x" % (sw1, sw2))
     ...
-    >>> apdu = SELECT+DF_TELECOM
+    >>> apdu = SELECT + DF_TELECOM
     >>> trace_command(apdu)
     sending A0 A4 00 00 02 7F 10
-    >>> response, sw1, sw2 = cardservice.connection.transmit( apdu )
-    >>> trace_response( response, sw1, sw2 )
+    >>> response, sw1, sw2 = cardservice.connection.transmit(apdu)
+    >>> trace_response(response, sw1, sw2)
     response: status words: 9f 1a
     >>>
     >>> if sw1 == 0x9F:
-    ...    GET_RESPONSE = [0XA0, 0XC0, 00, 00 ]
+    ...    GET_RESPONSE = [0XA0, 0XC0, 00, 00]
     ...    apdu = GET_RESPONSE + [sw2]
     ...    trace_command(apdu)
-    ...    response, sw1, sw2 = cardservice.connection.transmit( apdu )
-    ...    trace_response( response, sw1, sw2 )
+    ...    response, sw1, sw2 = cardservice.connection.transmit(apdu)
+    ...    trace_response(response, sw1, sw2)
     ...
     sending A0 C0 00 00 1A
     response: 00 00 00 00 7F 10 02 00 00 00 00 00 0D 13 00 0A 04 00 83 8A 83 8A 00 01 00 00 status words: 90 0
@@ -499,28 +499,28 @@ illustrated in the following script:
     >>> from smartcard.CardRequest import CardRequest
     >>> from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver
     >>>
-    >>> GET_RESPONSE = [0XA0, 0XC0, 00, 00 ]
+    >>> GET_RESPONSE = [0XA0, 0XC0, 00, 00]
     >>> SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
     >>> DF_TELECOM = [0x7F, 0x10]
     >>>
     >>>
     >>> cardtype = AnyCardType()
-    >>> cardrequest = CardRequest( timeout=10, cardType=cardtype )
+    >>> cardrequest = CardRequest(timeout=10, cardType=cardtype)
     >>> cardservice = cardrequest.waitforcard()
     >>>
-    >>> observer=ConsoleCardConnectionObserver()
-    >>> cardservice.connection.addObserver( observer )
+    >>> observer = ConsoleCardConnectionObserver()
+    >>> cardservice.connection.addObserver(observer)
     >>>
     >>> cardservice.connection.connect()
     connecting to SchlumbergerSema Reflex USB v.2 0
     >>>
-    >>> apdu = SELECT+DF_TELECOM
-    >>> response, sw1, sw2 = cardservice.connection.transmit( apdu )
+    >>> apdu = SELECT + DF_TELECOM
+    >>> response, sw1, sw2 = cardservice.connection.transmit(apdu)
     > A0 A4 00 00 02 7F 10
     < [] 9F 1A
     >>> if sw1 == 0x9F:
     ...     apdu = GET_RESPONSE + [sw2]
-    ...     response, sw1, sw2 = cardservice.connection.transmit( apdu )
+    ...     response, sw1, sw2 = cardservice.connection.transmit(apdu)
     ... else:
     ...     print('no DF_TELECOM')
     ...
@@ -533,8 +533,8 @@ In this script, a `ConsoleCardConnectionObserver
 is attached to the card service connection once the watiforcard() call
 returns.
 
-    >>> observer=ConsoleCardConnectionObserver()
-    >>> cardservice.connection.addObserver( observer )
+    >>> observer = ConsoleCardConnectionObserver()
+    >>> cardservice.connection.addObserver(observer)
 
 On card connection events (connect, disconnect, transmit command apdu,
 receive response apdu), the card connection notifies its observers with a
@@ -548,20 +548,20 @@ events. The class definition is the following:
 
 .. sourcecode:: python
 
-    class ConsoleCardConnectionObserver( CardConnectionObserver ):
-        def update( self, cardconnection, ccevent ):
+    class ConsoleCardConnectionObserver(CardConnectionObserver):
+        def update(self, cardconnection, ccevent):
 
-            if 'connect'==ccevent.type:
+            if 'connect' == ccevent.type:
                 print('connecting to', cardconnection.getReader())
 
-            elif 'disconnect'==ccevent.type:
+            elif 'disconnect' == ccevent.type:
                 print('disconnecting from', cardconnection.getReader())
 
-            elif 'command'==ccevent.type:
-                print('>', toHexString( ccevent.args[0] ))
+            elif 'command' == ccevent.type:
+                print('>', toHexString(ccevent.args[0]))
 
-            elif 'response'==ccevent.type:
-                if []==ccevent.args[0]:
+            elif 'response' == ccevent.type:
+                if [] == ccevent.args[0]:
                     print('< []', "%-2X %-2X" % tuple(ccevent.args[-2:]))
                 else:
             print('<', toHexString(ccevent.args[0]), "%-2X %-2X" % tuple(ccevent.args[-2:]))
@@ -572,13 +572,13 @@ disconnect, command and response apdu events:
     >>> cardservice.connection.connect()
     connecting to SchlumbergerSema Reflex USB v.2 0
     >>>
-    >>> apdu = SELECT+DF_TELECOM
-    >>> response, sw1, sw2 = cardservice.connection.transmit( apdu )
+    >>> apdu = SELECT + DF_TELECOM
+    >>> response, sw1, sw2 = cardservice.connection.transmit(apdu)
     > A0 A4 00 00 02 7F 10
     < [] 9F 1A
     >>> if sw1 == 0x9F:
     ...     apdu = GET_RESPONSE + [sw2]
-    ...     response, sw1, sw2 = cardservice.connection.transmit( apdu )
+    ...     response, sw1, sw2 = cardservice.connection.transmit(apdu)
     ... else:
     ...     print('no DF_TELECOM')
     ...
@@ -603,9 +603,9 @@ class definition is the following:
        command APDU byte list for 'command'
        [response data, sw1, sw2] for 'response'
        type: 'connect' args:"""
-       def __init__( self, type, args=None):
-           self.type=type
-           self.args=args
+       def __init__(self, type, args=None):
+           self.type = type
+           self.args = args
 
 You can write your own card connection observer, for example to perform
 fancy output in a wxWindows frame, or apdu interpretation. The following
@@ -618,46 +618,46 @@ scripts defines a small SELECT and GET RESPONSE apdu interpreter:
     >>>
     >>> from string import replace
     >>>
-    >>> class TracerAndSELECTInterpreter( CardConnectionObserver ):
-    ...     def update( self, cardconnection, ccevent ):
-    ...         if 'connect'==ccevent.type:
+    >>> class TracerAndSELECTInterpreter(CardConnectionObserver):
+    ...     def update(self, cardconnection, ccevent):
+    ...         if 'connect' == ccevent.type:
     ...             print('connecting to', cardconnection.getReader())
-    ...         elif 'disconnect'==ccevent.type:
+    ...         elif 'disconnect' == ccevent.type:
     ...             print('disconnecting from', cardconnection.getReader())
-    ...         elif 'command'==ccevent.type:
-    ...             str=toHexString(ccevent.args[0])
-    ...             str = replace( str , "A0 A4 00 00 02", "SELECT" )
-    ...             str = replace( str , "A0 C0 00 00", "GET RESPONSE" )
+    ...         elif 'command' == ccevent.type:
+    ...             str = toHexString(ccevent.args[0])
+    ...             str = replace(str , "A0 A4 00 00 02", "SELECT")
+    ...             str = replace(str , "A0 C0 00 00", "GET RESPONSE")
     ...             print('>', str)
-    ...         elif 'response'==ccevent.type:
-    ...             if []==ccevent.args[0]:
+    ...         elif 'response' == ccevent.type:
+    ...             if [] == ccevent.args[0]:
     ...                 print('< []', "%-2X %-2X" % tuple(ccevent.args[-2:]))
     ...             else:
     ...                 print('<', toHexString(ccevent.args[0]), "%-2X %-2X" % tuple(ccevent.args[-2:]))
     ...
     >>>
-    >>> GET_RESPONSE = [0XA0, 0XC0, 00, 00 ]
+    >>> GET_RESPONSE = [0XA0, 0XC0, 00, 00]
     >>> SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
     >>> DF_TELECOM = [0x7F, 0x10]
     >>>
     >>>
     >>> cardtype = AnyCardType()
-    >>> cardrequest = CardRequest( timeout=10, cardType=cardtype )
+    >>> cardrequest = CardRequest(timeout=10, cardType=cardtype)
     >>> cardservice = cardrequest.waitforcard()
     >>>
-    >>> observer=TracerAndSELECTInterpreter()
-    >>> cardservice.connection.addObserver( observer )
+    >>> observer = TracerAndSELECTInterpreter()
+    >>> cardservice.connection.addObserver(observer)
     >>>
     >>> cardservice.connection.connect()
     connecting to SchlumbergerSema Reflex USB v.2 0
     >>>
-    >>> apdu = SELECT+DF_TELECOM
-    >>> response, sw1, sw2 = cardservice.connection.transmit( apdu )
+    >>> apdu = SELECT + DF_TELECOM
+    >>> response, sw1, sw2 = cardservice.connection.transmit(apdu)
     > SELECT 7F 10
     < [] 9F 1A
     >>> if sw1 == 0x9F:
     ...     apdu = GET_RESPONSE + [sw2]
-    ...     response, sw1, sw2 = cardservice.connection.transmit( apdu )
+    ...     response, sw1, sw2 = cardservice.connection.transmit(apdu)
     ... else:
     ...     print('no DF_TELECOM')
     ...
@@ -702,22 +702,22 @@ As for APDU tracing, a straightforward way of checking for errors in response AP
     >>> from smartcard.CardRequest import CardRequest
     >>> from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver
     >>>
-    >>> GET_RESPONSE = [0XA0, 0XC0, 00, 00 ]
+    >>> GET_RESPONSE = [0XA0, 0XC0, 00, 00]
     >>> SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
     >>> DF_TELECOM = [0x7F, 0x10]
     >>>
     >>> cardtype = AnyCardType()
-    >>> cardrequest = CardRequest( timeout=10, cardType=cardtype )
+    >>> cardrequest = CardRequest(timeout=10, cardType=cardtype)
     >>> cardservice = cardrequest.waitforcard()
     >>>
-    >>> observer=ConsoleCardConnectionObserver()
-    >>> cardservice.connection.addObserver( observer )
+    >>> observer = ConsoleCardConnectionObserver()
+    >>> cardservice.connection.addObserver(observer)
     >>>
     >>> cardservice.connection.connect()
     connecting to Utimaco CardManUSB 0
     >>>
-    >>> apdu = SELECT+DF_TELECOM
-    >>> response, sw1, sw2 = cardservice.connection.transmit( apdu )
+    >>> apdu = SELECT + DF_TELECOM
+    >>> response, sw1, sw2 = cardservice.connection.transmit(apdu)
     > A0 A4 00 00 02 7F 10
     < [] 6E 0
     >>>
@@ -727,7 +727,7 @@ As for APDU tracing, a straightforward way of checking for errors in response AP
     Error: sw1: 6e sw2: 0
     >>> if sw1 == 0x9F:
     ...     apdu = GET_RESPONSE + [sw2]
-    ...     response, sw1, sw2 = cardservice.connection.transmit( apdu )
+    ...     response, sw1, sw2 = cardservice.connection.transmit(apdu)
     ...
     >>> cardservice.connection.disconnect()
     disconnecting from Utimaco CardManUSB 0
@@ -743,37 +743,37 @@ a function mytransmit, e.g.:
     >>> from smartcard.CardRequest import CardRequest
     >>> from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver
     >>>
-    >>> def mytransmit( connection, apdu ):
-    ...     response, sw1, sw2 = connection.transmit( apdu )
+    >>> def mytransmit(connection, apdu):
+    ...     response, sw1, sw2 = connection.transmit(apdu)
     ...     if sw1 in range(0x61, 0x6f):
     ...         print("Error: sw1: %x sw2: %x" % (sw1, sw2))
     ...     return response, sw1, sw2
     ...
     >>>
-    >>> GET_RESPONSE = [0XA0, 0XC0, 00, 00 ]
+    >>> GET_RESPONSE = [0XA0, 0XC0, 00, 00]
     >>> SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
     >>> DF_TELECOM = [0x7F, 0x10]
     >>>
     >>>
     >>> cardtype = AnyCardType()
-    >>> cardrequest = CardRequest( timeout=10, cardType=cardtype )
+    >>> cardrequest = CardRequest(timeout=10, cardType=cardtype)
     >>> cardservice = cardrequest.waitforcard()
     >>>
-    >>> observer=ConsoleCardConnectionObserver()
-    >>> cardservice.connection.addObserver( observer )
+    >>> observer = ConsoleCardConnectionObserver()
+    >>> cardservice.connection.addObserver(observer)
     >>>
     >>> cardservice.connection.connect()
     connecting to Utimaco CardManUSB 0
     >>>
-    >>> apdu = SELECT+DF_TELECOM
-    >>> response, sw1, sw2 = mytransmit( cardservice.connection, apdu )
+    >>> apdu = SELECT + DF_TELECOM
+    >>> response, sw1, sw2 = mytransmit(cardservice.connection, apdu)
     > A0 A4 00 00 02 7F 10
     < [] 6E 0
     Error: sw1: 6e sw2: 0
     >>>
     >>> if sw1 == 0x9F:
     ...     apdu = GET_RESPONSE + [sw2]
-    ...     response, sw1, sw2 = mytransmit( cardservice.connection, apdu )
+    ...     response, sw1, sw2 = mytransmit(cardservice.connection, apdu)
     ...
     >>> cardservice.connection.disconnect()
     disconnecting from Utimaco CardManUSB 0
@@ -808,13 +808,13 @@ the following sample:
 
     >>> from smartcard.sw.ISO7816_4ErrorChecker import ISO7816_4ErrorChecker
     >>>
-    >>> errorchecker=ISO7816_4ErrorChecker()
-    >>> errorchecker( [], 0x90, 0x00 )
-    >>> errorchecker( [], 0x6A, 0x80 )
+    >>> errorchecker = ISO7816_4ErrorChecker()
+    >>> errorchecker([], 0x90, 0x00)
+    >>> errorchecker([], 0x6A, 0x80)
     Traceback (most recent call last):
     File "<stdin>", line 1, in ?
     File "D:\projects\pyscard-install\factory\python\lib\site-packages\smartcard\sw\ISO7816_4ErrorChecker.py", line 137, in __call__
-    raise exception( data, sw1, sw2, message )
+    raise exception(data, sw1, sw2, message)
     smartcard.sw.SWExceptions.CheckingErrorException: 'Status word exception: checking error - Incorrect parameters in the data field!'
     >>>
 
@@ -838,19 +838,19 @@ sample:
     >>> from smartcard.sw.ErrorCheckingChain import ErrorCheckingChain
     >>>
     >>> errorchain = []
-    >>> errorchain=[ ErrorCheckingChain( errorchain, ISO7816_9ErrorChecker() ),
-    ... ErrorCheckingChain( errorchain, ISO7816_8ErrorChecker() ),
-    ... ErrorCheckingChain( errorchain, ISO7816_4ErrorChecker() ) ]
+    >>> errorchain = [ErrorCheckingChain(errorchain, ISO7816_9ErrorChecker()),
+    ... ErrorCheckingChain(errorchain, ISO7816_8ErrorChecker()),
+    ... ErrorCheckingChain(errorchain, ISO7816_4ErrorChecker())]
     >>>
-    >>> errorchain[0]( [], 0x90, 0x00 )
-    >>> errorchain[0]( [], 0x6A, 0x8a )
+    >>> errorchain[0]([], 0x90, 0x00)
+    >>> errorchain[0]([], 0x6A, 0x8a)
     Traceback (most recent call last):
     File "<stdin>", line 1, in ?
     File "D:\projects\pyscard-install\factory\python\lib\site-packages\smartcard\sw\ErrorCheckingChain.py", line 60,
     in __call__
-    self.strategy( data, sw1, sw2 )
+    self.strategy(data, sw1, sw2)
     File "D:\projects\pyscard-install\factory\python\lib\site-packages\smartcard\sw\ISO7816_9ErrorChecker.py", line 74, in __call__
-    raise exception( data, sw1, sw2, message )
+    raise exception(data, sw1, sw2, message)
     smartcard.sw.SWExceptions.CheckingErrorException: 'Status word exception: checking error - DF name already exists!'
     >>>
 
@@ -875,29 +875,29 @@ exception to the error checking chain::
     >>> from smartcard.sw.ErrorCheckingChain import ErrorCheckingChain
     >>>
     >>> errorchain = []
-    >>> errorchain=[ ErrorCheckingChain( errorchain, ISO7816_9ErrorChecker() ),
-    ... ErrorCheckingChain( errorchain, ISO7816_8ErrorChecker() ),
-    ... ErrorCheckingChain( errorchain, ISO7816_4ErrorChecker() ) ]
+    >>> errorchain = [ErrorCheckingChain(errorchain, ISO7816_9ErrorChecker()),
+    ... ErrorCheckingChain(errorchain, ISO7816_8ErrorChecker()),
+    ... ErrorCheckingChain(errorchain, ISO7816_4ErrorChecker())]
     >>>
     >>>
-    >>> errorchain[0]( [], 0x90, 0x00 )
-    >>> errorchain[0]( [], 0x62, 0x00 )
+    >>> errorchain[0]([], 0x90, 0x00)
+    >>> errorchain[0]([], 0x62, 0x00)
     Traceback (most recent call last):
     File "<stdin>", line 1, in ?
     File "D:\projects\pyscard-install\factory\python\lib\site-packages\smartcard\sw\ErrorCheckingChain.py", line 72, in __call__
-    return self.next()( data, sw1, sw2 )
+    return self.next()(data, sw1, sw2)
     File "D:\projects\pyscard-install\factory\python\lib\site-packages\smartcard\sw\ErrorCheckingChain.py", line 72, in __call__
-    return self.next()( data, sw1, sw2 )
+    return self.next()(data, sw1, sw2)
     File "D:\projects\pyscard-install\factory\python\lib\site-packages\smartcard\sw\ErrorCheckingChain.py", line 60, in __call__
-    self.strategy( data, sw1, sw2 )
+    self.strategy(data, sw1, sw2)
     File "D:\projects\pyscard-install\factory\python\lib\site-packages\smartcard\sw\ISO7816_4ErrorChecker.py", line 137, in __call__
-    raise exception( data, sw1, sw2, message )
+    raise exception(data, sw1, sw2, message)
     smartcard.sw.SWExceptions.WarningProcessingException: 'Status word exception: warning processing - Response padded/ More APDU commands expected!'
     >>>
     >>> from smartcard.sw.SWExceptions import WarningProcessingException
     >>>
-    >>> errorchain[0].addFilterException( WarningProcessingException )
-    >>> errorchain[0]( [], 0x62, 0x00 )
+    >>> errorchain[0].addFilterException(WarningProcessingException)
+    >>> errorchain[0]([], 0x62, 0x00)
     >>>
 
 The first call to the error chain with sw1 sw2 = 62 00 raises a
@@ -907,7 +907,7 @@ The first call to the error chain with sw1 sw2 = 62 00 raises a
 ::
 
     ...
-    >>> errorchain[0]( [], 0x62, 0x00 )
+    >>> errorchain[0]([], 0x62, 0x00)
     Traceback (most recent call last):
     ...
 
@@ -918,8 +918,8 @@ any exception:
 
     >>> from smartcard.sw.SWExceptions import WarningProcessingException
     >>>
-    >>> errorchain[0].addFilterException( WarningProcessingException )
-    >>> errorchain[0]( [], 0x62, 0x00 )
+    >>> errorchain[0].addFilterException(WarningProcessingException)
+    >>> errorchain[0]([], 0x62, 0x00)
     >>>
 
 Full sample code
@@ -945,18 +945,18 @@ To detect APDU response errors during transmission, simply set the error checkin
 
     # request any card
     cardtype = AnyCardType()
-    cardrequest = CardRequest( timeout=10, cardType=cardtype )
+    cardrequest = CardRequest(timeout=10, cardType=cardtype)
     cardservice = cardrequest.waitforcard()
 
     # our error checking chain
-    errorchain=[]
-    errorchain=[ ErrorCheckingChain( errorchain, ISO7816_8ErrorChecker() ),
-                 ErrorCheckingChain( errorchain, ISO7816_4ErrorChecker() ) ]
-    cardservice.connection.setErrorCheckingChain( errorchain )
+    errorchain = []
+    errorchain = [ErrorCheckingChain(errorchain, ISO7816_8ErrorChecker()),
+                 ErrorCheckingChain(errorchain, ISO7816_4ErrorChecker())]
+    cardservice.connection.setErrorCheckingChain(errorchain)
 
     # a console tracer
     observer=ConsoleCardConnectionObserver()
-    cardservice.connection.addObserver( observer )
+    cardservice.connection.addObserver(observer)
 
     # send a few apdus; exceptions will occur upon errors
     cardservice.connection.connect()
@@ -964,12 +964,12 @@ To detect APDU response errors during transmission, simply set the error checkin
     try:
         SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
         DF_TELECOM = [0x7F, 0x10]
-        apdu = SELECT+DF_TELECOM
-        response, sw1, sw2 = cardservice.connection.transmit( apdu )
+        apdu = SELECT + DF_TELECOM
+        response, sw1, sw2 = cardservice.connection.transmit(apdu)
         if sw1 == 0x9F:
-            GET_RESPONSE = [0XA0, 0XC0, 00, 00 ]
+            GET_RESPONSE = [0XA0, 0XC0, 00, 00]
             apdu = GET_RESPONSE + [sw2]
-            response, sw1, sw2 = cardservice.connection.transmit( apdu )
+            response, sw1, sw2 = cardservice.connection.transmit(apdu)
     except SWException, e:
         print(str(e))
 
@@ -1051,10 +1051,10 @@ The readergroups() object has all the list attributes. To add a reader
 group, simply use the + operator, e.g.:
 
     >>> from smartcard.System import readergroups
-    >>> g=readergroups()
+    >>> g = readergroups()
     >>> print(g)
     ['SCard$DefaultReaders']
-    >>> g+='Biometric$Readers'
+    >>> g += 'Biometric$Readers'
     >>> print(g)
     ['SCard$DefaultReaders', 'Biometric$Readers']
     >>>
@@ -1062,10 +1062,10 @@ group, simply use the + operator, e.g.:
 You can also use the append and insert methods, as well as the + operator, e.g.:
 
     >>> from smartcard.System import readergroups
-    >>> g=readergroups()
+    >>> g = readergroups()
     >>> print(g)
     ['SCard$DefaultReaders']
-    >>> g=g+['Biometric$Readers','Pinpad$Readers']
+    >>> g = g + ['Biometric$Readers','Pinpad$Readers']
     >>> print(g)
     ['SCard$DefaultReaders', 'Biometric$Readers', 'Pinpad$Readers']
     >>>
@@ -1073,7 +1073,7 @@ You can also use the append and insert methods, as well as the + operator, e.g.:
 or
 
     >>> from smartcard.System import readergroups
-    >>> g=readergroups()
+    >>> g = readergroups()
     >>> print(g)
     ['SCard$DefaultReaders']
     >>> g.append('Biometric$Readers')
@@ -1087,10 +1087,10 @@ to the group. To add a reader to a reader group, use
 addreadertogroups():
 
     >>> from smartcard.System import readergroups, addreadertogroups, readers
-    >>> g=readergroups()
-    >>> g+='USB$Readers'
-    >>> addreadertogroups( 'Schlumberger e-gate 0', 'USB$Readers' )
-    >>> readers( 'USB$Readers')
+    >>> g = readergroups()
+    >>> g += 'USB$Readers'
+    >>> addreadertogroups('Schlumberger e-gate 0', 'USB$Readers')
+    >>> readers('USB$Readers')
     ['Schlumberger e-gate 0']
     >>>
 
@@ -1098,8 +1098,8 @@ To remove a reader group, all list operators are available to manage
 reader groups, including pop() or remove():
 
     >>> from smartcard.System import readergroups, addreadertogroups, readers
-    >>> g=readergroups()
-    >>> g+='USB$Readers'
+    >>> g = readergroups()
+    >>> g += 'USB$Readers'
     >>> print(g)
     ['SCard$DefaultReaders', 'USB$Readers']
     >>> g.pop(1)
@@ -1111,8 +1111,8 @@ reader groups, including pop() or remove():
 or
 
     >>> from smartcard.System import readergroups, addreadertogroups, readers
-    >>> g=readergroups()
-    >>> g+='USB$Readers'
+    >>> g = readergroups()
+    >>> g += 'USB$Readers'
     >>> print(g)
     ['SCard$DefaultReaders', 'USB$Readers']
     >>> readergroups().remove('USB$Readers')
@@ -1139,12 +1139,12 @@ standard output:
 
     from smartcard.ReaderMonitoring import ReaderObserver
 
-    class printobserver( ReaderObserver ):
+    class printobserver(ReaderObserver):
         """A simple reader observer that is notified
         when readers are added/removed from the system and
         prints the list of readers
         """
-        def update( self, observable, (addedreaders, removedreaders) ):
+        def update(self, observable, (addedreaders, removedreaders)):
             print("Added readers", addedreaders)
             print("Removed readers", removedreaders)
   
@@ -1214,11 +1214,11 @@ service was required:
     >>> from smartcard.util import toHexString
     >>>
     >>> cardtype = AnyCardType()
-    >>> cardrequest = CardRequest( timeout=1, cardType=cardtype )
+    >>> cardrequest = CardRequest(timeout=1, cardType=cardtype)
     >>> cardservice = cardrequest.waitforcard()
     >>>
     >>> cardservice.connection.connect()
-    >>> print(toHexString( cardservice.connection.getATR() ))
+    >>> print(toHexString(cardservice.connection.getATR()))
     3B 16 94 20 02 01 00 00 0D
     >>> print(cardservice.connection.getReader())
     SchlumbergerSema Reflex USB v.2 0
@@ -1237,13 +1237,13 @@ object, use the createConnection() method of the desired card:
 
 .. sourcecode:: python
 
-    class myobserver( CardObserver ):
-        def update( self, observable, (addedcards, removedcards) ):
+    class myobserver(CardObserver):
+        def update(self, observable, (addedcards, removedcards)):
             for card in addedcards:
-                    print("+Inserted: ", toHexString( card.atr ))
+                    print("+Inserted:", toHexString(card.atr))
                     card.connection = card.createConnection()
                     card.connection.connect()
-                    response, sw1, sw2 = card.connection.transmit( SELECT_DF_TELECOM )
+                    response, sw1, sw2 = card.connection.transmit(SELECT_DF_TELECOM)
                     print("%.2x %.2x" % (sw1, sw2))
 
 Full sample code
@@ -1266,15 +1266,15 @@ the CardConnection getATR() method:
 
 .. sourcecode:: python
 
-    class FakeATRConnection( CardConnectionDecorator ):
+    class FakeATRConnection(CardConnectionDecorator):
         '''This decorator changes the fist byte of the ATR.'''
-        def __init__( self, cardconnection ):
-            CardConnectionDecorator.__init__( self, cardconnection )
+        def __init__(self, cardconnection):
+            CardConnectionDecorator.__init__(self, cardconnection)
 
-        def getATR( self ):
+        def getATR(self):
             """Replace first BYTE of ATR by 3F"""
-            atr = CardConnectionDecorator.getATR( self )
-            return [ 0x3f ] + atr [1:]
+            atr = CardConnectionDecorator.getATR(self)
+            return [0x3f] + atr [1:]
 
 
 To apply the decorator, just construct the decorator around the
@@ -1285,20 +1285,20 @@ card connection object:
 
     # request any card type
     cardtype = AnyCardType()
-    cardrequest = CardRequest( timeout=1.5, cardType=cardtype )
+    cardrequest = CardRequest(timeout=1.5, cardType=cardtype)
     cardservice = cardrequest.waitforcard()
 
     # attach the console tracer
-    observer=ConsoleCardConnectionObserver()
-    cardservice.connection.addObserver( observer )
+    observer = ConsoleCardConnectionObserver()
+    cardservice.connection.addObserver(observer)
 
     # attach our decorator
-    cardservice.connection = FakeATRConnection( cardservice.connection )
+    cardservice.connection = FakeATRConnection(cardservice.connection)
 
     # connect to the card and perform a few transmits
     cardservice.connection.connect()
 
-    print('ATR', toHexString( cardservice.connection.getATR() ))
+    print('ATR', toHexString(cardservice.connection.getATR()))
 
 
 Decorators can be nested. For example to nest a FakeATRConnection with a
@@ -1308,12 +1308,12 @@ SecureChannelConnection, use the following construction:
 .. sourcecode:: python
 
     # attach our decorator
-    FakeATRConnection( SecureChannelConnection( cardservice.connection ) )
+    FakeATRConnection(SecureChannelConnection(cardservice.connection))
 
     # connect to the card and perform a few transmits
     cardservice.connection.connect()
 
-    print('ATR', toHexString( cardservice.connection.getATR() ))
+    print('ATR', toHexString(cardservice.connection.getATR()))
 
 Full sample code:
 
@@ -1338,16 +1338,16 @@ SCardConnect with the SCARD_SHARE_EXCLUSIVE attribute.
 
     # request any card type
     cardtype = AnyCardType()
-    cardrequest = CardRequest( timeout=5, cardType=cardtype )
+    cardrequest = CardRequest(timeout=5, cardType=cardtype)
     cardservice = cardrequest.waitforcard()
 
     # attach our decorator
-    cardservice.connection = ExclusiveConnectCardConnection( cardservice.connection )
+    cardservice.connection = ExclusiveConnectCardConnection(cardservice.connection)
 
     # connect to the card and perform a few transmits
     cardservice.connection.connect()
 
-    print('ATR', toHexString( cardservice.connection.getATR() ))
+    print('ATR', toHexString(cardservice.connection.getATR()))
 
 Exclusive Transmit Card Connection Decorator
 --------------------------------------------
@@ -1369,28 +1369,28 @@ cyphered and each response APDU is uncyphered:
 
 .. sourcecode:: python
 
-    class SecureChannelConnection( CardConnectionDecorator ):
+    class SecureChannelConnection(CardConnectionDecorator):
         '''This decorator is a mockup of secure channel connection.
         It merely pretends to cypher/uncypher upon apdu transmission.'''
-        def __init__( self, cardconnection ):
-            CardConnectionDecorator.__init__( self, cardconnection )
+        def __init__(self, cardconnection):
+            CardConnectionDecorator.__init__(self, cardconnection)
 
-        def cypher( self, bytes ):
+        def cypher(self, bytes):
             '''Cypher mock-up; you would include the secure channel logics here.'''
-            print('cyphering', toHexString( bytes ))
+            print('cyphering', toHexString(bytes))
             return bytes
 
-        def uncypher( self, data ):
+        def uncypher(self, data):
             '''Uncypher mock-up; you would include the secure channel logics here.'''
-            print('uncyphering', toHexString( data ))
+            print('uncyphering', toHexString(data))
             return data
 
-        def transmit( self, bytes, protocol=None ):
+        def transmit(self, bytes, protocol=None):
             """Cypher/uncypher APDUs before transmission"""
-            cypheredbytes = self.cypher( bytes )
-            data, sw1, sw2 = CardConnectionDecorator.transmit( self, cypheredbytes, protocol )
-            if []!=data:
-                data = self.uncypher( data )
+            cypheredbytes = self.cypher(bytes)
+            data, sw1, sw2 = CardConnectionDecorator.transmit(self, cypheredbytes, protocol)
+            if [] != data:
+                data = self.uncypher(data)
             return data, sw1, sw2
 
 A word on cryptography
@@ -1418,9 +1418,9 @@ hl2bs and bs2hl) provide conversion between the two types.
 
     from smartcard.util import HexListToBinString, BinStringToHexList
 
-    test_data = [ 0x01, 0x42, 0x70, 0x23 ]
-    binstring = HexListToBinString( test_data )
-    hexlist = BinStringToHexList( binstring )
+    test_data = [0x01, 0x42, 0x70, 0x23]
+    binstring = HexListToBinString(test_data)
+    hexlist = BinStringToHexList(binstring)
     print(binstring, hexlist)
 
 pycrypto supports the following hashing algorithms: SHA-1, MD2, MD4 et
@@ -1432,13 +1432,13 @@ MD5. To hash 16 bytes of data with SHA-1:
 
     from smartcard.util import toHexString, PACK
 
-    test_data = [ 0x01, 0x42, 0x70, 0x23 ]
-    binstring = HexListToBinString( test_data )
+    test_data = [0x01, 0x42, 0x70, 0x23]
+    binstring = HexListToBinString(test_data)
 
-    zhash = SHA.new( binstring )
+    zhash = SHA.new(binstring)
     hash_as_string = zhash.digest()[:16]
-    hash_as_bytes = BinStringToHexList( hash_as_string )
-    print(hash_as_string, ',', toHexString( hash_as_bytes, PACK ))
+    hash_as_bytes = BinStringToHexList(hash_as_string)
+    print(hash_as_string, ',', toHexString(hash_as_bytes, PACK))
 
 To perform MD5 hashing, just replace SHA by MD5 in the previous script.
 
@@ -1456,13 +1456,13 @@ mode:
     from smartcard.util import toBytes
 
     key = "31323334353637383132333435363738"
-    key_as_binstring = HexListToBinString( toBytes( key ) )
-    zdes = DES3.new( key_as_binstring, DES3.MODE_ECB )
+    key_as_binstring = HexListToBinString(toBytes(key))
+    zdes = DES3.new(key_as_binstring, DES3.MODE_ECB)
 
     message = "71727374757677787172737475767778"
-    message_as_binstring = HexListToBinString( toBytes( message ) )
+    message_as_binstring = HexListToBinString(toBytes(message))
 
-    encrypted_as_string = zdes.encrypt( message_as_binstring )
-    decrypted_as_string = zdes.decrypt( encrypted_as_string )
+    encrypted_as_string = zdes.encrypt(message_as_binstring)
+    decrypted_as_string = zdes.decrypt(encrypted_as_string)
     print(message_as_binstring, encrypted_as_string, decrypted_as_string)
 
