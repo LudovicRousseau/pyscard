@@ -150,7 +150,7 @@ class PCSCCardRequest(AbstractCardRequest):
 
         # we can expect normally time-outs or reader
         # disappearing just before the call
-        # otherwise, raise execption on error
+        # otherwise, raise exception on error
         if 0 != hresult and \
             SCARD_E_TIMEOUT != hresult and \
             SCARD_E_UNKNOWN_READER != hresult:
