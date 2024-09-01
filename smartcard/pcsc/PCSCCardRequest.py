@@ -183,7 +183,7 @@ class PCSCCardRequest(AbstractCardRequest):
                                     reader.createConnection())
 
         timerstarted = False
-        while not evt.isSet() and not cardfound:
+        while not evt.is_set() and not cardfound:
 
             if not timerstarted:
                 timerstarted = True
@@ -212,7 +212,7 @@ class PCSCCardRequest(AbstractCardRequest):
 
             # time-out
             if SCARD_E_TIMEOUT == hresult:
-                if evt.isSet():
+                if evt.is_set():
                     raise CardRequestTimeoutException(hresult=hresult)
 
             # reader vanished before or during the call
@@ -263,7 +263,7 @@ class PCSCCardRequest(AbstractCardRequest):
                     # update state dictionary
                     readerstates[readername] = (readername, eventstate)
 
-            if evt.isSet():
+            if evt.is_set():
                 raise CardRequestTimeoutException()
 
     def waitforcardevent(self):
@@ -284,7 +284,7 @@ class PCSCCardRequest(AbstractCardRequest):
         readerstates = {}
         timerstarted = False
 
-        while not evt.isSet():
+        while not evt.is_set():
 
             if not timerstarted:
                 timerstarted = True
@@ -313,7 +313,7 @@ class PCSCCardRequest(AbstractCardRequest):
 
             # time-out
             if SCARD_E_TIMEOUT == hresult:
-                if evt.isSet():
+                if evt.is_set():
                     raise CardRequestTimeoutException(hresult=hresult)
 
             # the reader was unplugged during the loop
@@ -348,7 +348,7 @@ class PCSCCardRequest(AbstractCardRequest):
                         presentcards.append(Card.Card(readername, atr))
                 return presentcards
 
-        if evt.isSet():
+        if evt.is_set():
             raise CardRequestTimeoutException()
 
 if __name__ == '__main__':

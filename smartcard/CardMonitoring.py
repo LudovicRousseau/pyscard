@@ -160,7 +160,7 @@ class CardMonitoringThread(object):
             observers of all card insertion/removal.
             """
             self.cardrequest = CardRequest(timeout=0.1)
-            while self.stopEvent.isSet() != 1:
+            while self.stopEvent.is_set() != 1:
                 try:
                     currentcards = self.cardrequest.waitforcardevent()
 

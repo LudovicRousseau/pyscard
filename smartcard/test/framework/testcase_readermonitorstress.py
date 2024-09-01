@@ -77,7 +77,7 @@ class readerInsertionThread(threading.Thread):
         threading.Thread.__init__(self)
 
     def run(self):
-        while not exitEvent.isSet():
+        while not exitEvent.is_set():
             time.sleep(random.uniform(2 * period, 4 * period))
             readerEvent.wait()
             newreader = random.choice('abcdefghijklmnopqrstuvwxyz')
@@ -101,7 +101,7 @@ class readerRemovalThread(threading.Thread):
         threading.Thread.__init__(self)
 
     def run(self):
-        while not exitEvent.isSet():
+        while not exitEvent.is_set():
             time.sleep(random.uniform(5 * period, 6 * period))
             readerEvent.wait()
             try:

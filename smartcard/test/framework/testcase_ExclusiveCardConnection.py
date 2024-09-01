@@ -92,7 +92,7 @@ class testthread(threading.Thread):
     def run(self):
         '''Transmit APDUS with a random interval to the card.'''
         connection = self.cardservice.connection
-        while not self.evtStop.isSet():
+        while not self.evtStop.is_set():
             try:
                 connection.lock()
 

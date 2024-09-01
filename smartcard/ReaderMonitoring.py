@@ -162,7 +162,7 @@ class ReaderMonitoringThread(Thread):
         """Runs until stopEvent is notified, and notify
         observers of all reader insertion/removal.
         """
-        while not self.stopEvent.isSet():
+        while not self.stopEvent.is_set():
             try:
                 # no need to monitor if no observers
                 if 0 < self.observable.countObservers():
