@@ -44,7 +44,7 @@ def suite():
         'testcase_transaction')
     testsuite_scard = unittest.TestSuite()
     for module in map(__import__, modules_to_test):
-        testsuite_scard.addTest(unittest.findTestCases(module))
+        testsuite_scard.addTest(unittest.TestLoader().loadTestsFromModule(module))
     return testsuite_scard
 
 if __name__ == '__main__':

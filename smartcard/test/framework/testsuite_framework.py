@@ -52,7 +52,7 @@ def suite():
         )
     testsuite_framework = unittest.TestSuite()
     for module in map(__import__, modules_to_test):
-        testsuite_framework.addTest(unittest.findTestCases(module))
+        testsuite_framework.addTest(unittest.TestLoader().loadTestsFromModule(module))
     return testsuite_framework
 
 if __name__ == '__main__':
