@@ -50,9 +50,9 @@ class innerreadergroups(ulist):
 
     def __init__(self, initlist=None):
         """Retrieve and store list of reader groups"""
-        if None == initlist:
+        if initlist is None:
             initlist = self.getreadergroups()
-        if None != initlist:
+        if initlist is not None:
             ulist.__init__(self, initlist)
         self.unremovablegroups = []
 
@@ -108,7 +108,7 @@ class readergroups(object):
 
     def __init__(self, initlist=None):
         """Create a single instance of innerreadergroups on first call"""
-        if None == readergroups.instance:
+        if readergroups.instance is None:
             readergroups.instance = self.innerclazz(initlist)
 
     """All operators redirected to inner class."""

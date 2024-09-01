@@ -216,7 +216,7 @@ def toHexString(bytes=[], format=0):
     if type(bytes) is not list:
         raise TypeError('not a list of bytes')
 
-    if bytes == None or bytes == []:
+    if bytes is None or bytes == []:
         return ""
     else:
         pformat = "%-0.2X"

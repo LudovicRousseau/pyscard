@@ -465,7 +465,7 @@ instructions by functions, e.g.:
     ...     print('sending ' + toHexString(apdu))
     ...
     >>> def trace_response(response, sw1, sw2):
-    ...     if None == response: response = []
+    ...     if response is None: response = []
     ...     print('response:', toHexString(response), ' status words:', "%x %x" % (sw1, sw2))
     ...
     >>> apdu = SELECT + DF_TELECOM

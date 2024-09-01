@@ -72,7 +72,7 @@ class PCSCCardRequest(AbstractCardRequest):
         self.pollinginterval = 0.1
 
         # if timeout is None, translate to scard.INFINITE
-        if None == self.timeout:
+        if self.timeout is None:
             self.timeout = INFINITE
         # otherwise, from seconds to milliseconds
         else:
@@ -100,7 +100,7 @@ class PCSCCardRequest(AbstractCardRequest):
         readers = []
 
         # if no readers asked, use all inserted readers
-        if None == self.readersAsked:
+        if self.readersAsked is None:
             readers = pcscreaders
 
         # otherwise use only the asked readers that are inserted
