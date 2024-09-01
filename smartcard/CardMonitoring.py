@@ -152,7 +152,7 @@ class CardMonitoringThread(object):
             self.stopEvent = Event()
             self.stopEvent.clear()
             self.cards = []
-            self.setDaemon(True)
+            self.daemon = True
 
         # the actual monitoring thread
         def run(self):

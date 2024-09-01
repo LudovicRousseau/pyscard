@@ -42,7 +42,7 @@ class PyroEventServer(Thread):
         For a complete list of command line arguments, see pyro documentation
         for pyro-es start script."""
         Thread.__init__(self)
-        self.setDaemon(True)
+        self.daemon = True
         self.setName('smartcard.pyro.server.PyroEventServer')
         self.args = args
         self.handler = signal.signal(signal.SIGINT, self)

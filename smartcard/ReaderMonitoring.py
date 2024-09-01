@@ -153,7 +153,7 @@ class ReaderMonitoringThread(Thread):
         self.stopEvent = Event()
         self.stopEvent.clear()
         self.readers = []
-        self.setDaemon(True)
+        self.daemon = True
         self.setName('smartcard.ReaderMonitoringThread')
         self.readerProc = readerProc
         self.period = period
