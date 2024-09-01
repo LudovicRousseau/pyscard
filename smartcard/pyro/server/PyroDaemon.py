@@ -84,7 +84,7 @@ class PyroDaemonThread(Thread):
         for pyro-es start script."""
         Thread.__init__(self)
         self.daemon = True
-        self.setName('smartcard.pyro.server.PyroDaemonThread')
+        self.name = 'smartcard.pyro.server.PyroDaemonThread'
         self.daemon = PyroDaemon()
 
     def run(self):

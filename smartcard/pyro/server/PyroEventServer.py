@@ -43,7 +43,7 @@ class PyroEventServer(Thread):
         for pyro-es start script."""
         Thread.__init__(self)
         self.daemon = True
-        self.setName('smartcard.pyro.server.PyroEventServer')
+        self.name = 'smartcard.pyro.server.PyroEventServer'
         self.args = args
         self.handler = signal.signal(signal.SIGINT, self)
         self.starter = None
