@@ -23,7 +23,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 import threading
-import time
 
 from smartcard.AbstractCardRequest import AbstractCardRequest
 from smartcard.Exceptions import CardRequestTimeoutException
@@ -35,9 +34,10 @@ from smartcard import Card
 from smartcard.scard import *
 
 
-def signalEvent(evt, isInfinite):
+def signalEvent(evt, isInfinite, hcontext):
     if not isInfinite:
         evt.set()
+        SCardCancel(hcontext)
 
 
 class PCSCCardRequest(AbstractCardRequest):
@@ -68,8 +68,8 @@ class PCSCCardRequest(AbstractCardRequest):
         AbstractCardRequest.__init__(
             self, newcardonly, readers, cardType, cardServiceClass, timeout)
 
-        # polling interval in s for SCardGetStatusChange
-        self.pollinginterval = 0.1
+        # polling interval in ms for SCardGetStatusChange
+        self.pollinginterval = 5 * 1000
 
         # if timeout is None, translate to scard.INFINITE
         if self.timeout is None:
@@ -126,19 +126,18 @@ class PCSCCardRequest(AbstractCardRequest):
         else:
             timertimeout = self.timeout
         timer = threading.Timer(
-            timertimeout, signalEvent, [evt, INFINITE == self.timeout])
+            timertimeout, signalEvent, [evt, INFINITE == self.timeout,
+                                        self.hcontext])
 
         # create a dictionary entry for new readers
         readerstates = {}
         readernames = self.getReaderNames()
+        # add PnP special reader
+        readernames.append("\\\\?PnP?\\Notification")
+
         for reader in readernames:
             if not reader in readerstates:
                 readerstates[reader] = (reader, SCARD_STATE_UNAWARE)
-
-        # remove dictionary entry for readers that disappeared
-        for oldreader in list(readerstates.keys()):
-            if oldreader not in readernames:
-                del readerstates[oldreader]
 
         # call SCardGetStatusChange only if we have some readers
         if {} != readerstates:
@@ -189,10 +188,12 @@ class PCSCCardRequest(AbstractCardRequest):
                 timerstarted = True
                 timer.start()
 
-            time.sleep(self.pollinginterval)
-
             # create a dictionary entry for new readers
             readernames = self.getReaderNames()
+
+            # add PnP special reader
+            readernames.append("\\\\?PnP?\\Notification")
+
             for reader in readernames:
                 if not reader in readerstates:
                     readerstates[reader] = (reader, SCARD_STATE_UNAWARE)
@@ -205,13 +206,14 @@ class PCSCCardRequest(AbstractCardRequest):
             # wait for card insertion
             if {} != readerstates:
                 hresult, newstates = SCardGetStatusChange(
-                    self.hcontext, 0, list(readerstates.values()))
+                    self.hcontext, self.pollinginterval,
+                    list(readerstates.values()))
             else:
                 hresult = SCARD_E_TIMEOUT
                 newstates = []
 
             # time-out
-            if SCARD_E_TIMEOUT == hresult:
+            if hresult in (SCARD_E_TIMEOUT, SCARD_E_CANCELLED):
                 if evt.is_set():
                     raise CardRequestTimeoutException(hresult=hresult)
 
@@ -278,7 +280,8 @@ class PCSCCardRequest(AbstractCardRequest):
         else:
             timertimeout = self.timeout
         timer = threading.Timer(
-            timertimeout, signalEvent, [evt, INFINITE == self.timeout])
+            timertimeout, signalEvent, [evt, INFINITE == self.timeout,
+                                        self.hcontext])
 
         # get status change until time-out, e.g. evt is set
         readerstates = {}
@@ -289,8 +292,6 @@ class PCSCCardRequest(AbstractCardRequest):
             if not timerstarted:
                 timerstarted = True
                 timer.start()
-
-            time.sleep(self.pollinginterval)
 
             # reinitialize at each iteration just in case a new reader appeared
             readernames = self.getReaderNames()
@@ -306,13 +307,14 @@ class PCSCCardRequest(AbstractCardRequest):
             # get status change
             if {} != readerstates:
                 hresult, newstates = SCardGetStatusChange(
-                    self.hcontext, 0, list(readerstates.values()))
+                    self.hcontext, self.pollinginterval,
+                    list(readerstates.values()))
             else:
                 hresult = 0
                 newstates = []
 
             # time-out
-            if SCARD_E_TIMEOUT == hresult:
+            if hresult in (SCARD_E_TIMEOUT, SCARD_E_CANCELLED):
                 if evt.is_set():
                     raise CardRequestTimeoutException(hresult=hresult)
 
