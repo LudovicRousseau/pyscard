@@ -32,7 +32,7 @@ jobs:
           if [ "$RUNNER_OS" == "Linux" ]; then
             sudo apt install libpcsclite-dev python3-all-dev python3-setuptools swig
           elif [ "$RUNNER_OS" == "macOS" ]; then
-            brew install swig
+            brew install swig pylint
           else
             echo "$RUNNER_OS not supported"
             exit 1
@@ -66,3 +66,8 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: pylint
+        # pylint on Ubuntu 22.04 is too old
+        if: matrix.os == 'macos-latest'
+        shell: bash
+        run: pylint --errors-only smartcard
