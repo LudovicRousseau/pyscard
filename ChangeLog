@@ -1,3 +1,11 @@
+2.1.0 (September 2024)
+======================
+   * PCSCCardRequest: fix active polling (was a 0.1 sec loop)
+   * Fix use of undefined variable 'hresult' in exceptions
+   * Fix print() use in pyscard user’s guide
+   * Fix deprecation warnings
+   * Minor changes
+
 2.0.10 (June 2024)
 ==================
    * add 'swig' in pyproject.toml build requires
