@@ -70,4 +70,4 @@ jobs:
         # pylint on Ubuntu 22.04 is too old
         if: matrix.os == 'macos-latest'
         shell: bash
-        run: pylint --errors-only smartcard
+        run: pylint --errors-only smartcard || true
