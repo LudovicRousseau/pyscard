@@ -25,6 +25,7 @@ from smartcard.CardConnectionDecorator import CardConnectionDecorator
 from smartcard.Exceptions import CardConnectionException
 from smartcard.scard import SCardBeginTransaction, SCardEndTransaction
 from smartcard.scard import SCARD_LEAVE_CARD
+from smartcard.scard import SCARD_S_SUCCESS
 from smartcard.scard import SCardGetErrorMessage
 import smartcard.pcsc
 
@@ -46,7 +47,7 @@ class ExclusiveTransmitCardConnection(CardConnectionDecorator):
                     component,
                     smartcard.pcsc.PCSCCardConnection.PCSCCardConnection):
                 hresult = SCardBeginTransaction(component.hcard)
-                if 0 != hresult:
+                if SCARD_S_SUCCESS != hresult:
                     raise CardConnectionException(
                         'Failed to lock with SCardBeginTransaction: ' +
                         SCardGetErrorMessage(hresult))
@@ -68,7 +69,7 @@ class ExclusiveTransmitCardConnection(CardConnectionDecorator):
                     smartcard.pcsc.PCSCCardConnection.PCSCCardConnection):
                 hresult = SCardEndTransaction(component.hcard,
                                               SCARD_LEAVE_CARD)
-                if 0 != hresult:
+                if SCARD_S_SUCCESS != hresult:
                     raise CardConnectionException(
                         'Failed to unlock with SCardEndTransaction: ' +
                         SCardGetErrorMessage(hresult))

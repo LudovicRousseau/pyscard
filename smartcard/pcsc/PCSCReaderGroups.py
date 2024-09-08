@@ -44,13 +44,13 @@ class pcscinnerreadergroups(innerreadergroups):
         innerreadergroups.getreadergroups(self)
 
         hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
-        if hresult != 0:
+        if hresult != SCARD_S_SUCCESS:
             raise EstablishContextException(hresult)
         hresult, readers = SCardListReaderGroups(hcontext)
-        if hresult != 0:
+        if hresult != SCARD_S_SUCCESS:
             raise ListReadersException(hresult)
         hresult = SCardReleaseContext(hcontext)
-        if hresult != 0:
+        if hresult != SCARD_S_SUCCESS:
             raise ReleaseContextException(hresult)
         return readers
 
@@ -58,13 +58,13 @@ class pcscinnerreadergroups(innerreadergroups):
         """Add a reader group"""
 
         hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
-        if 0 != hresult:
+        if SCARD_S_SUCCESS != hresult:
             raise error(
                 'Failed to establish context: ' + \
                 SCardGetErrorMessage(hresult))
         try:
             hresult = SCardIntroduceReaderGroup(hcontext, newgroup)
-            if 0 != hresult:
+            if SCARD_S_SUCCESS != hresult:
                 raise error(
                     'Unable to introduce reader group: ' + \
                     SCardGetErrorMessage(hresult))
@@ -73,7 +73,7 @@ class pcscinnerreadergroups(innerreadergroups):
 
         finally:
             hresult = SCardReleaseContext(hcontext)
-            if 0 != hresult:
+            if SCARD_S_SUCCESS != hresult:
                 raise error(
                     'Failed to release context: ' + \
                     SCardGetErrorMessage(hresult))
@@ -82,13 +82,13 @@ class pcscinnerreadergroups(innerreadergroups):
         """Remove a reader group"""
 
         hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
-        if 0 != hresult:
+        if SCARD_S_SUCCESS != hresult:
             raise error(
                 'Failed to establish context: ' + \
                 SCardGetErrorMessage(hresult))
         try:
             hresult = SCardForgetReaderGroup(hcontext, group)
-            if hresult != 0:
+            if hresult != SCARD_S_SUCCESS:
                 raise error(
                     'Unable to forget reader group: ' + \
                     SCardGetErrorMessage(hresult))
@@ -97,7 +97,7 @@ class pcscinnerreadergroups(innerreadergroups):
 
         finally:
             hresult = SCardReleaseContext(hcontext)
-            if 0 != hresult:
+            if SCARD_S_SUCCESS != hresult:
                 raise error(
                     'Failed to release context: ' + \
                     SCardGetErrorMessage(hresult))

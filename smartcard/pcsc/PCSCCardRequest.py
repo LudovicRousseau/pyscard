@@ -144,13 +144,13 @@ class PCSCCardRequest(AbstractCardRequest):
             hresult, newstates = SCardGetStatusChange(
                 self.hcontext, 0, list(readerstates.values()))
         else:
-            hresult = 0
+            hresult = SCARD_S_SUCCESS
             newstates = []
 
         # we can expect normally time-outs or reader
         # disappearing just before the call
         # otherwise, raise exception on error
-        if 0 != hresult and \
+        if SCARD_S_SUCCESS != hresult and \
             SCARD_E_TIMEOUT != hresult and \
             SCARD_E_UNKNOWN_READER != hresult:
                 raise CardRequestException(
@@ -215,7 +215,7 @@ class PCSCCardRequest(AbstractCardRequest):
                 pass
 
             # some error happened
-            elif 0 != hresult:
+            elif SCARD_S_SUCCESS != hresult:
                 timer.cancel()
                 raise CardRequestException(
                     'Failed to get status change ' + \
@@ -303,7 +303,7 @@ class PCSCCardRequest(AbstractCardRequest):
                     self.hcontext, self.pollinginterval,
                     list(readerstates.values()))
             else:
-                hresult = 0
+                hresult = SCARD_S_SUCCESS
                 newstates = []
 
             # time-out
@@ -316,7 +316,7 @@ class PCSCCardRequest(AbstractCardRequest):
                 pass
 
             # some error happened
-            elif 0 != hresult:
+            elif SCARD_S_SUCCESS != hresult:
                 timer.cancel()
                 raise CardRequestException(
                     'Failed to get status change ' + \

@@ -41,7 +41,7 @@ def __PCSCreaders__(hcontext, groups=[]):
     if isinstance(groups, type("")):
         groups = [groups]
     hresult, readers = SCardListReaders(hcontext, groups)
-    if hresult != 0:
+    if hresult != SCARD_S_SUCCESS:
         if hresult == SCARD_E_NO_READERS_AVAILABLE:
             readers = []
         elif hresult == SCARD_E_SERVICE_STOPPED:
@@ -65,35 +65,35 @@ class PCSCReader(Reader):
         """Add reader to a reader group."""
 
         hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
-        if 0 != hresult:
+        if SCARD_S_SUCCESS != hresult:
             raise EstablishContextException(hresult)
         try:
             hresult = SCardIntroduceReader(hcontext, self.name, self.name)
-            if 0 != hresult and SCARD_E_DUPLICATE_READER != hresult:
+            if SCARD_S_SUCCESS != hresult and SCARD_E_DUPLICATE_READER != hresult:
                 raise IntroduceReaderException(hresult, self.name)
             hresult = SCardAddReaderToGroup(hcontext, self.name, groupname)
-            if 0 != hresult:
+            if SCARD_S_SUCCESS != hresult:
                 raise AddReaderToGroupException(hresult, self.name, groupname)
         finally:
             hresult = SCardReleaseContext(hcontext)
-            if 0 != hresult:
+            if SCARD_S_SUCCESS != hresult:
                 raise ReleaseContextException(hresult)
 
     def removefromreadergroup(self, groupname):
         """Remove a reader from a reader group"""
 
         hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
-        if 0 != hresult:
+        if SCARD_S_SUCCESS != hresult:
             raise EstablishContextException(hresult)
         try:
             hresult = SCardRemoveReaderFromGroup(hcontext, self.name,
                 groupname)
-            if 0 != hresult:
+            if SCARD_S_SUCCESS != hresult:
                 raise RemoveReaderFromGroupException(hresult, self.name,
                     groupname)
         finally:
             hresult = SCardReleaseContext(hcontext)
-            if 0 != hresult:
+            if SCARD_S_SUCCESS != hresult:
                 raise ReleaseContextException(hresult)
 
     def createConnection(self):
