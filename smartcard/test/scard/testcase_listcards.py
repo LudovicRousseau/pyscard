@@ -176,7 +176,7 @@ if 'winscard' == resourceManager:
                     self.assertEqual(
                         hresult,
                         expectedPrimaryProviderResult[cards[i]][0])
-                    if hresult == 0:
+                    if hresult == SCARD_S_SUCCESS:
                         self.assertEqual(
                             providername,
                             smartcard.guid.GUIDToStr(

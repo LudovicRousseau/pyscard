@@ -835,7 +835,7 @@ from smartcard.scard import *
         raise error, 'Unable to introduce reader: ' + SCardGetErrorMessage(hresult)
 
     hresult = SCardAddReaderToGroup(hcontext, readeralias, newgroup)
-    if hresult!=0:
+    if hresult != SCARD_S_SUCCESS:
         raise error, 'Unable to add reader to group: ' + SCardGetErrorMessage(hresult)
 
 ...

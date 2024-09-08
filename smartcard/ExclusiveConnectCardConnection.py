@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 from smartcard.CardConnectionDecorator import CardConnectionDecorator
 from smartcard.Exceptions import CardConnectionException
 from smartcard.scard import SCardConnect, SCardDisconnect
-from smartcard.scard import SCARD_LEAVE_CARD, SCARD_SHARE_EXCLUSIVE
+from smartcard.scard import SCARD_LEAVE_CARD, SCARD_SHARE_EXCLUSIVE, SCARD_S_SUCCESS
 from smartcard.scard import SCardGetErrorMessage
 from smartcard.pcsc import PCSCCardConnection
 import smartcard.pcsc
@@ -52,14 +52,14 @@ class ExclusiveConnectCardConnection(CardConnectionDecorator):
                 if component.hcard is not None:
                     hresult = SCardDisconnect(component.hcard,
                                               SCARD_LEAVE_CARD)
-                    if hresult != 0:
+                    if hresult != SCARD_S_SUCCESS:
                         raise CardConnectionException(
                                 'Failed to disconnect: ' +
                                 SCardGetErrorMessage(hresult))
                 hresult, component.hcard, dwActiveProtocol = SCardConnect(
                     component.hcontext, str(component.reader),
                     SCARD_SHARE_EXCLUSIVE, pcscprotocol)
-                if hresult != 0:
+                if hresult != SCARD_S_SUCCESS:
                     raise CardConnectionException(
                         'Failed to connect with SCARD_SHARE_EXCLUSIVE' +
                         SCardGetErrorMessage(hresult))

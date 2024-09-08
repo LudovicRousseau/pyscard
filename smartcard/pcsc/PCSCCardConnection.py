@@ -75,7 +75,7 @@ class PCSCCardConnection(CardConnection):
         CardConnection.__init__(self, reader)
         self.hcard = None
         hresult, self.hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
-        if hresult != 0:
+        if hresult != SCARD_S_SUCCESS:
             raise CardConnectionException(
                 'Failed to establish context : ' + \
                 SCardGetErrorMessage(hresult), hresult=hresult)
@@ -86,7 +86,7 @@ class PCSCCardConnection(CardConnection):
         # can disappear before __del__ is called
         self.disconnect()
         hresult = SCardReleaseContext(self.hcontext)
-        if hresult != 0 and hresult != SCARD_E_INVALID_VALUE:
+        if hresult != SCARD_S_SUCCESS and hresult != SCARD_E_INVALID_VALUE:
             raise CardConnectionException(
                 'Failed to release context: ' + \
                 SCardGetErrorMessage(hresult), hresult=hresult)
@@ -115,7 +115,7 @@ class PCSCCardConnection(CardConnection):
 
         hresult, self.hcard, dwActiveProtocol = SCardConnect(
             self.hcontext, str(self.reader), mode, pcscprotocol)
-        if hresult != 0:
+        if hresult != SCARD_S_SUCCESS:
             self.hcard = None
             if hresult in (SCARD_W_REMOVED_CARD, SCARD_E_NO_SMARTCARD):
                 raise NoCardException('Unable to connect', hresult=hresult)
@@ -165,7 +165,7 @@ class PCSCCardConnection(CardConnection):
         self.disposition = disposition
 
         hresult, dwActiveProtocol = SCardReconnect(self.hcard, mode, pcscprotocol, self.disposition)
-        if hresult != 0:
+        if hresult != SCARD_S_SUCCESS:
             self.hcard = None
             if hresult in (SCARD_W_REMOVED_CARD, SCARD_E_NO_SMARTCARD):
                 raise NoCardException('Unable to reconnect', hresult=hresult)
@@ -201,7 +201,7 @@ class PCSCCardConnection(CardConnection):
         if self.hcard is not None:
             hresult = SCardDisconnect(self.hcard, self.disposition)
             self.hcard = None
-            if hresult != 0:
+            if hresult != SCARD_S_SUCCESS:
                 raise CardConnectionException(
                     'Failed to disconnect: ' + \
                     SCardGetErrorMessage(hresult), hresult=hresult)
@@ -212,7 +212,7 @@ class PCSCCardConnection(CardConnection):
         if self.hcard is None:
             raise CardConnectionException('Card not connected')
         hresult, reader, state, protocol, atr = SCardStatus(self.hcard)
-        if hresult != 0:
+        if hresult != SCARD_S_SUCCESS:
             raise CardConnectionException(
                 'Failed to get status: ' + \
                 SCardGetErrorMessage(hresult), hresult=hresult)
@@ -246,7 +246,7 @@ class PCSCCardConnection(CardConnection):
             raise CardConnectionException('Card not connected')
         hresult, response = SCardTransmit(
             self.hcard, pcscprotocolheader, bytes)
-        if hresult != 0:
+        if hresult != SCARD_S_SUCCESS:
             raise CardConnectionException(
                 'Failed to transmit with protocol ' + \
                 dictProtocolHeader[pcscprotocolheader] + '. ' + \
@@ -273,7 +273,7 @@ class PCSCCardConnection(CardConnection):
         """
         CardConnection.doControl(self, controlCode, bytes)
         hresult, response = SCardControl(self.hcard, controlCode, bytes)
-        if hresult != 0:
+        if hresult != SCARD_S_SUCCESS:
             raise SmartcardException(
                 'Failed to control ' + SCardGetErrorMessage(hresult),
                 hresult=hresult)
@@ -290,7 +290,7 @@ class PCSCCardConnection(CardConnection):
         """
         CardConnection.doGetAttrib(self, attribId)
         hresult, response = SCardGetAttrib(self.hcard, attribId)
-        if hresult != 0:
+        if hresult != SCARD_S_SUCCESS:
             raise SmartcardException(
                 'Failed to getAttrib ' + SCardGetErrorMessage(hresult),
                 hresult=hresult)
