@@ -30,13 +30,7 @@ def synchronize(klass, names=None):
     Only synchronize the methods whose names are
     given, or all methods if names=None."""
 
-    # basestring does not exist on Python 3
-    try:
-        basestring
-    except NameError:
-        basestring = (str, bytes)
-
-    if isinstance(names, basestring):
+    if isinstance(names, (str, bytes)):
         names = names.split()
     for (name, val) in list(klass.__dict__.items()):
         if callable(val) and name != '__init__' and \
