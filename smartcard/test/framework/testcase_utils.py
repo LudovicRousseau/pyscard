@@ -1,5 +1,4 @@
 #! /usr/bin/env python3
-# -*- coding: iso-8859-1 -*-
 """Unit tests for smartcard.utils
 
 This test case can be executed individually, or with all other test cases
@@ -46,7 +45,7 @@ class testcase_utils(unittest.TestCase):
     def testcase_bytesto338(self):
         """tests toGSM3_38Bytes"""
         self.assertEqual(
-            toGSM3_38Bytes("@ùPascal"),
+            toGSM3_38Bytes("@Ã¹Pascal"),
             [0x00, 0x06, 0x50, 0x61, 0x73, 0x63, 0x61, 0x6C])
 
     def testcase_padd(self):

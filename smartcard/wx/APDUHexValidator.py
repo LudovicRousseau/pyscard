@@ -1,4 +1,3 @@
-# -*- coding: iso-8859-15 -*-
 """
 A wxValidator that matches APDU in hexadecimal such as::
 

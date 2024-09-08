@@ -1,4 +1,3 @@
-# -*- coding: iso-8859-1 -*-
 """smartcard.util package
 
 __author__ = "http://www.gemalto.com"
@@ -116,43 +115,43 @@ def toBytes(bytestring):
 """GSM3.38 character conversion table."""
 __dic_GSM_3_38__ = {
     u'@': 0x00,            # @ At symbol
-    u'£': 0x01,            # £ Britain pound symbol
+    u'Â£': 0x01,            # Â£ Britain pound symbol
     u'$': 0x02,            # $ Dollar symbol
-    u'¥': 0x03,            # ¥ Yen symbol
-    u'è': 0x04,            # è e accent grave
-    u'é': 0x05,            # é e accent aigu
-    u'ù': 0x06,            # ù u accent grave
-    u'ì': 0x07,            # ì i accent grave
-    u'ò': 0x08,            # ò o accent grave
-    u'Ç': 0x09,            # Ç C majuscule cedille
+    u'Â¥': 0x03,            # Â¥ Yen symbol
+    u'Ã¨': 0x04,            # Ã¨ e accent grave
+    u'Ã©': 0x05,            # Ã© e accent aigu
+    u'Ã¹': 0x06,            # Ã¹ u accent grave
+    u'Ã¬': 0x07,            # Ã¬ i accent grave
+    u'Ã²': 0x08,            # Ã² o accent grave
+    u'Ã‡': 0x09,            # Ã‡ C majuscule cedille
     u'\n': 0x0A,           # LF Line Feed
-    u'Ø': 0x0B,            # Ø O majuscule barré
-    u'ø': 0x0C,            # ø o minuscule barré
+    u'Ã˜': 0x0B,            # Ã˜ O majuscule barrÃ©
+    u'Ã¸': 0x0C,            # Ã¸ o minuscule barrÃ©
     u'\r': 0x0D,           # CR Carriage Return
-    u'Å': 0x0E,            # Å Angstroem majuscule
-    u'å': 0x0F,            # å Angstroem minuscule
+    u'Ã…': 0x0E,            # Ã… Angstroem majuscule
+    u'Ã¥': 0x0F,            # Ã¥ Angstroem minuscule
     u'_': 0x11,            # underscore
-    u'Æ': 0x1C,            # Æ majuscule ae
-    u'æ': 0x1D,            # æ minuscule ae
-    u'ß': 0x1E,            # ß s dur allemand
-    u'É': 0x1F,            # É majuscule é
+    u'Ã†': 0x1C,            # Ã† majuscule ae
+    u'Ã¦': 0x1D,            # Ã¦ minuscule ae
+    u'ÃŸ': 0x1E,            # ÃŸ s dur allemand
+    u'Ã‰': 0x1F,            # Ã‰ majuscule Ã©
     u' ': 0x20,
     u'!': 0x21,
     u'"': 0x22,            # guillemet
     u'#': 0x23,
-    u'¤': 0x24,            # ¤ carré
-    u'¡': 0x40,            # ¡ point d'exclamation renversé
-    u'Ä': 0x5B,            # Ä majuscule A trema
-    u'ä': 0x7B,            # ä minuscule a trema
-    u'Ö': 0x5C,            # Ö majuscule O trema
-    u'ö': 0x7C,            # ö minuscule o trema
-    u'Ñ': 0x5D,            # Ñ majuscule N tilda espagnol
-    u'ñ': 0x7D,            # ñ minuscule n tilda espagnol
-    u'Ü': 0x5E,            # Ü majuscule U trema
-    u'ü': 0x7E,            # ü minuscule u trema
-    u'§': 0x5F,            # § signe paragraphe
-    u'¿': 0x60,            # ¿ point interrogation renversé
-    u'à': 0x7F,            # à a accent grave
+    u'Â¤': 0x24,            # Â¤ carrÃ©
+    u'Â¡': 0x40,            # Â¡ point d'exclamation renversÃ©
+    u'Ã„': 0x5B,            # Ã„ majuscule A trema
+    u'Ã¤': 0x7B,            # Ã¤ minuscule a trema
+    u'Ã–': 0x5C,            # Ã– majuscule O trema
+    u'Ã¶': 0x7C,            # Ã¶ minuscule o trema
+    u'Ã‘': 0x5D,            # Ã‘ majuscule N tilda espagnol
+    u'Ã±': 0x7D,            # Ã± minuscule n tilda espagnol
+    u'Ãœ': 0x5E,            # Ãœ majuscule U trema
+    u'Ã¼': 0x7E,            # Ã¼ minuscule u trema
+    u'Â§': 0x5F,            # Â§ signe paragraphe
+    u'Â¿': 0x60,            # Â¿ point interrogation renversÃ©
+    u'Ã ': 0x7F,            # Ã  a accent grave
 }
 
 
@@ -163,7 +162,7 @@ def toGSM3_38Bytes(stringtoconvert):
 
     @return: a list of bytes
 
-    >>> toGSM3_38Bytes("@ùPascal")
+    >>> toGSM3_38Bytes("@Ã¹Pascal")
     [0, 6, 80, 97, 115, 99, 97, 108]
     """
     if isinstance(stringtoconvert, bytes):
