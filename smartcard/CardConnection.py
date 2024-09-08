@@ -23,11 +23,13 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
+import abc
+
 from smartcard.CardConnectionEvent import CardConnectionEvent
 from smartcard.Observer import Observable
 
 
-class CardConnection(Observable):
+class CardConnection(Observable, abc.ABC):
     """Card connection abstract class.
     """
     T0_protocol = 0x00000001
@@ -183,6 +185,7 @@ class CardConnection(Observable):
             self.errorcheckingchain[0](data, sw1, sw2)
         return data, sw1, sw2
 
+    @abc.abstractmethod
     def doTransmit(self, bytes, protocol):
         """Performs the command APDU transmission.
 
@@ -215,6 +218,7 @@ class CardConnection(Observable):
             self.errorcheckingchain[0](data)
         return data
 
+    @abc.abstractmethod
     def doControl(self, controlCode, bytes):
         """Performs the command control.
 
@@ -237,6 +241,7 @@ class CardConnection(Observable):
             self.errorcheckingchain[0](data)
         return data
 
+    @abc.abstractmethod
     def doGetAttrib(self, attribId):
         """Performs the command get attrib.
 
