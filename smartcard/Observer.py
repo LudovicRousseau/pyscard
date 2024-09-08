@@ -15,7 +15,7 @@ from smartcard.Synchronization import *
 
 class Observer(object):
 
-    def update(observable, arg):
+    def update(self, observable, arg):
         '''Called when the observed object is
         modified. You call an Observable object's
         notifyObservers method to notify all the
