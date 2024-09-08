@@ -150,8 +150,7 @@ class PCSCCardConnection(CardConnection):
         (C{smartcard.scard.SCARD_RESET_CARD})"""
         CardConnection.reconnect(self, protocol)
         if self.hcard is None:
-            raise CardConnectionException('Card not connected',
-                                          hresult=hresult)
+            raise CardConnectionException('Card not connected')
 
         pcscprotocol = translateprotocolmask(protocol)
         if 0 == pcscprotocol:
@@ -211,8 +210,7 @@ class PCSCCardConnection(CardConnection):
         """Return card ATR"""
         CardConnection.getATR(self)
         if self.hcard is None:
-            raise CardConnectionException('Card not connected',
-                                          hresult=hresult)
+            raise CardConnectionException('Card not connected')
         hresult, reader, state, protocol, atr = SCardStatus(self.hcard)
         if hresult != 0:
             raise CardConnectionException(
