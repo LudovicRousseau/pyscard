@@ -19,7 +19,7 @@ def get_func(fullFuncName):
     """Retrieve a function object from a full dotted-package name."""
 
     # Parse out the path, module, and function
-    lastDot = fullFuncName.rfind(u".")
+    lastDot = fullFuncName.rfind(".")
     funcName = fullFuncName[lastDot + 1:]
     modPath = fullFuncName[:lastDot]
 
@@ -27,7 +27,7 @@ def get_func(fullFuncName):
     aFunc = getattr(aMod, funcName)
 
     # Assert that the function is a *callable* attribute.
-    assert callable(aFunc), u"%s is not callable." % fullFuncName
+    assert callable(aFunc), "%s is not callable." % fullFuncName
 
     # Return a reference to the function itself,
     # not the results of the function.
@@ -45,7 +45,7 @@ def get_class(fullClassName, parentClass=None):
     # Assert that the class is a subclass of parentClass.
     if parentClass is not None:
         if not issubclass(aClass, parentClass):
-            raise TypeError(u"%s is not a subclass of %s" %
+            raise TypeError("%s is not a subclass of %s" %
                             (fullClassName, parentClass))
 
     # Return a reference to the class itself, not an instantiated object.

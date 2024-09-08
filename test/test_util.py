@@ -56,11 +56,11 @@ class TestUtil(unittest.TestCase):
         data_out = [0x00, 0x50, 0x61, 0x73, 0x63, 0x61, 0x6C]
         self.assertEqual(toGSM3_38Bytes(data_in), data_out)
 
-        data_in = u"@ùPascal"
+        data_in = "@ùPascal"
         data_out = [0x00, 0x06, 0x50, 0x61, 0x73, 0x63, 0x61, 0x6C]
         self.assertEqual(toGSM3_38Bytes(data_in), data_out)
 
-        data_in = u"@ùPascal".encode('iso8859-1')
+        data_in = "@ùPascal".encode('iso8859-1')
         data_out = [0x00, 0x06, 0x50, 0x61, 0x73, 0x63, 0x61, 0x6C]
         self.assertEqual(toGSM3_38Bytes(data_in), data_out)
 
