@@ -218,10 +218,10 @@ class PCSCCardConnection(CardConnection):
                 SCardGetErrorMessage(hresult), hresult=hresult)
         return atr
 
-    def doTransmit(self, bytes, protocol=None):
+    def doTransmit(self, command, protocol=None):
         """Transmit an apdu to the card and return response apdu.
 
-        @param bytes:    command apdu to transmit (list of bytes)
+        @param command:  command apdu to transmit (list of bytes)
 
         @param protocol: the transmission protocol, from
             L{CardConnection.T0_protocol}, L{CardConnection.T1_protocol}, or
@@ -234,7 +234,7 @@ class PCSCCardConnection(CardConnection):
         """
         if protocol is None:
             protocol = self.getProtocol()
-        CardConnection.doTransmit(self, bytes, protocol)
+        CardConnection.doTransmit(self, command, protocol)
         pcscprotocolheader = translateprotocolheader(protocol)
         if 0 == pcscprotocolheader:
             raise CardConnectionException(
@@ -245,7 +245,7 @@ class PCSCCardConnection(CardConnection):
         if self.hcard is None:
             raise CardConnectionException('Card not connected')
         hresult, response = SCardTransmit(
-            self.hcard, pcscprotocolheader, bytes)
+            self.hcard, pcscprotocolheader, command)
         if hresult != SCARD_S_SUCCESS:
             raise CardConnectionException(
                 'Failed to transmit with protocol ' + \
@@ -262,17 +262,18 @@ class PCSCCardConnection(CardConnection):
         data = [(x + 256) % 256 for x in response[:-2]]
         return list(data), sw1, sw2
 
-    def doControl(self, controlCode, bytes=[]):
+    def doControl(self, controlCode, command=[]):
         """Transmit a control command to the reader and return response.
 
         @param controlCode: control command
 
-        @param bytes:       command data to transmit (list of bytes)
+        @param command:     command data to transmit (list of bytes)
 
         @return:      response are the response bytes (if any)
         """
-        CardConnection.doControl(self, controlCode, bytes)
-        hresult, response = SCardControl(self.hcard, controlCode, bytes)
+        CardConnection.doControl(self, controlCode, command)
+        hresult, response = SCardControl(self.hcard, controlCode,
+                                         command)
         if hresult != SCARD_S_SUCCESS:
             raise SmartcardException(
                 'Failed to control ' + SCardGetErrorMessage(hresult),

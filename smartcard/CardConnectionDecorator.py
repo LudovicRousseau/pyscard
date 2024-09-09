@@ -81,13 +81,13 @@ class CardConnectionDecorator(CardConnection):
         """call inner component setProtocol"""
         return self.component.setProtocol(protocol)
 
-    def transmit(self, bytes, protocol=None):
+    def transmit(self, command, protocol=None):
         """call inner component transmit"""
-        return self.component.transmit(bytes, protocol)
+        return self.component.transmit(command, protocol)
 
-    def control(self, controlCode, bytes=[]):
+    def control(self, controlCode, command=[]):
         """call inner component control"""
-        return self.component.control(controlCode, bytes)
+        return self.component.control(controlCode, command)
 
     def getAttrib(self, attribId):
         """call inner component getAttrib"""

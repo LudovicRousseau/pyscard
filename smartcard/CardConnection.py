@@ -156,12 +156,12 @@ class CardConnection(Observable):
         """
         self.defaultprotocol = protocol
 
-    def transmit(self, bytes, protocol=None):
+    def transmit(self, command, protocol=None):
         """Transmit an apdu. Internally calls L{doTransmit()} class method
         and notify observers upon command/response APDU events.
         Subclasses must override the L{doTransmit()} class method.
 
-        @param bytes:      list of bytes to transmit
+        @param command:    list of bytes to transmit
 
         @param protocol:   the transmission protocol, from
                     L{CardConnection.T0_protocol},
@@ -172,8 +172,8 @@ class CardConnection(Observable):
         Observable.notifyObservers(self,
                                    CardConnectionEvent(
                                        'command',
-                                       [bytes, protocol]))
-        data, sw1, sw2 = self.doTransmit(bytes, protocol)
+                                       [command, protocol]))
+        data, sw1, sw2 = self.doTransmit(command, protocol)
         Observable.setChanged(self)
         Observable.notifyObservers(self,
                                    CardConnectionEvent(
@@ -183,14 +183,14 @@ class CardConnection(Observable):
             self.errorcheckingchain[0](data, sw1, sw2)
         return data, sw1, sw2
 
-    def doTransmit(self, bytes, protocol):
+    def doTransmit(self, command, protocol):
         """Performs the command APDU transmission.
 
         Subclasses must override this method for implementing apdu
         transmission."""
         pass
 
-    def control(self, controlCode, bytes=[]):
+    def control(self, controlCode, command=[]):
         """Send a control command and buffer.  Internally calls
         L{doControl()} class method and notify observers upon
         command/response events.  Subclasses must override the
@@ -198,14 +198,14 @@ class CardConnection(Observable):
 
         @param controlCode: command code
 
-        @param bytes:       list of bytes to transmit
+        @param command:     list of bytes to transmit
         """
         Observable.setChanged(self)
         Observable.notifyObservers(self,
                                    CardConnectionEvent(
                                        'command',
-                                       [controlCode, bytes]))
-        data = self.doControl(controlCode, bytes)
+                                       [controlCode, command]))
+        data = self.doControl(controlCode, command)
         Observable.setChanged(self)
         Observable.notifyObservers(self,
                                    CardConnectionEvent(
@@ -215,7 +215,7 @@ class CardConnection(Observable):
             self.errorcheckingchain[0](data)
         return data
 
-    def doControl(self, controlCode, bytes):
+    def doControl(self, controlCode, command):
         """Performs the command control.
 
         Subclasses must override this method for implementing control."""
