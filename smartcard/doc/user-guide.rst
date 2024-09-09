@@ -1375,19 +1375,19 @@ cyphered and each response APDU is uncyphered:
         def __init__(self, cardconnection):
             CardConnectionDecorator.__init__(self, cardconnection)
 
-        def cypher(self, bytes):
+        def cypher(self, data):
             '''Cypher mock-up; you would include the secure channel logics here.'''
-            print('cyphering', toHexString(bytes))
-            return bytes
+            print('cyphering', toHexString(data))
+            return data
 
         def uncypher(self, data):
             '''Uncypher mock-up; you would include the secure channel logics here.'''
             print('uncyphering', toHexString(data))
             return data
 
-        def transmit(self, bytes, protocol=None):
+        def transmit(self, data, protocol=None):
             """Cypher/uncypher APDUs before transmission"""
-            cypheredbytes = self.cypher(bytes)
+            cypheredbytes = self.cypher(data)
             data, sw1, sw2 = CardConnectionDecorator.transmit(self, cypheredbytes, protocol)
             if [] != data:
                 data = self.uncypher(data)
