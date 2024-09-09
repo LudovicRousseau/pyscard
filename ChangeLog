@@ -1,3 +1,7 @@
+2.1.1 (September 2024)
+======================
+   * Fix a regression introduced in 2.1.0
+
 2.1.0 (September 2024)
 ======================
    * PCSCCardRequest: fix active polling (was a 0.1 sec loop)
