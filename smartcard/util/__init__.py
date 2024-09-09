@@ -181,10 +181,10 @@ def toGSM3_38Bytes(stringtoconvert):
     return result
 
 
-def toHexString(bytes=[], format=0):
+def toHexString(data=[], format=0):
     """Returns an hex string representing bytes
 
-    @param bytes:  a list of bytes to stringify,
+    @param data:   a list of bytes to stringify,
                 e.g. [59, 22, 148, 32, 2, 1, 0, 0, 13]
     @param format: a logical OR of
       - COMMA: add a comma between bytes
@@ -209,13 +209,13 @@ def toHexString(bytes=[], format=0):
     '0X3B, 0X65, 0X00, 0X00, 0X9C, 0X11, 0X01, 0X01, 0X03'
     """
 
-    for byte in tuple(bytes):
+    for byte in tuple(data):
         pass
 
-    if type(bytes) is not list:
+    if type(data) is not list:
         raise TypeError('not a list of bytes')
 
-    if bytes is None or bytes == []:
+    if data is None or data == []:
         return ""
     else:
         pformat = "%-0.2X"
@@ -230,7 +230,7 @@ def toHexString(bytes=[], format=0):
                 pformat = "0X" + pformat
             else:
                 pformat = "0x" + pformat
-        return (separator.join(map(lambda a: pformat % ((a + 256) % 256), bytes))).rstrip()
+        return (separator.join(map(lambda a: pformat % ((a + 256) % 256), data))).rstrip()
 
 
 # FIXME This appears to duplicate toASCIIString()

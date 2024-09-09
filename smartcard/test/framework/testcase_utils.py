@@ -94,42 +94,42 @@ class testcase_utils(unittest.TestCase):
             "3B 65 00 00 9C 11 01 01 03",
             toHexString([59, 101, 0, 0, 156, 17, 1, 1, 3]))
 
-        bytes = [0x3B, 0x65, 0x00, 0x00, 0x9C, 0x11, 0x01, 0x01, 0x03]
+        atr = [0x3B, 0x65, 0x00, 0x00, 0x9C, 0x11, 0x01, 0x01, 0x03]
         self.assertEqual(
             "3B, 65, 00, 00, 9C, 11, 01, 01, 03",
-            toHexString(bytes, COMMA))
-        self.assertEqual("3B6500009C11010103", toHexString(bytes, PACK))
+            toHexString(atr, COMMA))
+        self.assertEqual("3B6500009C11010103", toHexString(atr, PACK))
         self.assertEqual(
             "0x3B 0x65 0x00 0x00 0x9C 0x11 0x01 0x01 0x03",
-            toHexString(bytes, HEX))
+            toHexString(atr, HEX))
         self.assertEqual(
             "0x3B, 0x65, 0x00, 0x00, 0x9C, 0x11, 0x01, 0x01, 0x03",
-            toHexString(bytes, HEX | COMMA))
+            toHexString(atr, HEX | COMMA))
         self.assertEqual(
             "0X3B 0X65 0X00 0X00 0X9C 0X11 0X01 0X01 0X03",
-            toHexString(bytes, HEX | UPPERCASE))
+            toHexString(atr, HEX | UPPERCASE))
         self.assertEqual(
             "0X3B, 0X65, 0X00, 0X00, 0X9C, 0X11, 0X01, 0X01, 0X03",
-            toHexString(bytes, HEX | UPPERCASE | COMMA))
+            toHexString(atr, HEX | UPPERCASE | COMMA))
 
-        bytes = [59, 101, 0, 0, 156, 17, 1, 1, 3]
+        atr = [59, 101, 0, 0, 156, 17, 1, 1, 3]
         self.assertEqual(
             "3B, 65, 00, 00, 9C, 11, 01, 01, 03",
-            toHexString(bytes, COMMA))
+            toHexString(atr, COMMA))
         self.assertEqual(
-            "3B6500009C11010103", toHexString(bytes, PACK))
+            "3B6500009C11010103", toHexString(atr, PACK))
         self.assertEqual(
             "0x3B 0x65 0x00 0x00 0x9C 0x11 0x01 0x01 0x03",
-            toHexString(bytes, HEX))
+            toHexString(atr, HEX))
         self.assertEqual(
             "0x3B, 0x65, 0x00, 0x00, 0x9C, 0x11, 0x01, 0x01, 0x03",
-            toHexString(bytes, HEX | COMMA))
+            toHexString(atr, HEX | COMMA))
         self.assertEqual(
             "0X3B 0X65 0X00 0X00 0X9C 0X11 0X01 0X01 0X03",
-            toHexString(bytes, HEX | UPPERCASE))
+            toHexString(atr, HEX | UPPERCASE))
         self.assertEqual(
             "0X3B, 0X65, 0X00, 0X00, 0X9C, 0X11, 0X01, 0X01, 0X03",
-            toHexString(bytes, HEX | UPPERCASE | COMMA))
+            toHexString(atr, HEX | UPPERCASE | COMMA))
 
     def testcase_tohexstring_empty(self):
         """tests toHexString"""

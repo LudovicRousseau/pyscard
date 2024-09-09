@@ -82,9 +82,9 @@ class ExclusiveTransmitCardConnection(CardConnectionDecorator):
             else:
                 break
 
-    def transmit(self, bytes, protocol=None):
+    def transmit(self, command, protocol=None):
         '''Gain exclusive access to card during APDU transmission for if this
         decorator decorates a PCSCCardConnection.'''
         data, sw1, sw2 = CardConnectionDecorator.transmit(
-            self, bytes, protocol)
+            self, command, protocol)
         return data, sw1, sw2

@@ -42,10 +42,10 @@ class SecureChannelConnection(CardConnectionDecorator):
     def __init__(self, cardconnection):
         CardConnectionDecorator.__init__(self, cardconnection)
 
-    def cypher(self, bytes):
+    def cypher(self, data):
         '''Cypher mock-up; you would include the secure channel logics here.'''
-        print('cyphering', toHexString(bytes))
-        return bytes
+        print('cyphering', toHexString(data))
+        return data
 
     def uncypher(self, data):
         '''Uncypher mock-up;
@@ -53,9 +53,9 @@ class SecureChannelConnection(CardConnectionDecorator):
         print('uncyphering', toHexString(data))
         return data
 
-    def transmit(self, bytes, protocol=None):
+    def transmit(self, command, protocol=None):
         """Cypher/uncypher APDUs before transmission"""
-        cypheredbytes = self.cypher(bytes)
+        cypheredbytes = self.cypher(command)
         data, sw1, sw2 = CardConnectionDecorator.transmit(
             self, cypheredbytes, protocol)
         if [] != data:
