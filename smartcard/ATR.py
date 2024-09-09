@@ -36,15 +36,15 @@ class ATR(object):
                      'RFU', 'RFU', 'RFU', 'RFU', 'RFU']
     currenttable = [25, 50, 100, 'RFU']
 
-    def __init__(self, bytes):
-        """Construct a new atr from bytes."""
-        self.bytes = bytes
+    def __init__(self, atr):
+        """Construct a new atr from atr."""
+        self.atr = atr
         self.__initInstance__()
 
     def __checksyncbyte__(self):
         """Check validity of TS."""
-        if not 0x3b == self.bytes[0] and not 0x03f == self.bytes[0]:
-            raise SmartcardException("invalid TS 0x%-0.2x" % self.bytes[0])
+        if not 0x3b == self.atr[0] and not 0x03f == self.atr[0]:
+            raise SmartcardException("invalid TS 0x%-0.2x" % self.atr[0])
 
     def __initInstance__(self):
         """
@@ -68,10 +68,10 @@ class ATR(object):
         self.__checksyncbyte__()
 
         # initial character
-        self.TS = self.bytes[0]
+        self.TS = self.atr[0]
 
         # format character
-        self.T0 = self.bytes[1]
+        self.T0 = self.atr[1]
 
         # count of historical bytes
         self.K = self.T0 & 0x0f
@@ -106,16 +106,16 @@ class ATR(object):
             self.TD += [None]
 
             if self.hasTA[n]:
-                self.TA[n] = self.bytes[offset + self.hasTA[n]]
+                self.TA[n] = self.atr[offset + self.hasTA[n]]
             if self.hasTB[n]:
-                self.TB[n] = self.bytes[offset + self.hasTA[n] + self.hasTB[n]]
+                self.TB[n] = self.atr[offset + self.hasTA[n] + self.hasTB[n]]
             if self.hasTC[n]:
-                self.TC[n] = self.bytes[offset +
+                self.TC[n] = self.atr[offset +
                                         self.hasTA[n] +
                                         self.hasTB[n] +
                                         self.hasTC[n]]
             if self.hasTD[n]:
-                self.TD[n] = self.bytes[offset +
+                self.TD[n] = self.atr[offset +
                                         self.hasTA[n] +
                                         self.hasTB[n] +
                                         self.hasTC[n] +
@@ -132,14 +132,14 @@ class ATR(object):
             n = n + 1
 
         # historical bytes
-        self.historicalBytes = self.bytes[offset + 1:offset + 1 + self.K]
+        self.historicalBytes = self.atr[offset + 1:offset + 1 + self.K]
 
         # checksum
-        self.hasChecksum = (len(self.bytes) == offset + 1 + self.K + 1)
+        self.hasChecksum = (len(self.atr) == offset + 1 + self.K + 1)
         if self.hasChecksum:
-            self.TCK = self.bytes[-1]
+            self.TCK = self.atr[-1]
             checksum = 0
-            for b in self.bytes[1:]:
+            for b in self.atr[1:]:
                 checksum = checksum ^ b
             self.checksumOK = (checksum == 0)
         else:
@@ -298,7 +298,7 @@ class ATR(object):
 
     def __str__(self):
         """Returns a string representation of the ATR as a strem of bytes."""
-        return toHexString(self.bytes)
+        return toHexString(self.atr)
 
 
 if __name__ == '__main__':
