@@ -35,12 +35,6 @@ from smartcard.scard import *
 from datetime import datetime
 
 
-def signalEvent(evt, isInfinite, hcontext):
-    if not isInfinite:
-        evt.set()
-        SCardCancel(hcontext)
-
-
 class PCSCCardRequest(AbstractCardRequest):
     """PCSC CardRequest class."""
 
