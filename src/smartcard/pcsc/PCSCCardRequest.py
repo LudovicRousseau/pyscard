@@ -266,86 +266,82 @@ class PCSCCardRequest(AbstractCardRequest):
         """Wait for card insertion or removal."""
         AbstractCardRequest.waitforcardevent(self)
         presentcards = []
-        evt = threading.Event()
-
-        # for non infinite timeout, a timer will signal the end of the time-out
-        if INFINITE == self.timeout:
-            timertimeout = 1
-        else:
-            timertimeout = self.timeout
-        timer = threading.Timer(
-            timertimeout, signalEvent, [evt, INFINITE == self.timeout,
-                                        self.hcontext])
-
-        # get status change until time-out, e.g. evt is set
         readerstates = {}
-        timerstarted = False
 
-        while not evt.is_set():
+        # reinitialize at each iteration just in case a new reader appeared
+        readernames = self.getReaderNames()
+        for reader in readernames:
+            # create a dictionary entry for new readers
+            if not reader in readerstates:
+                readerstates[reader] = (reader, SCARD_STATE_UNAWARE)
 
-            if not timerstarted:
-                timerstarted = True
-                timer.start()
+        # call SCardGetStatusChange only if we have some readers
+        if {} != readerstates:
+            hresult, newstates = SCardGetStatusChange(
+                self.hcontext, 0, list(readerstates.values()))
 
-            # reinitialize at each iteration just in case a new reader appeared
-            readernames = self.getReaderNames()
-            for reader in readernames:
-                # create a dictionary entry for new readers
-                if not reader in readerstates:
-                    readerstates[reader] = (reader, SCARD_STATE_UNAWARE)
-            # remove dictionary entry for readers that disappeared
-            for oldreader in list(readerstates.keys()):
-                if oldreader not in readernames:
-                    del readerstates[oldreader]
+            # update readerstate
+            for state in newstates:
+                readername, eventstate, atr = state
+                readerstates[readername] = (readername, eventstate)
+        else:
+            hresult = SCARD_S_SUCCESS
+            newstates = []
 
-            # get status change
-            if {} != readerstates:
-                hresult, newstates = SCardGetStatusChange(
-                    self.hcontext, self.pollinginterval,
-                    list(readerstates.values()))
-            else:
-                hresult = SCARD_S_SUCCESS
-                newstates = []
+        # wait for card insertion
+        self.readerstates = readerstates
+        waitThread = threading.Thread(target=self.getStatusChange)
+        waitThread.start()
 
-            # time-out
-            if hresult in (SCARD_E_TIMEOUT, SCARD_E_CANCELLED):
-                if evt.is_set():
-                    raise CardRequestTimeoutException(hresult=hresult)
-
-            # the reader was unplugged during the loop
-            elif SCARD_E_UNKNOWN_READER == hresult:
-                pass
-
-            # some error happened
-            elif SCARD_S_SUCCESS != hresult:
-                timer.cancel()
+        # the main thread handles a possible KeyboardInterrupt
+        try:
+            waitThread.join()
+        except KeyboardInterrupt:
+            hresult = SCardCancel(self.hcontext)
+            if hresult != SCARD_S_SUCCESS:
                 raise CardRequestException(
-                    'Failed to get status change ' + \
+                    'Failed to SCardCancel ' + \
                     SCardGetErrorMessage(hresult), hresult=hresult)
 
-            # something changed!
-            else:
-                timer.cancel()
-                for state in newstates:
-                    readername, eventstate, atr = state
-                    r, oldstate = readerstates[readername]
+        # get values set in the getStatusChange thread
+        hresult = self.hresult
+        newstates = self.newstates
 
-                    # the status can change on a card already inserted, e.g.
-                    # unpowered, in use, ... Clear the state changed bit if
-                    # the card was already inserted and is still inserted
-                    if oldstate & SCARD_STATE_PRESENT and \
-                        eventstate & \
-                            (SCARD_STATE_CHANGED | SCARD_STATE_PRESENT):
-                        eventstate = eventstate & \
-                            (0xFFFFFFFF ^ SCARD_STATE_CHANGED)
+        # time-out
+        if hresult in (SCARD_E_TIMEOUT, SCARD_E_CANCELLED):
+            raise CardRequestTimeoutException(hresult=hresult)
 
-                    if eventstate & SCARD_STATE_PRESENT and \
-                       eventstate & SCARD_STATE_CHANGED:
-                        presentcards.append(Card.Card(readername, atr))
-                return presentcards
+        # the reader was unplugged during the loop
+        elif SCARD_E_UNKNOWN_READER == hresult:
+            pass
 
-        if evt.is_set():
-            raise CardRequestTimeoutException()
+        # some error happened
+        elif SCARD_S_SUCCESS != hresult:
+            raise CardRequestException(
+                'Failed to get status change ' + \
+                SCardGetErrorMessage(hresult), hresult=hresult)
+
+        # something changed!
+        else:
+            for state in newstates:
+                readername, eventstate, atr = state
+                r, oldstate = readerstates[readername]
+
+                # the status can change on a card already inserted, e.g.
+                # unpowered, in use, ... Clear the state changed bit if
+                # the card was already inserted and is still inserted
+                if oldstate & SCARD_STATE_PRESENT and \
+                    eventstate & \
+                        (SCARD_STATE_CHANGED | SCARD_STATE_PRESENT):
+                    eventstate = eventstate & \
+                        (0xFFFFFFFF ^ SCARD_STATE_CHANGED)
+
+                if eventstate & SCARD_STATE_PRESENT and \
+                   eventstate & SCARD_STATE_CHANGED:
+                    presentcards.append(Card.Card(readername, atr))
+            return presentcards
+
+        raise CardRequestTimeoutException()
 
 if __name__ == '__main__':
     """Small sample illustrating the use of PCSCCardRequest.py."""
