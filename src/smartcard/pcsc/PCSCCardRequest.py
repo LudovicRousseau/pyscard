@@ -71,6 +71,7 @@ class PCSCCardRequest(AbstractCardRequest):
             self.timeout = int(self.timeout * 1000)
 
         self.hcontext = PCSCContext().getContext()
+        self.evt = threading.Event()
 
     def getReaderNames(self):
         """Returns the list of PCSC readers on which to wait for cards."""
@@ -111,6 +112,7 @@ class PCSCCardRequest(AbstractCardRequest):
         self.hresult, self.newstates = SCardGetStatusChange(
             self.hcontext, self.timeout,
             list(self.readerstates.values()))
+        self.evt.set()
 
     def waitforcard(self):
         """Wait for card insertion and returns a card service."""
@@ -194,6 +196,9 @@ class PCSCCardRequest(AbstractCardRequest):
                     raise CardRequestException(
                         'Failed to SCardCancel ' + \
                         SCardGetErrorMessage(hresult), hresult=hresult)
+
+            # wait for the thread to finish in case of KeyboardInterrupt
+            self.evt.wait(timeout=None)
 
             # get values set in the getStatusChange thread
             hresult = self.hresult
@@ -296,6 +301,9 @@ class PCSCCardRequest(AbstractCardRequest):
                 raise CardRequestException(
                     'Failed to SCardCancel ' + \
                     SCardGetErrorMessage(hresult), hresult=hresult)
+
+        # wait for the thread to finish in case of KeyboardInterrupt
+        self.evt.wait(timeout=None)
 
         # get values set in the getStatusChange thread
         hresult = self.hresult
