@@ -127,8 +127,6 @@ kw = {'name': "pyscard",
             'Pyro': ['Pyro'],
             },
 
-      'test_suite': 'test',
-
       'classifiers': [
           'Development Status :: 5 - Production/Stable',
           'License :: OSI Approved :: GNU Lesser General Public License v2 or later (LGPLv2+)',
