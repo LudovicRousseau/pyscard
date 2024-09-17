@@ -67,7 +67,7 @@ iso7816_4SW = {
     0x69: (smartcard.sw.SWExceptions.CheckingErrorException,
            {0x81: "Command incompatible with file structure.",
             0x82: "Security status not satisfied",
-            0x83: "Authentification method blocked",
+            0x83: "Authentication method blocked",
             0x84: "Referenced data invalid",
             0x85: "Conditions of use not satisfied",
             0x86: "Command not allowed (no current EF)",

@@ -110,7 +110,7 @@ for k in list(Properties.keys()):
 def parseFeatureRequest(response):
     """ Get the list of Part10 features supported by the reader.
 
-    @param response: result of L{CM_IOCTL_GET_FEATURE_REQUEST} commmand
+    @param response: result of L{CM_IOCTL_GET_FEATURE_REQUEST} command
 
     @rtype: list
     @return: a list of list C{[[tag1, value1], [tag2, value2]]}
@@ -236,7 +236,7 @@ def parseTlvProperties(response):
             # 32 bits value
             data = ((data[3] * 256 + data[2]) * 256 + data[1]) * 256 + data[0]
 
-        # store the value in the dictionnary
+        # store the value in the dictionary
         try:
             d[Properties[tag]] = data
         except KeyError:

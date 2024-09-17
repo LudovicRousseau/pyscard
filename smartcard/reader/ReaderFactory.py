@@ -6,7 +6,7 @@ Factory pattern implementation borrowed from
 Thinking in Python, Bruce Eckel,
 http://mindview.net/Books/TIPython
 
-The code to instanciate the reader Factory() has
+The code to instantiate the reader Factory() has
 been updated to dynamically load the module with
 Robert Brewer ClassLoader.py.
 

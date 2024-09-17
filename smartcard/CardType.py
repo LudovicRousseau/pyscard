@@ -29,7 +29,7 @@ from smartcard.util import toHexString
 class CardType(object):
     """Abstract base class for CardTypes.
 
-    Known sub-classes: L{smartcard.CardType.AnyCardType}
+    Known subclasses: L{smartcard.CardType.AnyCardType}
     L{smartcard.CardType.ATRCardType}."""
 
     def __init__(self):
@@ -39,10 +39,10 @@ class CardType(object):
     def matches(self, atr, reader=None):
         """Returns true if atr and card connected match the L{CardType}.
 
-        @param atr:    the atr to chek for matching
+        @param atr:    the atr to check for matching
         @param reader: the reader (optional); default is None
 
-        The reader can be use in some sub-classes to do advanced
+        The reader can be used in some subclasses to do advanced
         matching that require connecting to the card."""
         pass
 
@@ -56,7 +56,7 @@ class AnyCardType(CardType):
     def matches(self, atr, reader=None):
         """Always returns true, i.e. AnyCardType matches any card.
 
-        @param atr:    the atr to chek for matching
+        @param atr:    the atr to check for matching
         @param reader: the reader (optional); default is None"""
         return True
 
@@ -83,7 +83,7 @@ class ATRCardType(CardType):
     def matches(self, atr, reader=None):
         """Returns true if the atr matches the masked CardType atr.
 
-        @param atr:    the atr to chek for matching
+        @param atr:    the atr to check for matching
         @param reader: the reader (optional); default is None
 
         When atr is compared to the CardType ATR, matches returns true if

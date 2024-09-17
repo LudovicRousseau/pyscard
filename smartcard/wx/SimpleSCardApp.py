@@ -57,7 +57,7 @@ class SimpleSCardApp(wx.App):
           - TB_SMARTCARD: display a reader toolbar
           - PANEL_APDUTRACER: display an APDU tracer panel
           - default is TR_DEFAULT = TR_SMARTCARD
-        @param pos: the application position as a (x,y) tupple; default is (-1,-1)
+        @param pos: the application position as a (x,y) tuple; default is (-1,-1)
         @param size: the application window size as a (x,y) tuple; default is (-1,-1)
 
             Example:

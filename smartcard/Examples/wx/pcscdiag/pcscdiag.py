@@ -97,7 +97,7 @@ class pcscdiag(wx.Frame):
         self.tree.Expand(root)
 
     def traverse(self, traverseroot, function, cookie=0):
-        """ recursivly walk tree control """
+        """ recursively walk tree control """
         if self.tree.ItemHasChildren(traverseroot):
             firstchild, cookie = self.tree.GetFirstChild(traverseroot)
             function(firstchild)

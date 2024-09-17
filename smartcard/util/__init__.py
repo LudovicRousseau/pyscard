@@ -145,8 +145,8 @@ __dic_GSM_3_38__ = {
     'ä': 0x7B,            # ä minuscule a trema
     'Ö': 0x5C,            # Ö majuscule O trema
     'ö': 0x7C,            # ö minuscule o trema
-    'Ñ': 0x5D,            # Ñ majuscule N tilda espagnol
-    'ñ': 0x7D,            # ñ minuscule n tilda espagnol
+    'Ñ': 0x5D,            # Ñ majuscule N tilde espagnol
+    'ñ': 0x7D,            # ñ minuscule n tilde espagnol
     'Ü': 0x5E,            # Ü majuscule U trema
     'ü': 0x7E,            # ü minuscule u trema
     '§': 0x5F,            # § signe paragraphe

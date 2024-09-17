@@ -2,7 +2,7 @@
 This file contains SCARD_ATTR attributes definitions taken from
 reader.h, in MUSCLE SmartCard Development ( http://www.linuxnet.com ).
 It allows to build pyscard on Mac OS X without any dependency on the
-muscle source code.  Indeed, default Mac OS X does not containt reader.h
+muscle source code.  Indeed, default Mac OS X does not contain reader.h
 as part of the PCSC.framework.
 
 Copyright (C) 1999-2005 David Corcoran <corcoran@linuxnet.com>

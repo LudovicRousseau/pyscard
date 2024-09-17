@@ -59,7 +59,7 @@ class ErrorCheckingChain(object):
         @param exClass:    the exception to exclude, e.g.
         L{smartcard.sw.SWExceptions.WarningProcessingException} A filtered
         exception will not be raised when the sw1,sw2 conditions that
-        would raise the excption are met.
+        would raise the exception are met.
         """
 
         self.excludes.append(exClass)
@@ -77,7 +77,7 @@ class ErrorCheckingChain(object):
         try:
             self.strategy(data, sw1, sw2)
         except tuple(self.excludes) as exc:
-            # The following addtional filter may look redundant, it isn't.
+            # The following additional filter may look redundant, it isn't.
             # It checks that type(exc) is *equal* to any of self.excludes,
             # rather than equal-or-subclass to any of self.excludes.
             # This maintains backward compatibility with the behaviour of

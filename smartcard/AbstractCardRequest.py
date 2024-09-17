@@ -63,7 +63,7 @@ class AbstractCardRequest(object):
         self.cardServiceClass = cardServiceClass
         self.timeout = timeout
 
-        # if no CardType requeted, use AnyCardType
+        # if no CardType requested, use AnyCardType
         if self.cardType is None:
             self.cardType = AnyCardType()
 

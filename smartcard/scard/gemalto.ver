@@ -12,7 +12,7 @@
 #endif
 
 #ifndef VER_PRODUCTNAME_STR
-#define VER_PRODUCTNAME_STR "Smart Cards Sofware Development Tools"
+#define VER_PRODUCTNAME_STR "Smart Cards Software Development Tools"
 #endif
 
 /* VER_PRODUCTVERSION and VER_PRODUCTVERSION_STR are provided by setup.py */

@@ -45,7 +45,7 @@ if not main_is_frozen():
         'resources',
         'reader.ico')
 
-# runing from a standalone exe built with py2exe
+# running from a standalone exe built with py2exe
 # resources expected images directory
 else:
     if os.path.exists(os.path.join("images", 'smartcard.ico')):

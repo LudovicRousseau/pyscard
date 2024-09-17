@@ -70,7 +70,7 @@ VERSION_ALT = '%i,%01i,%01i,%04i' % VERSION_INFO
 
 
 class BuildPyBuildExtFirst(build_py):
-    """Workaround substitude `build_py` command for SWIG"""
+    """Workaround substitute `build_py` command for SWIG"""
     def run(self):
         if which("swig") is None:
             print("Install swig and try again")

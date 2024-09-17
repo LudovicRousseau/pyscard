@@ -5,7 +5,7 @@ e.g.  a GSM file system or an Open Platform loader.  CardService is an
 abstract class from which concrete card services are derived.  A concrete
 card service is almost always smart card operating system specific.
 
-The card service performs its specific smart card functionnality by accessing
+The card service performs its specific smart card functionality by accessing
 the smartcard with a CardConnection.
 
 __author__ = "http://www.gemalto.com"

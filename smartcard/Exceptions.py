@@ -93,7 +93,7 @@ class InvalidATRMaskLengthException(SmartcardException):
 
 
 class InvalidReaderException(SmartcardException):
-    """Raised when trying to acces an invalid smartcard reader."""
+    """Raised when trying to access an invalid smartcard reader."""
 
     def __init__(self, readername):
         SmartcardException.__init__(self, 'Invalid reader: %s' % readername)

@@ -94,7 +94,7 @@ if 'winscard' == resourceManager:
                 print('Interface for ' + znewcardName + ' :',
                       smartcard.guid.GUIDToStr(i))
 
-            print('Forgeting card ' + znewcardName)
+            print('Forgetting card ' + znewcardName)
             hresult = SCardForgetCardType(hcontext, znewcardName)
             if hresult != SCARD_S_SUCCESS:
                 raise error(
