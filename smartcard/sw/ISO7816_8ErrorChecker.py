@@ -54,7 +54,7 @@ iso7816_8SW = {
             0x88: "SM data objects incorrect"}),
 
     0x67: (smartcard.sw.SWExceptions.CheckingErrorException,
-           {0x00: "Wrong length (emtpy Lc field)"}),
+           {0x00: "Wrong length (empty Lc field)"}),
 
     0x68: (smartcard.sw.SWExceptions.CheckingErrorException,
            {0x83: "Final command expected",
@@ -62,7 +62,7 @@ iso7816_8SW = {
 
     0x69: (smartcard.sw.SWExceptions.CheckingErrorException,
            {0x82: "Security status not satisfied",
-            0x83: "Authentification method blocked",
+            0x83: "Authentication method blocked",
             0x84: "Referenced data invalidated",
             0x85: "Conditions of use not satisfied"}),
 

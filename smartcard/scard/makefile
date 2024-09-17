@@ -36,7 +36,7 @@ linker_flags = /DLL /nologo /INCREMENTAL:no /LIBPATH:$(pythondir)\libs /LIBPATH:
 # final target
 all: $(pythonpackagedir)\_scard.pyd $(pythonpackagedir)\_scard_d.pyd
 
-# depedencies
+# dependencies
 $(pythonpackagedir)\_scard.pyd : obj\_scard.pyd
 	if exist obj\_scard.pyd copy obj\_scard.pyd $(pythonpackagedir)\_scard.pyd
 

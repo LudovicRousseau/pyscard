@@ -128,8 +128,8 @@ class PCSCCardConnection(CardConnection):
         protocol = 0
         if dwActiveProtocol == SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1:
             # special case for T0 | T1
-            # this happen when mode=SCARD_SHARE_DIRECT and no protocol is
-            # then negociated with the card
+            # this happens when mode=SCARD_SHARE_DIRECT and no protocol is
+            # then negotiated with the card
             protocol = CardConnection.T0_protocol | CardConnection.T1_protocol
         else:
             for p in dictProtocol:
@@ -178,8 +178,8 @@ class PCSCCardConnection(CardConnection):
         protocol = 0
         if dwActiveProtocol == SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1:
             # special case for T0 | T1
-            # this happen when mode=SCARD_SHARE_DIRECT and no protocol is
-            # then negociated with the card
+            # this happens when mode=SCARD_SHARE_DIRECT and no protocol is
+            # then negotiated with the card
             protocol = CardConnection.T0_protocol | CardConnection.T1_protocol
         else:
             for p in dictProtocol:

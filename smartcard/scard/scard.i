@@ -1836,7 +1836,7 @@ SCARDRETCODE _Reconnect(
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_RELEASECONTEXT
 "
-Release a PC/SC context estabished by L{SCardEstablishContext()}.
+Release a PC/SC context established by L{SCardEstablishContext()}.
 
 >>> from smartcard.scard import *
 >>> from smartcard.pcsc import *

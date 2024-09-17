@@ -49,7 +49,7 @@ if __name__ == '__main__':
         print('PCSC Readers:', readers)
 
         for reader in readers:
-            print('Trying to retreive ATR of card in', reader)
+            print('Trying to retrieve ATR of card in', reader)
 
             hresult, hcard, dwActiveProtocol = SCardConnect(
                 hcontext,

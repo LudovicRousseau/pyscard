@@ -111,7 +111,7 @@ if __name__ == '__main__':
             raise error('No smart card readers')
 
         for reader in readers:
-            print('Trying to retreive attributes of', reader)
+            print('Trying to retrieve attributes of', reader)
             hresult, hcard, dwActiveProtocol = SCardConnect(
                 hcontext,
                 reader,

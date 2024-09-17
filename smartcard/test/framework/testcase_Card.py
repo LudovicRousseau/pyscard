@@ -53,7 +53,7 @@ class testcase_Card(unittest.TestCase):
     """Test case for smartcard.Card."""
 
     def testcase_CardDictionary(self):
-        """Create a dictionnary with Card keys"""
+        """Create a dictionary with Card keys"""
         mydict = {}
         for reader in readers():
             card = Card(reader, expectedATRinReader[str(reader)])

@@ -81,7 +81,7 @@ class testcase_ErrorChecking(unittest.TestCase):
     """Test case for smartcard.sw.* error checking."""
 
     def failUnlessRaises(self, excClass, callableObj, *args, **kwargs):
-        """override of unittest.TestCase.failUnlesRaises so that we return the
+        """override of unittest.TestCase.failUnlessRaises so that we return the
            exception object for testing fields."""
         try:
             callableObj(*args, **kwargs)

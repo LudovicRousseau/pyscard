@@ -238,7 +238,7 @@ class ATR(object):
         return self.N
 
     def getSupportedProtocols(self):
-        """Returns a dictionnary of supported protocols."""
+        """Returns a dictionary of supported protocols."""
         protocols = {}
         for td in self.TD:
             if td is not None:
@@ -297,7 +297,7 @@ class ATR(object):
         print('nb of historical bytes: %d' % self.getHistoricalBytesCount())
 
     def __str__(self):
-        """Returns a string representation of the ATR as a strem of bytes."""
+        """Returns a string representation of the ATR as a stream of bytes."""
         return toHexString(self.atr)
 
 
