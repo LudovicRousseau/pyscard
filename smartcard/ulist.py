@@ -84,7 +84,7 @@ class ulist(list):
         """Remove from other items already in list."""
         if not isinstance(_other, type(self)) \
            and not isinstance(_other, type(list)) \
-           and not isinstance(_other, type([])):
+           and not isinstance(_other, list):
             other = [_other]
         else:
             other = list(_other)

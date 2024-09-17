@@ -86,7 +86,7 @@ setup.py build_ext install
 ```
 
 This will build pyscard and install it in the site-packages directory of
-your python distribution, e.g. `c:\python25\Lib\site-packages\smartcard`.
+your python distribution, e.g. `c:\python312\Lib\site-packages\smartcard`.
 
 This install procedure does not install the documentation, examples or test
 files.
@@ -114,7 +114,7 @@ sudo python setup.py install
 
 This will build pyscard and install it in the site-packages directory of
 your python distribution, e.g.
-`/usr/lib/python2.7/site-packages/smartcard`.
+`/usr/lib/python3.12/site-packages/smartcard`.
 
 Developer documentation, unit tests and examples
 ------------------------------------------------

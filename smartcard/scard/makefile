@@ -24,7 +24,7 @@
 
 # where python and swig are located usually on my machine
 # adapt to your configuration
-# the pythondev must contain the debug libraries (e.g. python25_d.lib)
+# the pythondev must contain the debug libraries
 pythondir=c:\projects\pyscard\factory\python
 pythondebugdir=c:\projects\pyscard\factory\pythondev
 pythonpackagedir=$(pythondir)\Lib\site-packages\smartcard\scard

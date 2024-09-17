@@ -1,9 +1,7 @@
 [MAIN]
 
-# Analyse import fallback blocks. This can be used to support both Python 2 and
-# 3 compatible code, which means that the block might have code that exists
-# only in one or another interpreter, leading to false positives when analysed.
-analyse-fallback-blocks=no
+# Analyse import fallback blocks.
+analyse-fallback-blocks=yes
 
 # Clear in-memory caches upon conclusion of linting. Useful if running pylint
 # in a server-like mode.

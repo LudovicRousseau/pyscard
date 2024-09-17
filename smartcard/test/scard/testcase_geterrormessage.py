@@ -47,9 +47,7 @@ class testcase_geterrormessage(unittest.TestCase):
         hresult, readers = SCardListReaders(self.hcontext, [])
         self.assertEqual(hresult, 0)
 
-        # we need a long on Python 2.x like 123L
-        # but Python 3 do not support the 123L notation any more
-        hresult = SCardReleaseContext(pow(2,63) >> 60)
+        hresult = SCardReleaseContext(pow(2, 63) >> 60)
         if 'win32' == sys.platform:
             self.assertEqual((
                 SCARD_E_INVALID_HANDLE == hresult or \
