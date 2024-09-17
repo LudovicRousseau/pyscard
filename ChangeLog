@@ -1,3 +1,7 @@
+Unreleased changes
+==================
+   * Remove Python 2 conditional code
+
 2.1.1 (September 2024)
 ======================
    * Fix a regression introduced in 2.1.0

@@ -106,14 +106,8 @@ class ReaderMonitor(Observable):
                     # avoid a deadlock; addObserver and notifyObservers called
                     # in the ReaderMonitoringThread run() method are
                     # synchronized
-                    try:
-                        # Python 3.x
-                        import _thread
-                        _thread.start_new_thread(self.rmthread.start, ())
-                    except:
-                        # Python 2.x
-                        import thread
-                        thread.start_new_thread(self.rmthread.start, ())
+                    import _thread
+                    _thread.start_new_thread(self.rmthread.start, ())
         else:
             observer.update(self, (self.rmthread.readers, []))
 

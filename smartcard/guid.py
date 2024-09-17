@@ -35,12 +35,7 @@ def strToGUID(s):
     [103, 22, 79, 173, 117, 234, 36, 65, 132, 212, 100, 27, 59, 25, 124, 101]
     """
     dat = uuid.UUID(hex=s)
-    if isinstance(dat.bytes_le, str):
-        # Python 2
-        dat = [ord(e) for e in dat.bytes_le]
-    else:
-        # Python 3
-        dat = list(dat.bytes_le)
+    dat = list(dat.bytes_le)
     return dat
 
 
@@ -51,10 +46,7 @@ def GUIDToStr(g):
     ...            132, 212, 100, 27, 59, 25, 124, 101])
     '{AD4F1667-EA75-4124-84D4-641B3B197C65}'
     """
-    try:
-        dat = uuid.UUID(bytes_le=bytes(g))
-    except:
-        dat = uuid.UUID(bytes_le=''.join(map(chr, g)))
+    dat = uuid.UUID(bytes_le=bytes(g))
     return '{' + str(dat).upper() + '}'
 
 

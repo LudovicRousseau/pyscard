@@ -77,13 +77,13 @@ class innerreadergroups(ulist):
 
     def addreadergroup(self, newgroup):
         """Add a reader group"""
-        if not isinstance(newgroup, type("")):
+        if not isinstance(newgroup, str):
             raise BadReaderGroupException
         self += newgroup
 
     def removereadergroup(self, group):
         """Remove a reader group"""
-        if not isinstance(group, type("")):
+        if not isinstance(group, str):
             raise BadReaderGroupException
         self.remove(group)
 

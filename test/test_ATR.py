@@ -1,21 +1,17 @@
 # -*- coding: utf-8 -*-
 
+import io
 import sys
 import unittest
 from smartcard.ATR import ATR
 from smartcard.Exceptions import SmartcardException
 from smartcard.util import toBytes
 
-if sys.version_info >= (3, 0):
-    from io import StringIO
-else:
-    from StringIO import StringIO
-
 
 class TestUtil(unittest.TestCase):
 
     def setUp(self):
-        self.held, sys.stdout = sys.stdout, StringIO()
+        self.held, sys.stdout = sys.stdout, io.StringIO()
 
     def test_ATR1(self):
         atr = [0x3F, 0x65, 0x25, 0x00, 0x2C, 0x09, 0x69, 0x90, 0x00]

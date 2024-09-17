@@ -106,7 +106,7 @@ class PCSCCardRequest(AbstractCardRequest):
         # otherwise use only the asked readers that are inserted
         else:
             for reader in self.readersAsked:
-                if not isinstance(reader, type("")):
+                if not isinstance(reader, str):
                     reader = str(reader)
                 if reader in pcscreaders:
                     readers = readers + [reader]
