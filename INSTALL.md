@@ -36,8 +36,8 @@ python framework with objects wrapping PCSC API.
 
 Documentation
 -------------
-All documentation is provided in the `smartcard/doc` directory of the
-source distribution.  Examples are provided in the `smartcard/Examples`
+All documentation is provided in the `src/smartcard/doc` directory of the
+source distribution.  Examples are provided in the `src/smartcard/Examples`
 directory of the source distribution.  The binary distribution does not
 include any documentation, tests scripts or examples.
 
@@ -118,11 +118,11 @@ your python distribution, e.g.
 
 Developer documentation, unit tests and examples
 ------------------------------------------------
-The developer documentation is in the `smartcard/doc/` directory of the
+The developer documentation is in the `src/smartcard/doc/` directory of the
 source distribution.
 
-Examples are located in the `smartcard/Examples/` directory, and the pyunit
-unit tests in the `smartcard/test/` directory.
+Examples are located in the `src/smartcard/Examples/` directory, and the pyunit
+unit tests in the `src/smartcard/test/` directory.
 
 Build instructions for packagers
 --------------------------------

@@ -1,6 +1,7 @@
 Unreleased changes
 ==================
    * Remove Python 2 conditional code
+   * Migrate a `src/` layout.
 
 2.1.1 (September 2024)
 ======================
