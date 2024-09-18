@@ -6,24 +6,24 @@ include MANIFEST.in
 include Makefile
 include README.md
 include TODO
-include smartcard/scard/PcscDefs.i
-include smartcard/scard/PcscTypemaps.i
-include smartcard/scard/gemalto.ver
-include smartcard/scard/helpers.c
-include smartcard/scard/helpers.h
-include smartcard/scard/memlog.h
-include smartcard/scard/pcsctypes.h
-include smartcard/scard/pyscard-reader.h
-include smartcard/scard/scard.def
-include smartcard/scard/scard.i
-include smartcard/scard/scard.rc
-include smartcard/scard/winscarddll.c
-include smartcard/scard/winscarddll.h
-include smartcard/test/configcheck.py
-recursive-include smartcard/Examples *.py *.ico
-recursive-include smartcard/doc *.html *.jpg *.css *.js *.png *.txt
-recursive-include smartcard/test/framework *.txt *.py
-recursive-include smartcard/test/frameworkpcsc *.txt *.py
-recursive-include smartcard/test/scard *.txt *.py
-recursive-include smartcard/wx *.ico
+include src/smartcard/scard/PcscDefs.i
+include src/smartcard/scard/PcscTypemaps.i
+include src/smartcard/scard/gemalto.ver
+include src/smartcard/scard/helpers.c
+include src/smartcard/scard/helpers.h
+include src/smartcard/scard/memlog.h
+include src/smartcard/scard/pcsctypes.h
+include src/smartcard/scard/pyscard-reader.h
+include src/smartcard/scard/scard.def
+include src/smartcard/scard/scard.i
+include src/smartcard/scard/scard.rc
+include src/smartcard/scard/winscarddll.c
+include src/smartcard/scard/winscarddll.h
+include src/smartcard/test/configcheck.py
+recursive-include src/smartcard/Examples *.py *.ico
+recursive-include src/smartcard/doc *.html *.jpg *.css *.js *.png *.txt
+recursive-include src/smartcard/test/framework *.txt *.py
+recursive-include src/smartcard/test/frameworkpcsc *.txt *.py
+recursive-include src/smartcard/test/scard *.txt *.py
+recursive-include src/smartcard/wx *.ico
 include test/*.py

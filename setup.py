@@ -45,7 +45,7 @@ if platform.system() == 'Windows':
     platform__cc_defines = [('WIN32', '100')]
     platform_swig_opts = ['-DWIN32']
     if 'mingw' not in get_platform():
-        platform_sources = ['smartcard/scard/scard.rc']
+        platform_sources = ['src/smartcard/scard/scard.rc']
     platform_libraries = ['winscard']
 
 elif platform.system() == 'Darwin':
@@ -98,7 +98,7 @@ kw = {'name': "pyscard",
                    "smartcard.util",
                    "smartcard.wx",
                    ],
-      'package_dir': {"": "."},
+      'package_dir': {"": "src"},
       'package_data': {
                          "smartcard.wx": ["resources/*.ico"],
                        },
@@ -110,17 +110,17 @@ kw = {'name': "pyscard",
                                     ('VER_PRODUCTVERSION', VERSION_ALT),
                                     ('VER_PRODUCTVERSION_STR', VERSION_STR)] \
                       + platform__cc_defines,
-                      include_dirs=['smartcard/scard/'] \
+                      include_dirs=['src/smartcard/scard/'] \
                       + platform_include_dirs,
-                      sources=["smartcard/scard/helpers.c",
-                               "smartcard/scard/winscarddll.c",
-                               "smartcard/scard/scard.i"] \
+                      sources=["src/smartcard/scard/helpers.c",
+                               "src/smartcard/scard/winscarddll.c",
+                               "src/smartcard/scard/scard.i"] \
                                        + platform_sources,
                       libraries=platform_libraries,
                       extra_compile_args=platform_extra_compile_args,
                       extra_link_args=platform_extra_link_args,
                       swig_opts=['-outdir',
-                                 'smartcard/scard'] \
+                                 'src/smartcard/scard'] \
                       + platform_swig_opts)],
       'extras_require': {
             'Gui': ['wxPython'],
