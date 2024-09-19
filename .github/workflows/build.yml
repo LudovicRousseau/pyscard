@@ -66,10 +66,10 @@ jobs:
           python3 -m coverage erase
           python3 -m coverage run -m pytest
           python3 -m coverage report
+          python3 -m coverage xml
 
       - name: Coveralls
-        if: matrix.os == 'ubuntu-latest'
-        uses: AndreMiras/coveralls-python-action@develop
+        uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
