@@ -10,8 +10,8 @@ on:
 
 jobs:
   test:
-    name: "${{ matrix.os.name }} (${{ matrix.cpython }})"
-    runs-on: "${{ matrix.os.runner }}"
+    name: "${{ matrix.name }} / ${{ matrix.cpython }}"
+    runs-on: "${{ matrix.runner }}"
     defaults:
       run:
         shell: "bash"
@@ -19,60 +19,92 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os:
-          - name: "Linux"
-            runner: "ubuntu-latest"
-          - name: "macOS"
-            runner: "macos-latest"
+        name:
+          - "Linux"
+          - "macOS"
+          - "Windows (x64)"
+          - "Windows (x86)"
         cpython:
           - "3.9"
           - "3.10"
           - "3.11"
           - "3.12"
 
-    steps:
-      - uses: actions/checkout@v4
+        include:
+          # Augment the matrix with additional values.
+          # The values match on "name".
+          - name: "Linux"
+            runner: "ubuntu-latest"
+            architecture: "x64"
 
-      - name: Set up Python ${{ matrix.cpython }}
+          - name: "macOS"
+            runner: "macos-latest"
+            architecture: "arm64"
+
+          - name: "Windows (x64)"
+            runner: "windows-latest"
+            architecture: "x64"
+
+          - name: "Windows (x86)"
+            runner: "windows-latest"
+            architecture: "x86"
+
+    steps:
+      - name: "Checkout the repository"
+        uses: actions/checkout@v4
+
+      - name: "Set up Python ${{ matrix.cpython }}"
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.cpython }}
+          python-version: "${{ matrix.cpython }}"
+          architecture: "${{ matrix.architecture }}"
 
-      - name: setup prerequisites (Linux)
-        if: matrix.os.name == 'Linux'
+      - name: "Install build prerequisites (Linux)"
+        if: matrix.name == 'Linux'
         run: |
           sudo apt install libpcsclite-dev python3-all-dev python3-setuptools swig
 
-      - name: setup prerequisites (macOS)
-        if: matrix.os.name == 'macOS'
+      - name: "Install build prerequisites (macOS)"
+        if: matrix.name == 'macOS'
         run: |
           brew install swig pylint
 
-      - name: build
+      - name: "Install build prerequisites (Windows)"
+        if: matrix.name == 'Windows'
         run: |
-          python3 -m venv temp
-          source temp/bin/activate
-          pip install -r dev-requirements.txt 
-          make
+          choco install swig --version 2.0.12 --allow-empty-checksums --yes --limit-output --allow-downgrade
+          swig -version
 
-      - name: test run
+      - name: "Determine virtual environment bin path"
+        shell: "bash"
         run: |
-          source temp/bin/activate
-          make test
+          echo 'venv-path=temp/${{ runner.os == 'Windows' && 'Scripts' || 'bin' }}' >> "$GITHUB_ENV"
 
-      - name: coverage
+      - name: "Create a virtual environment"
         run: |
-          source temp/bin/activate
-          python3 -m coverage erase
-          python3 -m coverage run -m pytest
-          python3 -m coverage report
-          python3 -m coverage xml
+          python -m venv temp
+          ${{ env.venv-path }}/python -m pip install --upgrade pip setuptools wheel
+          ${{ env.venv-path }}/pip install tox
 
-      - name: Coveralls
+      - name: "Test"
+        run: |
+          ${{ env.venv-path }}/tox -e py${{ matrix.cpython }},coverage_report-ci
+
+      - name: "Coveralls"
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: pylint
+      - name: "Build"
         run: |
-          pylint --errors-only smartcard || true
+          ${{ env.venv-path }}/tox -e build
+
+      - name: "Upload wheel"
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheel-${{ matrix.name }}-${{ matrix.cpython }}-${{ matrix.architecture }}
+          path: dist/*.whl
+
+      - name: "Lint"
+        run: |
+          ${{ env.venv-path }}/tox -e pylint
