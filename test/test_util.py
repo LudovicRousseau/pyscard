@@ -33,9 +33,11 @@ class TestUtil(unittest.TestCase):
 
     def test_padd(self):
         data_in = toBytes("3B 65 00 00 9C 11 01 01 03")
+        old_data_in = list(data_in)
         data_out = [0x3B, 0x65, 0, 0, 0x9C, 0x11, 1, 1, 3,
                     0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
         self.assertEqual(padd(data_in, 16), data_out)
+        self.assertEqual(data_in, old_data_in)
 
         self.assertEqual(padd(data_in, 4), data_in)
 
