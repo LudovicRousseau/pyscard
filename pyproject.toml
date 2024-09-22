@@ -1,3 +1,14 @@
 [build-system]
 requires = ["setuptools","swig"]
 build-backend = "setuptools.build_meta"
+
+
+# pydoctor
+# --------
+
+[tool.pydoctor]
+add-package = ["src/smartcard"]
+project-name = "PySCard"
+project-url = "https://github.com/LudovicRousseau/pyscard"
+html-output = "build/docs/apidocs"
+warnings-as-errors = true
