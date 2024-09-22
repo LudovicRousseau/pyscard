@@ -106,5 +106,17 @@ class TestUtil(unittest.TestCase):
             expected = "scard exception: Unknown reader specified. (0x80100009)"
         self.assertEqual(text, expected)
 
+        exc = BaseSCardException(hresult=-1)
+        self.assertEqual(exc.hresult, -1)
+        text = str(exc)
+        expected = "scard exception"
+        self.assertEqual(text, expected)
+
+        exc = BaseSCardException(hresult=-1, message="foo bar")
+        self.assertEqual(exc.hresult, -1)
+        text = str(exc)
+        expected = "foo bar"
+        self.assertEqual(text, expected)
+
 if __name__ == '__main__':
     unittest.main()
