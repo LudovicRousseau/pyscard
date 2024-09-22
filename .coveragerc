@@ -1,8 +1,23 @@
 [run]
-source = smartcard
+branch = True
+parallel = True
 relative_files = True
+source =
+    smartcard
+    test
+
+[paths]
+source =
+    src
+    */site-packages
 
 [report]
+skip_covered = True
+fail_under = 33
 exclude_lines =
     pragma: no cover
     if __name__ == '__main__':
+
+[html]
+directory = htmlcov/
+skip_covered = False

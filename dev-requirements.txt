@@ -4,3 +4,4 @@ wheel
 build
 setuptools
 pytest
+tox
