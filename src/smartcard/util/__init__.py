@@ -45,11 +45,12 @@ def padd(bytelist, length, padding='FF'):
     [59, 101, 0, 0, 156, 17, 1, 1, 3]
     """
 
-    if len(bytelist) < length:
-        for index in range(length - len(bytelist)):
-            bytelist.append(eval('0x' + padding))
+    newlist = list(bytelist)
+    if len(newlist) < length:
+        for index in range(length - len(newlist)):
+            newlist.append(eval('0x' + padding))
 
-    return bytelist
+    return newlist
 
 
 def toASCIIBytes(stringtoconvert):
