@@ -37,6 +37,8 @@ class TestUtil(unittest.TestCase):
                     0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
         self.assertEqual(padd(data_in, 16), data_out)
 
+        self.assertEqual(padd(data_in, 4), data_in)
+
     def test_toASCIIBytes(self):
         data_in = "Number 101"
         data_out = [0x4E, 0x75, 0x6D, 0x62, 0x65, 0x72, 0x20, 0x31, 0x30, 0x31]
