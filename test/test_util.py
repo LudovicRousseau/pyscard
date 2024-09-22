@@ -116,6 +116,9 @@ class TestUtil(unittest.TestCase):
         self.assertEqual(toHexString(data_in, HEX | UPPERCASE | COMMA |
                                      PACK), data_out)
 
+        with self.assertRaises(TypeError):
+            self.assertEqual(toHexString("foo"))
+
     def test_HexListToBinString(self):
         data_in = [1, 2, 3]
         data_out = "\x01\x02\x03"
