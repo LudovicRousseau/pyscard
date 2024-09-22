@@ -84,7 +84,7 @@ def toASCIIString(bytelist):
     ". .~."
     """
 
-    res = list()
+    res = []
     for b in bytelist:
         if b < 32 or b > 127:
             c = '.'

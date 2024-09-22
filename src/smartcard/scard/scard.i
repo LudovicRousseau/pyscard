@@ -1673,7 +1673,7 @@ Value of state:
 >>>     raise PCSCExceptions.ListReadersException(hresult)
 >>> 
 >>> # get status change
->>> readerstates = list()
+>>> readerstates = []
 >>> for reader in readers:
 >>>     readerstates.append((reader, SCARD_STATE_UNAWARE))
 >>> 
