@@ -3,6 +3,7 @@ Unreleased changes
    * Remove Python 2 conditional code
    * Migrate a `src/` layout.
    * Support only Python 3.9 and higher
+   * Remove the Python 2.x-only Pyro dependency
    * Migrate CI to use the official Coveralls action
    * Standardize local and CI testing to use tox
    * Build wheels in CI for all supported Python versions

@@ -92,7 +92,6 @@ kw = {'name': "pyscard",
       'python_requires': '>=3.9',
       'packages': ["smartcard",
                    "smartcard.pcsc",
-                   "smartcard.pyro",
                    "smartcard.reader",
                    "smartcard.scard",
                    "smartcard.sw",
@@ -125,7 +124,6 @@ kw = {'name': "pyscard",
                       + platform_swig_opts)],
       'extras_require': {
             'Gui': ['wxPython'],
-            'Pyro': ['Pyro'],
             },
 
       'classifiers': [
