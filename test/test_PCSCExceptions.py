@@ -118,5 +118,15 @@ class TestUtil(unittest.TestCase):
         expected = "foo bar"
         self.assertEqual(text, expected)
 
+        exc= BaseSCardException(message="foo", hresult=SCARD_E_NOT_TRANSACTED)
+        self.assertEqual(exc.hresult, SCARD_E_NOT_TRANSACTED)
+        text = str(exc)
+        if platform.system() == 'Windows':
+            expected = "An attempt was made to end a non-existent transaction. "
+        else:
+            expected = "Transaction failed."
+        expected = "foo: " + expected + " (0x80100016)"
+        self.assertEqual(text, expected)
+
 if __name__ == '__main__':
     unittest.main()
