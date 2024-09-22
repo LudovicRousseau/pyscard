@@ -130,5 +130,31 @@ class TestUtil(unittest.TestCase):
         exc = CardRequestTimeoutException(hresult=SCARD_E_NOT_TRANSACTED)
         self.assertEqual(str(exc), expected)
 
+    def test_InvalidATRMaskLengthException(self):
+        exc = InvalidATRMaskLengthException("3B 00")
+        self.assertEqual(str(exc), "Invalid ATR mask length: 3B 00")
+
+    def test_ListReadersException(self):
+        exc = ListReadersException(-1)
+        self.assertEqual(str(exc), "Failed to list readers")
+
+        exc = ListReadersException(SCARD_E_NOT_TRANSACTED)
+        if platform.system() == 'Windows':
+            expected = "Failed to list readers: An attempt was made to end a non-existent transaction.  (0x80100016)"
+        else:
+            expected = "Failed to list readers: Transaction failed. (0x80100016)"
+        self.assertEqual(str(exc), expected)
+
+    def test_NoCardException(self):
+        exc = NoCardException("foo bar", -1)
+        self.assertEqual(str(exc), "foo bar")
+
+        exc = NoCardException("foo bar", SCARD_E_NOT_TRANSACTED)
+        if platform.system() == 'Windows':
+            expected = "foo bar: An attempt was made to end a non-existent transaction.  (0x80100016)"
+        else:
+            expected = "foo bar: Transaction failed. (0x80100016)"
+        self.assertEqual(str(exc), expected)
+
 if __name__ == '__main__':
     unittest.main()
