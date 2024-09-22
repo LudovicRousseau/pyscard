@@ -70,9 +70,9 @@ jobs:
           brew install swig pylint
 
       - name: "Install build prerequisites (Windows)"
-        if: matrix.name == 'Windows'
+        if: startsWith(matrix.name, 'Windows')
         run: |
-          choco install swig --version 2.0.12 --allow-empty-checksums --yes --limit-output --allow-downgrade
+          choco upgrade swig --allow-empty-checksums --yes --limit-output
           swig -version
 
       - name: "Determine virtual environment bin path"
