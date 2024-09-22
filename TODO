@@ -1,5 +1,3 @@
-- complete support of remote readers with Pyro and add in documentation
-
 - document construction of standalone windows application using py2exe
 
 - documentation and implementation of card services
