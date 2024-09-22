@@ -67,7 +67,7 @@ jobs:
       - name: "Install build prerequisites (macOS)"
         if: matrix.name == 'macOS'
         run: |
-          brew install swig pylint
+          brew install swig
 
       - name: "Install build prerequisites (Windows)"
         if: startsWith(matrix.name, 'Windows')
@@ -105,6 +105,30 @@ jobs:
           name: wheel-${{ matrix.name }}-${{ matrix.cpython }}-${{ matrix.architecture }}
           path: dist/*.whl
 
-      - name: "Lint"
+
+  quality:
+    name: "Quality"
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: "Checkout the repository"
+        uses: actions/checkout@v4
+
+      - name: "Set up Python"
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: "Install build prerequisites"
         run: |
-          ${{ env.venv-path }}/tox -e pylint
+          sudo apt install libpcsclite-dev python3-all-dev swig
+
+      - name: "Create a virtual environment"
+        run: |
+          python -m venv temp
+          temp/bin/python -m pip install --upgrade pip setuptools wheel
+          temp/bin/pip install tox
+
+      - name: "Perform quality checks"
+        run: |
+          temp/bin/tox -e docs,pylint
