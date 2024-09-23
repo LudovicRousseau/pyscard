@@ -129,6 +129,10 @@ jobs:
           temp/bin/python -m pip install --upgrade pip setuptools wheel
           temp/bin/pip install tox
 
-      - name: "Perform quality checks"
+      - name: "Perform quality checks: docs"
         run: |
-          temp/bin/tox -e docs,pylint
+          temp/bin/tox -e docs
+
+      - name: "Perform quality checks: pylint"
+        run: |
+          temp/bin/tox -e pylint
