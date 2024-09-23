@@ -61,10 +61,10 @@ class pcscdiag(wx.Frame):
 
     def __init__(self, parent, title):
         wx.Frame.__init__(self, parent, -1, title, size=(600, 400))
-        w, h = self.GetClientSizeTuple()
+        w, h = self.GetClientSize()
         self.tree = wx.TreeCtrl(
             self,
-            wx.NewId(),
+            wx.NewIdRef(),
             wx.DefaultPosition,
             (w, h),
             wx.TR_HAS_BUTTONS | wx.TR_EDIT_LABELS)
@@ -110,7 +110,7 @@ class pcscdiag(wx.Frame):
 
 
 if __name__ == '__main__':
-    app = wx.PySimpleApp()
+    app = wx.App()
     frame = pcscdiag(None, "Smartcard readers and reader groups")
     frame.Show()
     app.MainLoop()

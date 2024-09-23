@@ -46,7 +46,7 @@ class BlankPanel(wx.Panel, SimpleSCardAppEventObserver):
 
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, -1)
-        sizer = wx.GridSizer(1, 1)
+        sizer = wx.GridSizer(1, 1, 0)
         self.SetSizer(sizer)
         self.SetAutoLayout(True)
 
@@ -150,7 +150,7 @@ class TreeAndUserPanelPanel(wx.Panel):
         """Called when the user activates a card in the tree."""
         item = event.GetItem()
         if item:
-            itemdata = self.readertreepanel.cardtreectrl.GetItemPyData(item)
+            itemdata = self.readertreepanel.cardtreectrl.GetItemData(item)
             if isinstance(itemdata, smartcard.Card.Card):
                 self.ActivateCard(itemdata)
             else:
@@ -160,7 +160,7 @@ class TreeAndUserPanelPanel(wx.Panel):
         """Called when the user activates a reader in the tree."""
         item = event.GetItem()
         if item:
-            itemdata = self.readertreepanel.readertreectrl.GetItemPyData(item)
+            itemdata = self.readertreepanel.readertreectrl.GetItemData(item)
             if isinstance(itemdata, smartcard.Card.Card):
                 self.ActivateCard(itemdata)
             elif isinstance(itemdata, smartcard.reader.Reader.Reader):
@@ -175,7 +175,7 @@ class TreeAndUserPanelPanel(wx.Panel):
         """Called when user right-clicks a node in the card tree control."""
         item = event.GetItem()
         if item:
-            itemdata = self.readertreepanel.cardtreectrl.GetItemPyData(item)
+            itemdata = self.readertreepanel.cardtreectrl.GetItemData(item)
             if isinstance(itemdata, smartcard.Card.Card):
                 self.selectedcard = itemdata
                 if not hasattr(self, "connectID"):
@@ -198,7 +198,7 @@ class TreeAndUserPanelPanel(wx.Panel):
         """Called when user right-clicks a node in the reader tree control."""
         item = event.GetItem()
         if item:
-            itemdata = self.readertreepanel.readertreectrl.GetItemPyData(item)
+            itemdata = self.readertreepanel.readertreectrl.GetItemData(item)
             if isinstance(itemdata, smartcard.Card.Card):
                 self.selectedcard = itemdata
                 if not hasattr(self, "connectID"):
@@ -229,7 +229,7 @@ class TreeAndUserPanelPanel(wx.Panel):
         """Called when the user selects a card in the tree."""
         item = event.GetItem()
         if item:
-            itemdata = self.readertreepanel.cardtreectrl.GetItemPyData(item)
+            itemdata = self.readertreepanel.cardtreectrl.GetItemData(item)
             if isinstance(itemdata, smartcard.Card.Card):
                 self.dialogpanel.OnSelectCard(itemdata)
             else:
@@ -239,7 +239,7 @@ class TreeAndUserPanelPanel(wx.Panel):
         """Called when the user selects a reader in the tree."""
         item = event.GetItem()
         if item:
-            itemdata = self.readertreepanel.readertreectrl.GetItemPyData(item)
+            itemdata = self.readertreepanel.readertreectrl.GetItemData(item)
             if isinstance(itemdata, smartcard.Card.Card):
                 self.dialogpanel.OnSelectCard(itemdata)
             elif isinstance(itemdata, smartcard.reader.Reader.Reader):

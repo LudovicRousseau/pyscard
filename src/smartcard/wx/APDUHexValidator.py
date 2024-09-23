@@ -40,7 +40,7 @@ class APDUHexValidator(wx.PyValidator):
         A4A0000002'''
 
     def __init__(self):
-        wx.PyValidator.__init__(self)
+        wx.Validator.__init__(self)
         self.Bind(wx.EVT_CHAR, self.OnChar)
 
     def Clone(self):
@@ -68,7 +68,7 @@ class APDUHexValidator(wx.PyValidator):
             event.Skip()
             return
 
-        if not wx.Validator_IsSilent():
+        if not wx.Validator.IsSilent():
             wx.Bell()
 
         return

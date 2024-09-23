@@ -103,8 +103,6 @@ class SampleAPDUManagerPanel(wx.Panel, SimpleSCardAppEventObserver):
     def OnTransmit(self, event):
         if hasattr(self.selectedcard, 'connection'):
             apdu = self.commandtextctrl.GetValue()
-            if type(u'') == type(apdu):
-                apdu = apdu.encode('utf8')
             data, sw1, sw2 = \
                 self.selectedcard.connection.transmit(toBytes(apdu))
             self.SW1textctrl.SetValue("%x" % sw1)
