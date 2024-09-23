@@ -31,7 +31,8 @@ ChangeLog.git:
 	git log --stat --decorate=short > $@
 
 .PHONY: sync-docs
-sync-docs:
+sync-docs: clean
+	$(TOX) -e docs
 	rsync \
 		--recursive --verbose --update --rsh=ssh --links \
 		build/docs/ \
