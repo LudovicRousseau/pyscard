@@ -1,7 +1,8 @@
+build
 coverage
 coveralls
-wheel
-build
-setuptools
+pylint
 pytest
+setuptools
 tox
+wheel

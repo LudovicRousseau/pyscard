@@ -27,6 +27,9 @@ test:
 coverage:
 	$(TOX) run
 
+pylint:
+	$(PYTHON) -m pylint --errors-only --ignore wx smartcard
+
 ChangeLog.git:
 	git log --stat --decorate=short > $@
 
