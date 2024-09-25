@@ -22,13 +22,16 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
+from __future__ import annotations
+import warnings
+
 PACK = 1
 HEX = 2
 UPPERCASE = 4
 COMMA = 8
 
 
-def padd(bytelist, length, padding='FF'):
+def padd(bytelist: list[int], length: int, padding: str = 'FF'):
     """ Padds a byte list with a constant byte value (default is x0FF)
     @param bytelist: the byte list to padd
     @param length: the total length of the resulting byte list;
@@ -45,16 +48,11 @@ def padd(bytelist, length, padding='FF'):
     [59, 101, 0, 0, 156, 17, 1, 1, 3]
     """
 
-    newlist = list(bytelist)
-    if len(newlist) < length:
-        for index in range(length - len(newlist)):
-            newlist.append(eval('0x' + padding))
-
-    return newlist
+    return bytelist + [int(padding, 16)] * (length - len(bytelist))
 
 
-def toASCIIBytes(stringtoconvert):
-    """Returns a list of ASCII bytes from a string.
+def toASCIIBytes(stringtoconvert: str) -> list[int]:
+    """Convert a string to a list of UTF-8 encoded bytes.
 
     @param stringtoconvert: the string to convert into a byte list
 
@@ -66,11 +64,13 @@ def toASCIIBytes(stringtoconvert):
     [78, 117, 109, 98, 101, 114, 32, 49, 48, 49]
     """
 
-    return list(map(ord, list(stringtoconvert)))
+    return list(stringtoconvert.encode("utf-8"))
 
 
-def toASCIIString(bytelist):
-    """Returns a string representing a list of ASCII bytes.
+def toASCIIString(bytelist: list[int]) -> str:
+    """Convert a list of integers in the range ``[32, 127]`` to a string.
+
+    Integer values outside the range ``[32, 127]`` are replaced with a period.
 
     @param bytelist: list of ASCII bytes to convert into a string
 
@@ -84,20 +84,16 @@ def toASCIIString(bytelist):
     ". .~."
     """
 
-    res = []
-    for b in bytelist:
-        if b < 32 or b > 127:
-            c = '.'
-        else:
-            c = chr(b)
-        res.append(c)
-    return ''.join(res)
+    return ''.join(
+        chr(c) if 32 <= c <= 127 else '.'
+        for c in bytelist
+    )
 
 
-def toBytes(bytestring):
-    """Returns a list of bytes from a byte string
+def toBytes(bytestring: str) -> list[int]:
+    """Convert a string of hexadecimal characters to a list of integers.
 
-    bytestring: a byte string
+    @param bytestring: a byte string
 
     >>> toBytes("3B 65 00 00 9C 11 01 01 03")
     [59, 101, 0, 0, 156, 17, 1, 1, 3]
@@ -106,10 +102,10 @@ def toBytes(bytestring):
     >>> toBytes("3B6500   009C1101  0103")
     [59, 101, 0, 0, 156, 17, 1, 1, 3]
     """
-    packedstring = bytestring.replace(' ', '').replace('	','').replace('\n', '')
+
     try:
-        return list(map(lambda x: int(''.join(x), 16), zip(*[iter(packedstring)] * 2)))
-    except (KeyError, ValueError):
+        return list(bytes.fromhex(bytestring))
+    except ValueError:
         raise TypeError('not a string representing a list of bytes')
 
 
@@ -176,7 +172,7 @@ __dic_GSM_3_38__ = {
 }
 
 
-def toGSM3_38Bytes(stringtoconvert):
+def toGSM3_38Bytes(stringtoconvert: str | bytes) -> list[int]:
     """Returns a list of bytes from a string using GSM 3.38 conversion table.
 
     @param stringtoconvert:     string to convert
@@ -191,19 +187,17 @@ def toGSM3_38Bytes(stringtoconvert):
 
     result = []
     for char in stringtoconvert:
-        if ((char >= "%") and (char <= "?")):
-            result.append(ord(char))
-        elif ((char >= "A") and (char <= "Z")):
-            result.append(ord(char))
-        elif ((char >= "a") and (char <= "z")):
+        if ("%" <= char <= "?") or ("A" <= char <= "Z") or ("a" <= char <= "z"):
             result.append(ord(char))
         else:
             result.append(__dic_GSM_3_38__[char])
     return result
 
 
-def toHexString(data=[], format=0):
-    """Returns an hex string representing bytes
+def toHexString(data: list[int] | None = None, format: int = 0) -> str:
+    """Convert a list of integers to a formatted string of hexadecimal.
+
+    Integers larger than 255 will be truncated to two-byte hexadecimal pairs.
 
     @param data:   a list of bytes to stringify,
                 e.g. [59, 22, 148, 32, 2, 1, 0, 0, 13]
@@ -230,61 +224,53 @@ def toHexString(data=[], format=0):
     '0X3B, 0X65, 0X00, 0X00, 0X9C, 0X11, 0X01, 0X01, 0X03'
     """
 
-    for byte in tuple(data):
-        pass
-
-    if type(data) is not list:
+    if not (data is None or isinstance(data, list)):
         raise TypeError('not a list of bytes')
 
-    if data is None or data == []:
+    if not data:
         return ""
-    else:
-        pformat = "%-0.2X"
-        if COMMA & format:
-            separator = ","
+
+    pformat = "%-0.2X"
+    separator = ""
+    if COMMA & format:
+        separator = ","
+    if not PACK & format:
+        separator += " "
+    if HEX & format:
+        if UPPERCASE & format:
+            pformat = "0X" + pformat
         else:
-            separator = ""
-        if not PACK & format:
-            separator = separator + " "
-        if HEX & format:
-            if UPPERCASE & format:
-                pformat = "0X" + pformat
-            else:
-                pformat = "0x" + pformat
-        return (separator.join(map(lambda a: pformat % ((a + 256) % 256), data))).rstrip()
+            pformat = "0x" + pformat
+    return separator.join(pformat % (a & 0xff) for a in data).rstrip()
 
 
-# FIXME This appears to duplicate toASCIIString()
-def HexListToBinString(hexlist):
-    """
+def HexListToBinString(hexlist: list[int]) -> str:
+    """Deprecated. Use `bytes(hexlist).decode("utf-8")` or similar.
+
     >>> HexListToBinString([78, 117, 109, 98, 101, 114, 32, 49, 48, 49])
     'Number 101'
     """
-    return ''.join(map(chr, hexlist))
+
+    warnings.warn(
+        'Use `bytes(hexlist).decode("utf-8")` or similar.',
+        DeprecationWarning,
+    )
+    return bytes(hexlist).decode("utf-8")
 
 
-# FIXME This appears to duplicate to ASCIIBytes()
-def BinStringToHexList(binstring):
-    """
+def BinStringToHexList(binstring: str) -> list[int]:
+    """Deprecated. Use `list(binstring.encode("utf-8"))` or similar.
+
     >>> BinStringToHexList("Number 101")
     [78, 117, 109, 98, 101, 114, 32, 49, 48, 49]
     """
-    return list(map(ord, binstring))
+
+    warnings.warn(
+        'Use `list(binstring.encode("utf-8"))` or similar.',
+        DeprecationWarning,
+    )
+    return list(binstring.encode("utf-8"))
 
 
-def hl2bs(hexlist):
-    """An alias for HexListToBinString
-
-    >>> hl2bs([78, 117, 109, 98, 101, 114, 32, 49, 48, 49])
-    'Number 101'
-    """
-    return HexListToBinString(hexlist)
-
-
-def bs2hl(binstring):
-    """An alias for BinStringToHexList
-
-    >>> bs2hl("Number 101")
-    [78, 117, 109, 98, 101, 114, 32, 49, 48, 49]
-    """
-    return BinStringToHexList(binstring)
+hl2bs = HexListToBinString
+bs2hl = BinStringToHexList
