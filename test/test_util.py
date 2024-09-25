@@ -29,7 +29,8 @@ class TestUtil(unittest.TestCase):
         self.assertEqual(toBytes(data_in), data_out)
 
         data_in = "zz"
-        self.assertRaises(TypeError, toBytes, data_in)
+        with self.assertRaises(TypeError):
+            toBytes(data_in)
 
     def test_padd(self):
         data_in = toBytes("3B 65 00 00 9C 11 01 01 03")
@@ -78,7 +79,8 @@ class TestUtil(unittest.TestCase):
         self.assertEqual(toHexString(data_in), data_out)
 
         data_in = 42
-        self.assertRaises(TypeError, toHexString, data_in)
+        with self.assertRaises(TypeError):
+            toHexString(data_in)
 
         data_in = [0x3B, 0x65, 0x00, 0x00, 0x9C, 0x11, 0x01, 0x01, 0x03]
         data_out = "3B 65 00 00 9C 11 01 01 03"
@@ -121,7 +123,7 @@ class TestUtil(unittest.TestCase):
                                      PACK), data_out)
 
         with self.assertRaises(TypeError):
-            self.assertEqual(toHexString("foo"))
+            toHexString("foo")
 
     def test_HexListToBinString(self):
         data_in = [1, 2, 3]
