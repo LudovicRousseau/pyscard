@@ -158,6 +158,8 @@ if 'winscard' == resourceManager:
         suite1 = unittest.makeSuite(testcase_readergroups)
         return unittest.TestSuite(suite1)
 
+else:
+    print("These tests are for Windows only")
 
 if __name__ == '__main__':
     unittest.main()
