@@ -122,7 +122,8 @@ class testcase_ErrorChecking(unittest.TestCase):
                 exception = tiso7816_4SW1[sw1]
             for sw2 in range(0x00, 0xff + 1):
                 if None != exception:
-                    self.assertRaises(exception, ecs, [], sw1, sw2)
+                    with self.assertRaises(exception):
+                        ecs([], sw1, sw2)
                 else:
                     ecs([], sw1, sw2)
 
@@ -157,7 +158,8 @@ class testcase_ErrorChecking(unittest.TestCase):
                 exception, sw2range = tiso7816_4SW[sw1]
             for sw2 in range(0x00, 0xff + 1):
                 if sw2 in sw2range:
-                    self.assertRaises(exception, ecs, [], sw1, sw2)
+                    with self.assertRaises(exception):
+                        ecs([], sw1, sw2)
                 else:
                     ecs([], sw1, sw2)
 
@@ -188,7 +190,8 @@ class testcase_ErrorChecking(unittest.TestCase):
                 exception, sw2range = tiso7816_8SW[sw1]
             for sw2 in range(0x00, 0xff + 1):
                 if sw2 in sw2range:
-                    self.assertRaises(exception, ecs, [], sw1, sw2)
+                    with self.assertRaises(exception):
+                        ecs([], sw1, sw2)
                 else:
                     ecs([], sw1, sw2)
 
@@ -213,7 +216,8 @@ class testcase_ErrorChecking(unittest.TestCase):
                 exception, sw2range = tiso7816_9SW[sw1]
             for sw2 in range(0x00, 0xff + 1):
                 if sw2 in sw2range:
-                    self.assertRaises(exception, ecs, [], sw1, sw2)
+                    with self.assertRaises(exception):
+                        ecs([], sw1, sw2)
                 else:
                     ecs([], sw1, sw2)
 
@@ -250,7 +254,8 @@ class testcase_ErrorChecking(unittest.TestCase):
                 exception, sw2range = top21_SW[sw1]
             for sw2 in range(0x00, 0xff + 1):
                 if sw2 in sw2range:
-                    self.assertRaises(exception, ecs, [], sw1, sw2)
+                    with self.assertRaises(exception):
+                        ecs([], sw1, sw2)
                 else:
                     ecs([], sw1, sw2)
 
@@ -263,9 +268,8 @@ class testcase_ErrorChecking(unittest.TestCase):
         # ISO7816-4 is answering first on the next, i.e
         # WarningProcessingException
         for sw2 in [0x00, 0x81] + list(range(0xc0, 0xcf + 1)):
-            self.assertRaises(
-                smartcard.sw.SWExceptions.WarningProcessingException,
-                errorchain[0], [], 0x63, sw2)
+            with self.assertRaises(smartcard.sw.SWExceptions.WarningProcessingException):
+                errorchain[0]([], 0x63, sw2)
 
     def testcase_Test_ISO78164_ErrorCheckingChain(self):
         """Test error chain with Test checker followed by ISO7816-4 checker."""
@@ -275,7 +279,8 @@ class testcase_ErrorChecking(unittest.TestCase):
 
         # TestErrorChecker is answering first, i.e. CustomSWException
         for sw2 in [0x00, 0x81] + list(range(0xc0, 0xcf + 1)):
-            self.assertRaises(CustomSWException, errorchain[0], [], 0x63, sw2)
+            with self.assertRaises(CustomSWException):
+                errorchain[0]([], 0x63, sw2)
 
     def testcase_ErrorMessage(self):
         """Test correct exception error message."""
