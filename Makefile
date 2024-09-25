@@ -1,5 +1,6 @@
 PYTHON ?= python3
 TOX ?= tox
+COVERAGE ?= coverage
 
 build:
 	$(TOX) run -m build
@@ -25,7 +26,11 @@ test:
 	pytest
 
 coverage:
-	$(TOX) run
+	$(COVERAGE) erase
+	$(COVERAGE) run -m unittest discover
+	$(COVERAGE) combine
+	$(COVERAGE) report
+	$(COVERAGE) html
 
 pylint:
 	$(PYTHON) -m pylint --errors-only --ignore wx smartcard
