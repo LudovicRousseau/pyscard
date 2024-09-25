@@ -22,7 +22,7 @@ pypi: clean
 	python3 -m twine upload dist/*
 
 test:
-	$(TOX) run -e py
+	pytest
 
 coverage:
 	$(TOX) run
