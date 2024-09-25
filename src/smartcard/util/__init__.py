@@ -131,7 +131,18 @@ __dic_GSM_3_38__ = {
     '\r': 0x0D,           # CR Carriage Return
     'Å': 0x0E,            # Å Angstroem majuscule
     'å': 0x0F,            # å Angstroem minuscule
+    'Δ': 0x10,            # Δ Greek letter delta
     '_': 0x11,            # underscore
+    'Φ': 0x12,            # Φ Greek letter phi
+    'Γ': 0x13,            # Γ Greek letter gamma
+    'Λ': 0x14,            # Λ Greek letter lambda
+    'Ω': 0x15,            # Ω Greek letter omega
+    'Π': 0x16,            # Π Greek letter pi
+    'Ψ': 0x17,            # Ψ Greek letter psi
+    'Σ': 0x18,            # Σ Greek letter sigma
+    'Θ': 0x19,            # Θ Greek letter theta
+    'Ξ': 0x1A,            # Ξ Greek letter xi
+    #    0x1B               maps to extension table
     'Æ': 0x1C,            # Æ majuscule ae
     'æ': 0x1D,            # æ minuscule ae
     'ß': 0x1E,            # ß s dur allemand
@@ -141,17 +152,26 @@ __dic_GSM_3_38__ = {
     '"': 0x22,            # guillemet
     '#': 0x23,
     '¤': 0x24,            # ¤ carré
+    #
+    #    0x25 ... 0x3F    # % ... ?
+    #
     '¡': 0x40,            # ¡ point d'exclamation renversé
+    #
+    #    0x41 ... 0x5A    # A ... Z
+    #
     'Ä': 0x5B,            # Ä majuscule A trema
-    'ä': 0x7B,            # ä minuscule a trema
     'Ö': 0x5C,            # Ö majuscule O trema
-    'ö': 0x7C,            # ö minuscule o trema
     'Ñ': 0x5D,            # Ñ majuscule N tilde espagnol
-    'ñ': 0x7D,            # ñ minuscule n tilde espagnol
     'Ü': 0x5E,            # Ü majuscule U trema
-    'ü': 0x7E,            # ü minuscule u trema
     '§': 0x5F,            # § signe paragraphe
     '¿': 0x60,            # ¿ point interrogation renversé
+    #
+    #    0x61 ... 0x7A    # a ... z
+    #
+    'ä': 0x7B,            # ä minuscule a trema
+    'ö': 0x7C,            # ö minuscule o trema
+    'ñ': 0x7D,            # ñ minuscule n tilde espagnol
+    'ü': 0x7E,            # ü minuscule u trema
     'à': 0x7F,            # à a accent grave
 }
 
