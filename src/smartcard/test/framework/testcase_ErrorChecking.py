@@ -281,26 +281,18 @@ class testcase_ErrorChecking(unittest.TestCase):
         """Test correct exception error message."""
         ecs = ISO7816_4ErrorChecker()
 
-        e = self.assertRaises(
-            smartcard.sw.SWExceptions.CheckingErrorException,
-            ecs,
-            [],
-            0x69,
-            0x85)
-        self.assertEqual(
-            str(e),
-            "'Status word exception: checking error - " + \
-             "Conditions of use not satisfied!'")
+        with self.assertRaises(smartcard.sw.SWExceptions.CheckingErrorException) as e:
+            ecs([], 0x69, 0x85)
+            self.assertEqual(
+                str(e),
+                "'Status word exception: checking error - " + \
+                 "Conditions of use not satisfied!'")
 
-        e = self.assertRaises(
-            smartcard.sw.SWExceptions.CheckingErrorException,
-            ecs,
-            [],
-            0x6b,
-            0x00)
-        self.assertEqual(
-            str(e), "'Status word exception: checking error - " + \
-            "Incorrect parameters P1-P2!'")
+        with self.assertRaises(smartcard.sw.SWExceptions.CheckingErrorException) as e:
+            ecs([], 0x6b, 0x00)
+            self.assertEqual(
+                str(e), "'Status word exception: checking error - " + \
+                "Incorrect parameters P1-P2!'")
 
     def testcase_ISO78164_Test_ErrorCheckingChain_filtering(self):
         """Test error chain with ISO7816-4 checker followed by Test checker."""
