@@ -26,7 +26,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 from smartcard.scard import *
-from smartcard.util import toASCIIBytes
 from smartcard.pcsc.PCSCExceptions import *
 import sys
 

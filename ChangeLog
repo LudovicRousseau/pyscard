@@ -8,6 +8,8 @@ Unreleased changes
    * Standardize local and CI testing to use tox
    * Build wheels in CI for all supported Python versions
    * Build the docs as a part of the test suite
+   * Begin to add type annotations to the package
+   * Deprecate the `HexListToBinString`, `BinStringToHexList`, `hl2bs`, and `bs2hl` utility functions
 
 2.1.1 (September 2024)
 ======================

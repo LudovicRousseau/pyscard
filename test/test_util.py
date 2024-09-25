@@ -126,22 +126,26 @@ class TestUtil(unittest.TestCase):
     def test_HexListToBinString(self):
         data_in = [1, 2, 3]
         data_out = "\x01\x02\x03"
-        self.assertEqual(HexListToBinString(data_in), data_out)
+        with self.assertWarns(DeprecationWarning):
+            self.assertEqual(HexListToBinString(data_in), data_out)
 
     def test_BinStringToHexList(self):
         data_in = "\x01\x02\x03"
         data_out = [1, 2, 3]
-        self.assertEqual(BinStringToHexList(data_in), data_out)
+        with self.assertWarns(DeprecationWarning):
+            self.assertEqual(BinStringToHexList(data_in), data_out)
 
     def test_hl2bs(self):
         data_in = [78, 117, 109, 98, 101, 114, 32, 49, 48, 49]
         data_out = 'Number 101'
-        self.assertEqual(hl2bs(data_in), data_out)
+        with self.assertWarns(DeprecationWarning):
+            self.assertEqual(hl2bs(data_in), data_out)
 
     def test_bs2hl(self):
         data_in = 'Number 101'
         data_out = [78, 117, 109, 98, 101, 114, 32, 49, 48, 49]
-        self.assertEqual(bs2hl(data_in), data_out)
+        with self.assertWarns(DeprecationWarning):
+            self.assertEqual(bs2hl(data_in), data_out)
 
 
 if __name__ == '__main__':
