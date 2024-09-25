@@ -1,7 +1,8 @@
 Unreleased changes
 ==================
    * Remove Python 2 conditional code
-   * Migrate a `src/` layout.
+   * Migrate a `src/` layout
+   * Add missing GSM 03.38 symbols for decoding
    * Support only Python 3.9 and higher
    * Remove the Python 2.x-only Pyro dependency
    * Migrate CI to use the official Coveralls action
