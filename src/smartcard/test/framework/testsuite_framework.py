@@ -57,4 +57,5 @@ def suite():
 
 if __name__ == '__main__':
     configcheck.checklocalconfig()
-    unittest.main(defaultTest='suite')
+    # set verbosity=2 to get more details
+    unittest.main(defaultTest='suite', verbosity=1)
