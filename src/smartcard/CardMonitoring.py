@@ -36,7 +36,7 @@ from smartcard.Observer import Observer
 from smartcard.Observer import Observable
 
 from smartcard.CardRequest import CardRequest
-from smartcard.Exceptions import SmartcardException
+from smartcard.Exceptions import SmartcardException, CardRequestTimeoutException
 from smartcard.scard import SCARD_E_NO_SERVICE
 
 _START_ON_DEMAND_ = False
@@ -179,6 +179,9 @@ class CardMonitoringThread(object):
                         self.observable.setChanged()
                         self.observable.notifyObservers(
                             (addedcards, removedcards))
+
+                except CardRequestTimeoutException:
+                    pass
 
                 except SmartcardException as exc:
                     # FIXME Tighten the exceptions caught by this block
