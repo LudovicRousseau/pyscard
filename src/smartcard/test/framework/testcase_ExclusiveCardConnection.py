@@ -85,7 +85,7 @@ class testthread(threading.Thread):
         self.evtStop = threading.Event()
 
         # this timer will set the event stop event in 30s
-        timer = threading.Timer(30, signalEvent, [self.evtStop])
+        timer = threading.Timer(10, signalEvent, [self.evtStop])
         timer.start()
         self.countTransmitted = 0
 
