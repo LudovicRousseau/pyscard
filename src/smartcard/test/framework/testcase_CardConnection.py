@@ -205,13 +205,14 @@ class testcase_CardConnection(unittest.TestCase):
         """Test .reconnect()"""
         for reader in readers():
             cc = reader.createConnection()
+            cc2 = reader.createConnection()
             if [] != expectedATRinReader[str(reader)]:
                 cc.connect(
                     CardConnection.T0_protocol | CardConnection.T1_protocol)
 
                 #  reconnect in exclusive mode should fail
                 self.assertRaises(CardConnectionException,
-                    cc.reconnect, mode=SCARD_SHARE_EXCLUSIVE)
+                    cc2.reconnect, mode=SCARD_SHARE_EXCLUSIVE)
                 cc.disconnect()
             else:
                 self.assertRaises(NoCardException, cc.connect)
