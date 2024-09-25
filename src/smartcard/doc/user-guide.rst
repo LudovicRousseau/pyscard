@@ -1408,39 +1408,29 @@ applications.
 Binary strings and list of bytes
 ================================
 
-pycrypto processes binary strings, i.e. Python strings that contains
-characters such as '\01\42\70\23', whereas pyscard processes APDUs as
-list of bytes such as [0x01, 0x42, 0x70, 0x23]. The utility function
-HexListToBinString and BinStringToHexList (and their short name versions
-hl2bs and bs2hl) provide conversion between the two types.
+Cryptography packages frequently process ``bytes`` objects like ``b"\x01\x42\x70\x23"``,
+whereas pyscard processes APDUs as list of integers, such as ``[0x01, 0x42, 0x70, 0x23]``.
+
+It's possible to convert between these objects like this:
 
 .. sourcecode:: python
 
-    from smartcard.util import HexListToBinString, BinStringToHexList
-
     test_data = [0x01, 0x42, 0x70, 0x23]
-    binstring = HexListToBinString(test_data)
-    hexlist = BinStringToHexList(binstring)
-    print(binstring, hexlist)
+    bytes_object = bytes(test_data)
+    list_of_ints = list(bytes_object)
+    print(bytes_object, list_of_ints)
 
-pycrypto supports the following hashing algorithms: SHA-1, MD2, MD4 et
-MD5. To hash 16 bytes of data with SHA-1:
+To hash several bytes of data with SHA-1:
 
 .. sourcecode:: python
 
-    from Crypto.Hash import SHA
-
-    from smartcard.util import toHexString, PACK
+    import hashlib
 
     test_data = [0x01, 0x42, 0x70, 0x23]
-    binstring = HexListToBinString(test_data)
+    digest = hashlib.sha1(bytes(test_data)).hexdigest()
+    print(digest)
 
-    zhash = SHA.new(binstring)
-    hash_as_string = zhash.digest()[:16]
-    hash_as_bytes = BinStringToHexList(hash_as_string)
-    print(hash_as_string, ',', toHexString(hash_as_bytes, PACK))
-
-To perform MD5 hashing, just replace SHA by MD5 in the previous script.
+To perform MD5 hashing, just replace the ``.sha1()`` function with ``.md5()`` in the previous script.
 
 Secret key cryptography
 =======================
@@ -1456,11 +1446,11 @@ mode:
     from smartcard.util import toBytes
 
     key = "31323334353637383132333435363738"
-    key_as_binstring = HexListToBinString(toBytes(key))
+    key_as_binstring = bytes(toBytes(key))
     zdes = DES3.new(key_as_binstring, DES3.MODE_ECB)
 
     message = "71727374757677787172737475767778"
-    message_as_binstring = HexListToBinString(toBytes(message))
+    message_as_binstring = bytes(toBytes(message)))
 
     encrypted_as_string = zdes.encrypt(message_as_binstring)
     decrypted_as_string = zdes.decrypt(encrypted_as_string)
