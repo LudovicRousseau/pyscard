@@ -121,7 +121,7 @@ class testcase_cardmonitor(unittest.TestCase):
         for t in threads:
             t.join()
         for t in threads:
-            if 0 == 1:
+            if False:
                 print('Thread %d: transmitted %ld apdus.' % \
                         (t.threadindex, t.countTransmitted))
 
