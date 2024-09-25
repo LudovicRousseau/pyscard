@@ -94,10 +94,10 @@ def toASCIIString(bytelist):
     return ''.join(res)
 
 
-def toBytes(bytestring):
-    """Returns a list of bytes from a byte string
+def toBytes(bytestring: str) -> list[int]:
+    """Convert a string of hexadecimal characters to a list of integers.
 
-    bytestring: a byte string
+    :param bytestring: a byte string
 
     >>> toBytes("3B 65 00 00 9C 11 01 01 03")
     [59, 101, 0, 0, 156, 17, 1, 1, 3]
@@ -106,10 +106,10 @@ def toBytes(bytestring):
     >>> toBytes("3B6500   009C1101  0103")
     [59, 101, 0, 0, 156, 17, 1, 1, 3]
     """
-    packedstring = bytestring.replace(' ', '').replace('	','').replace('\n', '')
+
     try:
-        return list(map(lambda x: int(''.join(x), 16), zip(*[iter(packedstring)] * 2)))
-    except (KeyError, ValueError):
+        return list(bytes.fromhex(bytestring))
+    except ValueError:
         raise TypeError('not a string representing a list of bytes')
 
 
