@@ -77,24 +77,23 @@ class testcase_locatecards(unittest.TestCase):
                 self.hcontext, cards, readerstates)
             self.assertEqual(hresult, 0)
 
-            if -1 == platform.platform().find('Windows-7'):
-                dictexpectedreaders = {}
-                for reader in expectedReaders:
-                    dictexpectedreaders[reader] = 1
-                for reader, eventstate, atr in newstates:
-                    if reader in dictexpectedreaders and \
-                        [] != expectedATRinReader[reader]:
-                        self.assertEqual(expectedATRinReader[reader], atr)
-                        self.assertTrue(eventstate & SCARD_STATE_PRESENT)
-                        self.assertTrue(eventstate & SCARD_STATE_CHANGED)
+            dictexpectedreaders = {}
+            for reader in expectedReaders:
+                dictexpectedreaders[reader] = 1
+            for reader, eventstate, atr in newstates:
+                if reader in dictexpectedreaders and \
+                    [] != expectedATRinReader[reader]:
+                    self.assertEqual(expectedATRinReader[reader], atr)
+                    self.assertTrue(eventstate & SCARD_STATE_PRESENT)
+                    self.assertTrue(eventstate & SCARD_STATE_CHANGED)
 
-                # 10ms delay, so that time-out always occurs
-                hresult, newstates = SCardGetStatusChange(
-                    self.hcontext, 10, newstates)
-                self.assertEqual(hresult, SCARD_E_TIMEOUT)
-                self.assertEqual(
-                    SCardGetErrorMessage(hresult),
-                    'The user-specified timeout value has expired. ')
+            # 10ms delay, so that time-out always occurs
+            hresult, newstates = SCardGetStatusChange(
+                self.hcontext, 10, newstates)
+            self.assertEqual(hresult, SCARD_E_TIMEOUT)
+            self.assertEqual(
+                SCardGetErrorMessage(hresult),
+                'The user-specified timeout value has expired. ')
 
         elif 'pcsclite' == resourceManager:
             readerstates = []

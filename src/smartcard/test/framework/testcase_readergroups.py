@@ -32,8 +32,7 @@ from smartcard.System import readergroups
 from smartcard.scard import resourceManager
 
 
-if 'winscard' == resourceManager and \
-    -1 == platform.platform().find('Windows-7'):
+if 'winscard' == resourceManager:
 
     class testcase_readergroups(unittest.TestCase):
         """Test smartcard framework readersgroups."""

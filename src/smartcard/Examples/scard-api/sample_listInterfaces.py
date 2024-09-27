@@ -54,12 +54,7 @@ if 'winscard' == resourceManager:
         try:
 
             # list interfaces for a known card
-            if -1 != platform.platform().find('Windows-7'):
-                expectedCard = 'Identity Device (Microsoft Generic Profile)'
-            elif -1 != platform.platform().find('Windows-Vista-6.0'):
-                expectedCard = 'Axalto Cryptoflex .NET'
-            else:
-                expectedCard = 'Schlumberger Cryptoflex 8k v2'
+            expectedCard = 'Schlumberger Cryptoflex 8k v2'
             hresult, interfaces = SCardListInterfaces(
                 hcontext,
                 expectedCard)
