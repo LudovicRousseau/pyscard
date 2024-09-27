@@ -33,7 +33,7 @@ coverage:
 	$(COVERAGE) html
 
 pylint:
-	$(PYTHON) -m pylint --errors-only --ignore wx smartcard
+	$(PYTHON) -m pylint --errors-only smartcard
 
 ChangeLog.git:
 	git log --stat --decorate=short > $@
