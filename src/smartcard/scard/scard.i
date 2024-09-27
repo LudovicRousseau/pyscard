@@ -332,6 +332,44 @@ SCARDRETCODE _RemoveReaderFromGroup(
                          szGroupName);
 }
 
+#else
+
+///////////////////////////////////////////////////////////////////////////////
+SCARDRETCODE _IntroduceReader(SCARDCONTEXT hcontext, char* szReaderName, char* szDeviceName)
+{
+    return SCARD_E_UNSUPPORTED_FEATURE;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+SCARDRETCODE _IntroduceReaderGroup(SCARDCONTEXT hcontext, char* szGroupName)
+{
+    return SCARD_E_UNSUPPORTED_FEATURE;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+SCARDRETCODE _ForgetReaderGroup(SCARDCONTEXT hcontext, char* szGroupName)
+{
+    return SCARD_E_UNSUPPORTED_FEATURE;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+SCARDRETCODE _AddReaderToGroup(
+  SCARDCONTEXT hcontext,
+  char* szReaderName,
+  char* szGroupName)
+{
+    return SCARD_E_UNSUPPORTED_FEATURE;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+SCARDRETCODE _RemoveReaderFromGroup(
+  SCARDCONTEXT hcontext,
+  char* szReaderName,
+  char* szGroupName)
+{
+    return SCARD_E_UNSUPPORTED_FEATURE;
+}
+
 #endif // WIN32
 
 
@@ -813,9 +851,9 @@ static ERRORSTRING _GetErrorMessage(long lErrCode)
 
 //
 // these functions are only available on win32 PCSC
+// but a fake function is provided on Unix
 //
 
-#ifdef WIN32
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_ADDREADERTOGROUP
 "
@@ -851,6 +889,104 @@ SCARDRETCODE _AddReaderToGroup(
   char* szReaderName,
   char* szGroupName);
 
+///////////////////////////////////////////////////////////////////////////////
+%define DOCSTRING_INTRODUCEREADER
+"
+Introduces a reader to the smart card subsystem.
+
+Windows only, not supported by PCSC lite wrapper.
+
+from smartcard.scard import *
+...
+dummyreader = readers[0] + ' dummy'
+hresult = SCardIntroduceReader(hcontext, dummyreader, readers[0])
+if hresult != SCARD_S_SUCCESS:
+    raise error, 'Unable to introduce reader: ' + dummyreader + ' : ' + SCardGetErrorMessage(hresult)
+...
+"
+%enddef
+%feature("docstring") DOCSTRING_INTRODUCEREADER;
+%rename(SCardIntroduceReader) _IntroduceReader(SCARDCONTEXT hcontext, char* szReaderName, char* szDeviceName);
+SCARDRETCODE _IntroduceReader(SCARDCONTEXT hcontext, char* szReaderName, char* szDeviceName);
+
+///////////////////////////////////////////////////////////////////////////////
+%define DOCSTRING_INTRODUCEREADERGROUP
+"
+Introduces a reader group to the smart card subsystem. However, the
+reader group is not created until the group is specified when adding
+a reader to the smart card database.
+
+Windows only, not supported by PCSC lite wrapper.
+
+from smartcard.scard import *
+hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+hresult = SCardIntroduceReaderGroup(hcontext, 'SCard$MyOwnGroup')
+if hresult != SCARD_S_SUCCESS:
+    raise error, 'Unable to introduce reader group: ' + SCardGetErrorMessage(hresult)
+hresult = SCardAddReaderToGroup(hcontext, 'SchlumbergerSema Reflex USB v.2 0', 'SCard$MyOwnGroup')
+if hresult != SCARD_S_SUCCESS:
+    raise error, 'Unable to add reader to group: ' + SCardGetErrorMessage(hresult)
+"
+%enddef
+%feature("docstring") DOCSTRING_INTRODUCEREADERGROUP;
+%rename(SCardIntroduceReaderGroup) _IntroduceReaderGroup(SCARDCONTEXT hcontext, char* szGroupName);
+SCARDRETCODE _IntroduceReaderGroup(SCARDCONTEXT hcontext, char* szGroupName);
+
+///////////////////////////////////////////////////////////////////////////////
+%define DOCSTRING_FORGETREADERGROUP
+"
+Removes a previously introduced smart card reader group from the smart
+card subsystem. Although this function automatically clears all readers
+from the group, it does not affect the existence of the individual readers
+in the database.
+
+Windows only, not supported by PCSC lite wrapper.
+
+from smartcard.scard import *
+... establish context ...
+...
+hresult = SCardForgetReaderGroup(hcontext, newgroup)
+if hresult != SCARD_S_SUCCESS:
+    raise error, 'Unable to forget reader group: ' + SCardGetErrorMessage(hresult)
+...
+"
+%enddef
+%feature("docstring") DOCSTRING_FORGETREADERGROUP;
+%rename(SCardForgetReaderGroup) _ForgetReaderGroup(SCARDCONTEXT hcontext, char* szGroupName);
+SCARDRETCODE _ForgetReaderGroup(SCARDCONTEXT hcontext, char* szGroupName);
+
+//
+// these functions are only available on win32 PCSC
+//
+
+///////////////////////////////////////////////////////////////////////////////
+%define DOCSTRING_REMOVEREADERFROMGROUP
+"
+
+Removes a reader from an existing reader group.  This function has no
+affect on the reader.
+
+Windows only, not supported by PCSC lite wrapper.
+
+from smartcard.scard import *
+hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+hresult = SCardRemoveReaderFromGroup(hcontext, 'SchlumbergerSema Reflex USB v.2 0', 'SCard$MyOwnGroup')
+if hresult != SCARD_S_SUCCESS:
+    raise error, 'Unable to remove reader from group: ' + SCardGetErrorMessage(hresult)
+...
+"
+%enddef
+%feature("docstring") DOCSTRING_REMOVEREADERFROMGROUP;
+%rename(SCardRemoveReaderFromGroup) _RemoveReaderFromGroup(
+  SCARDCONTEXT hcontext,
+  char* szReaderName,
+  char* szGroupName);
+SCARDRETCODE _RemoveReaderFromGroup(
+  SCARDCONTEXT hcontext,
+  char* szReaderName,
+  char* szGroupName);
+
+#ifdef WIN32
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_FORGETCARDTYPE
 "
@@ -891,29 +1027,6 @@ if hresult != SCARD_S_SUCCESS:
 %feature("docstring") DOCSTRING_FORGETREADER;
 %rename(SCardForgetReader) _ForgetReader(SCARDCONTEXT hcontext, char* szReaderName);
 SCARDRETCODE _ForgetReader(SCARDCONTEXT hcontext, char* szReaderName);
-
-///////////////////////////////////////////////////////////////////////////////
-%define DOCSTRING_FORGETREADERGROUP
-"
-Removes a previously introduced smart card reader group from the smart
-card subsystem. Although this function automatically clears all readers
-from the group, it does not affect the existence of the individual readers
-in the database.
-
-Windows only, not supported by PCSC lite wrapper.
-
-from smartcard.scard import *
-... establish context ...
-...
-hresult = SCardForgetReaderGroup(hcontext, newgroup)
-if hresult != SCARD_S_SUCCESS:
-    raise error, 'Unable to forget reader group: ' + SCardGetErrorMessage(hresult)
-...
-"
-%enddef
-%feature("docstring") DOCSTRING_FORGETREADERGROUP;
-%rename(SCardForgetReaderGroup) _ForgetReaderGroup(SCARDCONTEXT hcontext, char* szGroupName);
-SCARDRETCODE _ForgetReaderGroup(SCARDCONTEXT hcontext, char* szGroupName);
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_GETCARDTYPEPROVIDERNAME
@@ -994,49 +1107,6 @@ SCARDRETCODE _IntroduceCardType(
   BYTELIST* ATR,
   BYTELIST* MASK
 );
-
-///////////////////////////////////////////////////////////////////////////////
-%define DOCSTRING_INTRODUCEREADER
-"
-Introduces a reader to the smart card subsystem.
-
-Windows only, not supported by PCSC lite wrapper.
-
-from smartcard.scard import *
-...
-dummyreader = readers[0] + ' dummy'
-hresult = SCardIntroduceReader(hcontext, dummyreader, readers[0])
-if hresult != SCARD_S_SUCCESS:
-    raise error, 'Unable to introduce reader: ' + dummyreader + ' : ' + SCardGetErrorMessage(hresult)
-...
-"
-%enddef
-%feature("docstring") DOCSTRING_INTRODUCEREADER;
-%rename(SCardIntroduceReader) _IntroduceReader(SCARDCONTEXT hcontext, char* szReaderName, char* szDeviceName);
-SCARDRETCODE _IntroduceReader(SCARDCONTEXT hcontext, char* szReaderName, char* szDeviceName);
-
-///////////////////////////////////////////////////////////////////////////////
-%define DOCSTRING_INTRODUCEREADERGROUP
-"
-Introduces a reader group to the smart card subsystem. However, the
-reader group is not created until the group is specified when adding
-a reader to the smart card database.
-
-Windows only, not supported by PCSC lite wrapper.
-
-from smartcard.scard import *
-hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
-hresult = SCardIntroduceReaderGroup(hcontext, 'SCard$MyOwnGroup')
-if hresult != SCARD_S_SUCCESS:
-    raise error, 'Unable to introduce reader group: ' + SCardGetErrorMessage(hresult)
-hresult = SCardAddReaderToGroup(hcontext, 'SchlumbergerSema Reflex USB v.2 0', 'SCard$MyOwnGroup')
-if hresult != SCARD_S_SUCCESS:
-    raise error, 'Unable to add reader to group: ' + SCardGetErrorMessage(hresult)
-"
-%enddef
-%feature("docstring") DOCSTRING_INTRODUCEREADERGROUP;
-%rename(SCardIntroduceReaderGroup) _IntroduceReaderGroup(SCARDCONTEXT hcontext, char* szGroupName);
-SCARDRETCODE _IntroduceReaderGroup(SCARDCONTEXT hcontext, char* szGroupName);
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_LISTINTERFACES
@@ -1136,33 +1206,6 @@ SCARDRETCODE _LocateCards(
     SCARDCONTEXT hcontext,
     STRINGLIST* CARDSTOLOCATE,
     READERSTATELIST *prsl);
-
-///////////////////////////////////////////////////////////////////////////////
-%define DOCSTRING_REMOVEREADERFROMGROUP
-"
-
-Removes a reader from an existing reader group.  This function has no
-affect on the reader.
-
-Windows only, not supported by PCSC lite wrapper.
-
-from smartcard.scard import *
-hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
-hresult = SCardRemoveReaderFromGroup(hcontext, 'SchlumbergerSema Reflex USB v.2 0', 'SCard$MyOwnGroup')
-if hresult != SCARD_S_SUCCESS:
-    raise error, 'Unable to remove reader from group: ' + SCardGetErrorMessage(hresult)
-...
-"
-%enddef
-%feature("docstring") DOCSTRING_REMOVEREADERFROMGROUP;
-%rename(SCardRemoveReaderFromGroup) _RemoveReaderFromGroup(
-  SCARDCONTEXT hcontext,
-  char* szReaderName,
-  char* szGroupName);
-SCARDRETCODE _RemoveReaderFromGroup(
-  SCARDCONTEXT hcontext,
-  char* szReaderName,
-  char* szGroupName);
 
 #endif // WIN32
 
