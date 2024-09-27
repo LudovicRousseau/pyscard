@@ -870,11 +870,13 @@ example:
 >>> readeralias = 'SchlumbergerSema Reflex USB v.2 0 alias'
 >>> hresult = SCardIntroduceReader(hcontext, readeralias, reader])
 >>> if hresult != SCARD_S_SUCCESS:
->>>     raise error, 'Unable to introduce reader: ' + SCardGetErrorMessage(hresult)
+>>>     raise error('Unable to introduce reader: ' +
+>>>     SCardGetErrorMessage(hresult))
 >>> 
 >>> hresult = SCardAddReaderToGroup(hcontext, readeralias, newgroup)
 >>> if hresult != SCARD_S_SUCCESS:
->>>     raise error, 'Unable to add reader to group: ' + SCardGetErrorMessage(hresult)
+>>>     raise error('Unable to add reader to group: ' +
+>>>     SCardGetErrorMessage(hresult))
 ...
 "
 %enddef
@@ -900,7 +902,8 @@ Windows only, not supported by PCSC lite wrapper.
 >>> dummyreader = readers[0] + ' dummy'
 >>> hresult = SCardIntroduceReader(hcontext, dummyreader, readers[0])
 >>> if hresult != SCARD_S_SUCCESS:
->>>     raise error, 'Unable to introduce reader: ' + dummyreader + ' : ' + SCardGetErrorMessage(hresult)
+>>>     raise error('Unable to introduce reader: ' + dummyreader + ' : '
+>>>     + SCardGetErrorMessage(hresult))
 ...
 "
 %enddef
@@ -921,10 +924,12 @@ Windows only, not supported by PCSC lite wrapper.
 >>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
 >>> hresult = SCardIntroduceReaderGroup(hcontext, 'SCard$MyOwnGroup')
 >>> if hresult != SCARD_S_SUCCESS:
->>>     raise error, 'Unable to introduce reader group: ' + SCardGetErrorMessage(hresult)
+>>>     raise error('Unable to introduce reader group: ' +
+>>>     SCardGetErrorMessage(hresult))
 >>> hresult = SCardAddReaderToGroup(hcontext, 'SchlumbergerSema Reflex USB v.2 0', 'SCard$MyOwnGroup')
 >>> if hresult != SCARD_S_SUCCESS:
->>>     raise error, 'Unable to add reader to group: ' + SCardGetErrorMessage(hresult)
+>>>     raise error('Unable to add reader to group: ' +
+>>>     SCardGetErrorMessage(hresult))
 "
 %enddef
 %feature("docstring") DOCSTRING_INTRODUCEREADERGROUP;
@@ -946,7 +951,8 @@ Windows only, not supported by PCSC lite wrapper.
 >>> ...
 >>> hresult = SCardForgetReaderGroup(hcontext, newgroup)
 >>> if hresult != SCARD_S_SUCCESS:
->>>     raise error, 'Unable to forget reader group: ' + SCardGetErrorMessage(hresult)
+>>>     raise error('Unable to forget reader group: ' +
+>>>     SCardGetErrorMessage(hresult))
 ...
 "
 %enddef
@@ -971,7 +977,8 @@ Windows only, not supported by PCSC lite wrapper.
 >>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
 >>> hresult = SCardRemoveReaderFromGroup(hcontext, 'SchlumbergerSema Reflex USB v.2 0', 'SCard$MyOwnGroup')
 >>> if hresult != SCARD_S_SUCCESS:
->>>     raise error, 'Unable to remove reader from group: ' + SCardGetErrorMessage(hresult)
+>>>     raise error('Unable to remove reader from group: ' +
+>>>     SCardGetErrorMessage(hresult))
 ...
 "
 %enddef
@@ -997,7 +1004,8 @@ Windows only, not supported by PCSC lite wrapper.
 >>> ... establish context ...
 >>> hresult = SCardForgetCardType(hcontext, 'myCardName')
 >>> if hresult != SCARD_S_SUCCESS:
->>>     raise error, 'Failed to remove card type: ' + SCardGetErrorMessage(hresult)
+>>>     raise error('Failed to remove card type: ' +
+>>>     SCardGetErrorMessage(hresult))
 ...
 
 "
@@ -1019,7 +1027,8 @@ Windows only, not supported by PCSC lite wrapper.
 >>> ...
 >>> hresult = SCardForgetReader(hcontext, dummyreader)
 >>> if hresult != SCARD_S_SUCCESS:
->>>     raise error, 'Failed to forget readers ' + SCardGetErrorMessage(hresult)
+>>>     raise error('Failed to forget readers ' +
+>>>     SCardGetErrorMessage(hresult))
 ...
 "
 %enddef
@@ -1039,7 +1048,8 @@ Windows only, not supported by PCSC lite wrapper.
 >>> ... establish context ...
 >>> hresult, cards = SCardListCards(hcontext, [], [])
 >>> if hresult != SCARD_S_SUCCESS:
->>>     raise error, 'Failure to list cards: ' + SCardGetErrorMessage(hresult)
+>>>     raise error('Failure to list cards: ' +
+>>>     SCardGetErrorMessage(hresult))
 >>> for i in cards:
 >>>     hresult, providername = SCardGetCardTypeProviderName(hcontext, i, SCARD_PROVIDER_PRIMARY)
 >>>     if hresult == SCARD_S_SUCCESS:
@@ -1085,7 +1095,8 @@ Windows only, not supported by PCSC lite wrapper.
 >>>     znewcardATR, znewcardMask)
 >>> 
 >>> if hresult != SCARD_S_SUCCESS:
->>>     raise error, 'Failed to introduce card type: ' + SCardGetErrorMessage(hresult)
+>>>     raise error('Failed to introduce card type: ' +
+>>>     SCardGetErrorMessage(hresult))
 ...
 "
 %enddef
@@ -1120,7 +1131,8 @@ Windows only, not supported by PCSC lite wrapper.
 >>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
 >>> hresult, interfaces = SCardListInterfaces(hcontext, 'Schlumberger Cryptoflex 8k v2')
 >>> if hresult != SCARD_S_SUCCESS:
->>>     raise error, 'Failed to list interfaces: ' + SCardGetErrorMessage(hresult)
+>>>     raise error('Failed to list interfaces: ' +
+>>>     SCardGetErrorMessage(hresult))
 ...
 "
 %enddef
@@ -1144,10 +1156,12 @@ Windows only, not supported by PCSC lite wrapper.
 >>> slbCryptoFlex8kv2ATR = [ 0x3B, 0x95, 0x15, 0x40, 0x00, 0x68, 0x01, 0x02, 0x00, 0x00  ]
 >>> hresult, card = SCardListCards(hcontext, slbCryptoFlex8kv2ATR, [])
 >>> if hresult ! =SCARD_S_SUCCESS:
->>>     raise error, 'Failure to locate Schlumberger Cryptoflex 8k v2 card: ' + SCardGetErrorMessage(hresult)
+>>>     raise error('Failure to locate Schlumberger Cryptoflex 8k v2 card: ' +
+>>>     SCardGetErrorMessage(hresult))
 >>> hresult, cards = SCardListCards(hcontext, [], [])
 >>> if hresult != SCARD_S_SUCCESS:
->>>     raise error, 'Failure to list cards: ' + SCardGetErrorMessage(hresult)
+>>>     raise error('Failure to list cards: ' +
+>>>     SCardGetErrorMessage(hresult))
 >>> print('Cards: ', cards)
 ...
 "
