@@ -1,3 +1,31 @@
+# To use pre-commit, install the tool, perhaps using pipx or perhaps
+# adding it to a virtual environment you use for the repository.
+#
+# pipx install pre-commit
+#
+# Then, run this command to install the tool as a git pre-commit hook:
+#
+# pre-commit install
+#
+# Then, whenever you modify a file (or files) in the repository,
+# pre-commit will run the configured hooks against the modified files.
+# If the files are modified by the hooks, the git commit will fail and
+# you'll have an opportunity to review and stage the changes made by the
+# hooks.
+#
+# To format the files in this repo, you can run this command (but be
+# aware that pyupgrade will need to be run three times because there is
+# a specific line in ClassLoader.py that pyupgrade incrementally
+# updates).
+#
+# pre-commit run -a
+# pre-commit run -a
+# pre-commit run -a
+#
+# I strongly recommend enabling pre-commit.ci, which -- like coveralls
+# -- will automatically run an additional action against incoming PRs.
+# If the PRs do not comply to
+
 ci:
   autoupdate_schedule: "quarterly"
 
