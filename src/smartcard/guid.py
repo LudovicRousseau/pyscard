@@ -25,40 +25,21 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 import uuid
 
-# guid is ulong+ushort+ushort+uchar[8]
 
-
-def strToGUID(s):
+def strToGUID(s: str) -> list[int]:
     """Converts a GUID string into a list of bytes.
 
     >>> strToGUID('{AD4F1667-EA75-4124-84D4-641B3B197C65}')
     [103, 22, 79, 173, 117, 234, 36, 65, 132, 212, 100, 27, 59, 25, 124, 101]
     """
-    dat = uuid.UUID(hex=s)
-    dat = list(dat.bytes_le)
-    return dat
+    return list(uuid.UUID(s).bytes_le)
 
 
-def GUIDToStr(g):
+def GUIDToStr(g: list[int]) -> str:
     """Converts a GUID sequence of bytes into a string.
 
     >>> GUIDToStr([103,22,79,173,  117,234,  36,65,
     ...            132, 212, 100, 27, 59, 25, 124, 101])
     '{AD4F1667-EA75-4124-84D4-641B3B197C65}'
     """
-    dat = uuid.UUID(bytes_le=bytes(g))
-    return '{' + str(dat).upper() + '}'
-
-
-if __name__ == "__main__":
-    """Small sample illustrating the use of guid.py."""
-    guid_in = '{AD4F1667-EA75-4124-84D4-641B3B197C65}'
-    print(guid_in)
-    dummycardguid1 = strToGUID(guid_in)
-    print(dummycardguid1)
-    guid_out = GUIDToStr(dummycardguid1)
-    print(guid_out)
-    if guid_in != guid_out:
-        print("Failure")
-    else:
-        print("Success")
+    return f"{{{uuid.UUID(bytes_le=bytes(g))}}}".upper()
