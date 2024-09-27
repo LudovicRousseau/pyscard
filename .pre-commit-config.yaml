@@ -1,0 +1,51 @@
+ci:
+  autoupdate_schedule: "quarterly"
+
+default_language_version:
+  python: "python3.12"
+
+repos:
+  - repo: "meta"
+    hooks:
+      - id: "check-hooks-apply"
+      - id: "check-useless-excludes"
+
+  - repo: "https://github.com/pre-commit/pre-commit-hooks"
+    rev: "v4.6.0"
+    hooks:
+      - id: "check-added-large-files"
+      - id: "check-merge-conflict"
+      - id: "check-yaml"
+      - id: "end-of-file-fixer"
+      - id: "mixed-line-ending"
+        args:
+          - "--fix=lf"
+      - id: "trailing-whitespace"
+
+  - repo: "https://github.com/asottile/pyupgrade"
+    rev: "v3.17.0"
+    hooks:
+      - id: "pyupgrade"
+        name: "Enforce Python 3.9+ idioms"
+        args:
+          - "--py39-plus"
+
+  - repo: "https://github.com/psf/black-pre-commit-mirror"
+    rev: "24.8.0"
+    hooks:
+      - id: "black"
+
+  - repo: "https://github.com/pycqa/isort"
+    rev: "5.13.2"
+    hooks:
+      - id: "isort"
+
+  - repo: "https://github.com/python-jsonschema/check-jsonschema"
+    rev: "0.29.2"
+    hooks:
+      - id: "check-github-workflows"
+
+  - repo: "https://github.com/rhysd/actionlint"
+    rev: "v1.7.2"
+    hooks:
+      - id: "actionlint"

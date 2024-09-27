@@ -3,6 +3,13 @@ requires = ["setuptools","swig"]
 build-backend = "setuptools.build_meta"
 
 
+# isort
+# -----
+
+[tool.isort]
+profile = "black"
+
+
 # pydoctor
 # --------
 
