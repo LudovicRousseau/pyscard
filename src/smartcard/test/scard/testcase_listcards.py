@@ -85,28 +85,13 @@ if 'winscard' == resourceManager:
         # locate a known card
         # Cryptoflex 8k v2 is present in standard Windows 2000
         def test_listcryptoflexbyatr(self):
-            if -1 != platform.platform().find('Windows-7'):
-                dmyATR = \
-                  [0x3B, 0x75, 0x94, 0x00, 0x00, 0x62, 0x02, 0x02, 0x01, 0x01]
-                dmyName = ['dummycard']
-                hresult, card = SCardListCards(self.hcontext, dmyATR, [])
-                self.assertEqual(hresult, 0)
-                self.assertEqual(card, dmyName)
-            elif -1 != platform.platform().find('Windows-Vista-6.0'):
-                axaltodotnetATR = \
-                  [ 0x3B, 0x16, 0x96, 0x41, 0x73, 0x74, 0x72, 0x69, 0x64 ]
-                axaltodotnetName = ['Axalto Cryptoflex .NET']
-                hresult, card = SCardListCards(self.hcontext, axaltodotnetATR, [])
-                self.assertEqual(hresult, 0)
-                self.assertEqual(card, axaltodotnetName)
-            else:
-                slbCryptoFlex8kv2ATR = \
-                  [0x3B, 0x95, 0x15, 0x40, 0x00, 0x68, 0x01, 0x02, 0x00, 0x00]
-                slbCryptoFlex8kv2Name = ['Schlumberger Cryptoflex 8K v2']
-                hresult, card = SCardListCards(
-                        self.hcontext, slbCryptoFlex8kv2ATR, [])
-                self.assertEqual(hresult, 0)
-                self.assertEqual(card, slbCryptoFlex8kv2Name)
+            slbCryptoFlex8kv2ATR = \
+              [0x3B, 0x95, 0x15, 0x40, 0x00, 0x68, 0x01, 0x02, 0x00, 0x00]
+            slbCryptoFlex8kv2Name = ['Schlumberger Cryptoflex 8K v2']
+            hresult, card = SCardListCards(
+                    self.hcontext, slbCryptoFlex8kv2ATR, [])
+            self.assertEqual(hresult, 0)
+            self.assertEqual(card, slbCryptoFlex8kv2Name)
 
         # locate dummy card by interface
         def test_listdummycardbyguid(self):
@@ -129,22 +114,13 @@ if 'winscard' == resourceManager:
         # locate all cards and interfaces in the system
         def test_listallcards(self):
 
-            if -1 != platform.platform().find('Windows-7'):
-                expectedCards = ['Identity Device (Microsoft Generic Profile)',
-                                 'Identity Device (NIST SP 800-73 [PIV])']
-            elif -1 != platform.platform().find('Windows-Vista-6.0'):
-                expectedCards = [
-                    'Axalto Cryptoflex .NET',
-                    'Infineon SICRYPT CardModule Card',
-                    'dummycard' ]
-            else:
-                # dummycard has been introduced in the test setup and
-                # will be removed in the test teardown. Other cards are
-                # the cards present by default on Windows 2000
-                expectedCards = ['dummycard', 'GemSAFE Smart Card (8K)',
-                    'Schlumberger Cryptoflex 4K',
-                    'Schlumberger Cryptoflex 8K',
-                    'Schlumberger Cryptoflex 8K v2']
+            # dummycard has been introduced in the test setup and
+            # will be removed in the test teardown. Other cards are
+            # the cards present by default on Windows 2000
+            expectedCards = ['dummycard', 'GemSAFE Smart Card (8K)',
+                'Schlumberger Cryptoflex 4K',
+                'Schlumberger Cryptoflex 8K',
+                'Schlumberger Cryptoflex 8K v2']
             hresult, cards = SCardListCards(self.hcontext, [], [])
             self.assertEqual(hresult, 0)
             foundCards = {}
@@ -155,20 +131,12 @@ if 'winscard' == resourceManager:
 
             # dummycard has a primary provider,
             # other cards have no primary provider
-            if 'Windows-7-6.1.7600' == platform.platform():
-                expectedPrimaryProviderResult = {
-                        'dummycard': [0, self.dummycardguid1],
-                        'Identity Device (Microsoft Generic Profile)': \
-                          [2, None],
-                        'Identity Device (NIST SP 800-73 [PIV])': \
-                          [2, None]}
-            else:
-                expectedPrimaryProviderResult = {
-                        'dummycard': [0, self.dummycardguid1],
-                        'GemSAFE': [2, None],
-                        'Schlumberger Cryptoflex 4k': [2, None],
-                        'Schlumberger Cryptoflex 8k': [2, None],
-                        'Schlumberger Cryptoflex 8k v2': [2, None]}
+            expectedPrimaryProviderResult = {
+                    'dummycard': [0, self.dummycardguid1],
+                    'GemSAFE': [2, None],
+                    'Schlumberger Cryptoflex 4k': [2, None],
+                    'Schlumberger Cryptoflex 8k': [2, None],
+                    'Schlumberger Cryptoflex 8k v2': [2, None]}
             for i in range(len(cards)):
                 hresult, providername = SCardGetCardTypeProviderName(
                     self.hcontext, cards[i], SCARD_PROVIDER_PRIMARY)
@@ -183,23 +151,15 @@ if 'winscard' == resourceManager:
                                 expectedPrimaryProviderResult[cards[i]][1]))
 
             # dummycard has no CSP, other cards have a CSP
-            if 'Windows-7-6.1.7600' == platform.platform():
-                expectedProviderCSPResult = {
-                        'dummycard': [2, None],
-                        'Identity Device (Microsoft Generic Profile)': \
-                          [0, 'Microsoft Base Smart Card Crypto Provider'],
-                        'Identity Device (NIST SP 800-73 [PIV])': \
-                          [0, 'Microsoft Base Smart Card Crypto Provider']}
-            else:
-                expectedProviderCSPResult = {
-                        'dummycard': [2, None],
-                        'GemSAFE': [0, 'Gemplus GemSAFE Card CSP v1.0'],
-                        'Schlumberger Cryptoflex 4k': \
-                          [0, 'Schlumberger Cryptographic Service Provider'],
-                        'Schlumberger Cryptoflex 8k': \
-                          [0, 'Schlumberger Cryptographic Service Provider'],
-                        'Schlumberger Cryptoflex 8k v2': \
-                          [0, 'Schlumberger Cryptographic Service Provider']}
+            expectedProviderCSPResult = {
+                    'dummycard': [2, None],
+                    'GemSAFE': [0, 'Gemplus GemSAFE Card CSP v1.0'],
+                    'Schlumberger Cryptoflex 4k': \
+                      [0, 'Schlumberger Cryptographic Service Provider'],
+                    'Schlumberger Cryptoflex 8k': \
+                      [0, 'Schlumberger Cryptographic Service Provider'],
+                    'Schlumberger Cryptoflex 8k v2': \
+                      [0, 'Schlumberger Cryptographic Service Provider']}
             for i in range(len(cards)):
                 hresult, providername = SCardGetCardTypeProviderName(
                     self.hcontext, cards[i], SCARD_PROVIDER_CSP)
