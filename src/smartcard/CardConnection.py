@@ -188,7 +188,7 @@ class CardConnection(Observable):
 
         Subclasses must override this method for implementing apdu
         transmission."""
-        pass
+        return [], 0, 0
 
     def control(self, controlCode, command=[]):
         """Send a control command and buffer.  Internally calls
@@ -219,7 +219,7 @@ class CardConnection(Observable):
         """Performs the command control.
 
         Subclasses must override this method for implementing control."""
-        pass
+        return []
 
     def getAttrib(self, attribId):
         """return the requested attribute
@@ -241,7 +241,7 @@ class CardConnection(Observable):
         """Performs the command get attrib.
 
         Subclasses must override this method for implementing get attrib."""
-        pass
+        return []
 
     def __enter__(self):
         """Enter the runtime context.
