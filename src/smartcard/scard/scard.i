@@ -993,11 +993,11 @@ removes an introduced smart card from the smart card subsystem.
 
 Windows only, not supported by PCSC lite wrapper.
 
-from smartcard.scard import *
-... establish context ...
-hresult = SCardForgetCardType(hcontext, 'myCardName')
-if hresult != SCARD_S_SUCCESS:
-    raise error, 'Failed to remove card type: ' + SCardGetErrorMessage(hresult)
+>>> from smartcard.scard import *
+>>> ... establish context ...
+>>> hresult = SCardForgetCardType(hcontext, 'myCardName')
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise error, 'Failed to remove card type: ' + SCardGetErrorMessage(hresult)
 ...
 
 "
@@ -1014,12 +1014,12 @@ card subsystem.
 
 Windows only, not supported by PCSC lite wrapper.
 
-from smartcard.scard import *
-... establish context ...
-...
-hresult = SCardForgetReader(hcontext, dummyreader)
-if hresult != SCARD_S_SUCCESS:
-    raise error, 'Failed to forget readers ' + SCardGetErrorMessage(hresult)
+>>> from smartcard.scard import *
+>>> ... establish context ...
+>>> ...
+>>> hresult = SCardForgetReader(hcontext, dummyreader)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise error, 'Failed to forget readers ' + SCardGetErrorMessage(hresult)
 ...
 "
 %enddef
@@ -1035,18 +1035,18 @@ provider for a given card name and provider type.
 
 Windows only, not supported by PCSC lite wrapper.
 
-from smartcard.scard import *
-... establish context ...
-hresult, cards = SCardListCards(hcontext, [], [])
-if hresult != SCARD_S_SUCCESS:
-    raise error, 'Failure to list cards: ' + SCardGetErrorMessage(hresult)
-for i in cards:
-    hresult, providername = SCardGetCardTypeProviderName(hcontext, i, SCARD_PROVIDER_PRIMARY)
-    if hresult == SCARD_S_SUCCESS:
-         print(providername)
-    hresult, providername = SCardGetCardTypeProviderName(hcontext, i, SCARD_PROVIDER_CSP)
-    if hresult == SCARD_S_SUCCESS:
-         print(providername)
+>>> from smartcard.scard import *
+>>> ... establish context ...
+>>> hresult, cards = SCardListCards(hcontext, [], [])
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise error, 'Failure to list cards: ' + SCardGetErrorMessage(hresult)
+>>> for i in cards:
+>>>     hresult, providername = SCardGetCardTypeProviderName(hcontext, i, SCARD_PROVIDER_PRIMARY)
+>>>     if hresult == SCARD_S_SUCCESS:
+>>>          print(providername)
+>>>     hresult, providername = SCardGetCardTypeProviderName(hcontext, i, SCARD_PROVIDER_CSP)
+>>>     if hresult == SCARD_S_SUCCESS:
+>>>          print(providername)
 ...
 "
 %enddef
@@ -1072,20 +1072,20 @@ by adding it to the smart card database.
 
 Windows only, not supported by PCSC lite wrapper.
 
-from smartcard.scard import *
-...
-znewcardName = 'dummy-card'
-znewcardATR = [0x3B, 0x77, 0x94, 0x00, 0x00, 0x82, 0x30, 0x00, 0x13, 0x6C, 0x9F, 0x22]
-znewcardMask = [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
-znewcardPrimGuid = smartcard.guid.strToGUID('{128F3806-4F70-4ccf-977A-60C390664840}')
-znewcardSecGuid = smartcard.guid.strToGUID('{EB7F69EA-BA20-47d0-8C50-11CFDEB63BBE}')
-...
-hresult = SCardIntroduceCardType(hcontext, znewcardName,
-    znewcardPrimGuid, znewcardPrimGuid + znewcardSecGuid,
-    znewcardATR, znewcardMask)
-
-if hresult != SCARD_S_SUCCESS:
-    raise error, 'Failed to introduce card type: ' + SCardGetErrorMessage(hresult)
+>>> from smartcard.scard import *
+>>> ...
+>>> znewcardName = 'dummy-card'
+>>> znewcardATR = [0x3B, 0x77, 0x94, 0x00, 0x00, 0x82, 0x30, 0x00, 0x13, 0x6C, 0x9F, 0x22]
+>>> znewcardMask = [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
+>>> znewcardPrimGuid = smartcard.guid.strToGUID('{128F3806-4F70-4ccf-977A-60C390664840}')
+>>> znewcardSecGuid = smartcard.guid.strToGUID('{EB7F69EA-BA20-47d0-8C50-11CFDEB63BBE}')
+>>> ...
+>>> hresult = SCardIntroduceCardType(hcontext, znewcardName,
+>>>     znewcardPrimGuid, znewcardPrimGuid + znewcardSecGuid,
+>>>     znewcardATR, znewcardMask)
+>>> 
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise error, 'Failed to introduce card type: ' + SCardGetErrorMessage(hresult)
 ...
 "
 %enddef
@@ -1116,11 +1116,11 @@ and receives the list of interfaces supported by the card
 
 Windows only, not supported by PCSC lite wrapper.
 
-from smartcard.scard import *
-hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
-hresult, interfaces = SCardListInterfaces(hcontext, 'Schlumberger Cryptoflex 8k v2')
-if hresult != SCARD_S_SUCCESS:
-    raise error, 'Failed to list interfaces: ' + SCardGetErrorMessage(hresult)
+>>> from smartcard.scard import *
+>>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+>>> hresult, interfaces = SCardListInterfaces(hcontext, 'Schlumberger Cryptoflex 8k v2')
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise error, 'Failed to list interfaces: ' + SCardGetErrorMessage(hresult)
 ...
 "
 %enddef
@@ -1139,16 +1139,16 @@ match the ATR string supplied and support the interfaces specified.
 
 Windows only, not supported by PCSC lite wrapper.
 
-from smartcard.scard import *
-...
-slbCryptoFlex8kv2ATR = [ 0x3B, 0x95, 0x15, 0x40, 0x00, 0x68, 0x01, 0x02, 0x00, 0x00  ]
-hresult, card = SCardListCards(hcontext, slbCryptoFlex8kv2ATR, [])
-if hresult ! =SCARD_S_SUCCESS:
-    raise error, 'Failure to locate Schlumberger Cryptoflex 8k v2 card: ' + SCardGetErrorMessage(hresult)
-hresult, cards = SCardListCards(hcontext, [], [])
-if hresult != SCARD_S_SUCCESS:
-    raise error, 'Failure to list cards: ' + SCardGetErrorMessage(hresult)
-print('Cards: ', cards)
+>>> from smartcard.scard import *
+>>> ...
+>>> slbCryptoFlex8kv2ATR = [ 0x3B, 0x95, 0x15, 0x40, 0x00, 0x68, 0x01, 0x02, 0x00, 0x00  ]
+>>> hresult, card = SCardListCards(hcontext, slbCryptoFlex8kv2ATR, [])
+>>> if hresult ! =SCARD_S_SUCCESS:
+>>>     raise error, 'Failure to locate Schlumberger Cryptoflex 8k v2 card: ' + SCardGetErrorMessage(hresult)
+>>> hresult, cards = SCardListCards(hcontext, [], [])
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise error, 'Failure to list cards: ' + SCardGetErrorMessage(hresult)
+>>> print('Cards: ', cards)
 ...
 "
 %enddef
@@ -1173,26 +1173,26 @@ mszCards, returning immediately with the result.
 
 Windows only, not supported by PCSC lite wrapper.
 
-from smartcard.scard import *
-hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
-hresult, readers = SCardListReaders(hcontext, [])
-readerstates = []
-cards = ['Schlumberger Cryptoflex 4k', 'Schlumberger Cryptoflex 8k', 'Schlumberger Cryptoflex 8k v2']
-for i in xrange(len(readers)):
-    readerstates += [(readers[i], SCARD_STATE_UNAWARE)]
-hresult, newstates = SCardLocateCards(hcontext, cards, readerstates)
-for i in newstates:
-    reader, eventstate, atr = i
-    print(reader,)
-    for b in atr:
-        print('0x%.2X' % b, end='')
-    print("")
-    if eventstate & SCARD_STATE_ATRMATCH:
-        print('Card found')
-    if eventstate & SCARD_STATE_EMPTY:
-        print('Reader empty')
-    if eventstate & SCARD_STATE_PRESENT:
-        print('Card present in reader')
+>>> from smartcard.scard import *
+>>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+>>> hresult, readers = SCardListReaders(hcontext, [])
+>>> readerstates = []
+>>> cards = ['Schlumberger Cryptoflex 4k', 'Schlumberger Cryptoflex 8k', 'Schlumberger Cryptoflex 8k v2']
+>>> for i in xrange(len(readers)):
+>>>     readerstates += [(readers[i], SCARD_STATE_UNAWARE)]
+>>> hresult, newstates = SCardLocateCards(hcontext, cards, readerstates)
+>>> for i in newstates:
+>>>     reader, eventstate, atr = i
+>>>     print(reader,)
+>>>     for b in atr:
+>>>         print('0x%.2X' % b, end='')
+>>>     print("")
+>>>     if eventstate & SCARD_STATE_ATRMATCH:
+>>>         print('Card found')
+>>>     if eventstate & SCARD_STATE_EMPTY:
+>>>         print('Reader empty')
+>>>     if eventstate & SCARD_STATE_PRESENT:
+>>>         print('Card present in reader')
 ...
 "
 %enddef
