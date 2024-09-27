@@ -141,6 +141,42 @@ try:
                     SCardGetErrorMessage(hresult))
             print('PCSC Readers in reader group', readerGroups, ':', readers)
 
+            hresult = SCardIntroduceReaderGroup(hcontext, newgroup)
+            if hresult != SCARD_E_UNSUPPORTED_FEATURE:
+                raise error(
+                    'Was expecting an error instead of: ' +
+                    SCardGetErrorMessage(hresult))
+
+            dummyreader = readers[0] + ' dummy'
+            hresult = SCardAddReaderToGroup(hcontext, dummyreader, newgroup)
+            if hresult != SCARD_E_UNSUPPORTED_FEATURE:
+                raise error(
+                    'Was expecting an error instead of: ' +
+                    SCardGetErrorMessage(hresult))
+
+            dummyreader = readers[0] + ' dummy'
+            hresult = SCardIntroduceReader(hcontext, dummyreader, readers[0])
+            if hresult != SCARD_E_UNSUPPORTED_FEATURE:
+                raise error(
+                    'Was expecting an error instead of: ' +
+                    SCardGetErrorMessage(hresult))
+
+            hresult = SCardRemoveReaderFromGroup(
+                hcontext,
+                dummyreader,
+                newgroup)
+            if hresult != SCARD_E_UNSUPPORTED_FEATURE:
+                raise error(
+                    'Was expecting an error instead of: ' +
+                    SCardGetErrorMessage(hresult))
+
+            hresult = SCardForgetReaderGroup(hcontext, newgroup)
+            if hresult != SCARD_E_UNSUPPORTED_FEATURE:
+                raise error(
+                    'Was expecting an error instead of: ' +
+                    SCardGetErrorMessage(hresult))
+
+
     finally:
         hresult = SCardReleaseContext(hcontext)
         if hresult != SCARD_S_SUCCESS:
