@@ -863,19 +863,18 @@ Windows only, not supported by PCSC lite wrapper.
 
 example:
 
-from smartcard.scard import *
-... establish context ...
-    newgroup = 'SCard$MyOwnGroup'
-    reader = 'SchlumbergerSema Reflex USB v.2 0'
-    readeralias = 'SchlumbergerSema Reflex USB v.2 0 alias'
-    hresult = SCardIntroduceReader(hcontext, readeralias, reader])
-    if hresult != SCARD_S_SUCCESS:
-        raise error, 'Unable to introduce reader: ' + SCardGetErrorMessage(hresult)
-
-    hresult = SCardAddReaderToGroup(hcontext, readeralias, newgroup)
-    if hresult != SCARD_S_SUCCESS:
-        raise error, 'Unable to add reader to group: ' + SCardGetErrorMessage(hresult)
-
+>>> from smartcard.scard import *
+>>> ... establish context ...
+>>> newgroup = 'SCard$MyOwnGroup'
+>>> reader = 'SchlumbergerSema Reflex USB v.2 0'
+>>> readeralias = 'SchlumbergerSema Reflex USB v.2 0 alias'
+>>> hresult = SCardIntroduceReader(hcontext, readeralias, reader])
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise error, 'Unable to introduce reader: ' + SCardGetErrorMessage(hresult)
+>>> 
+>>> hresult = SCardAddReaderToGroup(hcontext, readeralias, newgroup)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise error, 'Unable to add reader to group: ' + SCardGetErrorMessage(hresult)
 ...
 "
 %enddef
@@ -896,12 +895,12 @@ Introduces a reader to the smart card subsystem.
 
 Windows only, not supported by PCSC lite wrapper.
 
-from smartcard.scard import *
-...
-dummyreader = readers[0] + ' dummy'
-hresult = SCardIntroduceReader(hcontext, dummyreader, readers[0])
-if hresult != SCARD_S_SUCCESS:
-    raise error, 'Unable to introduce reader: ' + dummyreader + ' : ' + SCardGetErrorMessage(hresult)
+>>> from smartcard.scard import *
+>>> ...
+>>> dummyreader = readers[0] + ' dummy'
+>>> hresult = SCardIntroduceReader(hcontext, dummyreader, readers[0])
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise error, 'Unable to introduce reader: ' + dummyreader + ' : ' + SCardGetErrorMessage(hresult)
 ...
 "
 %enddef
@@ -918,14 +917,14 @@ a reader to the smart card database.
 
 Windows only, not supported by PCSC lite wrapper.
 
-from smartcard.scard import *
-hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
-hresult = SCardIntroduceReaderGroup(hcontext, 'SCard$MyOwnGroup')
-if hresult != SCARD_S_SUCCESS:
-    raise error, 'Unable to introduce reader group: ' + SCardGetErrorMessage(hresult)
-hresult = SCardAddReaderToGroup(hcontext, 'SchlumbergerSema Reflex USB v.2 0', 'SCard$MyOwnGroup')
-if hresult != SCARD_S_SUCCESS:
-    raise error, 'Unable to add reader to group: ' + SCardGetErrorMessage(hresult)
+>>> from smartcard.scard import *
+>>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+>>> hresult = SCardIntroduceReaderGroup(hcontext, 'SCard$MyOwnGroup')
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise error, 'Unable to introduce reader group: ' + SCardGetErrorMessage(hresult)
+>>> hresult = SCardAddReaderToGroup(hcontext, 'SchlumbergerSema Reflex USB v.2 0', 'SCard$MyOwnGroup')
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise error, 'Unable to add reader to group: ' + SCardGetErrorMessage(hresult)
 "
 %enddef
 %feature("docstring") DOCSTRING_INTRODUCEREADERGROUP;
@@ -942,12 +941,12 @@ in the database.
 
 Windows only, not supported by PCSC lite wrapper.
 
-from smartcard.scard import *
-... establish context ...
-...
-hresult = SCardForgetReaderGroup(hcontext, newgroup)
-if hresult != SCARD_S_SUCCESS:
-    raise error, 'Unable to forget reader group: ' + SCardGetErrorMessage(hresult)
+>>> from smartcard.scard import *
+>>> ... establish context ...
+>>> ...
+>>> hresult = SCardForgetReaderGroup(hcontext, newgroup)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise error, 'Unable to forget reader group: ' + SCardGetErrorMessage(hresult)
 ...
 "
 %enddef
@@ -968,11 +967,11 @@ affect on the reader.
 
 Windows only, not supported by PCSC lite wrapper.
 
-from smartcard.scard import *
-hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
-hresult = SCardRemoveReaderFromGroup(hcontext, 'SchlumbergerSema Reflex USB v.2 0', 'SCard$MyOwnGroup')
-if hresult != SCARD_S_SUCCESS:
-    raise error, 'Unable to remove reader from group: ' + SCardGetErrorMessage(hresult)
+>>> from smartcard.scard import *
+>>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+>>> hresult = SCardRemoveReaderFromGroup(hcontext, 'SchlumbergerSema Reflex USB v.2 0', 'SCard$MyOwnGroup')
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise error, 'Unable to remove reader from group: ' + SCardGetErrorMessage(hresult)
 ...
 "
 %enddef
