@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 """Setup file for setuptools
 
-__author__ = "http://www.gemalto.com"
+__author__ = "https://www.gemalto.com/"
 
 Copyright 2001-2012 gemalto
 Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
@@ -142,7 +142,7 @@ kw = {'name': "pyscard",
       }
 
 # FIXME Sourceforge downloads are unauthenticated, migrate to PyPI
-kw['download_url'] = ('http://sourceforge.net/projects/%(name)s/files'
+kw['download_url'] = ('https://sourceforge.net/projects/%(name)s/files'
                       '/%(name)s/%(name)s%%20%(version)s'
                       '/%(name)s-%(version)s.tar.gz/download' % kw)
 

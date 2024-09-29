@@ -1,6 +1,6 @@
 """ReaderFactory: creates smartcard readers.
 
-__author__ = "gemalto http://www.gemalto.com"
+__author__ = "gemalto https://www.gemalto.com/"
 
 Factory pattern implementation borrowed from
 Thinking in Python, Bruce Eckel,

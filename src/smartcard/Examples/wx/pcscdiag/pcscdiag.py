@@ -4,7 +4,7 @@ Example wxPython application that displays readers and inserted cards ATRs.
 This example displays a snapshot of the readers and cards, there is no
 automatic refresh of the readers and cards.
 
-__author__ = "http://www.gemalto.com"
+__author__ = "https://www.gemalto.com/"
 
 Copyright 2001-2012 gemalto
 Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
@@ -31,11 +31,11 @@ import smartcard.System
 import smartcard.util
 
 
-# wxPython GUI modules (http://www.wxpython.org)
+# wxPython GUI modules (https://www.wxpython.org/)
 try:
     import wx
 except ImportError:
-    print('You need wxpython (http://www.wxpython.org) ' + \
+    print('You need wxpython (https://www.wxpython.org/) ' + \
           'to run this sample from the source code!')
     print('press a key to continue')
     import msvcrt

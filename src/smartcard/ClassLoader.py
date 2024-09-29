@@ -6,7 +6,7 @@ or within an interface.
 Source: Robert Brewer at the Python Cookbook:
 http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/223972
 
-License: PSF license (http://docs.python.org/license.html).
+License: PSF license (https://docs.python.org/license.html).
 """
 
 

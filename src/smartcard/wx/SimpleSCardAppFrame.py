@@ -1,6 +1,6 @@
 """Simple wxpython frame for smart card application.
 
-__author__ = "gemalto http://www.gemalto.com"
+__author__ = "gemalto https://www.gemalto.com/"
 __date__ = "November 2006"
 __version__ = "1.4.0"
 

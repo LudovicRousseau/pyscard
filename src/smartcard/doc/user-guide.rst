@@ -6,7 +6,7 @@ pyscard user's guide
 Copyright
 *********
 
-| Copyright 2001-2009 `Gemalto <http://www.gemalto.com/>`_
+| Copyright 2001-2009 `Gemalto <https://www.gemalto.com/>`_
 | Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
 
 | Copyright 2007-2018
@@ -36,8 +36,8 @@ The pyscard smartcard library is a framework for building smart card
 aware applications in Python. The smartcard module is built on top of
 the PCSC API Python wrapper module.
 
-pyscard supports Windows 2000 and XP by using the `Microsoft Smart Card
-Base <http://msdn2.microsoft.com/en-us/library/aa374731.aspx#smart_card_functions>`_ components, and Linux and Mac OS X by using `PCSC-lite <http://pcsclite.alioth.debian.org/>`_.
+pyscard supports Windows operating systems via the `Microsoft Smart Card
+SDK <https://learn.microsoft.com/en-us/windows/win32/secauthn/authentication-functions#smart-card-functions>`_ components, and Linux and Mac OS X by using `PCSC-lite <https://pcsclite.apdu.fr/>`_.
 
 
 Smart Cards
@@ -59,14 +59,13 @@ the PC, often nowadays thru a USB port.
 The PCSC workgroup has defined a standard API to interface smart card
 and smart card readers to a PC. The resulting reference implementation
 on Linux and Mac OS X operating systems is `PC/SC-lite
-<http://pcsclite.alioth.debian.org/>`_. All windows operating systems
-also include out of the box smart card support, usually called `PCSC
-<http://msdn2.microsoft.com/en-us/library/aa374731.aspx#smart_card_functions>`_.
+<https://pcsclite.apdu.fr/>`_. All Windows operating systems
+also include out-of-the-box smart card support.
 
 The PCSC API is implemented in C language, and several bridges are
 provided to access the PCSC API from different languages such as java or
 visual basic. pyscard is a Python framework to develop smart card PC
-applications on Linux, Mac OS X and windows. pyscard lower layers
+applications on Linux, Mac OS X, and Windows. pyscard lower layers
 interface to the PCSC API to access the smart cards and smart card
 readers.
 
@@ -1400,7 +1399,7 @@ Smart card are security devices. As a result, smart card applications
 usually require some kind cryptography, for example to establish a
 secure channel with the smart card. One of the reference cryptographic
 modules for Python is `pycrypto
-<http://www.amk.ca/python/code/crypto.html>`_, the Python cryptographic
+<https://www.pycrypto.org/>`_, the Python cryptographic
 toolkit. This section shows briefly the basics of pycrypto to give you a
 quick start to include cryptography in your Python smart card
 applications.
