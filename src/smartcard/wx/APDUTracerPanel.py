@@ -1,6 +1,6 @@
 """Graphical APDU Tracer.
 
-__author__ = "gemalto http://www.gemalto.com"
+__author__ = "gemalto https://www.gemalto.com/"
 
 Copyright 2001-2012 gemalto
 Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
@@ -22,7 +22,7 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-# wxPython GUI modules (http://www.wxpython.org)
+# wxPython GUI modules (https://www.wxpython.org/)
 import wx
 
 from smartcard.CardConnectionObserver import CardConnectionObserver

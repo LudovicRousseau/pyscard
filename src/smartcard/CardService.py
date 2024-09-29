@@ -8,7 +8,7 @@ card service is almost always smart card operating system specific.
 The card service performs its specific smart card functionality by accessing
 the smartcard with a CardConnection.
 
-__author__ = "http://www.gemalto.com"
+__author__ = "https://www.gemalto.com/"
 
 Copyright 2001-2012 gemalto
 Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com

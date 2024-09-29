@@ -2,7 +2,7 @@
 """
 Sample for python PCSC wrapper module: Locate cards in the system
 
-__author__ = "http://www.gemalto.com"
+__author__ = "https://www.gemalto.com/"
 
 Copyright 2001-2012 gemalto
 Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com

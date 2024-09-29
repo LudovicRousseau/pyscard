@@ -1,6 +1,6 @@
 """wxPython panel display cards/readers as a TreeCtrl.
 
-__author__ = "gemalto http://www.gemalto.com"
+__author__ = "gemalto https://www.gemalto.com/"
 
 Copyright 2001-2012 gemalto
 Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
@@ -32,7 +32,7 @@ from smartcard.util import toHexString
 import smartcard.wx.SimpleSCardApp
 from smartcard.wx import ICO_SMARTCARD, ICO_READER
 
-# wxPython GUI modules (http://www.wxpython.org)
+# wxPython GUI modules (https://www.wxpython.org/)
 import wx
 
 

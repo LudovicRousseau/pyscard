@@ -61,7 +61,7 @@ pip install pyscard
 Installing on windows from the source distribution
 ---------------------------------------------------
 
-1. you will need [swig](http://www.swig.org), and a C compiler.
+1. you will need [swig](https://www.swig.org/), and a C compiler.
 
 You can install swig using:
 
@@ -97,7 +97,7 @@ Installation on GNU/Linux or macOS
 Installing on GNU/Linux or macOS from the source distribution
 -------------------------------------------------------------
 
-1. you will need gcc, swig (http://www.swig.org), and pcsc-lite
+1. you will need gcc, swig (https://www.swig.org/), and pcsc-lite
 (https://pcsclite.apdu.fr/)
 
 2. download the source distribution

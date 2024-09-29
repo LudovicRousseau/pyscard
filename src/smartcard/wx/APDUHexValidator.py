@@ -4,7 +4,7 @@ A wxValidator that matches APDU in hexadecimal such as::
     A4 A0 00 00 02
     A4A0000002
 
-__author__ = "http://www.gemalto.com"
+__author__ = "https://www.gemalto.com/"
 
 Copyright 2001-2012 gemalto
 Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com

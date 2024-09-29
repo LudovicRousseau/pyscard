@@ -1,6 +1,6 @@
 """
 from Thinking in Python, Bruce Eckel
-http://python-3-patterns-idioms-test.readthedocs.org/en/latest/Observer.html
+https://python-3-patterns-idioms-test.readthedocs.io/en/latest/Observer.html
 
 (c) Copyright 2008, Creative Commons Attribution-Share Alike 3.0.
 

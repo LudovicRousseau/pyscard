@@ -6,7 +6,7 @@ upon smartcard reader insertion/removal.
 ReaderMonitor is a singleton object notifying registered ReaderObservers
 upon reader insertion/removal.
 
-__author__ = "http://www.gemalto.com"
+__author__ = "https://www.gemalto.com/"
 
 Copyright 2001-2012 gemalto
 Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com

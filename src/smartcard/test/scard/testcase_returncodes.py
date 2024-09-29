@@ -4,7 +4,7 @@
 This test case can be executed individually, or with all other test cases
 thru testsuite_scard.py.
 
-__author__ = "http://www.gemalto.com"
+__author__ = "https://www.gemalto.com/"
 
 Copyright 2009 gemalto
 Author: Ludovic Rousseau, mailto:ludovic.rousseau@free.fr

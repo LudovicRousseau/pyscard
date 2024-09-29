@@ -5,7 +5,7 @@ e.g.  a GSM file system or an Open Platform loader.  CardService is an
 abstract class from which concrete card services are derived.  A concrete
 card service is almost always smart card operating system specific
 
-__author__ = "http://www.gemalto.com"
+__author__ = "https://www.gemalto.com/"
 
 Copyright 2001-2012 gemalto
 Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com

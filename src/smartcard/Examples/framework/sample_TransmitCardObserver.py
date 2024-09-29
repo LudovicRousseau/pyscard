@@ -3,7 +3,7 @@
 Sample script that monitors card insertions,
 connects to cards and transmit an apdu
 
-__author__ = "http://www.gemalto.com"
+__author__ = "https://www.gemalto.com/"
 
 Copyright 2001-2012 gemalto
 Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com

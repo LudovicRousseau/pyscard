@@ -3,7 +3,7 @@ pyscard - Python for smart cards
 
 `pyscard - Python smart card library -
 <https://github.com/LudovicRousseau/pyscard>`_ is a Python module adding
-smart cards support to `Python <http://www.python.org/>`_ 3.9 and higher.
+smart cards support to `Python <https://www.python.org/>`_ 3.9 and higher.
 
 Download
 ********

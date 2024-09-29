@@ -3,7 +3,7 @@
 CardConnectionObserver is a base class for objects that are to be notified
 upon CardConnection events.
 
-__author__ = "http://www.gemalto.com"
+__author__ = "https://www.gemalto.com/"
 
 Copyright 2001-2012 gemalto
 Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
