@@ -33,14 +33,6 @@ class BadReaderGroupException(SmartcardException):
         SmartcardException.__init__(self, 'Invalid reader group')
 
 
-class DeleteSCardDefaultReaderGroupException(SmartcardException):
-    """Raised when trying to delete SCard$DefaultReaders reader group."""
-
-    def __init__(self):
-        SmartcardException.__init__(
-            self, 'SCard$DefaultReaders cannot be deleted')
-
-
 class innerreadergroups(ulist):
     """Smartcard readers groups private class.
 
@@ -51,9 +43,8 @@ class innerreadergroups(ulist):
     def __init__(self, initlist=None):
         """Retrieve and store list of reader groups"""
         if initlist is None:
-            initlist = self.getreadergroups()
-        if initlist is not None:
-            ulist.__init__(self, initlist)
+            initlist = self.getreadergroups() or []
+        ulist.__init__(self, initlist)
         self.unremovablegroups = []
 
     def __onadditem__(self, item):
@@ -112,7 +103,3 @@ class readergroups(object):
 
     def __getattr__(self, name):
         return getattr(self.instance, name)
-
-
-if __name__ == '__main__':
-    print(readergroups())
