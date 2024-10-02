@@ -45,7 +45,7 @@ def get_class(fullClassName, parentClass=None):
     # Assert that the class is a subclass of parentClass.
     if parentClass is not None:
         if not issubclass(aClass, parentClass):
-            raise TypeError("%s is not a subclass of %s" % (fullClassName, parentClass))
+            raise TypeError(f"{fullClassName} is not a subclass of {parentClass}")
 
     # Return a reference to the class itself, not an instantiated object.
     return aClass
