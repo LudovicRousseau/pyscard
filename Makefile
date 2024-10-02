@@ -27,7 +27,7 @@ test:
 
 coverage:
 	$(COVERAGE) erase
-	$(COVERAGE) run -m unittest discover
+	$(COVERAGE) run -m pytest
 	$(COVERAGE) combine
 	$(COVERAGE) report
 	$(COVERAGE) html
