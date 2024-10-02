@@ -52,7 +52,7 @@ class BaseSCardException(Exception):
             if hresult < 0:
                 # convert 0x-7FEFFFE3 into 0x8010001D
                 hresult += 0x100000000
-            text += ": {} (0x{:08X})".format(smartcard.scard.SCardGetErrorMessage(self.hresult), hresult)
+            text += f": {smartcard.scard.SCardGetErrorMessage(self.hresult)} (0x{hresult:08X})"
         return text
 
 
@@ -60,9 +60,10 @@ class AddReaderToGroupException(BaseSCardException):
     """Raised when scard fails to add a new reader to a PCSC reader group."""
 
     def __init__(self, hresult, readername="", groupname=""):
-        super().__init__(message='Failed to add reader: ' + readername +
-            ' to group: ' + groupname,
-                hresult=hresult)
+        super().__init__(
+            message="Failed to add reader: " + readername + " to group: " + groupname,
+            hresult=hresult,
+        )
         self.readername = readername
         self.groupname = groupname
 
@@ -71,16 +72,14 @@ class EstablishContextException(BaseSCardException):
     """Raised when scard failed to establish context with PCSC."""
 
     def __init__(self, hresult):
-        super().__init__(message='Failed to establish context',
-                hresult=hresult)
+        super().__init__(message="Failed to establish context", hresult=hresult)
 
 
 class ListReadersException(BaseSCardException):
     """Raised when scard failed to list readers."""
 
     def __init__(self, hresult):
-        super().__init__(message='Failed to list readers',
-                hresult=hresult)
+        super().__init__(message="Failed to list readers", hresult=hresult)
 
 
 class IntroduceReaderException(BaseSCardException):
@@ -88,8 +87,8 @@ class IntroduceReaderException(BaseSCardException):
 
     def __init__(self, hresult, readername=""):
         super().__init__(
-                message='Failed to introduce a new reader: ' + readername,
-                hresult=hresult)
+            message="Failed to introduce a new reader: " + readername, hresult=hresult
+        )
         self.readername = readername
 
 
@@ -97,8 +96,7 @@ class ReleaseContextException(BaseSCardException):
     """Raised when scard failed to release PCSC context."""
 
     def __init__(self, hresult):
-        super().__init__(message='Failed to release context',
-                hresult=hresult)
+        super().__init__(message="Failed to release context", hresult=hresult)
 
 
 class RemoveReaderFromGroupException(BaseSCardException):
@@ -108,9 +106,13 @@ class RemoveReaderFromGroupException(BaseSCardException):
         BaseSCardException.__init__(self, hresult)
         self.readername = readername
         self.groupname = groupname
-        super().__init__(message='Failed to remove reader: ' + readername +
-            ' from group: ' + groupname,
-                hresult=hresult)
+        super().__init__(
+            message="Failed to remove reader: "
+            + readername
+            + " from group: "
+            + groupname,
+            hresult=hresult,
+        )
 
 
 if __name__ == "__main__":

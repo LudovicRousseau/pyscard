@@ -22,24 +22,31 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-from smartcard.sw.ErrorChecker import ErrorChecker
 import smartcard.sw.SWExceptions
+from smartcard.sw.ErrorChecker import ErrorChecker
 
 iso7816_9SW = {
-    0x62: (smartcard.sw.SWExceptions.WarningProcessingException,
-           {0x82: "End of file/record reached"}),
-
-    0x64: (smartcard.sw.SWExceptions.ExecutionErrorException,
-           {0x00: "Execution error"}),
-
-    0x69: (smartcard.sw.SWExceptions.CheckingErrorException,
-           {0x82: "Security status not satisfied"}),
-
-    0x6A: (smartcard.sw.SWExceptions.CheckingErrorException,
-           {0x80: "Incorrect parameters in data field",
+    0x62: (
+        smartcard.sw.SWExceptions.WarningProcessingException,
+        {0x82: "End of file/record reached"},
+    ),
+    0x64: (
+        smartcard.sw.SWExceptions.ExecutionErrorException,
+        {0x00: "Execution error"},
+    ),
+    0x69: (
+        smartcard.sw.SWExceptions.CheckingErrorException,
+        {0x82: "Security status not satisfied"},
+    ),
+    0x6A: (
+        smartcard.sw.SWExceptions.CheckingErrorException,
+        {
+            0x80: "Incorrect parameters in data field",
             0x84: "Not enough memory space",
             0x89: "File already exists",
-            0x8A: "DF name already exists"}),
+            0x8A: "DF name already exists",
+        },
+    ),
 }
 
 
@@ -88,12 +95,12 @@ class ISO7816_9ErrorChecker(ErrorChecker):
                     pass
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     """Small sample illustrating the use of ISO7816_9ErrorChecker."""
     ecs = ISO7816_9ErrorChecker()
     ecs([], 0x90, 0x00)
-    ecs([], 0x6a, 0x81)
+    ecs([], 0x6A, 0x81)
     try:
         ecs([], 0x6A, 0x8A)
     except smartcard.sw.SWExceptions.CheckingErrorException as e:
-        print(str(e) + " {:x} {:x}".format(e.sw1, e.sw2))
+        print(str(e) + f" {e.sw1:x} {e.sw2:x}")

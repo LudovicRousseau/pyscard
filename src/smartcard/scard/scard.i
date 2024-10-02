@@ -55,44 +55,44 @@ The smartcard.scard module provides mapping for the following API functions,
 depending on the Operating System::
 
     =============================== ======= =======
-    Function                        Windows  Linux 
-                                             OS X  
+    Function                        Windows  Linux
+                                             OS X
     =============================== ======= =======
-    GetOpenCardName                                
-    SCardAddReaderToGroup              Y           
-    SCardBeginTransaction              Y       Y   
-    SCardCancel                        Y       Y   
-    SCardConnect                       Y       Y   
-    SCardControl                       Y       Y   
-    SCardDisconnect                    Y       Y   
-    SCardEndTransaction                Y       Y   
-    SCardEstablishContext              Y       Y   
-    SCardForgetCardType                Y           
-    SCardForgetReader                  Y           
-    SCardForgetReaderGroup             Y           
-    SCardFreeMemory                                
-    SCardGetAttrib                     Y       Y   
-    SCardGetCardTypeProviderName       Y           
-    SCardGetErrorMessage               Y       Y   
-    SCardGetProviderId                             
-    SCardGetStatusChange               Y       Y   
-    SCardIntroduceCardType             Y           
-    SCardIntroduceReader               Y           
-    SCardIntroduceReaderGroup          Y           
-    SCardIsValidContext                Y       Y   
-    SCardListCards                     Y           
-    SCardListInterfaces                Y           
-    SCardListReaderGroups              Y       Y   
-    SCardListReaders                   Y       Y   
-    SCardLocateCards                   Y           
-    SCardReconnect                     Y       Y   
-    SCardReleaseContext                Y       Y   
-    SCardRemoveReaderFromGroup         Y           
-    SCardSetAttrib                     Y       Y   
-    SCardSetCartTypeProviderName                   
-    SCardStatus                        Y       Y   
-    SCardTransmit                      Y       Y   
-    SCardUIDlgSelectCard                           
+    GetOpenCardName
+    SCardAddReaderToGroup              Y
+    SCardBeginTransaction              Y       Y
+    SCardCancel                        Y       Y
+    SCardConnect                       Y       Y
+    SCardControl                       Y       Y
+    SCardDisconnect                    Y       Y
+    SCardEndTransaction                Y       Y
+    SCardEstablishContext              Y       Y
+    SCardForgetCardType                Y
+    SCardForgetReader                  Y
+    SCardForgetReaderGroup             Y
+    SCardFreeMemory
+    SCardGetAttrib                     Y       Y
+    SCardGetCardTypeProviderName       Y
+    SCardGetErrorMessage               Y       Y
+    SCardGetProviderId
+    SCardGetStatusChange               Y       Y
+    SCardIntroduceCardType             Y
+    SCardIntroduceReader               Y
+    SCardIntroduceReaderGroup          Y
+    SCardIsValidContext                Y       Y
+    SCardListCards                     Y
+    SCardListInterfaces                Y
+    SCardListReaderGroups              Y       Y
+    SCardListReaders                   Y       Y
+    SCardLocateCards                   Y
+    SCardReconnect                     Y       Y
+    SCardReleaseContext                Y       Y
+    SCardRemoveReaderFromGroup         Y
+    SCardSetAttrib                     Y       Y
+    SCardSetCartTypeProviderName
+    SCardStatus                        Y       Y
+    SCardTransmit                      Y       Y
+    SCardUIDlgSelectCard
     =============================== ======= =======
 
 Comments, bug reports, improvements welcome.
@@ -154,7 +154,7 @@ Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 // MAX_BUFFER_SIZE_EXTENDED is pcsc-lite specific
 // Issues on Lenovo laptop with NXP reader for higher values
 // See https://github.com/LudovicRousseau/pyscard/issues/100
-#define MAX_BUFFER_SIZE_EXTENDED   65535 
+#define MAX_BUFFER_SIZE_EXTENDED   65535
 #endif //PCSCLITE
 
 #include "pcsctypes.h"
@@ -872,7 +872,7 @@ example:
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise error('Unable to introduce reader: ' +
 >>>     SCardGetErrorMessage(hresult))
->>> 
+>>>
 >>> hresult = SCardAddReaderToGroup(hcontext, readeralias, newgroup)
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise error('Unable to add reader to group: ' +
@@ -1093,7 +1093,7 @@ Windows only, not supported by PCSC lite wrapper.
 >>> hresult = SCardIntroduceCardType(hcontext, znewcardName,
 >>>     znewcardPrimGuid, znewcardPrimGuid + znewcardSecGuid,
 >>>     znewcardATR, znewcardMask)
->>> 
+>>>
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise error('Failed to introduce card type: ' +
 >>>     SCardGetErrorMessage(hresult))
@@ -1232,12 +1232,12 @@ service has been shut down.
 
 >>> from smartcard.scard import *
 >>> from smartcard.pcsc import *
->>> 
+>>>
 >>> # establish context
 >>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.EstablishContextException(hresult)
->>> 
+>>>
 >>> # valid context?
 >>> hresult = SCardIsValidContext(hcontext)
 >>> if hresult != SCARD_S_SUCCESS:
@@ -1255,53 +1255,53 @@ This function get an attribute from the IFD Handler.
 
 The possible attributes are::
     ======================================== ======= =======
-    Attribute                                Windows  PCSC  
+    Attribute                                Windows  PCSC
                                                       lite
     ======================================== ======= =======
-    SCARD_ATTR_ASYNC_PROTOCOL_TYPES                     Y   
-    SCARD_ATTR_ATR_STRING                       Y       Y   
-    SCARD_ATTR_CHANNEL_ID                       Y       Y   
-    SCARD_ATTR_CHARACTERISTICS                  Y       Y   
-    SCARD_ATTR_CURRENT_BWT                      Y       Y   
-    SCARD_ATTR_CURRENT_CLK                      Y       Y   
-    SCARD_ATTR_CURRENT_CWT                      Y       Y   
-    SCARD_ATTR_CURRENT_D                        Y       Y   
-    SCARD_ATTR_CURRENT_EBC_ENCODING             Y       Y   
-    SCARD_ATTR_CURRENT_F                        Y       Y   
-    SCARD_ATTR_CURRENT_IFSC                     Y       Y   
-    SCARD_ATTR_CURRENT_IFSD                     Y       Y   
-    SCARD_ATTR_CURRENT_IO_STATE                 Y       Y   
-    SCARD_ATTR_CURRENT_N                        Y       Y   
-    SCARD_ATTR_CURRENT_PROTOCOL_TYPE            Y       Y   
-    SCARD_ATTR_CURRENT_W                        Y       Y   
-    SCARD_ATTR_DEFAULT_CLK                      Y       Y   
-    SCARD_ATTR_DEFAULT_DATA_RATE                Y       Y   
-    SCARD_ATTR_DEVICE_FRIENDLY_NAME_A           Y       Y   
-    SCARD_ATTR_DEVICE_FRIENDLY_NAME_W           Y       Y   
-    SCARD_ATTR_DEVICE_IN_USE                    Y       Y   
-    SCARD_ATTR_DEVICE_SYSTEM_NAME_A             Y       Y   
-    SCARD_ATTR_DEVICE_SYSTEM_NAME_W             Y       Y   
-    SCARD_ATTR_DEVICE_UNIT                      Y       Y   
-    SCARD_ATTR_ESC_AUTHREQUEST                  Y       Y   
-    SCARD_ATTR_ESC_CANCEL                       Y       Y   
-    SCARD_ATTR_ESC_RESET                        Y       Y   
-    SCARD_ATTR_EXTENDED_BWT                     Y       Y   
-    SCARD_ATTR_ICC_INTERFACE_STATUS             Y       Y   
-    SCARD_ATTR_ICC_PRESENCE                     Y       Y   
-    SCARD_ATTR_ICC_TYPE_PER_ATR                 Y       Y   
-    SCARD_ATTR_MAXINPUT                         Y       Y   
-    SCARD_ATTR_MAX_CLK                          Y       Y   
-    SCARD_ATTR_MAX_DATA_RATE                    Y       Y   
-    SCARD_ATTR_MAX_IFSD                         Y       Y   
-    SCARD_ATTR_POWER_MGMT_SUPPORT               Y       Y   
-    SCARD_ATTR_SUPRESS_T1_IFS_REQUEST           Y       Y   
-    SCARD_ATTR_SYNC_PROTOCOL_TYPES                      Y   
-    SCARD_ATTR_USER_AUTH_INPUT_DEVICE           Y       Y   
-    SCARD_ATTR_USER_TO_CARD_AUTH_DEVICE         Y       Y   
-    SCARD_ATTR_VENDOR_IFD_SERIAL_NO             Y       Y   
-    SCARD_ATTR_VENDOR_IFD_TYPE                  Y       Y   
-    SCARD_ATTR_VENDOR_IFD_VERSION               Y       Y   
-    SCARD_ATTR_VENDOR_NAME                      Y       Y   
+    SCARD_ATTR_ASYNC_PROTOCOL_TYPES                     Y
+    SCARD_ATTR_ATR_STRING                       Y       Y
+    SCARD_ATTR_CHANNEL_ID                       Y       Y
+    SCARD_ATTR_CHARACTERISTICS                  Y       Y
+    SCARD_ATTR_CURRENT_BWT                      Y       Y
+    SCARD_ATTR_CURRENT_CLK                      Y       Y
+    SCARD_ATTR_CURRENT_CWT                      Y       Y
+    SCARD_ATTR_CURRENT_D                        Y       Y
+    SCARD_ATTR_CURRENT_EBC_ENCODING             Y       Y
+    SCARD_ATTR_CURRENT_F                        Y       Y
+    SCARD_ATTR_CURRENT_IFSC                     Y       Y
+    SCARD_ATTR_CURRENT_IFSD                     Y       Y
+    SCARD_ATTR_CURRENT_IO_STATE                 Y       Y
+    SCARD_ATTR_CURRENT_N                        Y       Y
+    SCARD_ATTR_CURRENT_PROTOCOL_TYPE            Y       Y
+    SCARD_ATTR_CURRENT_W                        Y       Y
+    SCARD_ATTR_DEFAULT_CLK                      Y       Y
+    SCARD_ATTR_DEFAULT_DATA_RATE                Y       Y
+    SCARD_ATTR_DEVICE_FRIENDLY_NAME_A           Y       Y
+    SCARD_ATTR_DEVICE_FRIENDLY_NAME_W           Y       Y
+    SCARD_ATTR_DEVICE_IN_USE                    Y       Y
+    SCARD_ATTR_DEVICE_SYSTEM_NAME_A             Y       Y
+    SCARD_ATTR_DEVICE_SYSTEM_NAME_W             Y       Y
+    SCARD_ATTR_DEVICE_UNIT                      Y       Y
+    SCARD_ATTR_ESC_AUTHREQUEST                  Y       Y
+    SCARD_ATTR_ESC_CANCEL                       Y       Y
+    SCARD_ATTR_ESC_RESET                        Y       Y
+    SCARD_ATTR_EXTENDED_BWT                     Y       Y
+    SCARD_ATTR_ICC_INTERFACE_STATUS             Y       Y
+    SCARD_ATTR_ICC_PRESENCE                     Y       Y
+    SCARD_ATTR_ICC_TYPE_PER_ATR                 Y       Y
+    SCARD_ATTR_MAXINPUT                         Y       Y
+    SCARD_ATTR_MAX_CLK                          Y       Y
+    SCARD_ATTR_MAX_DATA_RATE                    Y       Y
+    SCARD_ATTR_MAX_IFSD                         Y       Y
+    SCARD_ATTR_POWER_MGMT_SUPPORT               Y       Y
+    SCARD_ATTR_SUPRESS_T1_IFS_REQUEST           Y       Y
+    SCARD_ATTR_SYNC_PROTOCOL_TYPES                      Y
+    SCARD_ATTR_USER_AUTH_INPUT_DEVICE           Y       Y
+    SCARD_ATTR_USER_TO_CARD_AUTH_DEVICE         Y       Y
+    SCARD_ATTR_VENDOR_IFD_SERIAL_NO             Y       Y
+    SCARD_ATTR_VENDOR_IFD_TYPE                  Y       Y
+    SCARD_ATTR_VENDOR_IFD_VERSION               Y       Y
+    SCARD_ATTR_VENDOR_NAME                      Y       Y
     ======================================== ======= =======
 
 Not all the dwAttrId values listed above may be implemented in the IFD
@@ -1310,23 +1310,23 @@ implemented.
 
 >>> from smartcard.scard import *
 >>> from smartcard.pcsc import *
->>> 
+>>>
 >>> # establish context
 >>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.EstablishContextException(hresult)
->>> 
+>>>
 >>> # list readers
 >>> hresult, readers = SCardListReaders(hcontext, [])
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.ListReadersException(hresult)
->>> 
+>>>
 >>> # connect
 >>> hresult, hcard, dwActiveProtocol = SCardConnect(
 >>>     hcontext, readers[0], SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.BaseSCardException(hresult)
->>> 
+>>>
 >>> # get attribute
 >>> hresult, attrib = SCardGetAttrib(hcard, SCARD_ATTR_ATR_STRING)
 >>> if hresult != SCARD_S_SUCCESS:
@@ -1347,53 +1347,53 @@ times.
 
 The possible attributes are::
     ======================================== ======= =======
-    Attribute                                Windows  PCSC  
+    Attribute                                Windows  PCSC
                                                       lite
     ======================================== ======= =======
-    SCARD_ATTR_ASYNC_PROTOCOL_TYPES                     Y   
-    SCARD_ATTR_ATR_STRING                       Y       Y   
-    SCARD_ATTR_CHANNEL_ID                       Y       Y   
-    SCARD_ATTR_CHARACTERISTICS                  Y       Y   
-    SCARD_ATTR_CURRENT_BWT                      Y       Y   
-    SCARD_ATTR_CURRENT_CLK                      Y       Y   
-    SCARD_ATTR_CURRENT_CWT                      Y       Y   
-    SCARD_ATTR_CURRENT_D                        Y       Y   
-    SCARD_ATTR_CURRENT_EBC_ENCODING             Y       Y   
-    SCARD_ATTR_CURRENT_F                        Y       Y   
-    SCARD_ATTR_CURRENT_IFSC                     Y       Y   
-    SCARD_ATTR_CURRENT_IFSD                     Y       Y   
-    SCARD_ATTR_CURRENT_IO_STATE                 Y       Y   
-    SCARD_ATTR_CURRENT_N                        Y       Y   
-    SCARD_ATTR_CURRENT_PROTOCOL_TYPE            Y       Y   
-    SCARD_ATTR_CURRENT_W                        Y       Y   
-    SCARD_ATTR_DEFAULT_CLK                      Y       Y   
-    SCARD_ATTR_DEFAULT_DATA_RATE                Y       Y   
-    SCARD_ATTR_DEVICE_FRIENDLY_NAME_A           Y       Y   
-    SCARD_ATTR_DEVICE_FRIENDLY_NAME_W           Y       Y   
-    SCARD_ATTR_DEVICE_IN_USE                    Y       Y   
-    SCARD_ATTR_DEVICE_SYSTEM_NAME_A             Y       Y   
-    SCARD_ATTR_DEVICE_SYSTEM_NAME_W             Y       Y   
-    SCARD_ATTR_DEVICE_UNIT                      Y       Y   
-    SCARD_ATTR_ESC_AUTHREQUEST                  Y       Y   
-    SCARD_ATTR_ESC_CANCEL                       Y       Y   
-    SCARD_ATTR_ESC_RESET                        Y       Y   
-    SCARD_ATTR_EXTENDED_BWT                     Y       Y   
-    SCARD_ATTR_ICC_INTERFACE_STATUS             Y       Y   
-    SCARD_ATTR_ICC_PRESENCE                     Y       Y   
-    SCARD_ATTR_ICC_TYPE_PER_ATR                 Y       Y   
-    SCARD_ATTR_MAXINPUT                         Y       Y   
-    SCARD_ATTR_MAX_CLK                          Y       Y   
-    SCARD_ATTR_MAX_DATA_RATE                    Y       Y   
-    SCARD_ATTR_MAX_IFSD                         Y       Y   
-    SCARD_ATTR_POWER_MGMT_SUPPORT               Y       Y   
-    SCARD_ATTR_SUPRESS_T1_IFS_REQUEST           Y       Y   
-    SCARD_ATTR_SYNC_PROTOCOL_TYPES                      Y   
-    SCARD_ATTR_USER_AUTH_INPUT_DEVICE           Y       Y   
-    SCARD_ATTR_USER_TO_CARD_AUTH_DEVICE         Y       Y   
-    SCARD_ATTR_VENDOR_IFD_SERIAL_NO             Y       Y   
-    SCARD_ATTR_VENDOR_IFD_TYPE                  Y       Y   
-    SCARD_ATTR_VENDOR_IFD_VERSION               Y       Y   
-    SCARD_ATTR_VENDOR_NAME                      Y       Y   
+    SCARD_ATTR_ASYNC_PROTOCOL_TYPES                     Y
+    SCARD_ATTR_ATR_STRING                       Y       Y
+    SCARD_ATTR_CHANNEL_ID                       Y       Y
+    SCARD_ATTR_CHARACTERISTICS                  Y       Y
+    SCARD_ATTR_CURRENT_BWT                      Y       Y
+    SCARD_ATTR_CURRENT_CLK                      Y       Y
+    SCARD_ATTR_CURRENT_CWT                      Y       Y
+    SCARD_ATTR_CURRENT_D                        Y       Y
+    SCARD_ATTR_CURRENT_EBC_ENCODING             Y       Y
+    SCARD_ATTR_CURRENT_F                        Y       Y
+    SCARD_ATTR_CURRENT_IFSC                     Y       Y
+    SCARD_ATTR_CURRENT_IFSD                     Y       Y
+    SCARD_ATTR_CURRENT_IO_STATE                 Y       Y
+    SCARD_ATTR_CURRENT_N                        Y       Y
+    SCARD_ATTR_CURRENT_PROTOCOL_TYPE            Y       Y
+    SCARD_ATTR_CURRENT_W                        Y       Y
+    SCARD_ATTR_DEFAULT_CLK                      Y       Y
+    SCARD_ATTR_DEFAULT_DATA_RATE                Y       Y
+    SCARD_ATTR_DEVICE_FRIENDLY_NAME_A           Y       Y
+    SCARD_ATTR_DEVICE_FRIENDLY_NAME_W           Y       Y
+    SCARD_ATTR_DEVICE_IN_USE                    Y       Y
+    SCARD_ATTR_DEVICE_SYSTEM_NAME_A             Y       Y
+    SCARD_ATTR_DEVICE_SYSTEM_NAME_W             Y       Y
+    SCARD_ATTR_DEVICE_UNIT                      Y       Y
+    SCARD_ATTR_ESC_AUTHREQUEST                  Y       Y
+    SCARD_ATTR_ESC_CANCEL                       Y       Y
+    SCARD_ATTR_ESC_RESET                        Y       Y
+    SCARD_ATTR_EXTENDED_BWT                     Y       Y
+    SCARD_ATTR_ICC_INTERFACE_STATUS             Y       Y
+    SCARD_ATTR_ICC_PRESENCE                     Y       Y
+    SCARD_ATTR_ICC_TYPE_PER_ATR                 Y       Y
+    SCARD_ATTR_MAXINPUT                         Y       Y
+    SCARD_ATTR_MAX_CLK                          Y       Y
+    SCARD_ATTR_MAX_DATA_RATE                    Y       Y
+    SCARD_ATTR_MAX_IFSD                         Y       Y
+    SCARD_ATTR_POWER_MGMT_SUPPORT               Y       Y
+    SCARD_ATTR_SUPRESS_T1_IFS_REQUEST           Y       Y
+    SCARD_ATTR_SYNC_PROTOCOL_TYPES                      Y
+    SCARD_ATTR_USER_AUTH_INPUT_DEVICE           Y       Y
+    SCARD_ATTR_USER_TO_CARD_AUTH_DEVICE         Y       Y
+    SCARD_ATTR_VENDOR_IFD_SERIAL_NO             Y       Y
+    SCARD_ATTR_VENDOR_IFD_TYPE                  Y       Y
+    SCARD_ATTR_VENDOR_IFD_VERSION               Y       Y
+    SCARD_ATTR_VENDOR_NAME                      Y       Y
     ======================================== ======= =======
 
 Not all the dwAttrId values listed above may be implemented in the
@@ -1421,23 +1421,23 @@ L{SCardConnect()}.  It returns a result and the control response.
 
 >>> from smartcard.scard import *
 >>> from smartcard.pcsc import *
->>> 
+>>>
 >>> # establish context
 >>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.EstablishContextException(hresult)
->>> 
+>>>
 >>> # list readers
 >>> hresult, readers = SCardListReaders(hcontext, [])
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.ListReadersException(hresult)
->>> 
+>>>
 >>> # connect
 >>> hresult, hcard, dwActiveProtocol = SCardConnect(
 >>>     hcontext, readers[0], SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.BaseSCardException(hresult)
->>> 
+>>>
 >>> # control
 >>> CMD = [0x12, 0x34]
 >>> hresult, response = SCardControl(hcard, 42, CMD)
@@ -1473,23 +1473,23 @@ in SCARD_SHARE_EXCLUSIVE there will be no action taken.
 
 >>> from smartcard.scard import *
 >>> from smartcard.pcsc import *
->>> 
+>>>
 >>> # establish context
 >>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.EstablishContextException(hresult)
->>> 
+>>>
 >>> # list readers
 >>> hresult, readers = SCardListReaders(hcontext, [])
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.ListReadersException(hresult)
->>> 
+>>>
 >>> # connect
 >>> hresult, hcard, dwActiveProtocol = SCardConnect(
 >>>     hcontext, readers[0], SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.BaseSCardException(hresult)
->>> 
+>>>
 >>> # begin transaction
 >>> hresult = SCardBeginTransaction(hcard)
 >>> if hresult != SCARD_S_SUCCESS:
@@ -1541,17 +1541,17 @@ Value of dwPreferredProtocols:
 
 >>> from smartcard.scard import *
 >>> from smartcard.pcsc import *
->>> 
+>>>
 >>> # establish context
 >>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.EstablishContextException(hresult)
->>> 
+>>>
 >>> # list readers
 >>> hresult, readers = SCardListReaders(hcontext, [])
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.ListReadersException(hresult)
->>> 
+>>>
 >>> # connect
 >>> hresult, hcard, dwActiveProtocol = SCardConnect(
 >>>     hcontext, readers[0], SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
@@ -1591,23 +1591,23 @@ Value of disposition:
 
 >>> from smartcard.scard import *
 >>> from smartcard.pcsc import *
->>> 
+>>>
 >>> # establish context
 >>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.EstablishContextException(hresult)
->>> 
+>>>
 >>> # list readers
 >>> hresult, readers = SCardListReaders(hcontext, [])
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.ListReadersException(hresult)
->>> 
+>>>
 >>> # connect
 >>> hresult, hcard, dwActiveProtocol = SCardConnect(
 >>>     hcontext, readers[0], SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.BaseSCardException(hresult)
->>> 
+>>>
 >>> # disconnect
 >>> hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
 >>> if hresult != SCARD_S_SUCCESS:
@@ -1633,28 +1633,28 @@ Value of disposition:
 
 >>> from smartcard.scard import *
 >>> from smartcard.pcsc import *
->>> 
+>>>
 >>> # establish context
 >>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.EstablishContextException(hresult)
->>> 
+>>>
 >>> # list readers
 >>> hresult, readers = SCardListReaders(hcontext, [])
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.ListReadersException(hresult)
->>> 
+>>>
 >>> # connect
 >>> hresult, hcard, dwActiveProtocol = SCardConnect(
 >>>     hcontext, readers[0], SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.BaseSCardException(hresult)
->>> 
+>>>
 >>> # begin transaction
 >>> hresult = SCardBeginTransaction(hcard)
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.BaseSCardException(hresult)
->>> 
+>>>
 >>> # end transaction
 >>> hresult = SCardEndTransaction(hcard, SCARD_LEAVE_CARD)
 >>> if hresult != SCARD_S_SUCCESS:
@@ -1679,7 +1679,7 @@ Value of dwScope:
 
 >>> from smartcard.scard import *
 >>> from smartcard.pcsc import *
->>> 
+>>>
 >>> # establish context
 >>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
 >>> if hresult != SCARD_S_SUCCESS:
@@ -1717,22 +1717,22 @@ Value of state:
 
 >>> from smartcard.scard import *
 >>> from smartcard.pcsc import *
->>> 
+>>>
 >>> # establish context
 >>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.EstablishContextException(hresult)
->>> 
+>>>
 >>> # list readers
 >>> hresult, readers = SCardListReaders(hcontext, [])
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.ListReadersException(hresult)
->>> 
+>>>
 >>> # get status change
 >>> readerstates = []
 >>> for reader in readers:
 >>>     readerstates.append((reader, SCARD_STATE_UNAWARE))
->>> 
+>>>
 >>> hresult, newstates = SCardGetStatusChange(hcontext, INFINITE, readerstates)
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.BaseSCardException(hresult)
@@ -1743,7 +1743,7 @@ Value of state:
 >>>         print(' Card present')
 >>>     if eventstate & SCARD_STATE_EMPTY:
 >>>         print(' Reader empty')
->>> 
+>>>
 >>> print('insert or remove a card')
 >>> # wait for card move
 >>> readerstates = newstates
@@ -1771,12 +1771,12 @@ group only.
 
 >>> from smartcard.scard import *
 >>> from smartcard.pcsc import *
->>> 
+>>>
 >>> # establish context
 >>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.EstablishContextException(hresult)
->>> 
+>>>
 >>> # list readers
 >>> hresult, readers = SCardListReaders(hcontext, [])
 >>> if hresult != SCARD_S_SUCCESS:
@@ -1804,12 +1804,12 @@ system.
 
 >>> from smartcard.scard import *
 >>> from smartcard.pcsc import *
->>> 
+>>>
 >>> # establish context
 >>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.EstablishContextException(hresult)
->>> 
+>>>
 >>> hresult, readerGroups = SCardListReaderGroups(hcontext)
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.BaseSCardException(hresult)
@@ -1850,23 +1850,23 @@ Value of dwInitialization:
 
 >>> from smartcard.scard import *
 >>> from smartcard.pcsc import *
->>> 
+>>>
 >>> # establish context
 >>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.EstablishContextException(hresult)
->>> 
+>>>
 >>> # list readers
 >>> hresult, readers = SCardListReaders(hcontext, [])
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.ListReadersException(hresult)
->>> 
+>>>
 >>> # connect
 >>> hresult, hcard, dwActiveProtocol = SCardConnect(
 >>>     hcontext, readers[0], SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.BaseSCardException(hresult)
->>> 
+>>>
 >>> # reconnect
 >>> hresult, activeProtocol = SCardReconnect(hcard, SCARD_SHARE_EXCLUSIVE, SCARD_PROTOCOL_T0, SCARD_RESET_CARD)
 >>> if hresult != SCARD_S_SUCCESS:
@@ -1896,12 +1896,12 @@ Release a PC/SC context established by L{SCardEstablishContext()}.
 
 >>> from smartcard.scard import *
 >>> from smartcard.pcsc import *
->>> 
+>>>
 >>> # establish context
 >>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.EstablishContextException(hresult)
->>> 
+>>>
 >>> # release context
 >>> hresult = SCardReleaseContext(hcontext)
 >>> if hresult != SCARD_S_SUCCESS:
@@ -1935,23 +1935,23 @@ Value of pdwProtocol:
 >>> from smartcard.scard import *
 >>> from smartcard.pcsc import *
 >>> from smartcard.util import toHexString
->>> 
+>>>
 >>> # establish context
 >>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.EstablishContextException(hresult)
->>> 
+>>>
 >>> # list readers
 >>> hresult, readers = SCardListReaders(hcontext, [])
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.ListReadersException(hresult)
->>> 
+>>>
 >>> # connect
 >>> hresult, hcard, dwActiveProtocol = SCardConnect(
 >>>     hcontext, readers[0], SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.BaseSCardException(hresult)
->>> 
+>>>
 >>> # status
 >>> hresult, reader, state, protocol, atr = SCardStatus(hcard)
 >>> if hresult != SCARD_S_SUCCESS:
@@ -1992,23 +1992,23 @@ Value of pioSendPci:
 >>> from smartcard.scard import *
 >>> from smartcard.pcsc import *
 >>> from smartcard.util import toHexString
->>> 
+>>>
 >>> # establish context
 >>> hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.EstablishContextException(hresult)
->>> 
+>>>
 >>> # list readers
 >>> hresult, readers = SCardListReaders(hcontext, [])
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.ListReadersException(hresult)
->>> 
+>>>
 >>> # connect
 >>> hresult, hcard, dwActiveProtocol = SCardConnect(
 >>>     hcontext, readers[0], SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0)
 >>> if hresult != SCARD_S_SUCCESS:
 >>>     raise PCSCExceptions.BaseSCardException(hresult)
->>> 
+>>>
 >>> # transmit
 >>> SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
 >>> DF_TELECOM = [0x7F, 0x10]
@@ -2123,4 +2123,3 @@ def SCardLocateCards(hcontext, cardnames, readerstates):
 %constant char* resourceManager = "winscard" ;
 %constant char* resourceManagerSubType = "winscard-win32" ;
 #endif // WIN32
-

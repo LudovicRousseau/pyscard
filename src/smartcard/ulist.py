@@ -82,9 +82,11 @@ class ulist(list):
 
     def __remove_duplicates(self, _other):
         """Remove from other items already in list."""
-        if not isinstance(_other, type(self)) \
-           and not isinstance(_other, type(list)) \
-           and not isinstance(_other, list):
+        if (
+            not isinstance(_other, type(self))
+            and not isinstance(_other, type(list))
+            and not isinstance(_other, list)
+        ):
             other = [_other]
         else:
             other = list(_other)

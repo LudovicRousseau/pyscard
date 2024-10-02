@@ -28,15 +28,13 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-from threading import Thread, Event, Lock
-from time import sleep
 import traceback
-
-from smartcard.Observer import Observer
-from smartcard.Observer import Observable
+from threading import Event, Lock, Thread
+from time import sleep
 
 from smartcard.CardRequest import CardRequest
-from smartcard.Exceptions import SmartcardException, CardRequestTimeoutException
+from smartcard.Exceptions import CardRequestTimeoutException, SmartcardException
+from smartcard.Observer import Observable, Observer
 from smartcard.scard import SCARD_E_NO_SERVICE
 
 _START_ON_DEMAND_ = False
@@ -63,7 +61,7 @@ class CardObserver(Observer):
         pass
 
 
-class CardMonitor(object):
+class CardMonitor:
     """Class that monitors smart card insertion / removals.
     and notify observers
 
@@ -119,7 +117,7 @@ class CardMonitor(object):
                         self.rmthread = None
 
         def __str__(self):
-            return 'CardMonitor'
+            return "CardMonitor"
 
     # the singleton
     instance = None
@@ -134,7 +132,7 @@ class CardMonitor(object):
         return getattr(self.instance, name)
 
 
-class CardMonitoringThread(object):
+class CardMonitoringThread:
     """Card insertion thread.
     This thread waits for card insertion.
     """
@@ -177,8 +175,7 @@ class CardMonitoringThread(object):
                     if addedcards != [] or removedcards != []:
                         self.cards = currentcards
                         self.observable.setChanged()
-                        self.observable.notifyObservers(
-                            (addedcards, removedcards))
+                        self.observable.notifyObservers((addedcards, removedcards))
 
                 except CardRequestTimeoutException:
                     pass
@@ -202,8 +199,9 @@ class CardMonitoringThread(object):
 
     def __init__(self, observable):
         if not CardMonitoringThread.instance:
-            CardMonitoringThread.instance = \
-               CardMonitoringThread.__CardMonitoringThreadSingleton(observable)
+            CardMonitoringThread.instance = (
+                CardMonitoringThread.__CardMonitoringThreadSingleton(observable)
+            )
             CardMonitoringThread.instance.start()
 
     def join(self, *args, **kwargs):
@@ -217,7 +215,7 @@ class CardMonitoringThread(object):
 
 
 if __name__ == "__main__":
-    print('insert or remove cards in the next 10 seconds')
+    print("insert or remove cards in the next 10 seconds")
 
     # a simple card observer that prints added/removed cards
     class printobserver(CardObserver):

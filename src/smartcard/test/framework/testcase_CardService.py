@@ -26,20 +26,25 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-import unittest
 import string
 
 # import local_config for reader/card configuration
 # configcheck.py is generating local_config.py in
 # the test suite.
 import sys
-sys.path += ['..']
+import unittest
+
+sys.path += [".."]
 
 try:
-    from local_config import expectedATRs, expectedReaders
-    from local_config import expectedReaderGroups, expectedATRinReader
+    from local_config import (
+        expectedATRinReader,
+        expectedATRs,
+        expectedReaderGroups,
+        expectedReaders,
+    )
 except ImportError:
-    print('execute test suite first to generate the local_config.py file')
+    print("execute test suite first to generate the local_config.py file")
     sys.exit()
 
 
@@ -61,18 +66,16 @@ class testcase_CardService(unittest.TestCase):
                 cc = reader.createConnection()
                 cs = CardService(cc)
                 cs.connection.connect()
-                response, sw1, sw2 = cs.connection.transmit(
-                    SELECT + DF_TELECOM)
+                response, sw1, sw2 = cs.connection.transmit(SELECT + DF_TELECOM)
                 expectedSWs = {"9f 1a": 1, "6e 0": 2, "9f 20": 3, "9f 22": 4}
                 self.assertEqual([], response)
-                self.assertTrue(
-                    "{:x} {:x}".format(sw1, sw2) in expectedSWs or "9f" == "%x" % sw1)
+                self.assertTrue(f"{sw1:x} {sw2:x}" in expectedSWs or "9f" == "%x" % sw1)
 
 
 def suite():
-    suite1 = unittest.makeSuite(testcase_CardService)
+    suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(testcase_CardService)
     return unittest.TestSuite(suite1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

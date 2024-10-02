@@ -23,19 +23,15 @@ You should have received a copy of the GNU Lesser General Public License
 along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
-from smartcard.CardType import AnyCardType
-from smartcard.CardRequest import CardRequest
 from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver
+from smartcard.CardRequest import CardRequest
+from smartcard.CardType import AnyCardType
+from smartcard.ExclusiveConnectCardConnection import ExclusiveConnectCardConnection
+from smartcard.ExclusiveTransmitCardConnection import ExclusiveTransmitCardConnection
 from smartcard.util import toHexString
 
-from smartcard.ExclusiveConnectCardConnection import \
-    ExclusiveConnectCardConnection
-from smartcard.ExclusiveTransmitCardConnection import \
-    ExclusiveTransmitCardConnection
-
-
 # define the apdus used in this script
-GET_RESPONSE = [0XA0, 0XC0, 00, 00]
+GET_RESPONSE = [0xA0, 0xC0, 00, 00]
 SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
 DF_TELECOM = [0x7F, 0x10]
 
@@ -50,12 +46,13 @@ cardservice.connection.addObserver(observer)
 
 # attach our decorator
 cardservice.connection = ExclusiveTransmitCardConnection(
-    ExclusiveConnectCardConnection(cardservice.connection))
+    ExclusiveConnectCardConnection(cardservice.connection)
+)
 
 # connect to the card and perform a few transmits
 cardservice.connection.connect()
 
-print('ATR', toHexString(cardservice.connection.getATR()))
+print("ATR", toHexString(cardservice.connection.getATR()))
 
 try:
     # lock for initiating transaction
@@ -72,6 +69,7 @@ finally:
     cardservice.connection.unlock()
 
 import sys
-if 'win32' == sys.platform:
-    print('press Enter to continue')
+
+if "win32" == sys.platform:
+    print("press Enter to continue")
     sys.stdin.read(1)

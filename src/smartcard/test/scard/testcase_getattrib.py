@@ -28,19 +28,21 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 
 import struct
-import unittest
-from smartcard.scard import *
 
 # import local_config for reader/card configuration
 # configcheck.py is generating local_config.py in
 # the test suite.
 import sys
-sys.path += ['..']
+import unittest
+
+from smartcard.scard import *
+
+sys.path += [".."]
 
 try:
     from local_config import expectedATRs, expectedReaders
 except ImportError:
-    print('execute test suite first to generate the local_config.py file')
+    print("execute test suite first to generate the local_config.py file")
     sys.exit()
 
 
@@ -63,7 +65,8 @@ class testcase_getAttrib(unittest.TestCase):
                 self.hcontext,
                 self.readers[r],
                 SCARD_SHARE_SHARED,
-                SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1)
+                SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1,
+            )
             self.assertEqual(hresult, 0)
 
             try:
@@ -72,21 +75,24 @@ class testcase_getAttrib(unittest.TestCase):
                 self.assertEqual(reader, expectedReaders[r])
                 self.assertEqual(atr, expectedATRs[r])
 
-                if 'SCARD_ATTR_ATR_STRING' in scard.__dict__:
-                    hresult, attrib = SCardGetAttrib(
-                        hcard, SCARD_ATTR_ATR_STRING)
+                if "SCARD_ATTR_ATR_STRING" in scard.__dict__:
+                    hresult, attrib = SCardGetAttrib(hcard, SCARD_ATTR_ATR_STRING)
                     self.assertEqual(hresult, 0)
                     self.assertEqual(expectedATRs[r], attrib)
 
-                if 'winscard' == resourceManager:
+                if "winscard" == resourceManager:
                     hresult, attrib = SCardGetAttrib(
-                        hcard, SCARD_ATTR_DEVICE_SYSTEM_NAME_A)
+                        hcard, SCARD_ATTR_DEVICE_SYSTEM_NAME_A
+                    )
                     self.assertEqual(hresult, 0)
                     trimmedAttrib = attrib[:-1]
                     self.assertEqual(
                         expectedReaders[r],
-                        apply(struct.pack, ['<' + 'B' * len(trimmedAttrib)] + \
-                        trimmedAttrib))
+                        apply(
+                            struct.pack,
+                            ["<" + "B" * len(trimmedAttrib)] + trimmedAttrib,
+                        ),
+                    )
 
             finally:
                 hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
@@ -106,9 +112,9 @@ class testcase_getAttrib(unittest.TestCase):
 
 
 def suite():
-    suite1 = unittest.makeSuite(testcase_getAttrib)
+    suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(testcase_getAttrib)
     return unittest.TestSuite(suite1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

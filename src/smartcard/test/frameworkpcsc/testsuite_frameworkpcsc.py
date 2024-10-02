@@ -27,19 +27,18 @@ import sys
 import unittest
 
 # so that we can locate configcheck
-sys.path += ['..']
+sys.path += [".."]
 import configcheck
 
 
 def suite():
-    modules_to_test = (
-        'testcase_pcscreadergroups',
-        )
+    modules_to_test = ("testcase_pcscreadergroups",)
     testsuite_framework = unittest.TestSuite()
     for module in map(__import__, modules_to_test):
         testsuite_framework.addTest(unittest.TestLoader().loadTestsFromModule(module))
     return testsuite_framework
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     configcheck.checklocalconfig()
-    unittest.main(defaultTest='suite')
+    unittest.main(defaultTest="suite")

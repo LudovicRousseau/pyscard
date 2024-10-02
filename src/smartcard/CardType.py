@@ -21,12 +21,13 @@ You should have received a copy of the GNU Lesser General Public License
 along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
+
 from smartcard.Exceptions import InvalidATRMaskLengthException
 from smartcard.System import readers
 from smartcard.util import toHexString
 
 
-class CardType(object):
+class CardType:
     """Abstract base class for CardTypes.
 
     Known subclasses: L{smartcard.CardType.AnyCardType}
@@ -100,7 +101,7 @@ class ATRCardType(CardType):
         return self.maskedatr == maskedatr
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     """Small sample illustrating the use of CardType.py."""
     r = readers()
     print(r)

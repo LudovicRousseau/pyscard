@@ -27,25 +27,30 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 
-import unittest
 import string
 
 # import local_config for reader/card configuration
 # configcheck.py is generating local_config.py in
 # the test suite.
 import sys
-sys.path += ['..']
+import unittest
+
+sys.path += [".."]
 
 try:
-    from local_config import expectedATRs, expectedReaders
-    from local_config import expectedReaderGroups, expectedATRinReader
+    from local_config import (
+        expectedATRinReader,
+        expectedATRs,
+        expectedReaderGroups,
+        expectedReaders,
+    )
 except ImportError:
-    print('execute test suite first to generate the local_config.py file')
+    print("execute test suite first to generate the local_config.py file")
     sys.exit()
 
 
-from smartcard.Exceptions import NoCardException
 from smartcard.Card import Card
+from smartcard.Exceptions import NoCardException
 from smartcard.System import readers
 
 
@@ -76,8 +81,7 @@ class testcase_Card(unittest.TestCase):
                 response, sw1, sw2 = cc.transmit(SELECT + DF_TELECOM)
                 expectedSWs = {"9f 1a": 1, "9f 20": 2, "6e 0": 3}
                 self.assertEqual([], response)
-                self.assertTrue(
-                    "{:x} {:x}".format(sw1, sw2) in expectedSWs or "9f" == "%x" % sw1)
+                self.assertTrue(f"{sw1:x} {sw2:x}" in expectedSWs or "9f" == "%x" % sw1)
             else:
                 self.assertRaises(NoCardException, cc.connect)
 
@@ -95,8 +99,7 @@ class testcase_Card(unittest.TestCase):
                 response, sw1, sw2 = cc.transmit(SELECT + DF_TELECOM)
                 expectedSWs = {"9f 1a": 1, "9f 20": 2, "6e 0": 3}
                 self.assertEqual([], response)
-                self.assertTrue(
-                    "{:x} {:x}".format(sw1, sw2) in expectedSWs or "9f" == "%x" % sw1)
+                self.assertTrue(f"{sw1:x} {sw2:x}" in expectedSWs or "9f" == "%x" % sw1)
             else:
                 self.assertRaises(NoCardException, cc.connect)
 
@@ -116,9 +119,9 @@ class testcase_Card(unittest.TestCase):
 
 
 def suite():
-    suite1 = unittest.makeSuite(testcase_CardConnection)
+    suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(testcase_CardConnection)
     return unittest.TestSuite(suite1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

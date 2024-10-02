@@ -27,9 +27,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 
-import unittest
-from smartcard.scard import *
 import sys
+import unittest
+
+from smartcard.scard import *
 
 
 class testcase_geterrormessage(unittest.TestCase):
@@ -48,25 +49,27 @@ class testcase_geterrormessage(unittest.TestCase):
         self.assertEqual(hresult, 0)
 
         hresult = SCardReleaseContext(pow(2, 63) >> 60)
-        if 'win32' == sys.platform:
-            self.assertEqual((
-                SCARD_E_INVALID_HANDLE == hresult or \
-                ERROR_INVALID_HANDLE == hresult),
-                True)
+        if "win32" == sys.platform:
+            self.assertEqual(
+                (SCARD_E_INVALID_HANDLE == hresult or ERROR_INVALID_HANDLE == hresult),
+                True,
+            )
         else:
             self.assertEqual((SCARD_E_INVALID_HANDLE == hresult), True)
-        self.assertEqual((
-            SCardGetErrorMessage(hresult).rstrip() == \
-                'Invalid handle.'.rstrip() or \
-            SCardGetErrorMessage(hresult).rstrip() == \
-                'The handle is invalid.'.rstrip()),
-            True)
+        self.assertEqual(
+            (
+                SCardGetErrorMessage(hresult).rstrip() == "Invalid handle.".rstrip()
+                or SCardGetErrorMessage(hresult).rstrip()
+                == "The handle is invalid.".rstrip()
+            ),
+            True,
+        )
 
 
 def suite():
-    suite1 = unittest.makeSuite(testcase_geterrormessage)
+    suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(testcase_geterrormessage)
     return unittest.TestSuite(suite1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

@@ -27,23 +27,24 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 
-import unittest
-from smartcard.scard import *
-
 # import local_config for reader/card configuration
 # configcheck.py is generating local_config.py in
 # the test suite.
 import sys
-sys.path += ['..']
+import unittest
+
+from smartcard.scard import *
+
+sys.path += [".."]
 
 try:
     from local_config import expectedReaders
 except ImportError:
-    print('execute test suite first to generate the local_config.py file')
+    print("execute test suite first to generate the local_config.py file")
     sys.exit()
 
 
-expectedGroups = ['SCard$DefaultReaders']
+expectedGroups = ["SCard$DefaultReaders"]
 
 
 class testcase_readergroups(unittest.TestCase):
@@ -71,21 +72,19 @@ class testcase_readergroups(unittest.TestCase):
         for i in range(len(expectedGroups)):
             self.assertEqual(readerGroups[i], expectedGroups[i])
 
-        if 'winscard' == resourceManager:
+        if "winscard" == resourceManager:
             # add a new group
-            newgroup = 'SCard$MyOwnGroup'
+            newgroup = "SCard$MyOwnGroup"
             expectedGroups.append(newgroup)
 
             hresult = SCardIntroduceReaderGroup(self.hcontext, newgroup)
             self.assertEqual(hresult, 0)
 
-            dummyreader = readers[0] + ' alias'
-            hresult = SCardIntroduceReader(
-                self.hcontext, dummyreader, readers[0])
+            dummyreader = readers[0] + " alias"
+            hresult = SCardIntroduceReader(self.hcontext, dummyreader, readers[0])
             self.assertEqual(hresult, 0)
 
-            hresult = SCardAddReaderToGroup(
-                self.hcontext, dummyreader, newgroup)
+            hresult = SCardAddReaderToGroup(self.hcontext, dummyreader, newgroup)
             self.assertEqual(hresult, 0)
 
             hresult, readerGroups = SCardListReaderGroups(self.hcontext)
@@ -99,8 +98,7 @@ class testcase_readergroups(unittest.TestCase):
             self.assertEqual(newreaders[0], dummyreader)
 
             # remove reader from new group
-            hresult = SCardRemoveReaderFromGroup(
-                self.hcontext, dummyreader, newgroup)
+            hresult = SCardRemoveReaderFromGroup(self.hcontext, dummyreader, newgroup)
             self.assertEqual(hresult, 0)
 
             hresult, readerGroups = SCardListReaderGroups(self.hcontext)
@@ -123,10 +121,10 @@ class testcase_readergroups(unittest.TestCase):
 
 
 def suite():
-    suite1 = unittest.makeSuite(testcase_readergroups)
+    suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(testcase_readergroups)
     return unittest.TestSuite(suite1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # When this module is executed from the command-line, run all its tests
     unittest.main()

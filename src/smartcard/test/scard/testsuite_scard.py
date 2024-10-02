@@ -28,25 +28,27 @@ import sys
 import unittest
 
 # so that we can locate configcheck
-sys.path += ['..']
+sys.path += [".."]
 import configcheck
 
 
 def suite():
     modules_to_test = (
-        'testcase_getatr',
-        'testcase_getattrib',
-        'testcase_geterrormessage',
-        'testcase_listcards',
-        'testcase_locatecards',
-        'testcase_readergroups',
-        'testcase_returncodes',
-        'testcase_transaction')
+        "testcase_getatr",
+        "testcase_getattrib",
+        "testcase_geterrormessage",
+        "testcase_listcards",
+        "testcase_locatecards",
+        "testcase_readergroups",
+        "testcase_returncodes",
+        "testcase_transaction",
+    )
     testsuite_scard = unittest.TestSuite()
     for module in map(__import__, modules_to_test):
         testsuite_scard.addTest(unittest.TestLoader().loadTestsFromModule(module))
     return testsuite_scard
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     configcheck.checklocalconfig()
-    unittest.main(defaultTest='suite')
+    unittest.main(defaultTest="suite")

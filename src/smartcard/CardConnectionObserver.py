@@ -25,8 +25,8 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-from smartcard.util import toHexString
 from smartcard.Observer import Observer
+from smartcard.util import toHexString
 
 
 # ReaderObserver interface
@@ -49,22 +49,25 @@ class ConsoleCardConnectionObserver(CardConnectionObserver):
 
     def update(self, cardconnection, ccevent):
 
-        if 'connect' == ccevent.type:
-            print('connecting to ' + cardconnection.getReader())
+        if "connect" == ccevent.type:
+            print("connecting to " + cardconnection.getReader())
 
-        elif 'reconnect' == ccevent.type:
-            print('reconnecting to ' + cardconnection.getReader())
+        elif "reconnect" == ccevent.type:
+            print("reconnecting to " + cardconnection.getReader())
 
-        elif 'disconnect' == ccevent.type:
-            print('disconnecting from ' + cardconnection.getReader())
+        elif "disconnect" == ccevent.type:
+            print("disconnecting from " + cardconnection.getReader())
 
-        elif 'command' == ccevent.type:
-            print('> ' + toHexString(ccevent.args[0]))
+        elif "command" == ccevent.type:
+            print("> " + toHexString(ccevent.args[0]))
 
-        elif 'response' == ccevent.type:
+        elif "response" == ccevent.type:
             if [] == ccevent.args[0]:
-                print('<  [] %02X %02X' % tuple(ccevent.args[-2:]))
+                print("<  [] %02X %02X" % tuple(ccevent.args[-2:]))
             else:
-                print('< ' +
-                      toHexString(ccevent.args[0]) + " " +
-                      "%02X %02X" % tuple(ccevent.args[-2:]))
+                print(
+                    "< "
+                    + toHexString(ccevent.args[0])
+                    + " "
+                    + "%02X %02X" % tuple(ccevent.args[-2:])
+                )

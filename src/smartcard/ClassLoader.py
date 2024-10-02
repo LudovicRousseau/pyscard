@@ -12,7 +12,7 @@ License: PSF license (https://docs.python.org/license.html).
 
 def get_mod(modulePath):
     """Import a module."""
-    return __import__(modulePath, globals(), locals(), [''])
+    return __import__(modulePath, globals(), locals(), [""])
 
 
 def get_func(fullFuncName):
@@ -20,7 +20,7 @@ def get_func(fullFuncName):
 
     # Parse out the path, module, and function
     lastDot = fullFuncName.rfind(".")
-    funcName = fullFuncName[lastDot + 1:]
+    funcName = fullFuncName[lastDot + 1 :]
     modPath = fullFuncName[:lastDot]
 
     aMod = get_mod(modPath)
@@ -45,8 +45,7 @@ def get_class(fullClassName, parentClass=None):
     # Assert that the class is a subclass of parentClass.
     if parentClass is not None:
         if not issubclass(aClass, parentClass):
-            raise TypeError("%s is not a subclass of %s" %
-                            (fullClassName, parentClass))
+            raise TypeError("%s is not a subclass of %s" % (fullClassName, parentClass))
 
     # Return a reference to the class itself, not an instantiated object.
     return aClass

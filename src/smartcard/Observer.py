@@ -13,13 +13,13 @@ for all smartcard package observers.
 from smartcard.Synchronization import *
 
 
-class Observer(object):
+class Observer:
 
     def update(self, observable, arg):
-        '''Called when the observed object is
+        """Called when the observed object is
         modified. You call an Observable object's
         notifyObservers method to notify all the
-        object's observers of the change.'''
+        object's observers of the change."""
         pass
 
 
@@ -38,16 +38,16 @@ class Observable(Synchronization):
         self.obs.remove(observer)
 
     def notifyObservers(self, arg=None):
-        '''If 'changed' indicates that this object
+        """If 'changed' indicates that this object
         has changed, notify all its observers, then
         call clearChanged(). Each observer has its
         update() called with two arguments: this
-        observable object and the generic 'arg'.'''
+        observable object and the generic 'arg'."""
 
         self.mutex.acquire()
         try:
             if not self.changed:
-                    return
+                return
             # Make a local copy in case of synchronous
             # additions of observers:
             localArray = self.obs[:]
@@ -59,22 +59,24 @@ class Observable(Synchronization):
             observer.update(self, arg)
 
     def deleteObservers(self):
-            self.obs = []
+        self.obs = []
 
     def setChanged(self):
-            self.changed = 1
+        self.changed = 1
 
     def clearChanged(self):
-            self.changed = 0
+        self.changed = 0
 
     def hasChanged(self):
-            return self.changed
+        return self.changed
 
     def countObservers(self):
-            return len(self.obs)
+        return len(self.obs)
 
 
-synchronize(Observable,
-            "addObserver deleteObserver deleteObservers " +
-            "setChanged clearChanged hasChanged " +
-            "countObservers")
+synchronize(
+    Observable,
+    "addObserver deleteObserver deleteObservers "
+    + "setChanged clearChanged hasChanged "
+    + "countObservers",
+)

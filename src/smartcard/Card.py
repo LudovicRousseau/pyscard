@@ -21,12 +21,13 @@ You should have received a copy of the GNU Lesser General Public License
 along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
+
 from smartcard.reader.Reader import Reader
 from smartcard.System import readers
 from smartcard.util import toHexString
 
 
-class Card(object):
+class Card:
     """Card class."""
 
     def __init__(self, reader, atr):
@@ -39,14 +40,13 @@ class Card(object):
     def __repr__(self):
         """Return a string representing the Card (atr and reader
         concatenation)."""
-        return toHexString(self.atr) + ' / ' + str(self.reader)
+        return toHexString(self.atr) + " / " + str(self.reader)
 
     def __eq__(self, other):
         """Return True if self==other (same reader and same atr).
-           Return False otherwise."""
+        Return False otherwise."""
         if isinstance(other, Card):
-            return (self.atr == other.atr and
-                    repr(self.reader) == repr(other.reader))
+            return self.atr == other.atr and repr(self.reader) == repr(other.reader)
         else:
             return False
 

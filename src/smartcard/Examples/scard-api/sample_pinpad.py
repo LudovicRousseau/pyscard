@@ -25,9 +25,10 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-from smartcard.scard import *
-from smartcard.pcsc.PCSCExceptions import *
 import sys
+
+from smartcard.pcsc.PCSCExceptions import *
+from smartcard.scard import *
 
 
 def can_do_verify_pin(hCard):
@@ -50,9 +51,9 @@ def parse_get_feature_request(hCard, feature):
     while len(response) > 0:
         tag = response[0]
         if feature == tag:
-            return (((((response[2] << 8) +
-                    response[3]) << 8) +
-                    response[4]) << 8) + response[5]
+            return (
+                ((((response[2] << 8) + response[3]) << 8) + response[4]) << 8
+            ) + response[5]
         response = response[6:]
 
 
@@ -62,79 +63,111 @@ def verifypin(hCard, control=None):
         if control is None:
             raise Exception("Not a pinpad")
 
-    command = [0x00,  # bTimerOut
-               0x00,  # bTimerOut2
-               0x82,  # bmFormatString
-               0x04,  # bmPINBlockString
-               0x00,  # bmPINLengthFormat
-               0x08, 0x04,  # wPINMaxExtraDigit
-               0x02,  # bEntryValidationCondition
-               0x01,  # bNumberMessage
-               0x04, 0x09,  # wLangId
-               0x00,  # bMsgIndex
-               0x00, 0x00, 0x00,  # bTeoPrologue
-               13, 0, 0, 0,  # ulDataLength
-               0x00, 0x20, 0x00, 0x00, 0x08, 0x30, 0x30, 0x30, 0x30, 0x30,
-               0x30, 0x30, 0x30]  # abData
+    command = [
+        0x00,  # bTimerOut
+        0x00,  # bTimerOut2
+        0x82,  # bmFormatString
+        0x04,  # bmPINBlockString
+        0x00,  # bmPINLengthFormat
+        0x08,
+        0x04,  # wPINMaxExtraDigit
+        0x02,  # bEntryValidationCondition
+        0x01,  # bNumberMessage
+        0x04,
+        0x09,  # wLangId
+        0x00,  # bMsgIndex
+        0x00,
+        0x00,
+        0x00,  # bTeoPrologue
+        13,
+        0,
+        0,
+        0,  # ulDataLength
+        0x00,
+        0x20,
+        0x00,
+        0x00,
+        0x08,
+        0x30,
+        0x30,
+        0x30,
+        0x30,
+        0x30,
+        0x30,
+        0x30,
+        0x30,
+    ]  # abData
     hresult, response = SCardControl(hcard, control, command)
     if hresult != SCARD_S_SUCCESS:
         raise BaseSCardException(hresult)
     return hresult, response
 
+
 try:
     hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
     if hresult != SCARD_S_SUCCESS:
         raise EstablishContextException(hresult)
-    print('Context established!')
+    print("Context established!")
 
     try:
         hresult, readers = SCardListReaders(hcontext, [])
         if hresult != SCARD_S_SUCCESS:
             raise ListReadersException(hresult)
-        print('PCSC Readers:', readers)
+        print("PCSC Readers:", readers)
 
         if len(readers) < 1:
             raise Exception("No smart card readers")
 
         for zreader in readers:
 
-            print('Trying to Control reader:', zreader)
+            print("Trying to Control reader:", zreader)
 
             try:
                 hresult, hcard, dwActiveProtocol = SCardConnect(
-                    hcontext, zreader, SCARD_SHARE_SHARED,
-                    SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1)
+                    hcontext,
+                    zreader,
+                    SCARD_SHARE_SHARED,
+                    SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1,
+                )
                 if hresult != SCARD_S_SUCCESS:
                     raise BaseSCardException(hresult)
-                print('Connected with active protocol', dwActiveProtocol)
+                print("Connected with active protocol", dwActiveProtocol)
 
                 try:
-                    SELECT = [0x00, 0xA4, 0x04, 0x00, 0x06, 0xA0, 0x00,
-                              0x00, 0x00, 0x18, 0xFF]
-                    hresult, response = SCardTransmit(
-                        hcard,
-                        dwActiveProtocol,
-                        SELECT)
+                    SELECT = [
+                        0x00,
+                        0xA4,
+                        0x04,
+                        0x00,
+                        0x06,
+                        0xA0,
+                        0x00,
+                        0x00,
+                        0x00,
+                        0x18,
+                        0xFF,
+                    ]
+                    hresult, response = SCardTransmit(hcard, dwActiveProtocol, SELECT)
                     if hresult != SCARD_S_SUCCESS:
                         raise BaseSCardException(hresult)
 
                     cmd_verify = can_do_verify_pin(hcard)
-                    if (cmd_verify):
+                    if cmd_verify:
                         print("can do verify pin: 0x%08X" % cmd_verify)
 
                     cmd_modify = can_do_modify_pin(hcard)
-                    if (cmd_modify):
+                    if cmd_modify:
                         print("can do modify pin: 0x%08X" % cmd_modify)
 
                     hresult, response = verifypin(hcard, cmd_verify)
-                    print('Control:', response)
+                    print("Control:", response)
                 except Exception as ex:
                     print("Exception:", ex)
                 finally:
                     hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
                     if hresult != SCARD_S_SUCCESS:
                         raise BaseSCardException(hresult)
-                    print('Disconnected')
+                    print("Disconnected")
 
             except BaseSCardException as ex:
                 print("SCard Exception:", ex)
@@ -143,11 +176,11 @@ try:
         hresult = SCardReleaseContext(hcontext)
         if hresult != SCARD_S_SUCCESS:
             raise ReleaseContextException(hresult)
-        print('Released context.')
+        print("Released context.")
 
 except error as e:
     print(e)
 
-if 'win32' == sys.platform:
-    print('press Enter to continue')
+if "win32" == sys.platform:
+    print("press Enter to continue")
     sys.stdin.read(1)

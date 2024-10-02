@@ -22,19 +22,25 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
+import smartcard.System
 from smartcard.CardType import AnyCardType
 from smartcard.PassThruCardService import PassThruCardService
-import smartcard.System
 
 
-class AbstractCardRequest(object):
+class AbstractCardRequest:
     """The base class for xxxCardRequest classes.
 
     A CardRequest is used for waitForCard() invocations and specifies what
     kind of smart card an application is waited for."""
 
-    def __init__(self, newcardonly=False, readers=None,
-                 cardType=None, cardServiceClass=None, timeout=1):
+    def __init__(
+        self,
+        newcardonly=False,
+        readers=None,
+        cardType=None,
+        cardServiceClass=None,
+        timeout=1,
+    ):
         """Construct new CardRequest.
 
         @param newcardonly: if True, request a new card; default is

@@ -28,11 +28,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 
 import unittest
+
 from smartcard.scard import *
 
 
 class testcase_returncodes(unittest.TestCase):
-    """Test scard API for return codes """
+    """Test scard API for return codes"""
 
     def test_getReturnCodes(self):
         errors = (
@@ -96,15 +97,15 @@ class testcase_returncodes(unittest.TestCase):
             SCARD_W_EOF,
             SCARD_W_CANCELLED_BY_USER,
             SCARD_W_CARD_NOT_AUTHENTICATED,
-            )
-        #for e in errors:
+        )
+        # for e in errors:
         #    print(hex((e+0x100000000) & 0xFFFFFFFF), SCardGetErrorMessage(e))
 
 
 def suite():
-    suite1 = unittest.makeSuite(testcase_returncodes)
+    suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(testcase_returncodes)
     return unittest.TestSuite(suite1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

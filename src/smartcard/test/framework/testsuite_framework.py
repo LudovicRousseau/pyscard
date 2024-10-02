@@ -27,35 +27,36 @@ import sys
 import unittest
 
 # so that we can locate configcheck
-sys.path += ['..']
+sys.path += [".."]
 import configcheck
 
 
 def suite():
     modules_to_test = (
-        'testcase_ATR',
-        'testcase_Card',
-        'testcase_CardConnection',
-        'testcase_CardMonitor',
-        'testcase_CardRequest',
-        'testcase_CardService',
-        'testcase_CardType',
-        'testcase_CAtr',
-        'testcase_ErrorChecking',
-        'testcase_ExclusiveCardConnection',
-        'testcase_readers',
-        'testcase_readergroups',
-        'testcase_readermonitor',
-        'testcase_readermonitorstress',
-        'testcase_ulist',
-        'testcase_utils',
-        )
+        "testcase_ATR",
+        "testcase_Card",
+        "testcase_CardConnection",
+        "testcase_CardMonitor",
+        "testcase_CardRequest",
+        "testcase_CardService",
+        "testcase_CardType",
+        "testcase_CAtr",
+        "testcase_ErrorChecking",
+        "testcase_ExclusiveCardConnection",
+        "testcase_readers",
+        "testcase_readergroups",
+        "testcase_readermonitor",
+        "testcase_readermonitorstress",
+        "testcase_ulist",
+        "testcase_utils",
+    )
     testsuite_framework = unittest.TestSuite()
     for module in map(__import__, modules_to_test):
         testsuite_framework.addTest(unittest.TestLoader().loadTestsFromModule(module))
     return testsuite_framework
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     configcheck.checklocalconfig()
     # set verbosity=2 to get more details
-    unittest.main(defaultTest='suite', verbosity=1)
+    unittest.main(defaultTest="suite", verbosity=1)

@@ -26,9 +26,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import os.path
 import sys
+
 from smartcard.wx.SimpleSCardApp import *
-from smartcard.wx.SimpleSCardAppEventObserver import \
-    SimpleSCardAppEventObserver
+from smartcard.wx.SimpleSCardAppEventObserver import SimpleSCardAppEventObserver
 
 ID_TEXT = 10000
 
@@ -42,7 +42,7 @@ def we_are_frozen():
 
 
 def module_path():
-    """ This will get us the program's directory,
+    """This will get us the program's directory,
     even if we are frozen using py2exe. From WhereAmI page on py2exe wiki."""
 
     if we_are_frozen():
@@ -52,9 +52,9 @@ def module_path():
 
 
 class SamplePanel(wx.Panel, SimpleSCardAppEventObserver):
-    '''A simple panel that displays activated cards and readers.
+    """A simple panel that displays activated cards and readers.
     The panel implements the SimpleSCardAppEventObserver, and has
-    a chance to react on reader and card activation/deactivation.'''
+    a chance to react on reader and card activation/deactivation."""
 
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, -1)
@@ -69,7 +69,8 @@ class SamplePanel(wx.Panel, SimpleSCardAppEventObserver):
         sizer.Add([20, 20], 0, wx.ALIGN_CENTER | wx.ALL, 5)
 
         self.feedbacktext = wx.StaticText(
-            self, ID_TEXT, "", wx.DefaultPosition, wx.DefaultSize, 0)
+            self, ID_TEXT, "", wx.DefaultPosition, wx.DefaultSize, 0
+        )
         sizer.Add(self.feedbacktext, 0, wx.ALIGN_LEFT | wx.ALL, 5)
 
         sizer.Add([20, 20], 0, wx.ALIGN_CENTER | wx.ALL, 5)
@@ -86,42 +87,45 @@ class SamplePanel(wx.Panel, SimpleSCardAppEventObserver):
         card or reader tree control or toolbar.
         In this sample, we just connect to the card on the first activation."""
         SimpleSCardAppEventObserver.OnActivateCard(self, card)
-        self.feedbacktext.SetLabel('Activated card: ' + repr(card))
+        self.feedbacktext.SetLabel("Activated card: " + repr(card))
 
     def OnActivateReader(self, reader):
         """Called when a reader is activated by double-clicking on the
         reader tree control or toolbar."""
         SimpleSCardAppEventObserver.OnActivateReader(self, reader)
-        self.feedbacktext.SetLabel('Activated reader: ' + repr(reader))
+        self.feedbacktext.SetLabel("Activated reader: " + repr(reader))
 
     def OnDeactivateCard(self, card):
         """Called when a card is deactivated in the reader tree control
         or toolbar."""
         SimpleSCardAppEventObserver.OnActivateCard(self, card)
-        self.feedbacktext.SetLabel('Deactivated card: ' + repr(card))
+        self.feedbacktext.SetLabel("Deactivated card: " + repr(card))
 
     def OnSelectCard(self, card):
         """Called when a card is selected by clicking on the card or
         reader tree control or toolbar."""
         SimpleSCardAppEventObserver.OnSelectCard(self, card)
-        self.feedbacktext.SetLabel('Selected card: ' + repr(card))
+        self.feedbacktext.SetLabel("Selected card: " + repr(card))
 
     def OnSelectReader(self, reader):
         """Called when a reader is selected by clicking on the reader
         tree control or toolbar."""
         SimpleSCardAppEventObserver.OnSelectReader(self, reader)
-        self.feedbacktext.SetLabel('Selected reader: ' + repr(reader))
+        self.feedbacktext.SetLabel("Selected reader: " + repr(reader))
 
 
 def main(argv):
     app = SimpleSCardApp(
-        appname='A simple card monitoring tool',
+        appname="A simple card monitoring tool",
         apppanel=SamplePanel,
         appstyle=TR_SMARTCARD | TR_READER,
-        appicon=os.path.join(
-            module_path(), 'images', 'mysmartcard.ico'), size=(800, 600))
+        appicon=os.path.join(module_path(), "images", "mysmartcard.ico"),
+        size=(800, 600),
+    )
     app.MainLoop()
+
 
 if __name__ == "__main__":
     import sys
+
     main(sys.argv)

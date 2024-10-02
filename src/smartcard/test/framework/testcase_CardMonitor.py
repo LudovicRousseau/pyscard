@@ -27,22 +27,25 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 
-import threading
-import unittest
-import time
-
-
 # import local_config for reader/card configuration
 # configcheck.py is generating local_config.py in
 # the test suite.
 import sys
-sys.path += ['..']
+import threading
+import time
+import unittest
+
+sys.path += [".."]
 
 try:
-    from local_config import expectedATRs, expectedReaders
-    from local_config import expectedReaderGroups, expectedATRinReader
+    from local_config import (
+        expectedATRinReader,
+        expectedATRs,
+        expectedReaderGroups,
+        expectedReaders,
+    )
 except ImportError:
-    print('execute test suite first to generate the local_config.py file')
+    print("execute test suite first to generate the local_config.py file")
     sys.exit()
 
 
@@ -100,9 +103,11 @@ class testcase_cardmonitor(unittest.TestCase):
 
 
 def suite():
-    suite1 = unittest.makeSuite(testcase_cardmonitorthread)
+    suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(
+        testcase_cardmonitorthread
+    )
     return unittest.TestSuite(suite1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

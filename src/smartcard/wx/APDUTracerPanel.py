@@ -29,7 +29,7 @@ from smartcard.CardConnectionObserver import CardConnectionObserver
 from smartcard.util import toHexString
 
 [
-wxID_APDUTEXTCTRL,
+    wxID_APDUTEXTCTRL,
 ] = [wx.NewId() for x in range(1)]
 
 
@@ -40,10 +40,12 @@ class APDUTracerPanel(wx.Panel, CardConnectionObserver):
 
         boxsizer = wx.BoxSizer(wx.HORIZONTAL)
         self.apdutextctrl = wx.TextCtrl(
-            self, wxID_APDUTEXTCTRL,
+            self,
+            wxID_APDUTEXTCTRL,
             "",
             pos=wx.DefaultPosition,
-            style=wx.TE_MULTILINE | wx.TE_READONLY)
+            style=wx.TE_MULTILINE | wx.TE_READONLY,
+        )
         boxsizer.Add(self.apdutextctrl, 1, wx.EXPAND | wx.ALL, 5)
         self.SetSizer(boxsizer)
         self.SetAutoLayout(True)
@@ -51,28 +53,31 @@ class APDUTracerPanel(wx.Panel, CardConnectionObserver):
         self.Bind(wx.EVT_TEXT_MAXLEN, self.OnMaxLength, self.apdutextctrl)
 
     def OnMaxLength(self, evt):
-        '''Reset text buffer when max length is reached.'''
+        """Reset text buffer when max length is reached."""
         self.apdutextctrl.SetValue("")
         evt.Skip()
 
     def update(self, cardconnection, ccevent):
-        '''CardConnectionObserver callback.'''
+        """CardConnectionObserver callback."""
 
         apduline = ""
-        if 'connect' == ccevent.type:
-            apduline += 'connecting to ' + cardconnection.getReader()
+        if "connect" == ccevent.type:
+            apduline += "connecting to " + cardconnection.getReader()
 
-        elif 'disconnect' == ccevent.type:
-            apduline += 'disconnecting from ' + cardconnection.getReader()
+        elif "disconnect" == ccevent.type:
+            apduline += "disconnecting from " + cardconnection.getReader()
 
-        elif 'command' == ccevent.type:
-            apduline += '> ' + toHexString(ccevent.args[0])
+        elif "command" == ccevent.type:
+            apduline += "> " + toHexString(ccevent.args[0])
 
-        elif 'response' == ccevent.type:
+        elif "response" == ccevent.type:
             if [] == ccevent.args[0]:
                 apduline += "< %-2X %-2X" % tuple(ccevent.args[-2:])
             else:
-                apduline += "< " + toHexString(ccevent.args[0]) + \
-                            "%-2X %-2X" % tuple(ccevent.args[-2:])
+                apduline += (
+                    "< "
+                    + toHexString(ccevent.args[0])
+                    + "%-2X %-2X" % tuple(ccevent.args[-2:])
+                )
 
         self.apdutextctrl.AppendText(apduline + "\n")

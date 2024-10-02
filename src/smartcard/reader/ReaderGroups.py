@@ -30,7 +30,7 @@ class BadReaderGroupException(SmartcardException):
     """Raised when trying to add an invalid reader group."""
 
     def __init__(self):
-        SmartcardException.__init__(self, 'Invalid reader group')
+        SmartcardException.__init__(self, "Invalid reader group")
 
 
 class innerreadergroups(ulist):
@@ -87,7 +87,7 @@ class innerreadergroups(ulist):
         pass
 
 
-class readergroups(object):
+class readergroups:
     """ReadersGroups organizes smart card reader as groups."""
 
     """The single instance of __readergroups"""

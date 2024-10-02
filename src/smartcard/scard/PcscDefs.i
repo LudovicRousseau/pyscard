@@ -349,4 +349,3 @@ typedef enum
 
 // Infinite timeout
 %constant unsigned long INFINITE = 0x7FFFFFFF ;
-

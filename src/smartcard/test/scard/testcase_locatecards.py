@@ -27,20 +27,21 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 import platform
-import unittest
-from smartcard.scard import *
 
 # import local_config for reader/card configuration
 # configcheck.py is generating local_config.py in
 # the test suite.
 import sys
-sys.path += ['..']
+import unittest
+
+from smartcard.scard import *
+
+sys.path += [".."]
 
 try:
-    from local_config import expectedReaders
-    from local_config import expectedATRinReader
+    from local_config import expectedATRinReader, expectedReaders
 except ImportError:
-    print('execute test suite first to generate the local_config.py file')
+    print("execute test suite first to generate the local_config.py file")
     sys.exit()
 
 
@@ -65,7 +66,7 @@ class testcase_locatecards(unittest.TestCase):
         for reader in expectedReaders:
             self.assertTrue(reader in foundReaders)
 
-        if 'winscard' == resourceManager:
+        if "winscard" == resourceManager:
             hresult, cards = SCardListCards(self.hcontext, [], [])
             self.assertEqual(hresult, 0)
 
@@ -73,52 +74,48 @@ class testcase_locatecards(unittest.TestCase):
             for i in range(len(readers)):
                 readerstates += [(readers[i], SCARD_STATE_UNAWARE)]
 
-            hresult, newstates = SCardLocateCards(
-                self.hcontext, cards, readerstates)
+            hresult, newstates = SCardLocateCards(self.hcontext, cards, readerstates)
             self.assertEqual(hresult, 0)
 
             dictexpectedreaders = {}
             for reader in expectedReaders:
                 dictexpectedreaders[reader] = 1
             for reader, eventstate, atr in newstates:
-                if reader in dictexpectedreaders and \
-                    [] != expectedATRinReader[reader]:
+                if reader in dictexpectedreaders and [] != expectedATRinReader[reader]:
                     self.assertEqual(expectedATRinReader[reader], atr)
                     self.assertTrue(eventstate & SCARD_STATE_PRESENT)
                     self.assertTrue(eventstate & SCARD_STATE_CHANGED)
 
             # 10ms delay, so that time-out always occurs
-            hresult, newstates = SCardGetStatusChange(
-                self.hcontext, 10, newstates)
+            hresult, newstates = SCardGetStatusChange(self.hcontext, 10, newstates)
             self.assertEqual(hresult, SCARD_E_TIMEOUT)
             self.assertEqual(
                 SCardGetErrorMessage(hresult),
-                'The user-specified timeout value has expired. ')
+                "The user-specified timeout value has expired. ",
+            )
 
-        elif 'pcsclite' == resourceManager:
+        elif "pcsclite" == resourceManager:
             readerstates = []
             for i in range(len(readers)):
                 readerstates += [(readers[i], SCARD_STATE_UNAWARE)]
 
-            hresult, newstates = SCardGetStatusChange(
-                self.hcontext, 0, readerstates)
+            hresult, newstates = SCardGetStatusChange(self.hcontext, 0, readerstates)
             self.assertEqual(hresult, 0)
 
             dictexpectedreaders = {}
             for reader in expectedReaders:
                 dictexpectedreaders[reader] = 1
             for reader, eventstate, atr in newstates:
-                if reader in dictexpectedreaders and \
-                    [] != expectedATRinReader[reader]:
+                if reader in dictexpectedreaders and [] != expectedATRinReader[reader]:
                     self.assertEqual(expectedATRinReader[reader], atr)
                     self.assertTrue(eventstate & SCARD_STATE_PRESENT)
                     self.assertTrue(eventstate & SCARD_STATE_CHANGED)
 
 
 def suite():
-    suite1 = unittest.makeSuite(testcase_locatecards)
+    suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(testcase_locatecards)
     return unittest.TestSuite(suite1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

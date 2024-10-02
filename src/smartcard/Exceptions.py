@@ -34,30 +34,32 @@ class SmartcardException(Exception):
     shield scard (i.e. PCSC) exceptions raised by the scard module.
 
     """
+
     def __init__(self, message="", hresult=-1, *args):
-        super(SmartcardException, self).__init__(message, *args)
+        super().__init__(message, *args)
         self.hresult = int(hresult)
 
     def __str__(self):
-        text = super(SmartcardException, self).__str__()
+        text = super().__str__()
         if self.hresult != -1:
             hresult = self.hresult
             if hresult < 0:
                 # convert 0x-7FEFFFE3 into 0x8010001D
                 hresult += 0x100000000
-            text += ": {} (0x{:08X})".format(SCardGetErrorMessage(self.hresult), hresult)
+            text += f": {SCardGetErrorMessage(self.hresult)} (0x{hresult:08X})"
 
         return text
 
 
-
 class CardConnectionException(SmartcardException):
     """Raised when a CardConnection class method fails."""
+
     pass
 
 
 class CardRequestException(SmartcardException):
     """Raised when a CardRequest wait fails."""
+
     pass
 
 
@@ -65,22 +67,26 @@ class CardRequestTimeoutException(SmartcardException):
     """Raised when a CardRequest times out."""
 
     def __init__(self, hresult=-1, *args):
-        SmartcardException.__init__(self,
-                                    "Time-out during card request",
-                                    hresult=hresult, *args)
+        SmartcardException.__init__(
+            self, "Time-out during card request", hresult=hresult, *args
+        )
 
 
 class CardServiceException(SmartcardException):
     """Raised when a CardService class method fails."""
+
     pass
 
 
 class CardServiceStoppedException(SmartcardException):
     """Raised when the CardService was stopped"""
+
     pass
+
 
 class CardServiceNotFoundException(SmartcardException):
     """Raised when the CardService is not found"""
+
     pass
 
 
@@ -88,23 +94,21 @@ class InvalidATRMaskLengthException(SmartcardException):
     """Raised when an ATR mask does not match an ATR length."""
 
     def __init__(self, mask):
-        SmartcardException.__init__(self, 'Invalid ATR mask length: %s'
-            %mask)
+        SmartcardException.__init__(self, "Invalid ATR mask length: %s" % mask)
 
 
 class InvalidReaderException(SmartcardException):
     """Raised when trying to access an invalid smartcard reader."""
 
     def __init__(self, readername):
-        SmartcardException.__init__(self, 'Invalid reader: %s' % readername)
+        SmartcardException.__init__(self, "Invalid reader: %s" % readername)
 
 
 class ListReadersException(SmartcardException):
     """Raised when smartcard readers cannot be listed."""
 
     def __init__(self, hresult):
-        SmartcardException.__init__(self, 'Failed to list readers',
-                hresult=hresult)
+        SmartcardException.__init__(self, "Failed to list readers", hresult=hresult)
 
 
 class NoCardException(SmartcardException):
@@ -118,4 +122,4 @@ class NoReadersException(SmartcardException):
     """Raised when the system has no smartcard reader."""
 
     def __init__(self, *args):
-        SmartcardException.__init__(self, 'No reader found', *args)
+        SmartcardException.__init__(self, "No reader found", *args)

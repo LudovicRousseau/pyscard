@@ -23,8 +23,8 @@ You should have received a copy of the GNU Lesser General Public License
 along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
-from smartcard.CardType import CardType
 from smartcard.CardRequest import CardRequest
+from smartcard.CardType import CardType
 from smartcard.util import toHexString
 
 
@@ -50,6 +50,7 @@ print(cardservice.connection.getReader())
 
 
 import sys
-if 'win32' == sys.platform:
-    print('press Enter to continue')
+
+if "win32" == sys.platform:
+    print("press Enter to continue")
     sys.stdin.read(1)

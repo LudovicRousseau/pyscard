@@ -30,17 +30,20 @@ import smartcard.Exceptions
 import smartcard.System
 import smartcard.util
 
-
 # wxPython GUI modules (https://www.wxpython.org/)
 try:
     import wx
 except ImportError:
-    print('You need wxpython (https://www.wxpython.org/) ' + \
-          'to run this sample from the source code!')
-    print('press a key to continue')
+    print(
+        "You need wxpython (https://www.wxpython.org/) "
+        + "to run this sample from the source code!"
+    )
+    print("press a key to continue")
     import msvcrt
+
     msvcrt.getch()
     import sys
+
     sys.exit()
 
 
@@ -67,7 +70,8 @@ class pcscdiag(wx.Frame):
             wx.NewIdRef(),
             wx.DefaultPosition,
             (w, h),
-            wx.TR_HAS_BUTTONS | wx.TR_EDIT_LABELS)
+            wx.TR_HAS_BUTTONS | wx.TR_EDIT_LABELS,
+        )
         self.InitTree()
         self.OnExpandAll()
 
@@ -80,24 +84,23 @@ class pcscdiag(wx.Frame):
             childCard = self.tree.AppendItem(childReader, getATR(reader))
 
         readerGroupNode = self.tree.AppendItem(
-            self.tree.GetRootItem(),
-            "Readers Groups")
+            self.tree.GetRootItem(), "Readers Groups"
+        )
         for readergroup in smartcard.System.readergroups():
-            childReaderGroup = self.tree.AppendItem(
-                readerGroupNode, readergroup)
+            childReaderGroup = self.tree.AppendItem(readerGroupNode, readergroup)
             readers = smartcard.System.readers(readergroup)
             for reader in readers:
                 child = self.tree.AppendItem(childReaderGroup, repr(reader))
 
     def OnExpandAll(self):
-        """ expand all nodes """
+        """expand all nodes"""
         root = self.tree.GetRootItem()
         fn = self.tree.Expand
         self.traverse(root, fn)
         self.tree.Expand(root)
 
     def traverse(self, traverseroot, function, cookie=0):
-        """ recursively walk tree control """
+        """recursively walk tree control"""
         if self.tree.ItemHasChildren(traverseroot):
             firstchild, cookie = self.tree.GetFirstChild(traverseroot)
             function(firstchild)
@@ -109,7 +112,7 @@ class pcscdiag(wx.Frame):
             self.traverse(child, function, cookie)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app = wx.App()
     frame = pcscdiag(None, "Smartcard readers and reader groups")
     frame.Show()

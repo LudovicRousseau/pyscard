@@ -25,4 +25,3 @@ Samples
 Continuous Integration status
 -----------------------------
 Coveralls: [![Coverage Status](https://coveralls.io/repos/LudovicRousseau/pyscard/badge.svg?branch=master&service=github)](https://coveralls.io/github/LudovicRousseau/pyscard?branch=master)
-

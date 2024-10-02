@@ -34,7 +34,7 @@ import unittest
 
 from smartcard.ReaderMonitoring import ReaderMonitor, ReaderObserver
 
-period = .1
+period = 0.1
 
 # stats on virtual reader insertion/removal
 insertedreaderstats = {}
@@ -46,8 +46,8 @@ virtualreaders = []
 
 
 def getReaders():
-    '''Return virtual list of inserted readers.
-    Replacement of smartcard.system.readers for testing purpose'''
+    """Return virtual list of inserted readers.
+    Replacement of smartcard.system.readers for testing purpose"""
     try:
         mutexvreaders.acquire()
         currentreaders = virtualreaders
@@ -55,6 +55,7 @@ def getReaders():
         mutexvreaders.release()
         readerEvent.set()
     return currentreaders
+
 
 # an event to signal test threads to end
 exitEvent = threading.Event()
@@ -71,7 +72,7 @@ OBS_COUNT = 100
 
 
 class readerInsertionThread(threading.Thread):
-    '''Simulate reader insertion every 2 to 4 periods.'''
+    """Simulate reader insertion every 2 to 4 periods."""
 
     def __init__(self):
         threading.Thread.__init__(self)
@@ -80,7 +81,7 @@ class readerInsertionThread(threading.Thread):
         while not exitEvent.is_set():
             time.sleep(random.uniform(2 * period, 4 * period))
             readerEvent.wait()
-            newreader = random.choice('abcdefghijklmnopqrstuvwxyz')
+            newreader = random.choice("abcdefghijklmnopqrstuvwxyz")
             try:
                 mutexvreaders.acquire()
                 if newreader not in virtualreaders:
@@ -95,7 +96,7 @@ class readerInsertionThread(threading.Thread):
 
 
 class readerRemovalThread(threading.Thread):
-    '''Simulate reader removal every 5 to 6 periods.'''
+    """Simulate reader removal every 5 to 6 periods."""
 
     def __init__(self):
         threading.Thread.__init__(self)
@@ -119,7 +120,7 @@ class readerRemovalThread(threading.Thread):
 
 
 class countobserver(ReaderObserver):
-    '''A simple reader observer that counts added/removed readers.'''
+    """A simple reader observer that counts added/removed readers."""
 
     def __init__(self, obsindex):
         self.obsindex = obsindex
@@ -143,7 +144,7 @@ class countobserver(ReaderObserver):
 
 
 class testcase_readermonitorstress(unittest.TestCase):
-    '''Test smartcard framework reader monitoring'''
+    """Test smartcard framework reader monitoring"""
 
     def testcase_readermonitorthread(self):
 
@@ -175,16 +176,16 @@ class testcase_readermonitorstress(unittest.TestCase):
         time.sleep(2 * period)
 
         for observer in observers:
-            self.assertEqual(
-                observer.insertedreaderstats, insertedreaderstats)
-            self.assertEqual(
-                observer.removedreaderstats, removedreaderstats)
+            self.assertEqual(observer.insertedreaderstats, insertedreaderstats)
+            self.assertEqual(observer.removedreaderstats, removedreaderstats)
 
 
 def suite():
-    suite1 = unittest.makeSuite(testcase_readermonitorthread)
+    suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(
+        testcase_readermonitorthread
+    )
     return unittest.TestSuite(suite1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

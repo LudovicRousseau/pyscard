@@ -34,7 +34,7 @@ from smartcard.ClassLoader import get_class
 from smartcard.pcsc.PCSCReader import PCSCReader
 
 
-class ReaderFactory(object):
+class ReaderFactory:
     """Class to create readers from reader type id."""
 
     factories = {}
@@ -50,6 +50,7 @@ class ReaderFactory(object):
         if not clazz in ReaderFactory.factories:
             ReaderFactory.factories[clazz] = get_class(clazz).Factory()
         return ReaderFactory.factories[clazz].create(readername)
+
     createReader = staticmethod(createReader)
 
     def readers(groups=[]):
@@ -57,4 +58,5 @@ class ReaderFactory(object):
         for fm in ReaderFactory.factorymethods:
             zreaders += fm(groups)
         return zreaders
+
     readers = staticmethod(readers)

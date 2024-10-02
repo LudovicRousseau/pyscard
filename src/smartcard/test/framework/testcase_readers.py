@@ -27,25 +27,29 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 
-import unittest
-
 # import local_config for reader/card configuration
 # configcheck.py is generating local_config.py in
 # the test suite.
 import sys
-sys.path += ['..']
+import unittest
+
+sys.path += [".."]
 
 try:
-    from local_config import expectedATRs, expectedReaders
-    from local_config import expectedReaderGroups, expectedATRinReader
+    from local_config import (
+        expectedATRinReader,
+        expectedATRs,
+        expectedReaderGroups,
+        expectedReaders,
+    )
 except ImportError:
-    print('execute test suite first to generate the local_config.py file')
+    print("execute test suite first to generate the local_config.py file")
     sys.exit()
 
 
-from smartcard.System import readers, readergroups
 from smartcard import listReaders
 from smartcard.scard import resourceManager
+from smartcard.System import readergroups, readers
 
 
 class testcase_readers(unittest.TestCase):
@@ -77,7 +81,7 @@ class testcase_readers(unittest.TestCase):
 
     def testcase_readers_in_readergroup(self):
         foundreaders = {}
-        for reader in readers(['SCard$DefaultReaders']):
+        for reader in readers(["SCard$DefaultReaders"]):
             foundreaders[str(reader)] = 1
         for reader in expectedReaders:
             self.assertTrue(reader in foundreaders)
@@ -89,11 +93,11 @@ class testcase_readers(unittest.TestCase):
         for reader in expectedReaders:
             self.assertTrue(reader in foundreaders)
 
-    if 'winscard' == resourceManager:
+    if "winscard" == resourceManager:
 
         def testcase_readers_in_readergroup_nonexistent(self):
             foundreaders = {}
-            for reader in readers(['dummy$group']):
+            for reader in readers(["dummy$group"]):
                 foundreaders[reader] = 1
             for reader in expectedReaders:
                 self.assertTrue(not reader in foundreaders)
@@ -108,9 +112,9 @@ class testcase_readers(unittest.TestCase):
 
 
 def suite():
-    suite1 = unittest.makeSuite(testcase_readers)
+    suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(testcase_readers)
     return unittest.TestSuite(suite1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

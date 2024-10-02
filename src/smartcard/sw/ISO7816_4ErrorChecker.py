@@ -22,20 +22,25 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-from smartcard.sw.ErrorChecker import ErrorChecker
 import smartcard.sw.SWExceptions
+from smartcard.sw.ErrorChecker import ErrorChecker
 
 iso7816_4SW = {
-    0x62: (smartcard.sw.SWExceptions.WarningProcessingException,
-           {0x00: "Response padded/ More APDU commands expected",
+    0x62: (
+        smartcard.sw.SWExceptions.WarningProcessingException,
+        {
+            0x00: "Response padded/ More APDU commands expected",
             0x81: "Part of returned data may be corrupted",
             0x82: "End of file/record reached before reading Le bytes",
             0x83: "File invalidated",
             0x84: "FCI not correctly formatted",
-            0xFF: "Correct execution, response padded"}),
-
-    0x63: (smartcard.sw.SWExceptions.WarningProcessingException,
-           {0x00: "Authentication failed",
+            0xFF: "Correct execution, response padded",
+        },
+    ),
+    0x63: (
+        smartcard.sw.SWExceptions.WarningProcessingException,
+        {
+            0x00: "Authentication failed",
             0x81: "File filled up by the last write",
             0xC0: "PIN verification failed. 0 tries before blocking PIN",
             0xC1: "PIN verification failed. 1 tries before blocking PIN",
@@ -52,30 +57,38 @@ iso7816_4SW = {
             0xCC: "PIN verification failed. 12 tries before blocking PIN",
             0xCD: "PIN verification failed. 13 tries before blocking PIN",
             0xCE: "PIN verification failed. 14 tries before blocking PIN",
-            0xCF: "PIN verification failed. 15 tries before blocking PIN"}),
-
-    0x64: (smartcard.sw.SWExceptions.ExecutionErrorException,
-           {0x00: "Integrity error detected in EEPROM"}),
-
-    0x67: (smartcard.sw.SWExceptions.CheckingErrorException,
-           {0x00: "Wrong length in Lc"}),
-
-    0x68: (smartcard.sw.SWExceptions.CheckingErrorException,
-           {0x81: "Logical channel not supported",
-            0x82: "Secure messaging not supported"}),
-
-    0x69: (smartcard.sw.SWExceptions.CheckingErrorException,
-           {0x81: "Command incompatible with file structure.",
+            0xCF: "PIN verification failed. 15 tries before blocking PIN",
+        },
+    ),
+    0x64: (
+        smartcard.sw.SWExceptions.ExecutionErrorException,
+        {0x00: "Integrity error detected in EEPROM"},
+    ),
+    0x67: (
+        smartcard.sw.SWExceptions.CheckingErrorException,
+        {0x00: "Wrong length in Lc"},
+    ),
+    0x68: (
+        smartcard.sw.SWExceptions.CheckingErrorException,
+        {0x81: "Logical channel not supported", 0x82: "Secure messaging not supported"},
+    ),
+    0x69: (
+        smartcard.sw.SWExceptions.CheckingErrorException,
+        {
+            0x81: "Command incompatible with file structure.",
             0x82: "Security status not satisfied",
             0x83: "Authentication method blocked",
             0x84: "Referenced data invalid",
             0x85: "Conditions of use not satisfied",
             0x86: "Command not allowed (no current EF)",
             0x87: "Secure messaging data object missing.",
-            0x88: "Secure messaging data object incorrect"}),
-
-    0x6A: (smartcard.sw.SWExceptions.CheckingErrorException,
-           {0x80: "Incorrect parameters in the data field",
+            0x88: "Secure messaging data object incorrect",
+        },
+    ),
+    0x6A: (
+        smartcard.sw.SWExceptions.CheckingErrorException,
+        {
+            0x80: "Incorrect parameters in the data field",
             0x81: "Function not supported",
             0x82: "File not found",
             0x83: "Record not found",
@@ -83,19 +96,22 @@ iso7816_4SW = {
             0x85: "Lc inconsistent with TLV structure",
             0x86: "Incorrect parameters P1-P2",
             0x87: "Lc is inconsistent with P1-P2",
-            0x88: "Referenced data not found"}),
-
-    0x6B: (smartcard.sw.SWExceptions.CheckingErrorException,
-           {0x00: "Incorrect parameters P1-P2"}),
-
-    0x6D: (smartcard.sw.SWExceptions.CheckingErrorException,
-           {0x00: "Instruction (INS) not supported"}),
-
-    0x6E: (smartcard.sw.SWExceptions.CheckingErrorException,
-           {0x00: "Class (CLA) not supported"}),
-
-    0x6F: (smartcard.sw.SWExceptions.CheckingErrorException,
-           {0x00: "Fatal error"}),
+            0x88: "Referenced data not found",
+        },
+    ),
+    0x6B: (
+        smartcard.sw.SWExceptions.CheckingErrorException,
+        {0x00: "Incorrect parameters P1-P2"},
+    ),
+    0x6D: (
+        smartcard.sw.SWExceptions.CheckingErrorException,
+        {0x00: "Instruction (INS) not supported"},
+    ),
+    0x6E: (
+        smartcard.sw.SWExceptions.CheckingErrorException,
+        {0x00: "Class (CLA) not supported"},
+    ),
+    0x6F: (smartcard.sw.SWExceptions.CheckingErrorException, {0x00: "Fatal error"}),
 }
 
 
@@ -151,11 +167,12 @@ class ISO7816_4ErrorChecker(ErrorChecker):
                 except KeyError:
                     pass
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     """Small sample illustrating the use of ISO7816_4ErrorChecker."""
     ecs = ISO7816_4ErrorChecker()
     ecs([], 0x90, 0x00)
     try:
-        ecs([], 0x6b, 0x00)
+        ecs([], 0x6B, 0x00)
     except smartcard.sw.SWExceptions.CheckingErrorException as e:
-        print(str(e) + " {:x} {:x}".format(e.sw1, e.sw2))
+        print(str(e) + f" {e.sw1:x} {e.sw2:x}")

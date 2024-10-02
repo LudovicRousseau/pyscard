@@ -26,67 +26,65 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 from smartcard.scard import *
-from smartcard.util import toBytes, toHexString, toASCIIString
+from smartcard.util import toASCIIString, toBytes, toHexString
 
 try:
     hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
     if hresult != SCARD_S_SUCCESS:
-        raise error(
-            'Failed to establish context: ' + SCardGetErrorMessage(hresult))
-    print('Context established!')
+        raise error("Failed to establish context: " + SCardGetErrorMessage(hresult))
+    print("Context established!")
 
     try:
         hresult, readers = SCardListReaders(hcontext, [])
         if hresult != SCARD_S_SUCCESS:
-            raise error(
-                'Failed to list readers: ' + SCardGetErrorMessage(hresult))
-        print('PCSC Readers:', readers)
+            raise error("Failed to list readers: " + SCardGetErrorMessage(hresult))
+        print("PCSC Readers:", readers)
 
         if len(readers) < 1:
-            raise error('No smart card readers')
+            raise error("No smart card readers")
 
         for zreader in readers:
 
-            print('Trying to Control reader:', zreader)
+            print("Trying to Control reader:", zreader)
 
             try:
                 hresult, hcard, dwActiveProtocol = SCardConnect(
-                    hcontext, zreader, SCARD_SHARE_DIRECT, SCARD_PROTOCOL_T0)
+                    hcontext, zreader, SCARD_SHARE_DIRECT, SCARD_PROTOCOL_T0
+                )
                 if hresult != SCARD_S_SUCCESS:
-                    raise error(
-                        'Unable to connect: ' + SCardGetErrorMessage(hresult))
-                print('Connected with active protocol', dwActiveProtocol)
+                    raise error("Unable to connect: " + SCardGetErrorMessage(hresult))
+                print("Connected with active protocol", dwActiveProtocol)
 
                 try:
-                    if 'winscard' == resourceManager:
+                    if "winscard" == resourceManager:
                         # IOCTL_SMARTCARD_GET_ATTRIBUTE = SCARD_CTL_CODE(2)
                         hresult, response = SCardControl(
                             hcard,
                             SCARD_CTL_CODE(2),
-                            toBytes("%.8lx" % SCARD_ATTR_VENDOR_NAME))
+                            toBytes("%.8lx" % SCARD_ATTR_VENDOR_NAME),
+                        )
                         if hresult != SCARD_S_SUCCESS:
                             raise error(
-                                'SCardControl failed: ' +
-                                SCardGetErrorMessage(hresult))
-                        print('SCARD_ATTR_VENDOR_NAME:', toASCIIString(response))
-                    elif 'pcsclite' == resourceManager:
+                                "SCardControl failed: " + SCardGetErrorMessage(hresult)
+                            )
+                        print("SCARD_ATTR_VENDOR_NAME:", toASCIIString(response))
+                    elif "pcsclite" == resourceManager:
                         # get feature request
                         hresult, response = SCardControl(
-                            hcard,
-                            SCARD_CTL_CODE(3400),
-                            [])
+                            hcard, SCARD_CTL_CODE(3400), []
+                        )
                         if hresult != SCARD_S_SUCCESS:
                             raise error(
-                                'SCardControl failed: ' +
-                                SCardGetErrorMessage(hresult))
-                        print('CM_IOCTL_GET_FEATURE_REQUEST:', toHexString(response))
+                                "SCardControl failed: " + SCardGetErrorMessage(hresult)
+                            )
+                        print("CM_IOCTL_GET_FEATURE_REQUEST:", toHexString(response))
                 finally:
                     hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
                     if hresult != SCARD_S_SUCCESS:
                         raise error(
-                            'Failed to disconnect: ' +
-                            SCardGetErrorMessage(hresult))
-                    print('Disconnected')
+                            "Failed to disconnect: " + SCardGetErrorMessage(hresult)
+                        )
+                    print("Disconnected")
 
             except error as message:
                 print(error, message)
@@ -94,15 +92,14 @@ try:
     finally:
         hresult = SCardReleaseContext(hcontext)
         if hresult != SCARD_S_SUCCESS:
-            raise error(
-                'Failed to release context: ' +
-                SCardGetErrorMessage(hresult))
-        print('Released context.')
+            raise error("Failed to release context: " + SCardGetErrorMessage(hresult))
+        print("Released context.")
 
 except error as e:
     print(e)
 
 import sys
-if 'win32' == sys.platform:
-    print('press Enter to continue')
+
+if "win32" == sys.platform:
+    print("press Enter to continue")
     sys.stdin.read(1)

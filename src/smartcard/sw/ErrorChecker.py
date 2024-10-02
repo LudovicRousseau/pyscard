@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 
-class ErrorChecker(object):
+class ErrorChecker:
     """Base class for status word error checking strategies.
 
     Error checking strategies are chained into an L{ErrorCheckingChain} to

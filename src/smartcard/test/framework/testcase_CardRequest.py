@@ -27,29 +27,35 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 
-import unittest
 import string
 
 # import local_config for reader/card configuration
 # configcheck.py is generating local_config.py in
 # the test suite.
 import sys
-sys.path += ['..']
+import unittest
+
+sys.path += [".."]
 
 try:
-    from local_config import expectedATRs, expectedReaders
-    from local_config import expectedReaderGroups, expectedATRinReader, expectedReaderForATR
+    from local_config import (
+        expectedATRinReader,
+        expectedATRs,
+        expectedReaderForATR,
+        expectedReaderGroups,
+        expectedReaders,
+    )
 except ImportError:
-    print('execute test suite first to generate the local_config.py file')
+    print("execute test suite first to generate the local_config.py file")
     sys.exit()
 
 
+import smartcard.System
 from smartcard.CardRequest import CardRequest
-from smartcard.CardType import ATRCardType, AnyCardType
+from smartcard.CardType import AnyCardType, ATRCardType
 from smartcard.Exceptions import CardRequestTimeoutException
 from smartcard.PassThruCardService import PassThruCardService
 from smartcard.util import toHexString
-import smartcard.System
 
 
 class testcase_CardRequest(unittest.TestCase):
@@ -66,8 +72,8 @@ class testcase_CardRequest(unittest.TestCase):
                 cs.connection.connect()
                 self.assertEqual(atr, cs.connection.getATR())
                 self.assertEqual(
-                    cs.connection.getReader(),
-                    expectedReaderForATR[toHexString(atr)])
+                    cs.connection.getReader(), expectedReaderForATR[toHexString(atr)]
+                )
                 cs.connection.disconnect()
 
     def testcase_CardRequestAnyCardTypeInSelectedReader(self):
@@ -82,8 +88,8 @@ class testcase_CardRequest(unittest.TestCase):
                 cs.connection.connect()
                 self.assertEqual(atr, cs.connection.getATR())
                 self.assertEqual(
-                    cs.connection.getReader(),
-                    expectedReaderForATR[toHexString(atr)])
+                    cs.connection.getReader(), expectedReaderForATR[toHexString(atr)]
+                )
 
     def testcase_CardRequestATRCardTypeTimeout(self):
         """Test smartcard.AnyCardType."""
@@ -115,16 +121,17 @@ class testcase_CardRequest(unittest.TestCase):
                     timeout=10.6,
                     readers=[reader],
                     cardType=ct,
-                    cardServiceClass=cardservice)
+                    cardServiceClass=cardservice,
+                )
                 cs = cr.waitforcard()
                 cs.connection.connect()
                 self.assertEqual(
-                    cs.__class__,
-                    smartcard.PassThruCardService.PassThruCardService)
+                    cs.__class__, smartcard.PassThruCardService.PassThruCardService
+                )
                 self.assertEqual(atr, cs.connection.getATR())
                 self.assertEqual(
-                    cs.connection.getReader(),
-                    expectedReaderForATR[toHexString(atr)])
+                    cs.connection.getReader(), expectedReaderForATR[toHexString(atr)]
+                )
 
     def testcase_CardRequestAnyCardTypeInSelectedReaderNewCard(self):
         """Test smartcard.AnyCardType."""
@@ -132,15 +139,14 @@ class testcase_CardRequest(unittest.TestCase):
         for reader in expectedReaders:
             atr = expectedATRinReader[reader]
             ct = AnyCardType()
-            cr = CardRequest(
-                newcardonly=True, timeout=1, readers=[reader], cardType=ct)
+            cr = CardRequest(newcardonly=True, timeout=1, readers=[reader], cardType=ct)
             self.assertRaises(CardRequestTimeoutException, cr.waitforcard)
 
 
 def suite():
-    suite1 = unittest.makeSuite(testcase_CardRequest)
+    suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(testcase_CardRequest)
     return unittest.TestSuite(suite1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

@@ -28,17 +28,17 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import platform
 import unittest
-from smartcard.System import readergroups
+
 from smartcard.scard import resourceManager
+from smartcard.System import readergroups
 
-
-if 'winscard' == resourceManager:
+if "winscard" == resourceManager:
 
     class testcase_readergroups(unittest.TestCase):
         """Test smartcard framework readersgroups."""
 
-        pinpadgroup = 'Pinpad$Readers'
-        biogroup = 'Biometric$Readers'
+        pinpadgroup = "Pinpad$Readers"
+        biogroup = "Biometric$Readers"
 
         def testcase_readergroup_add(self):
             """tests groups=groups+[newgroups]"""
@@ -53,8 +53,7 @@ if 'winscard' == resourceManager:
 
             # add pinpad a second time and biometric once
             groups = groups + [self.biogroup, self.pinpadgroup]
-            self.assertEqual(
-                groups, groupssnapshot + [self.pinpadgroup, self.biogroup])
+            self.assertEqual(groups, groupssnapshot + [self.pinpadgroup, self.biogroup])
 
             # clean-up
             groups.remove(self.biogroup)
@@ -73,8 +72,7 @@ if 'winscard' == resourceManager:
 
             # add pinpad a second time and biometric once
             groups += [self.biogroup, self.pinpadgroup]
-            self.assertEqual(
-                groups, groupssnapshot + [self.pinpadgroup, self.biogroup])
+            self.assertEqual(groups, groupssnapshot + [self.pinpadgroup, self.biogroup])
 
             # clean-up
             groups.remove(self.biogroup)
@@ -95,11 +93,11 @@ if 'winscard' == resourceManager:
             self.assertTrue(isinstance(groups, type(readergroups())))
 
             # add pinpad a tiwce and biometric once
-            zgroups = \
-                [self.pinpadgroup, self.biogroup, self.pinpadgroup] + groups
+            zgroups = [self.pinpadgroup, self.biogroup, self.pinpadgroup] + groups
             self.assertEqual(groups, groupssnapshot)
             self.assertEqual(
-                zgroups, groupssnapshot + [self.pinpadgroup, self.biogroup])
+                zgroups, groupssnapshot + [self.pinpadgroup, self.biogroup]
+            )
             self.assertTrue(isinstance(zgroups, list))
             self.assertTrue(isinstance(groups, type(readergroups())))
 
@@ -120,8 +118,7 @@ if 'winscard' == resourceManager:
 
             # add biometric once
             groups.append(self.biogroup)
-            self.assertEqual(
-                groups, groupssnapshot + [self.pinpadgroup, self.biogroup])
+            self.assertEqual(groups, groupssnapshot + [self.pinpadgroup, self.biogroup])
 
             # clean-up
             groups.remove(self.biogroup)
@@ -144,17 +141,16 @@ if 'winscard' == resourceManager:
 
             # add biometric once
             groups.insert(1, self.biogroup)
-            self.assertEqual(
-                groups, groupssnapshot + [self.pinpadgroup, self.biogroup])
+            self.assertEqual(groups, groupssnapshot + [self.pinpadgroup, self.biogroup])
 
             # clean-up
             groups.remove(self.biogroup)
             groups.remove(self.pinpadgroup)
 
     def suite():
-        suite1 = unittest.makeSuite(testcase_readergroups)
+        suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(testcase_readergroups)
         return unittest.TestSuite(suite1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

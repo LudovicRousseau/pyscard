@@ -48,14 +48,16 @@ class PassThruCardService(CardService.CardService):
 
     supports = staticmethod(supports)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     """Small sample illustrating the use of CardService."""
     SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
     DF_TELECOM = [0x7F, 0x10]
     from smartcard.System import readers
+
     cc = readers()[0].createConnection()
     cs = PassThruCardService(cc)
     cs.connection.connect()
     data, sw1, sw2 = cs.connection.transmit(SELECT + DF_TELECOM)
-    print("{:X} {:X}".format(sw1, sw2))
+    print(f"{sw1:X} {sw2:X}")
     cs.connection.disconnect()

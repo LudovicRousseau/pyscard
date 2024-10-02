@@ -25,14 +25,15 @@ You should have received a copy of the GNU Lesser General Public License
 along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
-from smartcard.CardType import AnyCardType
-from smartcard.CardRequest import CardRequest
-from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver
-from smartcard.Exceptions import CardRequestTimeoutException
 import sys
 
+from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver
+from smartcard.CardRequest import CardRequest
+from smartcard.CardType import AnyCardType
+from smartcard.Exceptions import CardRequestTimeoutException
+
 # define the apdus used in this script
-GET_RESPONSE = [0XA0, 0XC0, 00, 00]
+GET_RESPONSE = [0xA0, 0xC0, 00, 00]
 SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
 DF_TELECOM = [0x7F, 0x10]
 
@@ -41,7 +42,7 @@ cardtype = AnyCardType()
 
 try:
     # request card insertion
-    print('insert a card (SIM card if possible) within 10s')
+    print("insert a card (SIM card if possible) within 10s")
     cardrequest = CardRequest(timeout=10, cardType=cardtype)
     cardservice = cardrequest.waitforcard()
 
@@ -61,11 +62,11 @@ try:
         response, sw1, sw2 = cardservice.connection.transmit(apdu)
 
     else:
-        print('no DF_TELECOM')
+        print("no DF_TELECOM")
 
 except CardRequestTimeoutException:
-    print('time-out: no card inserted during last 10s')
+    print("time-out: no card inserted during last 10s")
 
-if 'win32' == sys.platform:
-    print('press Enter to continue')
+if "win32" == sys.platform:
+    print("press Enter to continue")
     sys.stdin.read(1)

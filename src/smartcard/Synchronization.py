@@ -22,6 +22,7 @@ def synchronized(method):
         finally:
             self.mutex.release()
             # print(method.__name__, 'released')
+
     return f
 
 
@@ -32,14 +33,13 @@ def synchronize(klass, names=None):
 
     if isinstance(names, (str, bytes)):
         names = names.split()
-    for (name, val) in list(klass.__dict__.items()):
-        if callable(val) and name != '__init__' and \
-                (names is None or name in names):
+    for name, val in list(klass.__dict__.items()):
+        if callable(val) and name != "__init__" and (names is None or name in names):
             # print("synchronizing", name)
             setattr(klass, name, synchronized(val))
 
 
-class Synchronization(object):
+class Synchronization:
     # You can create your own self.mutex, or inherit from this class:
 
     def __init__(self):

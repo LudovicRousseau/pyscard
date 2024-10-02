@@ -48,25 +48,26 @@ FEATURE_GET_TLV_PROPERTIES = 0x12
 FEATURE_CCID_ESC_COMMAND = 0x13
 
 Features = {
-"FEATURE_VERIFY_PIN_START": FEATURE_VERIFY_PIN_START,
-"FEATURE_VERIFY_PIN_FINISH": FEATURE_VERIFY_PIN_FINISH,
-"FEATURE_MODIFY_PIN_START": FEATURE_MODIFY_PIN_START,
-"FEATURE_MODIFY_PIN_FINISH": FEATURE_MODIFY_PIN_FINISH,
-"FEATURE_GET_KEY_PRESSED": FEATURE_GET_KEY_PRESSED,
-"FEATURE_VERIFY_PIN_DIRECT": FEATURE_VERIFY_PIN_DIRECT,
-"FEATURE_MODIFY_PIN_DIRECT": FEATURE_MODIFY_PIN_DIRECT,
-"FEATURE_MCT_READER_DIRECT": FEATURE_MCT_READER_DIRECT,
-"FEATURE_MCT_UNIVERSAL": FEATURE_MCT_UNIVERSAL,
-"FEATURE_IFD_PIN_PROPERTIES": FEATURE_IFD_PIN_PROPERTIES,
-"FEATURE_ABORT": FEATURE_ABORT,
-"FEATURE_SET_SPE_MESSAGE": FEATURE_SET_SPE_MESSAGE,
-"FEATURE_VERIFY_PIN_DIRECT_APP_ID": FEATURE_VERIFY_PIN_DIRECT_APP_ID,
-"FEATURE_MODIFY_PIN_DIRECT_APP_ID": FEATURE_MODIFY_PIN_DIRECT_APP_ID,
-"FEATURE_WRITE_DISPLAY": FEATURE_WRITE_DISPLAY,
-"FEATURE_GET_KEY": FEATURE_GET_KEY,
-"FEATURE_IFD_DISPLAY_PROPERTIES": FEATURE_IFD_DISPLAY_PROPERTIES,
-"FEATURE_GET_TLV_PROPERTIES": FEATURE_GET_TLV_PROPERTIES,
-"FEATURE_CCID_ESC_COMMAND": FEATURE_CCID_ESC_COMMAND}
+    "FEATURE_VERIFY_PIN_START": FEATURE_VERIFY_PIN_START,
+    "FEATURE_VERIFY_PIN_FINISH": FEATURE_VERIFY_PIN_FINISH,
+    "FEATURE_MODIFY_PIN_START": FEATURE_MODIFY_PIN_START,
+    "FEATURE_MODIFY_PIN_FINISH": FEATURE_MODIFY_PIN_FINISH,
+    "FEATURE_GET_KEY_PRESSED": FEATURE_GET_KEY_PRESSED,
+    "FEATURE_VERIFY_PIN_DIRECT": FEATURE_VERIFY_PIN_DIRECT,
+    "FEATURE_MODIFY_PIN_DIRECT": FEATURE_MODIFY_PIN_DIRECT,
+    "FEATURE_MCT_READER_DIRECT": FEATURE_MCT_READER_DIRECT,
+    "FEATURE_MCT_UNIVERSAL": FEATURE_MCT_UNIVERSAL,
+    "FEATURE_IFD_PIN_PROPERTIES": FEATURE_IFD_PIN_PROPERTIES,
+    "FEATURE_ABORT": FEATURE_ABORT,
+    "FEATURE_SET_SPE_MESSAGE": FEATURE_SET_SPE_MESSAGE,
+    "FEATURE_VERIFY_PIN_DIRECT_APP_ID": FEATURE_VERIFY_PIN_DIRECT_APP_ID,
+    "FEATURE_MODIFY_PIN_DIRECT_APP_ID": FEATURE_MODIFY_PIN_DIRECT_APP_ID,
+    "FEATURE_WRITE_DISPLAY": FEATURE_WRITE_DISPLAY,
+    "FEATURE_GET_KEY": FEATURE_GET_KEY,
+    "FEATURE_IFD_DISPLAY_PROPERTIES": FEATURE_IFD_DISPLAY_PROPERTIES,
+    "FEATURE_GET_TLV_PROPERTIES": FEATURE_GET_TLV_PROPERTIES,
+    "FEATURE_CCID_ESC_COMMAND": FEATURE_CCID_ESC_COMMAND,
+}
 
 # properties returned by FEATURE_GET_TLV_PROPERTIES
 PCSCv2_PART10_PROPERTY_wLcdLayout = 1
@@ -83,20 +84,19 @@ PCSCv2_PART10_PROPERTY_wIdVendor = 11
 PCSCv2_PART10_PROPERTY_wIdProduct = 12
 
 Properties = {
-"PCSCv2_PART10_PROPERTY_wLcdLayout": PCSCv2_PART10_PROPERTY_wLcdLayout,
-"PCSCv2_PART10_PROPERTY_bEntryValidationCondition": \
-    PCSCv2_PART10_PROPERTY_bEntryValidationCondition,
-"PCSCv2_PART10_PROPERTY_bTimeOut2": PCSCv2_PART10_PROPERTY_bTimeOut2,
-"PCSCv2_PART10_PROPERTY_wLcdMaxCharacters": \
-PCSCv2_PART10_PROPERTY_wLcdMaxCharacters,
-"PCSCv2_PART10_PROPERTY_wLcdMaxLines": PCSCv2_PART10_PROPERTY_wLcdMaxLines,
-"PCSCv2_PART10_PROPERTY_bMinPINSize": PCSCv2_PART10_PROPERTY_bMinPINSize,
-"PCSCv2_PART10_PROPERTY_bMaxPINSize": PCSCv2_PART10_PROPERTY_bMaxPINSize,
-"PCSCv2_PART10_PROPERTY_sFirmwareID": PCSCv2_PART10_PROPERTY_sFirmwareID,
-"PCSCv2_PART10_PROPERTY_bPPDUSupport": PCSCv2_PART10_PROPERTY_bPPDUSupport,
-"PCSCv2_PART10_PROPERTY_dwMaxAPDUDataSize": PCSCv2_PART10_PROPERTY_dwMaxAPDUDataSize,
-"PCSCv2_PART10_PROPERTY_wIdVendor": PCSCv2_PART10_PROPERTY_wIdVendor,
-"PCSCv2_PART10_PROPERTY_wIdProduct": PCSCv2_PART10_PROPERTY_wIdProduct}
+    "PCSCv2_PART10_PROPERTY_wLcdLayout": PCSCv2_PART10_PROPERTY_wLcdLayout,
+    "PCSCv2_PART10_PROPERTY_bEntryValidationCondition": PCSCv2_PART10_PROPERTY_bEntryValidationCondition,
+    "PCSCv2_PART10_PROPERTY_bTimeOut2": PCSCv2_PART10_PROPERTY_bTimeOut2,
+    "PCSCv2_PART10_PROPERTY_wLcdMaxCharacters": PCSCv2_PART10_PROPERTY_wLcdMaxCharacters,
+    "PCSCv2_PART10_PROPERTY_wLcdMaxLines": PCSCv2_PART10_PROPERTY_wLcdMaxLines,
+    "PCSCv2_PART10_PROPERTY_bMinPINSize": PCSCv2_PART10_PROPERTY_bMinPINSize,
+    "PCSCv2_PART10_PROPERTY_bMaxPINSize": PCSCv2_PART10_PROPERTY_bMaxPINSize,
+    "PCSCv2_PART10_PROPERTY_sFirmwareID": PCSCv2_PART10_PROPERTY_sFirmwareID,
+    "PCSCv2_PART10_PROPERTY_bPPDUSupport": PCSCv2_PART10_PROPERTY_bPPDUSupport,
+    "PCSCv2_PART10_PROPERTY_dwMaxAPDUDataSize": PCSCv2_PART10_PROPERTY_dwMaxAPDUDataSize,
+    "PCSCv2_PART10_PROPERTY_wIdVendor": PCSCv2_PART10_PROPERTY_wIdVendor,
+    "PCSCv2_PART10_PROPERTY_wIdProduct": PCSCv2_PART10_PROPERTY_wIdProduct,
+}
 
 # we already have:       Features['FEATURE_x'] = FEATURE_x
 # we will now also have: Features[FEATURE_x] = 'FEATURE_x'
@@ -108,7 +108,7 @@ for k in list(Properties.keys()):
 
 
 def parseFeatureRequest(response):
-    """ Get the list of Part10 features supported by the reader.
+    """Get the list of Part10 features supported by the reader.
 
     @param response: result of L{CM_IOCTL_GET_FEATURE_REQUEST} command
 
@@ -116,12 +116,11 @@ def parseFeatureRequest(response):
     @return: a list of list C{[[tag1, value1], [tag2, value2]]}
     """
     features = []
-    while (len(response) > 0):
+    while len(response) > 0:
         tag = response[0]
-        control = ((((((response[2] << 8) +
-                        response[3]) << 8) +
-                        response[4]) << 8) +
-                        response[5])
+        control = (
+            ((((response[2] << 8) + response[3]) << 8) + response[4]) << 8
+        ) + response[5]
         try:
             features.append([Features[tag], control])
         except KeyError:
@@ -131,7 +130,7 @@ def parseFeatureRequest(response):
 
 
 def getFeatureRequest(cardConnection):
-    """ Get the list of Part10 features supported by the reader.
+    """Get the list of Part10 features supported by the reader.
 
     @param cardConnection: L{CardConnection} object
 
@@ -143,7 +142,7 @@ def getFeatureRequest(cardConnection):
 
 
 def hasFeature(featureList, feature):
-    """ return the controlCode for a feature or None
+    """return the controlCode for a feature or None
 
     @param feature:     feature to look for
     @param featureList: feature list as returned by L{getFeatureRequest()}
@@ -156,71 +155,72 @@ def hasFeature(featureList, feature):
 
 
 def getPinProperties(cardConnection, featureList=None, controlCode=None):
-    """ return the C{PIN_PROPERTIES} structure
+    """return the C{PIN_PROPERTIES} structure
 
     @param cardConnection: L{CardConnection} object
     @param featureList: feature list as returned by L{getFeatureRequest()}
     @param controlCode: control code for L{FEATURE_IFD_PIN_PROPERTIES}
 
     @rtype: dict
-    @return: a dict """
+    @return: a dict"""
     if controlCode is None:
         if featureList is None:
             featureList = getFeatureRequest(cardConnection)
         controlCode = hasFeature(featureList, FEATURE_IFD_PIN_PROPERTIES)
 
     if controlCode is None:
-        return {'raw': []}
+        return {"raw": []}
 
     response = cardConnection.control(controlCode, [])
     d = {
-            'raw': response,
-            'LcdLayoutX': response[0],
-            'LcdLayoutY': response[1],
-            'EntryValidationCondition': response[2],
-            'TimeOut2': response[3]}
+        "raw": response,
+        "LcdLayoutX": response[0],
+        "LcdLayoutY": response[1],
+        "EntryValidationCondition": response[2],
+        "TimeOut2": response[3],
+    }
 
     return d
 
 
 def getTlvProperties(cardConnection, featureList=None, controlCode=None):
-    """ return the C{GET_TLV_PROPERTIES} structure
+    """return the C{GET_TLV_PROPERTIES} structure
 
     @param cardConnection: L{CardConnection} object
     @param featureList: feature list as returned by L{getFeatureRequest()}
     @param controlCode: control code for L{FEATURE_GET_TLV_PROPERTIES}
 
     @rtype: dict
-    @return: a dict """
+    @return: a dict"""
     if controlCode is None:
         if featureList is None:
             featureList = getFeatureRequest(cardConnection)
         controlCode = hasFeature(featureList, FEATURE_GET_TLV_PROPERTIES)
 
     if controlCode is None:
-        return {'raw': []}
+        return {"raw": []}
 
     response = cardConnection.control(controlCode, [])
     return parseTlvProperties(response)
 
 
 def parseTlvProperties(response):
-    """ return the GET_TLV_PROPERTIES structure
+    """return the GET_TLV_PROPERTIES structure
 
     @param response: result of  L{FEATURE_GET_TLV_PROPERTIES}
 
     @rtype: dict
-    @return: a dict """
+    @return: a dict"""
     d = {
-            'raw': response,
-        }
+        "raw": response,
+    }
 
     # create a new list to consume it
     tmp = list(response)
     while tmp:
         tag = tmp[0]
         len = tmp[1]
-        data = tmp[2:2 + len]
+        data = tmp[2 : 2 + len]
 
         if PCSCv2_PART10_PROPERTY_sFirmwareID == tag:
             # convert to a string
@@ -242,14 +242,15 @@ def parseTlvProperties(response):
         except KeyError:
             d["UNKNOWN"] = data
 
-        del tmp[0:2 + len]
+        del tmp[0 : 2 + len]
 
     return d
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     """Small sample illustrating the use of PCSCPart10."""
     from smartcard.pcsc.PCSCReader import PCSCReader
+
     cc = PCSCReader.readers()[0].createConnection()
     cc.connect(mode=SCARD_SHARE_DIRECT)
 
@@ -263,9 +264,9 @@ if __name__ == '__main__':
     properties = getPinProperties(cc)
     print("\nPinProperties:")
     for k, v in list(properties.items()):
-        print(" {}: {}".format(k, v))
+        print(f" {k}: {v}")
 
     print("\nTlvProperties:")
     properties = getTlvProperties(cc)
     for k, v in list(properties.items()):
-        print(" {}: {}".format(k, v))
+        print(f" {k}: {v}")

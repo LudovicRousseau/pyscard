@@ -32,7 +32,7 @@ from smartcard.CardMonitoring import CardMonitor, CardObserver
 from smartcard.util import toHexString
 
 # define the apdus used in this script
-GET_RESPONSE = [0XA0, 0XC0, 00, 00]
+GET_RESPONSE = [0xA0, 0xC0, 00, 00]
 SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
 DF_TELECOM = [0x7F, 0x10]
 
@@ -63,7 +63,8 @@ class selectDFTELECOMObserver(CardObserver):
         for card in removedcards:
             print("-Removed: ", toHexString(card.atr))
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     print("Insert or remove a SIM card in the system.")
     print("This program will exit in 60 seconds")
     print("")
@@ -78,6 +79,7 @@ if __name__ == '__main__':
     cardmonitor.deleteObserver(selectobserver)
 
     import sys
-    if 'win32' == sys.platform:
-        print('press Enter to continue')
+
+    if "win32" == sys.platform:
+        print("press Enter to continue")
         sys.stdin.read(1)

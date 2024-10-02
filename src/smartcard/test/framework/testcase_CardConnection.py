@@ -27,33 +27,38 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 
-import unittest
 import string
 
 # import local_config for reader/card configuration
 # configcheck.py is generating local_config.py in
 # the test suite.
 import sys
-sys.path += ['..']
+import unittest
+
+sys.path += [".."]
 
 try:
-    from local_config import expectedATRs, expectedReaders
-    from local_config import expectedReaderGroups, expectedATRinReader
+    from local_config import (
+        expectedATRinReader,
+        expectedATRs,
+        expectedReaderGroups,
+        expectedReaders,
+    )
 except ImportError:
-    print('execute test suite first to generate the local_config.py file')
+    print("execute test suite first to generate the local_config.py file")
     sys.exit()
 
 
-from smartcard.Exceptions import CardConnectionException, NoCardException
-from smartcard.System import readers
 from smartcard.CardConnection import CardConnection
+from smartcard.Exceptions import CardConnectionException, NoCardException
 from smartcard.scard import (
-        resourceManagerSubType,
-        SCARD_SHARE_EXCLUSIVE,
-        SCARD_LEAVE_CARD,
-        SCARD_RESET_CARD,
-        SCARD_UNPOWER_CARD
+    SCARD_LEAVE_CARD,
+    SCARD_RESET_CARD,
+    SCARD_SHARE_EXCLUSIVE,
+    SCARD_UNPOWER_CARD,
+    resourceManagerSubType,
 )
+from smartcard.System import readers
 
 
 class testcase_CardConnection(unittest.TestCase):
@@ -71,8 +76,7 @@ class testcase_CardConnection(unittest.TestCase):
                 response, sw1, sw2 = cc.transmit(SELECT + DF_TELECOM)
                 expectedSWs = {"9f 1a": 1, "6e 0": 2, "9f 20": 3, "9f 22": 4}
                 self.assertEqual([], response)
-                self.assertTrue(
-                    "{:x} {:x}".format(sw1, sw2) in expectedSWs or "9f" == "%x" % sw1)
+                self.assertTrue(f"{sw1:x} {sw2:x}" in expectedSWs or "9f" == "%x" % sw1)
             else:
                 self.assertRaises(NoCardException, cc.connect)
         cc.disconnect()
@@ -89,8 +93,7 @@ class testcase_CardConnection(unittest.TestCase):
                 response, sw1, sw2 = cc.transmit(SELECT + DF_TELECOM)
                 expectedSWs = {"9f 1a": 1, "6e 0": 2, "9f 20": 3, "9f 22": 4}
                 self.assertEqual([], response)
-                self.assertTrue(
-                    "{:x} {:x}".format(sw1, sw2) in expectedSWs or "9f" == "%x" % sw1)
+                self.assertTrue(f"{sw1:x} {sw2:x}" in expectedSWs or "9f" == "%x" % sw1)
             else:
                 self.assertRaises(NoCardException, cc.connect)
         cc.disconnect()
@@ -103,9 +106,8 @@ class testcase_CardConnection(unittest.TestCase):
             if [] != expectedATRinReader[str(reader)]:
                 # should fail since the test card does not support T1
                 self.assertRaises(
-                    CardConnectionException,
-                    cc.connect,
-                    CardConnection.T1_protocol)
+                    CardConnectionException, cc.connect, CardConnection.T1_protocol
+                )
             else:
                 self.assertRaises(NoCardException, cc.connect)
         cc.disconnect()
@@ -123,7 +125,8 @@ class testcase_CardConnection(unittest.TestCase):
                     CardConnectionException,
                     cc.transmit,
                     SELECT + DF_TELECOM,
-                    CardConnection.T1_protocol)
+                    CardConnection.T1_protocol,
+                )
             else:
                 self.assertRaises(NoCardException, cc.connect)
         cc.disconnect()
@@ -136,13 +139,11 @@ class testcase_CardConnection(unittest.TestCase):
         for reader in readers():
             cc = reader.createConnection()
             if [] != expectedATRinReader[str(reader)]:
-                cc.connect(
-                    CardConnection.T0_protocol | CardConnection.T1_protocol)
+                cc.connect(CardConnection.T0_protocol | CardConnection.T1_protocol)
                 response, sw1, sw2 = cc.transmit(SELECT + DF_TELECOM)
                 expectedSWs = {"9f 1a": 1, "6e 0": 2, "9f 20": 3, "9f 22": 4}
                 self.assertEqual([], response)
-                self.assertTrue(
-                    "{:x} {:x}".format(sw1, sw2) in expectedSWs or "9f" == "%x" % sw1)
+                self.assertTrue(f"{sw1:x} {sw2:x}" in expectedSWs or "9f" == "%x" % sw1)
             else:
                 self.assertRaises(NoCardException, cc.connect)
         cc.disconnect()
@@ -157,11 +158,11 @@ class testcase_CardConnection(unittest.TestCase):
             if [] != expectedATRinReader[str(reader)]:
                 cc.connect(CardConnection.T0_protocol)
                 response, sw1, sw2 = cc.transmit(
-                    SELECT + DF_TELECOM, CardConnection.T0_protocol)
+                    SELECT + DF_TELECOM, CardConnection.T0_protocol
+                )
                 expectedSWs = {"9f 1a": 1, "6e 0": 2, "9f 20": 3, "9f 22": 4}
                 self.assertEqual([], response)
-                self.assertTrue(
-                    "{:x} {:x}".format(sw1, sw2) in expectedSWs or "9f" == "%x" % sw1)
+                self.assertTrue(f"{sw1:x} {sw2:x}" in expectedSWs or "9f" == "%x" % sw1)
             else:
                 self.assertRaises(NoCardException, cc.connect)
         cc.disconnect()
@@ -175,13 +176,13 @@ class testcase_CardConnection(unittest.TestCase):
         for reader in readers():
             cc = reader.createConnection()
             if [] != expectedATRinReader[str(reader)]:
-                cc.connect(
-                    CardConnection.T0_protocol | CardConnection.T1_protocol)
+                cc.connect(CardConnection.T0_protocol | CardConnection.T1_protocol)
                 self.assertRaises(
                     CardConnectionException,
                     cc.transmit,
                     SELECT + DF_TELECOM,
-                    CardConnection.T0_protocol | CardConnection.T1_protocol)
+                    CardConnection.T0_protocol | CardConnection.T1_protocol,
+                )
             else:
                 self.assertRaises(NoCardException, cc.connect)
         cc.disconnect()
@@ -191,12 +192,14 @@ class testcase_CardConnection(unittest.TestCase):
         for reader in readers():
             cc = reader.createConnection()
             if [] != expectedATRinReader[str(reader)]:
-                cc.connect(
-                    CardConnection.T0_protocol | CardConnection.T1_protocol)
+                cc.connect(CardConnection.T0_protocol | CardConnection.T1_protocol)
 
                 #  reconnect in T=1 when a T=0 card (GPK 8K) shall fail
-                self.assertRaises(CardConnectionException,
-                    cc.reconnect, protocol=CardConnection.T1_protocol)
+                self.assertRaises(
+                    CardConnectionException,
+                    cc.reconnect,
+                    protocol=CardConnection.T1_protocol,
+                )
                 cc.disconnect()
             else:
                 self.assertRaises(NoCardException, cc.connect)
@@ -207,12 +210,12 @@ class testcase_CardConnection(unittest.TestCase):
             cc = reader.createConnection()
             cc2 = reader.createConnection()
             if [] != expectedATRinReader[str(reader)]:
-                cc.connect(
-                    CardConnection.T0_protocol | CardConnection.T1_protocol)
+                cc.connect(CardConnection.T0_protocol | CardConnection.T1_protocol)
 
                 #  reconnect in exclusive mode should fail
-                self.assertRaises(CardConnectionException,
-                    cc2.reconnect, mode=SCARD_SHARE_EXCLUSIVE)
+                self.assertRaises(
+                    CardConnectionException, cc2.reconnect, mode=SCARD_SHARE_EXCLUSIVE
+                )
                 cc.disconnect()
             else:
                 self.assertRaises(NoCardException, cc.connect)
@@ -222,8 +225,7 @@ class testcase_CardConnection(unittest.TestCase):
         for reader in readers():
             cc = reader.createConnection()
             if [] != expectedATRinReader[str(reader)]:
-                cc.connect(
-                    CardConnection.T0_protocol | CardConnection.T1_protocol)
+                cc.connect(CardConnection.T0_protocol | CardConnection.T1_protocol)
                 cc.reconnect(disposition=SCARD_LEAVE_CARD)
                 cc.reconnect(disposition=SCARD_RESET_CARD)
                 cc.reconnect(disposition=SCARD_UNPOWER_CARD)
@@ -237,16 +239,15 @@ class testcase_CardConnection(unittest.TestCase):
             cc = reader.createConnection()
             if [] != expectedATRinReader[str(reader)]:
                 #  reconnect without connect first shall fail
-                self.assertRaises(CardConnectionException,
-                    cc.reconnect)
+                self.assertRaises(CardConnectionException, cc.reconnect)
             else:
                 self.assertRaises(NoCardException, cc.connect)
 
 
 def suite():
-    suite1 = unittest.makeSuite(testcase_CardConnection)
+    suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(testcase_CardConnection)
     return unittest.TestSuite(suite1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

@@ -24,8 +24,8 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-import smartcard.reader.ReaderFactory
 import smartcard.pcsc.PCSCReaderGroups
+import smartcard.reader.ReaderFactory
 
 
 def readers(groups=[]):
@@ -59,7 +59,7 @@ def listReaders():
     return zreaders
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     print(readers())
-    print(readers(['SCard$DefaultReaders']))
+    print(readers(["SCard$DefaultReaders"]))
     print(readergroups())

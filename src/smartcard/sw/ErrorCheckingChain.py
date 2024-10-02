@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 from sys import exc_info
 
 
-class ErrorCheckingChain(object):
+class ErrorCheckingChain:
     """The error checking chain is a list of response apdu status word
     (sw1, sw2) error check strategies. Each strategy in the chain is
     called until an error is detected. A L{smartcard.sw.SWExceptions}
@@ -70,7 +70,7 @@ class ErrorCheckingChain(object):
     def end(self):
         """Returns True if this is the end of the error checking
         strategy chain."""
-        return (self.chain.index(self) + 1 >= len(self.chain))
+        return self.chain.index(self) + 1 >= len(self.chain)
 
     def __call__(self, data, sw1, sw2):
         """Called to test data, sw1 and sw2 for error on the chain."""

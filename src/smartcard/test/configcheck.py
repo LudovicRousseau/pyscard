@@ -27,8 +27,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 
-from smartcard.System import readers
 from smartcard.Exceptions import NoCardException
+from smartcard.System import readers
 from smartcard.util import toHexString
 
 
@@ -42,43 +42,46 @@ def getATR(reader):
 
 def checklocalconfig():
     try:
-        f = open('local_config.py', 'r')
-    except IOError:
-        print('local_config.py not found; generating local_config.py...')
+        f = open("local_config.py")
+    except OSError:
+        print("local_config.py not found; generating local_config.py...")
     else:
-        print('regenerating local_config.py...')
+        print("regenerating local_config.py...")
         f.close()
 
     # generate local configuration
-    f = open('local_config.py', 'w+')
+    f = open("local_config.py", "w+")
 
-    f.write('from smartcard.util import toHexString\n')
-    f.write('expectedReaders = ')
-    f.write(str(readers()) + '\n')
+    f.write("from smartcard.util import toHexString\n")
+    f.write("expectedReaders = ")
+    f.write(str(readers()) + "\n")
     expectedATRs = []
     for reader in readers():
         try:
             expectedATRs.append(getATR(reader))
         except NoCardException:
             expectedATRs.append([])
-    f.write('expectedATRs = ')
-    f.write(repr(expectedATRs) + '\n')
+    f.write("expectedATRs = ")
+    f.write(repr(expectedATRs) + "\n")
 
-    f.write('expectedATRinReader = {}\n')
-    f.write('for i in range(len(expectedReaders)):\n')
-    f.write('    expectedATRinReader[expectedReaders[i]] = expectedATRs[i]\n')
+    f.write("expectedATRinReader = {}\n")
+    f.write("for i in range(len(expectedReaders)):\n")
+    f.write("    expectedATRinReader[expectedReaders[i]] = expectedATRs[i]\n")
 
-    f.write('expectedReaderForATR = {}\n')
-    f.write('for i in range(len(expectedReaders)):\n')
-    f.write('    expectedReaderForATR[toHexString(expectedATRs[i])] = ' + \
-                    'expectedReaders[i]\n')
+    f.write("expectedReaderForATR = {}\n")
+    f.write("for i in range(len(expectedReaders)):\n")
+    f.write(
+        "    expectedReaderForATR[toHexString(expectedATRs[i])] = "
+        + "expectedReaders[i]\n"
+    )
 
-    f.write('expectedReaderGroups = [\'SCard$DefaultReaders\']\n')
+    f.write("expectedReaderGroups = ['SCard$DefaultReaders']\n")
 
     f.close()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import sys
+
     checklocalconfig()
     sys.exit()

@@ -25,27 +25,28 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 import wx
 
-from smartcard.wx.APDUHexValidator import APDUHexValidator
-from smartcard.wx.SimpleSCardAppEventObserver import \
-    SimpleSCardAppEventObserver
 from smartcard.util import toBytes, toHexString
+from smartcard.wx.APDUHexValidator import APDUHexValidator
+from smartcard.wx.SimpleSCardAppEventObserver import SimpleSCardAppEventObserver
 
-[ID_TEXT_COMMAND,
- ID_TEXTCTRL_COMMAND,
- ID_TEXT_RESPONSE,
- ID_TEXTCTRL_RESPONSE,
- ID_TEXT_SW,
- ID_TEXT_SW1,
- ID_TEXTCTRL_SW1,
- ID_TEXT_SW2,
- ID_TEXTCTRL_SW2,
- ID_CARDSTATE,
- ID_TRANSMIT] = [wx.NewId() for x in range(11)]
+[
+    ID_TEXT_COMMAND,
+    ID_TEXTCTRL_COMMAND,
+    ID_TEXT_RESPONSE,
+    ID_TEXTCTRL_RESPONSE,
+    ID_TEXT_SW,
+    ID_TEXT_SW1,
+    ID_TEXTCTRL_SW1,
+    ID_TEXT_SW2,
+    ID_TEXTCTRL_SW2,
+    ID_CARDSTATE,
+    ID_TRANSMIT,
+] = [wx.NewId() for x in range(11)]
 
 
 class SampleAPDUManagerPanel(wx.Panel, SimpleSCardAppEventObserver):
-    '''A simple panel that displays activated cards and readers and can
-    send APDU to a connected card.'''
+    """A simple panel that displays activated cards and readers and can
+    send APDU to a connected card."""
 
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, -1)
@@ -60,51 +61,50 @@ class SampleAPDUManagerPanel(wx.Panel, SimpleSCardAppEventObserver):
         on the card or reader tree control or toolbar.
         In this sample, we just connect to the card on the first activation."""
         SimpleSCardAppEventObserver.OnActivateCard(self, card)
-        self.feedbacktext.SetLabel('Activated card: ' + repr(card))
+        self.feedbacktext.SetLabel("Activated card: " + repr(card))
         self.transmitbutton.Enable()
 
     def OnActivateReader(self, reader):
         """Called when a reader is activated by double-clicking
         on the reader tree control or toolbar."""
         SimpleSCardAppEventObserver.OnActivateReader(self, reader)
-        self.feedbacktext.SetLabel('Activated reader: ' + repr(reader))
+        self.feedbacktext.SetLabel("Activated reader: " + repr(reader))
         self.transmitbutton.Disable()
 
     def OnDeactivateCard(self, card):
         """Called when a card is deactivated in the reader
         tree control or toolbar."""
         SimpleSCardAppEventObserver.OnActivateCard(self, card)
-        self.feedbacktext.SetLabel('Deactivated card: ' + repr(card))
+        self.feedbacktext.SetLabel("Deactivated card: " + repr(card))
         self.transmitbutton.Disable()
 
     def OnDeselectCard(self, card):
         """Called when a card is selected by clicking on the
         card or reader tree control or toolbar."""
         SimpleSCardAppEventObserver.OnSelectCard(self, card)
-        self.feedbacktext.SetLabel('Deselected card: ' + repr(card))
+        self.feedbacktext.SetLabel("Deselected card: " + repr(card))
         self.transmitbutton.Disable()
 
     def OnSelectCard(self, card):
         """Called when a card is selected by clicking on the
         card or reader tree control or toolbar."""
         SimpleSCardAppEventObserver.OnSelectCard(self, card)
-        self.feedbacktext.SetLabel('Selected card: ' + repr(card))
-        if hasattr(self.selectedcard, 'connection'):
+        self.feedbacktext.SetLabel("Selected card: " + repr(card))
+        if hasattr(self.selectedcard, "connection"):
             self.transmitbutton.Enable()
 
     def OnSelectReader(self, reader):
         """Called when a reader is selected by clicking on the
         reader tree control or toolbar."""
         SimpleSCardAppEventObserver.OnSelectReader(self, reader)
-        self.feedbacktext.SetLabel('Selected reader: ' + repr(reader))
+        self.feedbacktext.SetLabel("Selected reader: " + repr(reader))
         self.transmitbutton.Disable()
 
     # callbacks
     def OnTransmit(self, event):
-        if hasattr(self.selectedcard, 'connection'):
+        if hasattr(self.selectedcard, "connection"):
             apdu = self.commandtextctrl.GetValue()
-            data, sw1, sw2 = \
-                self.selectedcard.connection.transmit(toBytes(apdu))
+            data, sw1, sw2 = self.selectedcard.connection.transmit(toBytes(apdu))
             self.SW1textctrl.SetValue("%x" % sw1)
             self.SW2textctrl.SetValue("%x" % sw2)
             self.responsetextctrl.SetValue(toHexString(data + [sw1, sw2]))
@@ -114,75 +114,56 @@ class SampleAPDUManagerPanel(wx.Panel, SimpleSCardAppEventObserver):
 
         # create controls
         statictextCommand = wx.StaticText(
-            self,
-            ID_TEXT_COMMAND,
-            "Command",
-            wx.DefaultPosition,
-            wx.DefaultSize,
-            0)
+            self, ID_TEXT_COMMAND, "Command", wx.DefaultPosition, wx.DefaultSize, 0
+        )
         self.commandtextctrl = wx.TextCtrl(
             self,
-            ID_TEXTCTRL_COMMAND, "",
+            ID_TEXTCTRL_COMMAND,
+            "",
             wx.DefaultPosition,
             wx.DefaultSize,
             wx.TE_MULTILINE,
-            validator=APDUHexValidator())
+            validator=APDUHexValidator(),
+        )
         statictextResponse = wx.StaticText(
-            self,
-            ID_TEXT_RESPONSE,
-            "Response",
-            wx.DefaultPosition,
-            wx.DefaultSize,
-            0)
+            self, ID_TEXT_RESPONSE, "Response", wx.DefaultPosition, wx.DefaultSize, 0
+        )
         self.responsetextctrl = wx.TextCtrl(
             self,
             ID_TEXTCTRL_RESPONSE,
             "",
             wx.DefaultPosition,
             wx.DefaultSize,
-            wx.TE_MULTILINE | wx.TE_READONLY)
+            wx.TE_MULTILINE | wx.TE_READONLY,
+        )
         statictextStatusWords = wx.StaticText(
-            self,
-            ID_TEXT_SW,
-            "Status Words",
-            wx.DefaultPosition,
-            wx.DefaultSize,
-            0)
+            self, ID_TEXT_SW, "Status Words", wx.DefaultPosition, wx.DefaultSize, 0
+        )
         statictextSW1 = wx.StaticText(
-            self,
-            ID_TEXT_SW1,
-            "SW1",
-            wx.DefaultPosition,
-            wx.DefaultSize,
-            0)
+            self, ID_TEXT_SW1, "SW1", wx.DefaultPosition, wx.DefaultSize, 0
+        )
         self.SW1textctrl = wx.TextCtrl(
             self,
             ID_TEXTCTRL_SW1,
             "",
             wx.DefaultPosition,
             wx.DefaultSize,
-            wx.TE_READONLY)
+            wx.TE_READONLY,
+        )
         statictextSW2 = wx.StaticText(
-            self,
-            ID_TEXT_SW2,
-            "SW2",
-            wx.DefaultPosition,
-            wx.DefaultSize,
-            0)
+            self, ID_TEXT_SW2, "SW2", wx.DefaultPosition, wx.DefaultSize, 0
+        )
         self.SW2textctrl = wx.TextCtrl(
             self,
             ID_TEXTCTRL_SW2,
             "",
             wx.DefaultPosition,
             wx.DefaultSize,
-            wx.TE_READONLY)
+            wx.TE_READONLY,
+        )
         self.feedbacktext = wx.StaticText(
-            self,
-            ID_CARDSTATE,
-            "",
-            wx.DefaultPosition,
-            wx.DefaultSize,
-            0)
+            self, ID_CARDSTATE, "", wx.DefaultPosition, wx.DefaultSize, 0
+        )
 
         # layout controls
         boxsizerCommand = wx.BoxSizer(wx.HORIZONTAL)
@@ -190,8 +171,7 @@ class SampleAPDUManagerPanel(wx.Panel, SimpleSCardAppEventObserver):
         boxsizerCommand.Add(self.commandtextctrl, 5, wx.EXPAND | wx.ALL, 5)
 
         boxsizerResponse = wx.BoxSizer(wx.HORIZONTAL)
-        boxsizerResponse.Add(
-            statictextResponse, 1, wx.ALIGN_CENTER | wx.ALL, 5)
+        boxsizerResponse.Add(statictextResponse, 1, wx.ALIGN_CENTER | wx.ALL, 5)
         boxsizerResponse.Add(self.responsetextctrl, 5, wx.EXPAND | wx.ALL, 5)
 
         boxsizerSW = wx.BoxSizer(wx.HORIZONTAL)
@@ -220,15 +200,10 @@ class SampleAPDUManagerPanel(wx.Panel, SimpleSCardAppEventObserver):
         sizerboxTransmitButton = wx.BoxSizer(wx.HORIZONTAL)
         sizerboxTransmitButton.Add([20, 20], 0, wx.ALIGN_CENTER | wx.ALL, 5)
         self.transmitbutton = wx.Button(
-            self,
-            ID_TRANSMIT,
-            "Transmit",
-            wx.DefaultPosition,
-            wx.DefaultSize,
-            0)
+            self, ID_TRANSMIT, "Transmit", wx.DefaultPosition, wx.DefaultSize, 0
+        )
         self.transmitbutton.Disable()
-        sizerboxTransmitButton.Add(
-            self.transmitbutton, 0, wx.ALIGN_CENTER | wx.ALL, 5)
+        sizerboxTransmitButton.Add(self.transmitbutton, 0, wx.ALIGN_CENTER | wx.ALL, 5)
         sizerboxTransmitButton.Add([20, 20], 0, wx.ALIGN_CENTER | wx.ALL, 5)
 
         sizerPanel = wx.BoxSizer(wx.VERTICAL)

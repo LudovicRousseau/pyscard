@@ -73,4 +73,3 @@ APDU/ATR byte to string utilities
 """""""""""""""""""""""""""""""""
 
 .. literalinclude:: ../Examples/framework/sample_toHexString.py
-

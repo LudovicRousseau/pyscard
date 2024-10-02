@@ -22,9 +22,9 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-from smartcard.scard import *
-from smartcard.reader.ReaderGroups import readergroups, innerreadergroups
 from smartcard.pcsc.PCSCExceptions import *
+from smartcard.reader.ReaderGroups import innerreadergroups, readergroups
+from smartcard.scard import *
 
 
 class pcscinnerreadergroups(innerreadergroups):
@@ -37,10 +37,10 @@ class pcscinnerreadergroups(innerreadergroups):
     def __init__(self, initlist=None):
         """Constructor."""
         innerreadergroups.__init__(self, initlist)
-        self.unremovablegroups = ['SCard$DefaultReaders']
+        self.unremovablegroups = ["SCard$DefaultReaders"]
 
     def getreadergroups(self):
-        """ Returns the list of smartcard reader groups."""
+        """Returns the list of smartcard reader groups."""
         innerreadergroups.getreadergroups(self)
 
         hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
@@ -59,15 +59,13 @@ class pcscinnerreadergroups(innerreadergroups):
 
         hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
         if SCARD_S_SUCCESS != hresult:
-            raise error(
-                'Failed to establish context: ' + \
-                SCardGetErrorMessage(hresult))
+            raise error("Failed to establish context: " + SCardGetErrorMessage(hresult))
         try:
             hresult = SCardIntroduceReaderGroup(hcontext, newgroup)
             if SCARD_S_SUCCESS != hresult:
                 raise error(
-                    'Unable to introduce reader group: ' + \
-                    SCardGetErrorMessage(hresult))
+                    "Unable to introduce reader group: " + SCardGetErrorMessage(hresult)
+                )
             else:
                 innerreadergroups.addreadergroup(self, newgroup)
 
@@ -75,23 +73,21 @@ class pcscinnerreadergroups(innerreadergroups):
             hresult = SCardReleaseContext(hcontext)
             if SCARD_S_SUCCESS != hresult:
                 raise error(
-                    'Failed to release context: ' + \
-                    SCardGetErrorMessage(hresult))
+                    "Failed to release context: " + SCardGetErrorMessage(hresult)
+                )
 
     def removereadergroup(self, group):
         """Remove a reader group"""
 
         hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
         if SCARD_S_SUCCESS != hresult:
-            raise error(
-                'Failed to establish context: ' + \
-                SCardGetErrorMessage(hresult))
+            raise error("Failed to establish context: " + SCardGetErrorMessage(hresult))
         try:
             hresult = SCardForgetReaderGroup(hcontext, group)
             if hresult != SCARD_S_SUCCESS:
                 raise error(
-                    'Unable to forget reader group: ' + \
-                    SCardGetErrorMessage(hresult))
+                    "Unable to forget reader group: " + SCardGetErrorMessage(hresult)
+                )
             else:
                 innerreadergroups.removereadergroup(self, group)
 
@@ -99,8 +95,8 @@ class pcscinnerreadergroups(innerreadergroups):
             hresult = SCardReleaseContext(hcontext)
             if SCARD_S_SUCCESS != hresult:
                 raise error(
-                    'Failed to release context: ' + \
-                    SCardGetErrorMessage(hresult))
+                    "Failed to release context: " + SCardGetErrorMessage(hresult)
+                )
 
 
 class PCSCReaderGroups(readergroups):
@@ -111,5 +107,6 @@ class PCSCReaderGroups(readergroups):
         self.innerclazz = pcscinnerreadergroups
         readergroups.__init__(self, initlist)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     print(PCSCReaderGroups().getreadergroups())

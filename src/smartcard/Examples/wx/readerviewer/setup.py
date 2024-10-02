@@ -26,16 +26,16 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 from distutils.core import setup
+
 import py2exe
 
-from smartcard.wx import ICO_SMARTCARD, ICO_READER
+from smartcard.wx import ICO_READER, ICO_SMARTCARD
 
-Mydata_files = [('images',
-                ['images/readerviewer.ico',
-                 ICO_SMARTCARD, ICO_READER])]
+Mydata_files = [("images", ["images/readerviewer.ico", ICO_SMARTCARD, ICO_READER])]
 
 
-setup(windows=['readerviewer.py'],
+setup(
+    windows=["readerviewer.py"],
     data_files=Mydata_files,
-    options={"py2exe": {"dll_excludes": ["MSVCP90.dll"]}}
+    options={"py2exe": {"dll_excludes": ["MSVCP90.dll"]}},
 )

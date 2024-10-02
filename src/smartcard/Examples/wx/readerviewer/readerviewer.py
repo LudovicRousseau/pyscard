@@ -25,6 +25,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import os.path
 import sys
+
 from smartcard.wx.SimpleSCardApp import *
 
 
@@ -37,7 +38,7 @@ def we_are_frozen():
 
 
 def module_path():
-    """ This will get us the program's directory,
+    """This will get us the program's directory,
     even if we are frozen using py2exe. From WhereAmI page on py2exe wiki."""
 
     if we_are_frozen():
@@ -48,13 +49,16 @@ def module_path():
 
 def main(argv):
     app = SimpleSCardApp(
-        appname='A simple reader monitoring tool',
+        appname="A simple reader monitoring tool",
         apppanel=None,
         appstyle=TR_READER,
-        appicon=os.path.join(module_path(), 'images', 'readerviewer.ico'),
-        size=(800, 600))
+        appicon=os.path.join(module_path(), "images", "readerviewer.ico"),
+        size=(800, 600),
+    )
     app.MainLoop()
+
 
 if __name__ == "__main__":
     import sys
+
     main(sys.argv)

@@ -40,7 +40,8 @@ class printobserver(ReaderObserver):
         print("Added readers", addedreaders)
         print("Removed readers", removedreaders)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     print("Add or remove a smartcard reader to the system.")
     print("This program will exit in 10 seconds")
     print("")
@@ -55,6 +56,7 @@ if __name__ == '__main__':
     readermonitor.deleteObserver(readerobserver)
 
     import sys
-    if 'win32' == sys.platform:
-        print('press Enter to continue')
+
+    if "win32" == sys.platform:
+        print("press Enter to continue")
         sys.stdin.read(1)

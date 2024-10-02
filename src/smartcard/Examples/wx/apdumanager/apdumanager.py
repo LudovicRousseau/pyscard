@@ -25,11 +25,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 import os
-import sys
 import os.path
-from smartcard.wx.SimpleSCardApp import *
+import sys
 
 from SampleAPDUManagerPanel import SampleAPDUManagerPanel
+
+from smartcard.wx.SimpleSCardApp import *
 
 
 def we_are_frozen():
@@ -41,7 +42,7 @@ def we_are_frozen():
 
 
 def module_path():
-    """ This will get us the program's directory,
+    """This will get us the program's directory,
     even if we are frozen using py2exe. From WhereAmI page on py2exe wiki."""
 
     if we_are_frozen():
@@ -52,13 +53,16 @@ def module_path():
 
 def main(argv):
     app = SimpleSCardApp(
-        appname='A tool to send apdu to a card',
+        appname="A tool to send apdu to a card",
         apppanel=SampleAPDUManagerPanel,
         appstyle=TR_SMARTCARD | TR_READER | PANEL_APDUTRACER,
-        appicon=os.path.join(module_path(), 'images', 'mysmartcard.ico'),
-        size=(800, 600))
+        appicon=os.path.join(module_path(), "images", "mysmartcard.ico"),
+        size=(800, 600),
+    )
     app.MainLoop()
+
 
 if __name__ == "__main__":
     import sys
+
     main(sys.argv)

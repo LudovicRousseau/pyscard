@@ -1146,7 +1146,7 @@ standard output:
         def update(self, observable, (addedreaders, removedreaders)):
             print("Added readers", addedreaders)
             print("Removed readers", removedreaders)
-  
+
 
 To monitor reader insertion/removal, simply add the observer to the
 `ReaderMonitor
@@ -1454,4 +1454,3 @@ mode:
     encrypted_as_string = zdes.encrypt(message_as_binstring)
     decrypted_as_string = zdes.decrypt(encrypted_as_string)
     print(message_as_binstring, encrypted_as_string, decrypted_as_string)
-

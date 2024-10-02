@@ -43,7 +43,7 @@ class SWException(Exception):
         self.sw2 = sw2
 
     def __str__(self):
-        return repr('Status word exception: ' + self.message + '!')
+        return repr("Status word exception: " + self.message + "!")
 
 
 class WarningProcessingException(SWException):
@@ -51,8 +51,7 @@ class WarningProcessingException(SWException):
     Examples of warning processing exception: sw1=62 or sw=63 (ISO7816-4)."""
 
     def __init__(self, data, sw1, sw2, message=""):
-        SWException.__init__(
-            self, data, sw1, sw2, "warning processing - " + message)
+        SWException.__init__(self, data, sw1, sw2, "warning processing - " + message)
 
 
 class ExecutionErrorException(SWException):
@@ -60,8 +59,7 @@ class ExecutionErrorException(SWException):
     Examples of execution error: sw1=64 or sw=65 (ISO7816-4)."""
 
     def __init__(self, data, sw1, sw2, message=""):
-        SWException.__init__(
-            self, data, sw1, sw2, "execution error - " + message)
+        SWException.__init__(self, data, sw1, sw2, "execution error - " + message)
 
 
 class SecurityRelatedException(SWException):
@@ -69,8 +67,7 @@ class SecurityRelatedException(SWException):
     Examples of security issue: sw1=66 (ISO7816-4)."""
 
     def __init__(self, data, sw1, sw2, message=""):
-        SWException.__init__(
-            self, data, sw1, sw2, "security issue - " + message)
+        SWException.__init__(self, data, sw1, sw2, "security issue - " + message)
 
 
 class CheckingErrorException(SWException):
@@ -78,5 +75,4 @@ class CheckingErrorException(SWException):
     Examples of checking error: sw1=67 to 6F (ISO781604)."""
 
     def __init__(self, data, sw1, sw2, message=""):
-        SWException.__init__(
-            self, data, sw1, sw2, "checking error - " + message)
+        SWException.__init__(self, data, sw1, sw2, "checking error - " + message)

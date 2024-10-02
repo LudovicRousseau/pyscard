@@ -25,10 +25,11 @@ You should have received a copy of the GNU Lesser General Public License
 along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
+import sys
+
 from smartcard.Exceptions import NoCardException
 from smartcard.System import readers
 from smartcard.util import toHexString
-import sys
 
 for reader in readers():
     try:
@@ -36,8 +37,8 @@ for reader in readers():
         connection.connect()
         print(reader, toHexString(connection.getATR()))
     except NoCardException:
-        print(reader, 'no card inserted')
+        print(reader, "no card inserted")
 
-if 'win32' == sys.platform:
-    print('press Enter to continue')
+if "win32" == sys.platform:
+    print("press Enter to continue")
     sys.stdin.read(1)

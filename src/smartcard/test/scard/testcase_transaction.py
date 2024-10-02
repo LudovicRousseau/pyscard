@@ -27,19 +27,20 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 
-import unittest
-from smartcard.scard import *
-
 # import local_config for reader/card configuration
 # configcheck.py is generating local_config.py in
 # the test suite.
 import sys
-sys.path += ['..']
+import unittest
+
+from smartcard.scard import *
+
+sys.path += [".."]
 
 try:
     from local_config import expectedATRs, expectedReaders
 except ImportError:
-    print('execute test suite first to generate the local_config.py file')
+    print("execute test suite first to generate the local_config.py file")
     sys.exit()
 
 
@@ -62,7 +63,8 @@ class testcase_transaction(unittest.TestCase):
                 self.hcontext,
                 self.readers[r],
                 SCARD_SHARE_SHARED,
-                SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1)
+                SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1,
+            )
             self.assertEqual(hresult, 0)
 
             try:
@@ -95,9 +97,9 @@ class testcase_transaction(unittest.TestCase):
 
 
 def suite():
-    suite1 = unittest.makeSuite(testcase_transaction)
+    suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(testcase_transaction)
     return unittest.TestSuite(suite1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

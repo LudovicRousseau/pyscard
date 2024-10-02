@@ -22,12 +22,14 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-from smartcard.sw.ErrorChecker import ErrorChecker
 import smartcard.sw.SWExceptions
+from smartcard.sw.ErrorChecker import ErrorChecker
 
 iso7816_8SW = {
-    0x63: (smartcard.sw.SWExceptions.WarningProcessingException,
-           {0x00: "Authentication failed",
+    0x63: (
+        smartcard.sw.SWExceptions.WarningProcessingException,
+        {
+            0x00: "Authentication failed",
             0xC0: "PIN verification failed. 0 retries before blocking PIN",
             0xC1: "PIN verification failed. 1 retries before blocking PIN",
             0xC2: "PIN verification failed. 2 retries before blocking PIN",
@@ -43,34 +45,47 @@ iso7816_8SW = {
             0xCC: "PIN verification failed. 12 retries before blocking PIN",
             0xCD: "PIN verification failed. 13 retries before blocking PIN",
             0xCE: "PIN verification failed. 14 retries before blocking PIN",
-            0xCF: "PIN verification failed. 15 retries before blocking PIN"}),
-
-    0x65: (smartcard.sw.SWExceptions.ExecutionErrorException,
-           {0x81: "Memory failure (unsuccessful changing)"}),
-
-    0x66: (smartcard.sw.SWExceptions.SecurityRelatedException,
-           {0x00: "The environment cannot be set or modified",
+            0xCF: "PIN verification failed. 15 retries before blocking PIN",
+        },
+    ),
+    0x65: (
+        smartcard.sw.SWExceptions.ExecutionErrorException,
+        {0x81: "Memory failure (unsuccessful changing)"},
+    ),
+    0x66: (
+        smartcard.sw.SWExceptions.SecurityRelatedException,
+        {
+            0x00: "The environment cannot be set or modified",
             0x87: "Expected SM data objects missing",
-            0x88: "SM data objects incorrect"}),
-
-    0x67: (smartcard.sw.SWExceptions.CheckingErrorException,
-           {0x00: "Wrong length (empty Lc field)"}),
-
-    0x68: (smartcard.sw.SWExceptions.CheckingErrorException,
-           {0x83: "Final command expected",
-            0x84: "Command chaining not supported"}),
-
-    0x69: (smartcard.sw.SWExceptions.CheckingErrorException,
-           {0x82: "Security status not satisfied",
+            0x88: "SM data objects incorrect",
+        },
+    ),
+    0x67: (
+        smartcard.sw.SWExceptions.CheckingErrorException,
+        {0x00: "Wrong length (empty Lc field)"},
+    ),
+    0x68: (
+        smartcard.sw.SWExceptions.CheckingErrorException,
+        {0x83: "Final command expected", 0x84: "Command chaining not supported"},
+    ),
+    0x69: (
+        smartcard.sw.SWExceptions.CheckingErrorException,
+        {
+            0x82: "Security status not satisfied",
             0x83: "Authentication method blocked",
             0x84: "Referenced data invalidated",
-            0x85: "Conditions of use not satisfied"}),
-
-    0x6A: (smartcard.sw.SWExceptions.CheckingErrorException,
-           {0x81: "Function not supported",
+            0x85: "Conditions of use not satisfied",
+        },
+    ),
+    0x6A: (
+        smartcard.sw.SWExceptions.CheckingErrorException,
+        {
+            0x81: "Function not supported",
             0x82: "File not found",
             0x86: "Incorrect parameters P1-P2",
-            0x88: "Referenced data not found"}),
+            0x88: "Referenced data not found",
+        },
+    ),
 }
 
 
@@ -122,12 +137,12 @@ class ISO7816_8ErrorChecker(ErrorChecker):
                     pass
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     """Small sample illustrating the use of ISO7816_8ErrorChecker."""
     ecs = ISO7816_8ErrorChecker()
     ecs([], 0x90, 0x00)
-    ecs([], 0x6a, 0x83)
+    ecs([], 0x6A, 0x83)
     try:
         ecs([], 0x66, 0x87)
     except smartcard.sw.SWExceptions.SecurityRelatedException as e:
-        print(str(e) + " {:x} {:x}".format(e.sw1, e.sw2))
+        print(str(e) + f" {e.sw1:x} {e.sw2:x}")

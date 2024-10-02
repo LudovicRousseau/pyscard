@@ -27,24 +27,29 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 
-import unittest
 import string
 
 # import local_config for reader/card configuration
 # configcheck.py is generating local_config.py in
 # the test suite.
 import sys
-sys.path += ['..']
+import unittest
+
+sys.path += [".."]
 
 try:
-    from local_config import expectedATRs, expectedReaders
-    from local_config import expectedReaderGroups, expectedATRinReader
+    from local_config import (
+        expectedATRinReader,
+        expectedATRs,
+        expectedReaderGroups,
+        expectedReaders,
+    )
 except ImportError:
-    print('execute test suite first to generate the local_config.py file')
+    print("execute test suite first to generate the local_config.py file")
     sys.exit()
 
 
-from smartcard.CardType import CardType, AnyCardType, ATRCardType
+from smartcard.CardType import AnyCardType, ATRCardType, CardType
 from smartcard.Exceptions import InvalidATRMaskLengthException
 from smartcard.System import readers
 
@@ -61,8 +66,7 @@ class testcase_CardType(unittest.TestCase):
                 connection = reader.createConnection()
                 connection.connect()
                 self.assertEqual(True, ct.matches(connection.getATR()))
-                self.assertEqual(
-                    True, ct.matches(connection.getATR(), reader))
+                self.assertEqual(True, ct.matches(connection.getATR(), reader))
                 connection.disconnect()
 
     def testcase_ATRCardTypeWithoutMask(self):
@@ -74,8 +78,7 @@ class testcase_CardType(unittest.TestCase):
                 connection = reader.createConnection()
                 connection.connect()
                 self.assertEqual(True, ct.matches(connection.getATR()))
-                self.assertEqual(
-                    True, ct.matches(connection.getATR(), reader))
+                self.assertEqual(True, ct.matches(connection.getATR(), reader))
                 connection.disconnect()
 
     def testcase_ATRCardTypeMisMatchWithoutMask(self):
@@ -90,8 +93,7 @@ class testcase_CardType(unittest.TestCase):
                 connection = reader.createConnection()
                 connection.connect()
                 self.assertEqual(False, ct.matches(connection.getATR()))
-                self.assertEqual(
-                    False, ct.matches(connection.getATR(), reader))
+                self.assertEqual(False, ct.matches(connection.getATR(), reader))
                 connection.disconnect()
 
     def testcase_ATRCardTypeWithMask(self):
@@ -132,9 +134,9 @@ class testcase_CardType(unittest.TestCase):
 
 
 def suite():
-    suite1 = unittest.makeSuite(testcase_CardType)
+    suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(testcase_CardType)
     return unittest.TestSuite(suite1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

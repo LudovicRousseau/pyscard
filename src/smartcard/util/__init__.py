@@ -23,6 +23,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 from __future__ import annotations
+
 import warnings
 
 PACK = 1
@@ -31,8 +32,8 @@ UPPERCASE = 4
 COMMA = 8
 
 
-def padd(bytelist: list[int], length: int, padding: str = 'FF'):
-    """ Padds a byte list with a constant byte value (default is x0FF)
+def padd(bytelist: list[int], length: int, padding: str = "FF"):
+    """Padds a byte list with a constant byte value (default is x0FF)
     @param bytelist: the byte list to padd
     @param length: the total length of the resulting byte list;
                   no padding if length is smaller than the byte list length
@@ -84,10 +85,7 @@ def toASCIIString(bytelist: list[int]) -> str:
     ". .~."
     """
 
-    return ''.join(
-        chr(c) if 32 <= c <= 127 else '.'
-        for c in bytelist
-    )
+    return "".join(chr(c) if 32 <= c <= 127 else "." for c in bytelist)
 
 
 def toBytes(bytestring: str) -> list[int]:
@@ -106,69 +104,69 @@ def toBytes(bytestring: str) -> list[int]:
     try:
         return list(bytes.fromhex(bytestring))
     except ValueError:
-        raise TypeError('not a string representing a list of bytes')
+        raise TypeError("not a string representing a list of bytes")
 
 
 """GSM3.38 character conversion table."""
 __dic_GSM_3_38__ = {
-    '@': 0x00,            # @ At symbol
-    '£': 0x01,            # £ Britain pound symbol
-    '$': 0x02,            # $ Dollar symbol
-    '¥': 0x03,            # ¥ Yen symbol
-    'è': 0x04,            # è e accent grave
-    'é': 0x05,            # é e accent aigu
-    'ù': 0x06,            # ù u accent grave
-    'ì': 0x07,            # ì i accent grave
-    'ò': 0x08,            # ò o accent grave
-    'Ç': 0x09,            # Ç C majuscule cedille
-    '\n': 0x0A,           # LF Line Feed
-    'Ø': 0x0B,            # Ø O majuscule barré
-    'ø': 0x0C,            # ø o minuscule barré
-    '\r': 0x0D,           # CR Carriage Return
-    'Å': 0x0E,            # Å Angstroem majuscule
-    'å': 0x0F,            # å Angstroem minuscule
-    'Δ': 0x10,            # Δ Greek letter delta
-    '_': 0x11,            # underscore
-    'Φ': 0x12,            # Φ Greek letter phi
-    'Γ': 0x13,            # Γ Greek letter gamma
-    'Λ': 0x14,            # Λ Greek letter lambda
-    'Ω': 0x15,            # Ω Greek letter omega
-    'Π': 0x16,            # Π Greek letter pi
-    'Ψ': 0x17,            # Ψ Greek letter psi
-    'Σ': 0x18,            # Σ Greek letter sigma
-    'Θ': 0x19,            # Θ Greek letter theta
-    'Ξ': 0x1A,            # Ξ Greek letter xi
+    "@": 0x00,  # @ At symbol
+    "£": 0x01,  # £ Britain pound symbol
+    "$": 0x02,  # $ Dollar symbol
+    "¥": 0x03,  # ¥ Yen symbol
+    "è": 0x04,  # è e accent grave
+    "é": 0x05,  # é e accent aigu
+    "ù": 0x06,  # ù u accent grave
+    "ì": 0x07,  # ì i accent grave
+    "ò": 0x08,  # ò o accent grave
+    "Ç": 0x09,  # Ç C majuscule cedille
+    "\n": 0x0A,  # LF Line Feed
+    "Ø": 0x0B,  # Ø O majuscule barré
+    "ø": 0x0C,  # ø o minuscule barré
+    "\r": 0x0D,  # CR Carriage Return
+    "Å": 0x0E,  # Å Angstroem majuscule
+    "å": 0x0F,  # å Angstroem minuscule
+    "Δ": 0x10,  # Δ Greek letter delta
+    "_": 0x11,  # underscore
+    "Φ": 0x12,  # Φ Greek letter phi
+    "Γ": 0x13,  # Γ Greek letter gamma
+    "Λ": 0x14,  # Λ Greek letter lambda
+    "Ω": 0x15,  # Ω Greek letter omega
+    "Π": 0x16,  # Π Greek letter pi
+    "Ψ": 0x17,  # Ψ Greek letter psi
+    "Σ": 0x18,  # Σ Greek letter sigma
+    "Θ": 0x19,  # Θ Greek letter theta
+    "Ξ": 0x1A,  # Ξ Greek letter xi
     #    0x1B               maps to extension table
-    'Æ': 0x1C,            # Æ majuscule ae
-    'æ': 0x1D,            # æ minuscule ae
-    'ß': 0x1E,            # ß s dur allemand
-    'É': 0x1F,            # É majuscule é
-    ' ': 0x20,
-    '!': 0x21,
-    '"': 0x22,            # guillemet
-    '#': 0x23,
-    '¤': 0x24,            # ¤ carré
+    "Æ": 0x1C,  # Æ majuscule ae
+    "æ": 0x1D,  # æ minuscule ae
+    "ß": 0x1E,  # ß s dur allemand
+    "É": 0x1F,  # É majuscule é
+    " ": 0x20,
+    "!": 0x21,
+    '"': 0x22,  # guillemet
+    "#": 0x23,
+    "¤": 0x24,  # ¤ carré
     #
     #    0x25 ... 0x3F    # % ... ?
     #
-    '¡': 0x40,            # ¡ point d'exclamation renversé
+    "¡": 0x40,  # ¡ point d'exclamation renversé
     #
     #    0x41 ... 0x5A    # A ... Z
     #
-    'Ä': 0x5B,            # Ä majuscule A trema
-    'Ö': 0x5C,            # Ö majuscule O trema
-    'Ñ': 0x5D,            # Ñ majuscule N tilde espagnol
-    'Ü': 0x5E,            # Ü majuscule U trema
-    '§': 0x5F,            # § signe paragraphe
-    '¿': 0x60,            # ¿ point interrogation renversé
+    "Ä": 0x5B,  # Ä majuscule A trema
+    "Ö": 0x5C,  # Ö majuscule O trema
+    "Ñ": 0x5D,  # Ñ majuscule N tilde espagnol
+    "Ü": 0x5E,  # Ü majuscule U trema
+    "§": 0x5F,  # § signe paragraphe
+    "¿": 0x60,  # ¿ point interrogation renversé
     #
     #    0x61 ... 0x7A    # a ... z
     #
-    'ä': 0x7B,            # ä minuscule a trema
-    'ö': 0x7C,            # ö minuscule o trema
-    'ñ': 0x7D,            # ñ minuscule n tilde espagnol
-    'ü': 0x7E,            # ü minuscule u trema
-    'à': 0x7F,            # à a accent grave
+    "ä": 0x7B,  # ä minuscule a trema
+    "ö": 0x7C,  # ö minuscule o trema
+    "ñ": 0x7D,  # ñ minuscule n tilde espagnol
+    "ü": 0x7E,  # ü minuscule u trema
+    "à": 0x7F,  # à a accent grave
 }
 
 
@@ -183,7 +181,7 @@ def toGSM3_38Bytes(stringtoconvert: str | bytes) -> list[int]:
     [0, 6, 80, 97, 115, 99, 97, 108]
     """
     if isinstance(stringtoconvert, bytes):
-        stringtoconvert = stringtoconvert.decode('iso8859-1')
+        stringtoconvert = stringtoconvert.decode("iso8859-1")
 
     result = []
     for char in stringtoconvert:
@@ -225,7 +223,7 @@ def toHexString(data: list[int] | None = None, format: int = 0) -> str:
     """
 
     if not (data is None or isinstance(data, list)):
-        raise TypeError('not a list of bytes')
+        raise TypeError("not a list of bytes")
 
     if not data:
         return ""
@@ -241,7 +239,7 @@ def toHexString(data: list[int] | None = None, format: int = 0) -> str:
             pformat = "0X" + pformat
         else:
             pformat = "0x" + pformat
-    return separator.join(pformat % (a & 0xff) for a in data).rstrip()
+    return separator.join(pformat % (a & 0xFF) for a in data).rstrip()
 
 
 def HexListToBinString(hexlist: list[int]) -> str:

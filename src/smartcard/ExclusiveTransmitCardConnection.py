@@ -21,70 +21,74 @@ You should have received a copy of the GNU Lesser General Public License
 along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
+
+import smartcard.pcsc
 from smartcard.CardConnectionDecorator import CardConnectionDecorator
 from smartcard.Exceptions import CardConnectionException
-from smartcard.scard import SCardBeginTransaction, SCardEndTransaction
-from smartcard.scard import SCARD_LEAVE_CARD
-from smartcard.scard import SCARD_S_SUCCESS
-from smartcard.scard import SCardGetErrorMessage
-import smartcard.pcsc
+from smartcard.scard import (
+    SCARD_LEAVE_CARD,
+    SCARD_S_SUCCESS,
+    SCardBeginTransaction,
+    SCardEndTransaction,
+    SCardGetErrorMessage,
+)
 
 
 class ExclusiveTransmitCardConnection(CardConnectionDecorator):
-    '''This decorator uses
+    """This decorator uses
     L{SCardBeginTransaction}/L{SCardEndTransaction} to preserve other
-    processes of threads to access the card during transmit().'''
+    processes of threads to access the card during transmit()."""
 
     def __init__(self, cardconnection):
         CardConnectionDecorator.__init__(self, cardconnection)
 
     def lock(self):
-        '''Lock card with L{SCardBeginTransaction}.'''
+        """Lock card with L{SCardBeginTransaction}."""
 
         component = self.component
         while True:
             if isinstance(
-                    component,
-                    smartcard.pcsc.PCSCCardConnection.PCSCCardConnection):
+                component, smartcard.pcsc.PCSCCardConnection.PCSCCardConnection
+            ):
                 hresult = SCardBeginTransaction(component.hcard)
                 if SCARD_S_SUCCESS != hresult:
                     raise CardConnectionException(
-                        'Failed to lock with SCardBeginTransaction: ' +
-                        SCardGetErrorMessage(hresult))
+                        "Failed to lock with SCardBeginTransaction: "
+                        + SCardGetErrorMessage(hresult)
+                    )
                 else:
                     # print('locked')
                     pass
                 break
-            if hasattr(component, 'component'):
+            if hasattr(component, "component"):
                 component = component.component
             else:
                 break
 
     def unlock(self):
-        '''Unlock card with L{SCardEndTransaction}.'''
+        """Unlock card with L{SCardEndTransaction}."""
         component = self.component
         while True:
             if isinstance(
-                    component,
-                    smartcard.pcsc.PCSCCardConnection.PCSCCardConnection):
-                hresult = SCardEndTransaction(component.hcard,
-                                              SCARD_LEAVE_CARD)
+                component, smartcard.pcsc.PCSCCardConnection.PCSCCardConnection
+            ):
+                hresult = SCardEndTransaction(component.hcard, SCARD_LEAVE_CARD)
                 if SCARD_S_SUCCESS != hresult:
                     raise CardConnectionException(
-                        'Failed to unlock with SCardEndTransaction: ' +
-                        SCardGetErrorMessage(hresult))
+                        "Failed to unlock with SCardEndTransaction: "
+                        + SCardGetErrorMessage(hresult)
+                    )
                 else:
                     # print('unlocked')
                     pass
                 break
-            if hasattr(component, 'component'):
+            if hasattr(component, "component"):
                 component = component.component
             else:
                 break
 
     def transmit(self, command, protocol=None):
-        '''Gain exclusive access to card during APDU transmission for if this
-        decorator decorates a PCSCCardConnection.'''
-        data, sw1, sw2 = CardConnectionDecorator.transmit(
-            self, command, protocol)
+        """Gain exclusive access to card during APDU transmission for if this
+        decorator decorates a PCSCCardConnection."""
+        data, sw1, sw2 = CardConnectionDecorator.transmit(self, command, protocol)
         return data, sw1, sw2

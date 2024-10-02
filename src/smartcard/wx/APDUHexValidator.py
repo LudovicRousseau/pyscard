@@ -25,8 +25,10 @@ You should have received a copy of the GNU Lesser General Public License
 along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
+
 import re
 import string
+
 import wx
 
 # a regexp to match ATRs and APDUs
@@ -35,9 +37,9 @@ apduregexp = re.compile("((%s)[ ]*)*" % hexbyte)
 
 
 class APDUHexValidator(wx.PyValidator):
-    '''A wxValidator that matches APDU in hexadecimal such as:
-        A4 A0 00 00 02
-        A4A0000002'''
+    """A wxValidator that matches APDU in hexadecimal such as:
+    A4 A0 00 00 02
+    A4A0000002"""
 
     def __init__(self):
         wx.Validator.__init__(self)

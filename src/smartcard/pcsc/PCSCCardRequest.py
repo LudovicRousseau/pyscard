@@ -23,23 +23,31 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 import threading
-
-from smartcard.AbstractCardRequest import AbstractCardRequest
-from smartcard.Exceptions import CardRequestTimeoutException
-from smartcard.Exceptions import CardRequestException, ListReadersException
-from smartcard.pcsc.PCSCReader import PCSCReader
-from smartcard.pcsc.PCSCContext import PCSCContext
-from smartcard import Card
-
-from smartcard.scard import *
 from datetime import datetime
+
+from smartcard import Card
+from smartcard.AbstractCardRequest import AbstractCardRequest
+from smartcard.Exceptions import (
+    CardRequestException,
+    CardRequestTimeoutException,
+    ListReadersException,
+)
+from smartcard.pcsc.PCSCContext import PCSCContext
+from smartcard.pcsc.PCSCReader import PCSCReader
+from smartcard.scard import *
 
 
 class PCSCCardRequest(AbstractCardRequest):
     """PCSC CardRequest class."""
 
-    def __init__(self, newcardonly=False, readers=None,
-                 cardType=None, cardServiceClass=None, timeout=1):
+    def __init__(
+        self,
+        newcardonly=False,
+        readers=None,
+        cardType=None,
+        cardServiceClass=None,
+        timeout=1,
+    ):
         """Construct new PCSCCardRequest.
 
         @param newcardonly: if C{True}, request a new card. default is
@@ -61,7 +69,8 @@ class PCSCCardRequest(AbstractCardRequest):
         to wait forever, set timeout to C{None}
         """
         AbstractCardRequest.__init__(
-            self, newcardonly, readers, cardType, cardServiceClass, timeout)
+            self, newcardonly, readers, cardType, cardServiceClass, timeout
+        )
 
         # if timeout is None, translate to scard.INFINITE
         if self.timeout is None:
@@ -110,8 +119,8 @@ class PCSCCardRequest(AbstractCardRequest):
     # the main thread will handle a possible KeyboardInterrupt
     def getStatusChange(self):
         self.hresult, self.newstates = SCardGetStatusChange(
-            self.hcontext, self.timeout,
-            list(self.readerstates.values()))
+            self.hcontext, self.timeout, list(self.readerstates.values())
+        )
         self.evt.set()
 
     def waitforcard(self):
@@ -132,7 +141,8 @@ class PCSCCardRequest(AbstractCardRequest):
         # call SCardGetStatusChange only if we have some readers
         if {} != readerstates:
             hresult, newstates = SCardGetStatusChange(
-                self.hcontext, 0, list(readerstates.values()))
+                self.hcontext, 0, list(readerstates.values())
+            )
         else:
             hresult = SCARD_S_SUCCESS
             newstates = []
@@ -140,12 +150,15 @@ class PCSCCardRequest(AbstractCardRequest):
         # we can expect normally time-outs or reader
         # disappearing just before the call
         # otherwise, raise exception on error
-        if SCARD_S_SUCCESS != hresult and \
-            SCARD_E_TIMEOUT != hresult and \
-            SCARD_E_UNKNOWN_READER != hresult:
-                raise CardRequestException(
-                    'Failed to SCardGetStatusChange ' + \
-                    SCardGetErrorMessage(hresult), hresult=hresult)
+        if (
+            SCARD_S_SUCCESS != hresult
+            and SCARD_E_TIMEOUT != hresult
+            and SCARD_E_UNKNOWN_READER != hresult
+        ):
+            raise CardRequestException(
+                "Failed to SCardGetStatusChange " + SCardGetErrorMessage(hresult),
+                hresult=hresult,
+            )
 
         # update readerstate
         for state in newstates:
@@ -159,10 +172,9 @@ class PCSCCardRequest(AbstractCardRequest):
                 if eventstate & SCARD_STATE_PRESENT:
                     reader = PCSCReader(readername)
                     if self.cardType.matches(atr, reader):
-                        if self.cardServiceClass.supports('dummy'):
+                        if self.cardServiceClass.supports("dummy"):
                             cardfound = True
-                            return self.cardServiceClass(
-                                    reader.createConnection())
+                            return self.cardServiceClass(reader.createConnection())
 
         startDate = datetime.now()
         while not cardfound:
@@ -194,8 +206,9 @@ class PCSCCardRequest(AbstractCardRequest):
                 hresult = SCardCancel(self.hcontext)
                 if hresult != SCARD_S_SUCCESS:
                     raise CardRequestException(
-                        'Failed to SCardCancel ' + \
-                        SCardGetErrorMessage(hresult), hresult=hresult)
+                        "Failed to SCardCancel " + SCardGetErrorMessage(hresult),
+                        hresult=hresult,
+                    )
 
             # wait for the thread to finish in case of KeyboardInterrupt
             self.evt.wait(timeout=None)
@@ -222,8 +235,9 @@ class PCSCCardRequest(AbstractCardRequest):
             # some error happened
             elif SCARD_S_SUCCESS != hresult:
                 raise CardRequestException(
-                    'Failed to get status change ' + \
-                    SCardGetErrorMessage(hresult), hresult=hresult)
+                    "Failed to get status change " + SCardGetErrorMessage(hresult),
+                    hresult=hresult,
+                )
 
             # something changed!
             else:
@@ -240,23 +254,21 @@ class PCSCCardRequest(AbstractCardRequest):
                     # if a new card is requested, clear the state changed bit
                     # if the card was already inserted and is still inserted
                     if self.newcardonly:
-                        if oldstate & SCARD_STATE_PRESENT and \
-                            eventstate & \
-                                (SCARD_STATE_CHANGED | SCARD_STATE_PRESENT):
-                            eventstate = eventstate & \
-                                (0xFFFFFFFF ^ SCARD_STATE_CHANGED)
+                        if oldstate & SCARD_STATE_PRESENT and eventstate & (
+                            SCARD_STATE_CHANGED | SCARD_STATE_PRESENT
+                        ):
+                            eventstate = eventstate & (0xFFFFFFFF ^ SCARD_STATE_CHANGED)
 
-                    if (self.newcardonly and \
-                            eventstate & SCARD_STATE_PRESENT and \
-                            eventstate & SCARD_STATE_CHANGED) or \
-                        (not self.newcardonly and \
-                         eventstate & SCARD_STATE_PRESENT):
+                    if (
+                        self.newcardonly
+                        and eventstate & SCARD_STATE_PRESENT
+                        and eventstate & SCARD_STATE_CHANGED
+                    ) or (not self.newcardonly and eventstate & SCARD_STATE_PRESENT):
                         reader = PCSCReader(readername)
                         if self.cardType.matches(atr, reader):
-                            if self.cardServiceClass.supports('dummy'):
+                            if self.cardServiceClass.supports("dummy"):
                                 cardfound = True
-                                return self.cardServiceClass(
-                                        reader.createConnection())
+                                return self.cardServiceClass(reader.createConnection())
 
                     # update state dictionary
                     readerstates[readername] = (readername, eventstate)
@@ -277,7 +289,8 @@ class PCSCCardRequest(AbstractCardRequest):
         # call SCardGetStatusChange only if we have some readers
         if {} != readerstates:
             hresult, newstates = SCardGetStatusChange(
-                self.hcontext, 0, list(readerstates.values()))
+                self.hcontext, 0, list(readerstates.values())
+            )
 
             # update readerstate
             for state in newstates:
@@ -299,8 +312,9 @@ class PCSCCardRequest(AbstractCardRequest):
             hresult = SCardCancel(self.hcontext)
             if hresult != SCARD_S_SUCCESS:
                 raise CardRequestException(
-                    'Failed to SCardCancel ' + \
-                    SCardGetErrorMessage(hresult), hresult=hresult)
+                    "Failed to SCardCancel " + SCardGetErrorMessage(hresult),
+                    hresult=hresult,
+                )
 
         # wait for the thread to finish in case of KeyboardInterrupt
         self.evt.wait(timeout=None)
@@ -320,8 +334,9 @@ class PCSCCardRequest(AbstractCardRequest):
         # some error happened
         elif SCARD_S_SUCCESS != hresult:
             raise CardRequestException(
-                'Failed to get status change ' + \
-                SCardGetErrorMessage(hresult), hresult=hresult)
+                "Failed to get status change " + SCardGetErrorMessage(hresult),
+                hresult=hresult,
+            )
 
         # something changed!
         else:
@@ -332,26 +347,29 @@ class PCSCCardRequest(AbstractCardRequest):
                 # the status can change on a card already inserted, e.g.
                 # unpowered, in use, ... Clear the state changed bit if
                 # the card was already inserted and is still inserted
-                if oldstate & SCARD_STATE_PRESENT and \
-                    eventstate & \
-                        (SCARD_STATE_CHANGED | SCARD_STATE_PRESENT):
-                    eventstate = eventstate & \
-                        (0xFFFFFFFF ^ SCARD_STATE_CHANGED)
+                if oldstate & SCARD_STATE_PRESENT and eventstate & (
+                    SCARD_STATE_CHANGED | SCARD_STATE_PRESENT
+                ):
+                    eventstate = eventstate & (0xFFFFFFFF ^ SCARD_STATE_CHANGED)
 
-                if eventstate & SCARD_STATE_PRESENT and \
-                   eventstate & SCARD_STATE_CHANGED:
+                if (
+                    eventstate & SCARD_STATE_PRESENT
+                    and eventstate & SCARD_STATE_CHANGED
+                ):
                     presentcards.append(Card.Card(readername, atr))
             return presentcards
 
         raise CardRequestTimeoutException()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     """Small sample illustrating the use of PCSCCardRequest.py."""
 
     from smartcard.util import toHexString
-    print('Insert a new card within 10 seconds')
+
+    print("Insert a new card within 10 seconds")
     cr = PCSCCardRequest(timeout=10, newcardonly=True)
     cs = cr.waitforcard()
     cs.connection.connect()
-    print(cs.connection.getReader() + ' ' + toHexString(cs.connection.getATR()))
+    print(cs.connection.getReader() + " " + toHexString(cs.connection.getATR()))
     cs.connection.disconnect()

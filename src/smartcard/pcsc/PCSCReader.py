@@ -23,11 +23,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 from smartcard.CardConnectionDecorator import CardConnectionDecorator
-from smartcard.reader.Reader import Reader
-from smartcard.pcsc.PCSCContext import PCSCContext
-from smartcard.pcsc.PCSCCardConnection import PCSCCardConnection
 from smartcard.Exceptions import *
+from smartcard.pcsc.PCSCCardConnection import PCSCCardConnection
+from smartcard.pcsc.PCSCContext import PCSCContext
 from smartcard.pcsc.PCSCExceptions import *
+from smartcard.reader.Reader import Reader
 from smartcard.scard import *
 
 
@@ -86,11 +86,9 @@ class PCSCReader(Reader):
         if SCARD_S_SUCCESS != hresult:
             raise EstablishContextException(hresult)
         try:
-            hresult = SCardRemoveReaderFromGroup(hcontext, self.name,
-                groupname)
+            hresult = SCardRemoveReaderFromGroup(hcontext, self.name, groupname)
             if SCARD_S_SUCCESS != hresult:
-                raise RemoveReaderFromGroupException(hresult, self.name,
-                    groupname)
+                raise RemoveReaderFromGroupException(hresult, self.name, groupname)
         finally:
             hresult = SCardReleaseContext(hcontext)
             if SCARD_S_SUCCESS != hresult:
@@ -104,6 +102,7 @@ class PCSCReader(Reader):
 
         def create(readername):
             return PCSCReader(readername)
+
         create = staticmethod(create)
 
     def readers(groups=[]):
@@ -119,10 +118,13 @@ class PCSCReader(Reader):
         for reader in pcsc_readers:
             creaders.append(PCSCReader.Factory.create(reader))
         return creaders
+
     readers = staticmethod(readers)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     from smartcard.util import *
+
     SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
     DF_TELECOM = [0x7F, 0x10]
 
@@ -134,6 +136,6 @@ if __name__ == '__main__':
             connection.connect()
             print(toHexString(connection.getATR()))
             data, sw1, sw2 = connection.transmit(SELECT + DF_TELECOM)
-            print("{:02X} {:02X}".format(sw1, sw2))
+            print(f"{sw1:02X} {sw2:02X}")
         except NoCardException:
-            print('no card in reader')
+            print("no card in reader")

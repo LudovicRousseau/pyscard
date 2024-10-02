@@ -35,7 +35,7 @@ SELECT_DF_TELECOM = [0xA0, 0xA4, 0x00, 0x00, 0x02, 0x7F, 0x10]
 
 class transmitobserver(CardObserver):
     """A card observer that is notified when cards are inserted/removed
-    from the system, connects to cards and SELECT DF_TELECOM """
+    from the system, connects to cards and SELECT DF_TELECOM"""
 
     def __init__(self):
         self.cards = []
@@ -48,16 +48,16 @@ class transmitobserver(CardObserver):
                 print("+Inserted: ", toHexString(card.atr))
                 card.connection = card.createConnection()
                 card.connection.connect()
-                response, sw1, sw2 = card.connection.transmit(
-                    SELECT_DF_TELECOM)
-                print("{:.2x} {:.2x}".format(sw1, sw2))
+                response, sw1, sw2 = card.connection.transmit(SELECT_DF_TELECOM)
+                print(f"{sw1:.2x} {sw2:.2x}")
 
         for card in removedcards:
             print("-Removed: ", toHexString(card.atr))
             if card in self.cards:
                 self.cards.remove(card)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     print("Insert or remove a smartcard in the system.")
     print("This program will exit in 100 seconds")
     print("")

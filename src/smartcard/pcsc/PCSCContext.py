@@ -24,11 +24,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from threading import RLock
 
-from smartcard.scard import *
 from smartcard.pcsc.PCSCExceptions import EstablishContextException
+from smartcard.scard import *
 
 
-class PCSCContext(object):
+class PCSCContext:
     """Manage a singleton pcsc context handle."""
 
     class __PCSCContextSingleton:
@@ -72,4 +72,5 @@ class PCSCContext(object):
             PCSCContext.mutex.release()
 
         return PCSCContext.instance.getContext()
+
     renewContext = staticmethod(renewContext)

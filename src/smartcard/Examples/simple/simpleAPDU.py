@@ -25,14 +25,14 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 import sys
+
 from smartcard.System import readers
 
 # define the APDUs used in this script
-SELECT_APPLET = [0x00, 0xA4, 0x04, 0x00, 0x06, 0xA0, 0x00, 0x00, 0x00,
-                 0x18, 0xFF]
+SELECT_APPLET = [0x00, 0xA4, 0x04, 0x00, 0x06, 0xA0, 0x00, 0x00, 0x00, 0x18, 0xFF]
 GET_TIME = [0x80, 0x38, 0x00, 0xA0]
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # get all the available readers
     r = readers()
     print("Available readers: ", r)
@@ -47,7 +47,7 @@ if __name__ == '__main__':
     connection.connect()
 
     data, sw1, sw2 = connection.transmit(SELECT_APPLET)
-    print("Select Applet: {:02X} {:02X}".format(sw1, sw2))
+    print(f"Select Applet: {sw1:02X} {sw2:02X}")
 
     data, sw1, sw2 = connection.transmit(GET_TIME)
-    print("Get Time: {:02X} {:02X}".format(sw1, sw2))
+    print(f"Get Time: {sw1:02X} {sw2:02X}")

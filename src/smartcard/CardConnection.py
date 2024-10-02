@@ -28,8 +28,8 @@ from smartcard.Observer import Observable
 
 
 class CardConnection(Observable):
-    """Card connection abstract class.
-    """
+    """Card connection abstract class."""
+
     T0_protocol = 0x00000001
     """ protocol T=0 """
 
@@ -53,8 +53,7 @@ class CardConnection(Observable):
         """ reader name """
         self.errorcheckingchain = None
         """ see L{setErrorCheckingChain} """
-        self.defaultprotocol = CardConnection.T0_protocol |\
-            CardConnection.T1_protocol
+        self.defaultprotocol = CardConnection.T0_protocol | CardConnection.T1_protocol
         """ see L{setProtocol} and L{getProtocol} """
 
     def __del__(self):
@@ -96,7 +95,7 @@ class CardConnection(Observable):
         C{smartcard.scard.SCARD_EJECT_CARD}
         """
         Observable.setChanged(self)
-        Observable.notifyObservers(self, CardConnectionEvent('connect'))
+        Observable.notifyObservers(self, CardConnectionEvent("connect"))
 
     def reconnect(self, protocol=None, mode=None, disposition=None):
         """Reconnect to card.
@@ -114,12 +113,12 @@ class CardConnection(Observable):
         C{smartcard.scard.SCARD_EJECT_CARD}
         """
         Observable.setChanged(self)
-        Observable.notifyObservers(self, CardConnectionEvent('reconnect'))
+        Observable.notifyObservers(self, CardConnectionEvent("reconnect"))
 
     def disconnect(self):
         """Disconnect from card."""
         Observable.setChanged(self)
-        Observable.notifyObservers(self, CardConnectionEvent('disconnect'))
+        Observable.notifyObservers(self, CardConnectionEvent("disconnect"))
 
     def getATR(self):
         """Return card ATR"""
@@ -169,16 +168,14 @@ class CardConnection(Observable):
                     L{CardConnection.RAW_protocol}
         """
         Observable.setChanged(self)
-        Observable.notifyObservers(self,
-                                   CardConnectionEvent(
-                                       'command',
-                                       [command, protocol]))
+        Observable.notifyObservers(
+            self, CardConnectionEvent("command", [command, protocol])
+        )
         data, sw1, sw2 = self.doTransmit(command, protocol)
         Observable.setChanged(self)
-        Observable.notifyObservers(self,
-                                   CardConnectionEvent(
-                                       'response',
-                                       [data, sw1, sw2]))
+        Observable.notifyObservers(
+            self, CardConnectionEvent("response", [data, sw1, sw2])
+        )
         if self.errorcheckingchain is not None:
             self.errorcheckingchain[0](data, sw1, sw2)
         return data, sw1, sw2
@@ -201,16 +198,12 @@ class CardConnection(Observable):
         @param command:     list of bytes to transmit
         """
         Observable.setChanged(self)
-        Observable.notifyObservers(self,
-                                   CardConnectionEvent(
-                                       'command',
-                                       [controlCode, command]))
+        Observable.notifyObservers(
+            self, CardConnectionEvent("command", [controlCode, command])
+        )
         data = self.doControl(controlCode, command)
         Observable.setChanged(self)
-        Observable.notifyObservers(self,
-                                   CardConnectionEvent(
-                                       'response',
-                                       data))
+        Observable.notifyObservers(self, CardConnectionEvent("response", data))
         if self.errorcheckingchain is not None:
             self.errorcheckingchain[0](data)
         return data
@@ -228,10 +221,7 @@ class CardConnection(Observable):
         C{smartcard.scard.SCARD_ATTR_VENDOR_NAME}
         """
         Observable.setChanged(self)
-        Observable.notifyObservers(self,
-                                   CardConnectionEvent(
-                                       'attrib',
-                                       [attribId]))
+        Observable.notifyObservers(self, CardConnectionEvent("attrib", [attribId]))
         data = self.doGetAttrib(attribId)
         if self.errorcheckingchain is not None:
             self.errorcheckingchain[0](data)
@@ -244,11 +234,9 @@ class CardConnection(Observable):
         return []
 
     def __enter__(self):
-        """Enter the runtime context.
-        """
+        """Enter the runtime context."""
         return self
 
     def __exit__(self, type, value, traceback):
-        """Exit the runtime context trying to disconnect.
-        """
+        """Exit the runtime context trying to disconnect."""
         self.disconnect()

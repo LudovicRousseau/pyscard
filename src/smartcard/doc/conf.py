@@ -3,28 +3,28 @@
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = [
-    'sphinx.ext.viewcode',
+    "sphinx.ext.viewcode",
 ]
 
 # The master toctree document.
-master_doc = 'index'
+master_doc = "index"
 
 # General information about the project.
-project = 'pyscard'
-copyright = '2014, Jean-Daniel Aussel, Ludovic Rousseau'
+project = "pyscard"
+copyright = "2014, Jean-Daniel Aussel, Ludovic Rousseau"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
 # The short X.Y version.
-version = '2.1.1'
+version = "2.1.1"
 # The full version, including alpha/beta/rc tags.
-release = '2.1.1'
+release = "2.1.1"
 
-pygments_style = 'sphinx'
+pygments_style = "sphinx"
 
 
 # -- Options for HTML output ---------------------------------------------------
 
-html_theme = 'default'
+html_theme = "default"

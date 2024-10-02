@@ -26,8 +26,8 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-import unittest
 import string
+import unittest
 
 # gemalto jython
 from smartcard.ATR import ATR
@@ -38,10 +38,47 @@ class testcase_CAtr(unittest.TestCase):
 
     def testcase_ATR1(self):
         """Usimera Classic 2."""
-        a = ATR([0x3B, 0x9E, 0x95, 0x80, 0x1F, 0xC3, 0x80, 0x31, 0xA0, 0x73,
-            0xBE, 0x21, 0x13, 0x67, 0x29, 0x02, 0x01, 0x01, 0x81, 0xCD, 0xB9])
-        historicalbytes = [0x80, 0x31, 0xA0, 0x73, 0xBE, 0x21, 0x13, 0x67,
-            0x29, 0x02, 0x01, 0x01, 0x81, 0xCD]
+        a = ATR(
+            [
+                0x3B,
+                0x9E,
+                0x95,
+                0x80,
+                0x1F,
+                0xC3,
+                0x80,
+                0x31,
+                0xA0,
+                0x73,
+                0xBE,
+                0x21,
+                0x13,
+                0x67,
+                0x29,
+                0x02,
+                0x01,
+                0x01,
+                0x81,
+                0xCD,
+                0xB9,
+            ]
+        )
+        historicalbytes = [
+            0x80,
+            0x31,
+            0xA0,
+            0x73,
+            0xBE,
+            0x21,
+            0x13,
+            0x67,
+            0x29,
+            0x02,
+            0x01,
+            0x01,
+            0x81,
+            0xCD,
+        ]
         self.assertEqual(a.getHistoricalBytes(), historicalbytes)
         self.assertEqual(a.getChecksum(), 0xB9)
         self.assertTrue(a.checksumOK)
@@ -71,8 +108,9 @@ class testcase_CAtr(unittest.TestCase):
 
     def testcase_ATR4(self):
         """SIMRock'n Tree"""
-        a = ATR([0x3B, 0x77, 0x94, 0x00, 0x00, 0x82, 0x30, 0x00, 0x13,
-            0x6C, 0x9F, 0x22])
+        a = ATR(
+            [0x3B, 0x77, 0x94, 0x00, 0x00, 0x82, 0x30, 0x00, 0x13, 0x6C, 0x9F, 0x22]
+        )
         historicalbytes = [0x82, 0x30, 0x00, 0x13, 0x6C, 0x9F, 0x22]
         self.assertEqual(a.getHistoricalBytes(), historicalbytes)
         self.assertEqual(a.getChecksum(), None)
@@ -99,8 +137,23 @@ class testcase_CAtr(unittest.TestCase):
 
     def testcase_ATR7(self):
         """Protect V3 T=1"""
-        a = ATR([0x3B, 0xE5, 0x00, 0x00, 0x81, 0x21, 0x45, 0x9C, 0x10,
-            0x01, 0x00, 0x80, 0x0D])
+        a = ATR(
+            [
+                0x3B,
+                0xE5,
+                0x00,
+                0x00,
+                0x81,
+                0x21,
+                0x45,
+                0x9C,
+                0x10,
+                0x01,
+                0x00,
+                0x80,
+                0x0D,
+            ]
+        )
         historicalbytes = [0x9C, 0x10, 0x01, 0x00, 0x80]
         self.assertEqual(a.getHistoricalBytes(), historicalbytes)
         self.assertEqual(a.getChecksum(), 0x0D)
@@ -116,9 +169,9 @@ class testcase_CAtr(unittest.TestCase):
 
 
 def suite():
-    suite1 = unittest.makeSuite(testcase_CAtr)
+    suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(testcase_CAtr)
     return unittest.TestSuite(suite1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

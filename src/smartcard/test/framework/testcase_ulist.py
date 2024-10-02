@@ -51,8 +51,8 @@ class testcase_ulist(unittest.TestCase):
         c = C([1, 2, 3, 3, 4, 5, 5])
         self.assertEqual([1, 2, 3, 4, 5], c)
 
-        c = C(['one', 'two', 'three', 'one'])
-        self.assertEqual(['one', 'two', 'three'], c)
+        c = C(["one", "two", "three", "one"])
+        self.assertEqual(["one", "two", "three"], c)
 
     def testcase_ulist_add(self):
         """tests l=l+other"""
@@ -70,15 +70,15 @@ class testcase_ulist(unittest.TestCase):
         c = c + 4
         self.assertEqual(seed + [4], c)
 
-        c = c + 'word'
-        self.assertEqual(seed + [4] + ['word'], c)
+        c = c + "word"
+        self.assertEqual(seed + [4] + ["word"], c)
 
-        seed = ['one', 'two', 'three']
+        seed = ["one", "two", "three"]
         c = C(seed)
         self.assertEqual(seed, c)
 
-        c = c + ['four', 'five']
-        self.assertEqual(seed + ['four', 'five'], c)
+        c = c + ["four", "five"]
+        self.assertEqual(seed + ["four", "five"], c)
 
     def testcase_ulist_iadd(self):
         """tests l+=other"""
@@ -99,15 +99,15 @@ class testcase_ulist(unittest.TestCase):
         c += [4, 3, 2, 1]
         self.assertEqual(seed + [4], c)
 
-        c += 'word'
-        self.assertEqual(seed + [4] + ['word'], c)
+        c += "word"
+        self.assertEqual(seed + [4] + ["word"], c)
 
-        seed = ['one', 'two', 'three']
+        seed = ["one", "two", "three"]
         c = C(seed)
         self.assertEqual(seed, c)
 
-        c += ['four', 'five']
-        self.assertEqual(seed + ['four', 'five'], c)
+        c += ["four", "five"]
+        self.assertEqual(seed + ["four", "five"], c)
 
     def testcase_ulist_radd(self):
         """tests l=other+l"""
@@ -127,9 +127,9 @@ class testcase_ulist(unittest.TestCase):
         self.assertEqual(seed, c)
         self.assertEqual(seed + [4], l)
 
-        l = [4] + ['word'] + c
+        l = [4] + ["word"] + c
         self.assertEqual(seed, c)
-        self.assertEqual(seed + [4] + ['word'], l)
+        self.assertEqual(seed + [4] + ["word"], l)
 
     def testcase_ulist_append(self):
 
@@ -142,8 +142,8 @@ class testcase_ulist(unittest.TestCase):
         c.append(4)
         self.assertEqual(seed + [4], c)
 
-        c.append('word')
-        self.assertEqual(seed + [4] + ['word'], c)
+        c.append("word")
+        self.assertEqual(seed + [4] + ["word"], c)
 
     def testcase_ulist_insert(self):
 
@@ -180,9 +180,9 @@ class testcase_ulist(unittest.TestCase):
 
 
 def suite():
-    suite1 = unittest.makeSuite(testcase_ulist)
+    suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(testcase_ulist)
     return unittest.TestSuite(suite1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

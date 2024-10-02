@@ -782,4 +782,3 @@ long winscard_init(void)
     #endif // PCSCLITE
     return lRetCode;
 };
-

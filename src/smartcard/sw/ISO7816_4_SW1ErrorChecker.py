@@ -22,8 +22,8 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-from smartcard.sw.ErrorChecker import ErrorChecker
 import smartcard.sw.SWExceptions
+from smartcard.sw.ErrorChecker import ErrorChecker
 
 iso7816_4SW1 = {
     0x62: smartcard.sw.SWExceptions.WarningProcessingException,
@@ -76,11 +76,11 @@ class ISO7816_4_SW1ErrorChecker(ErrorChecker):
             raise exception(data, sw1, sw2)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     """Small sample illustrating the use of ISO7816_4_SW1ErrorChecker."""
     ecs = ISO7816_4_SW1ErrorChecker()
     ecs([], 0x90, 0x00)
     try:
         ecs([], 0x66, 0x80)
     except smartcard.sw.SWExceptions.SecurityRelatedException as e:
-        print(str(e) + " {:x} {:x}".format(e.sw1, e.sw2))
+        print(str(e) + f" {e.sw1:x} {e.sw2:x}")

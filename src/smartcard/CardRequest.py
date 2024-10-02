@@ -25,13 +25,19 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 from smartcard.pcsc.PCSCCardRequest import PCSCCardRequest
 
 
-class CardRequest(object):
+class CardRequest:
     """A CardRequest is used for waitForCard() invocations and specifies what
     kind of smart card an application is waited for.
     """
 
-    def __init__(self, newcardonly=False, readers=None, cardType=None,
-                 cardServiceClass=None, timeout=1):
+    def __init__(
+        self,
+        newcardonly=False,
+        readers=None,
+        cardType=None,
+        cardServiceClass=None,
+        timeout=1,
+    ):
         """Construct new CardRequest.
 
         @param newcardonly: if True, request a new card
@@ -55,9 +61,9 @@ class CardRequest(object):
                             is to wait one second to wait forever, set
                             timeout to None
         """
-        self.pcsccardrequest = PCSCCardRequest(newcardonly, readers,
-                                               cardType, cardServiceClass,
-                                               timeout)
+        self.pcsccardrequest = PCSCCardRequest(
+            newcardonly, readers, cardType, cardServiceClass, timeout
+        )
 
     def getReaders(self):
         """Returns the list or readers on which to wait for cards."""
@@ -72,14 +78,14 @@ class CardRequest(object):
         return self.pcsccardrequest.waitforcardevent()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     """Small sample illustrating the use of CardRequest.py."""
 
     from smartcard.util import toHexString
-    print('Insert a new card within 10 seconds')
+
+    print("Insert a new card within 10 seconds")
     cr = CardRequest(timeout=10, newcardonly=True)
     cs = cr.waitforcard()
     cs.connection.connect()
-    print(cs.connection.getReader() + ' ' +
-          toHexString(cs.connection.getATR()))
+    print(cs.connection.getReader() + " " + toHexString(cs.connection.getATR()))
     cs.connection.disconnect()

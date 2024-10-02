@@ -22,47 +22,57 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-from smartcard.sw.ErrorChecker import ErrorChecker
 import smartcard.sw.SWExceptions
+from smartcard.sw.ErrorChecker import ErrorChecker
 
 op21_SW = {
-    0x62: (smartcard.sw.SWExceptions.WarningProcessingException,
-           {0x83: "Card life cycle is CARD_LOCKED"}),
-
-    0x63: (smartcard.sw.SWExceptions.WarningProcessingException,
-           {0x00: "Authentication failed"}),
-
-    0x64: (smartcard.sw.SWExceptions.ExecutionErrorException,
-           {0x00: "Execution error"}),
-
-    0x65: (smartcard.sw.SWExceptions.ExecutionErrorException,
-           {0x81: "Memory failure"}),
-
-    0x67: (smartcard.sw.SWExceptions.CheckingErrorException,
-           {0x00: "Wrong length in Lc"}),
-
-    0x69: (smartcard.sw.SWExceptions.CheckingErrorException,
-           {0x82: "Security status not satisfied",
-            0x85: "Conditions of use not satisfied"}),
-
-    0x6A: (smartcard.sw.SWExceptions.CheckingErrorException,
-           {0x80: "Incorrect values in command data",
+    0x62: (
+        smartcard.sw.SWExceptions.WarningProcessingException,
+        {0x83: "Card life cycle is CARD_LOCKED"},
+    ),
+    0x63: (
+        smartcard.sw.SWExceptions.WarningProcessingException,
+        {0x00: "Authentication failed"},
+    ),
+    0x64: (
+        smartcard.sw.SWExceptions.ExecutionErrorException,
+        {0x00: "Execution error"},
+    ),
+    0x65: (smartcard.sw.SWExceptions.ExecutionErrorException, {0x81: "Memory failure"}),
+    0x67: (
+        smartcard.sw.SWExceptions.CheckingErrorException,
+        {0x00: "Wrong length in Lc"},
+    ),
+    0x69: (
+        smartcard.sw.SWExceptions.CheckingErrorException,
+        {
+            0x82: "Security status not satisfied",
+            0x85: "Conditions of use not satisfied",
+        },
+    ),
+    0x6A: (
+        smartcard.sw.SWExceptions.CheckingErrorException,
+        {
+            0x80: "Incorrect values in command data",
             0x81: "Function not supported",
             0x82: "Application not found",
             0x84: "Not enough memory space",
             0x86: "Incorrect parameters P1-P2",
-            0x88: "Referenced data not found"}),
-
-    0x6D: (smartcard.sw.SWExceptions.CheckingErrorException,
-           {0x00: "Instruction not supported"}),
-
-    0x6E: (smartcard.sw.SWExceptions.CheckingErrorException,
-           {0x00: "Class not supported"}),
-
-    0x94: (smartcard.sw.SWExceptions.CheckingErrorException,
-           {0x84: "Algorithm not supported",
-            0x85: "Invalid key check value"}),
-
+            0x88: "Referenced data not found",
+        },
+    ),
+    0x6D: (
+        smartcard.sw.SWExceptions.CheckingErrorException,
+        {0x00: "Instruction not supported"},
+    ),
+    0x6E: (
+        smartcard.sw.SWExceptions.CheckingErrorException,
+        {0x00: "Class not supported"},
+    ),
+    0x94: (
+        smartcard.sw.SWExceptions.CheckingErrorException,
+        {0x84: "Algorithm not supported", 0x85: "Invalid key check value"},
+    ),
 }
 
 
@@ -116,7 +126,7 @@ class op21_ErrorChecker(ErrorChecker):
                     pass
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     """Small sample illustrating the use of op21_ErrorChecker."""
     ecs = op21_ErrorChecker()
     ecs([], 0x90, 0x00)
@@ -124,4 +134,4 @@ if __name__ == '__main__':
     try:
         ecs([], 0x94, 0x84)
     except smartcard.sw.SWExceptions.CheckingErrorException as e:
-        print(str(e) + "{:x} {:x}".format(e.sw1, e.sw2))
+        print(str(e) + f"{e.sw1:x} {e.sw2:x}")
