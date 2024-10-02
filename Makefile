@@ -23,7 +23,7 @@ pypi: clean
 	python3 -m twine upload dist/*
 
 test:
-	pytest
+	pytest --verbose
 
 coverage:
 	$(COVERAGE) erase
