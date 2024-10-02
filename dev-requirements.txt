@@ -3,6 +3,7 @@ coverage
 coveralls
 pylint
 pytest
+pytest-randomly
 setuptools
 tox
 wheel
