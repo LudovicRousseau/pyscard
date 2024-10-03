@@ -61,6 +61,7 @@ class PCSCContext:
         if self.instance:
             return getattr(self.instance, name)
 
+    @staticmethod
     def renewContext():
         PCSCContext.mutex.acquire()
         try:
@@ -72,5 +73,3 @@ class PCSCContext:
             PCSCContext.mutex.release()
 
         return PCSCContext.instance.getContext()
-
-    renewContext = staticmethod(renewContext)

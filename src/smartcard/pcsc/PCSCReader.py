@@ -99,12 +99,11 @@ class PCSCReader(Reader):
         return CardConnectionDecorator(PCSCCardConnection(self.name))
 
     class Factory:
-
+        @staticmethod
         def create(readername):
             return PCSCReader(readername)
 
-        create = staticmethod(create)
-
+    @staticmethod
     def readers(groups=[]):
         creaders = []
         hcontext = PCSCContext().getContext()
@@ -118,8 +117,6 @@ class PCSCReader(Reader):
         for reader in pcsc_readers:
             creaders.append(PCSCReader.Factory.create(reader))
         return creaders
-
-    readers = staticmethod(readers)
 
 
 if __name__ == "__main__":

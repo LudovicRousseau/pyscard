@@ -48,10 +48,9 @@ class CardService:
         """Destructor. Disconnect card and destroy card service resources."""
         self.connection.disconnect()
 
+    @staticmethod
     def supports(cardname):
         pass
-
-    supports = staticmethod(supports)
 
 
 if __name__ == "__main__":
