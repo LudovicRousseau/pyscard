@@ -41,6 +41,7 @@ class ReaderFactory:
     factorymethods = [PCSCReader.readers]
 
     # A Template Method:
+    @staticmethod
     def createReader(clazz, readername):
         """Static method to create a reader from a reader clazz.
 
@@ -51,12 +52,9 @@ class ReaderFactory:
             ReaderFactory.factories[clazz] = get_class(clazz).Factory()
         return ReaderFactory.factories[clazz].create(readername)
 
-    createReader = staticmethod(createReader)
-
+    @staticmethod
     def readers(groups=[]):
         zreaders = []
         for fm in ReaderFactory.factorymethods:
             zreaders += fm(groups)
         return zreaders
-
-    readers = staticmethod(readers)

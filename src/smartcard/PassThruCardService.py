@@ -40,13 +40,12 @@ class PassThruCardService(CardService.CardService):
         """
         CardService.CardService.__init__(self, connection, cardname)
 
+    @staticmethod
     def supports(cardname):
         """Returns True if the cardname is supported by the card service.
         The PassThruCardService supports all cardnames and always
         returns True."""
         return True
-
-    supports = staticmethod(supports)
 
 
 if __name__ == "__main__":
