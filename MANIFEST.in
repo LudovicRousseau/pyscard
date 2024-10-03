@@ -25,5 +25,4 @@ recursive-include src/smartcard/doc *.html *.jpg *.css *.js *.png *.txt
 recursive-include src/smartcard/test/framework *.txt *.py
 recursive-include src/smartcard/test/frameworkpcsc *.txt *.py
 recursive-include src/smartcard/test/scard *.txt *.py
-recursive-include src/smartcard/wx *.ico
 include test/*.py

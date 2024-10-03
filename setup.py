@@ -99,12 +99,8 @@ kw = {
         "smartcard.scard",
         "smartcard.sw",
         "smartcard.util",
-        "smartcard.wx",
     ],
     "package_dir": {"": "src"},
-    "package_data": {
-        "smartcard.wx": ["resources/*.ico"],
-    },
     "cmdclass": {"build_py": BuildPyBuildExtFirst},
     # the _scard.pyd extension to build
     "ext_modules": [
@@ -128,9 +124,6 @@ kw = {
             swig_opts=["-outdir", "src/smartcard/scard"] + platform_swig_opts,
         )
     ],
-    "extras_require": {
-        "Gui": ["wxPython"],
-    },
     "classifiers": [
         "Development Status :: 5 - Production/Stable",
         "License :: OSI Approved :: GNU Lesser General Public License v2 or later (LGPLv2+)",

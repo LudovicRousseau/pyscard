@@ -4,8 +4,6 @@
 
 - documentation of CardConnectionDecorator; add a meaningful example (OP secure channel?)
 
-- documentation of wxPython classes; fix wxPython code on Mac OS X
-
 - more error checking chains
 
 - more unit tests

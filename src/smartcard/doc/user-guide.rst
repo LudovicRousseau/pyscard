@@ -607,7 +607,7 @@ class definition is the following:
            self.args = args
 
 You can write your own card connection observer, for example to perform
-fancy output in a wxWindows frame, or apdu interpretation. The following
+apdu interpretation. The following
 scripts defines a small SELECT and GET RESPONSE apdu interpreter:
 
     >>> from smartcard.CardType import AnyCardType
