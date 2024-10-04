@@ -19,3 +19,13 @@ project-name = "PySCard"
 project-url = "https://github.com/LudovicRousseau/pyscard"
 html-output = "build/docs/apidocs"
 warnings-as-errors = true
+
+
+# pytest
+# ------
+
+[tool.pytest.ini_options]
+addopts = "--color=yes"
+filterwarnings = [
+    "error",
+]
