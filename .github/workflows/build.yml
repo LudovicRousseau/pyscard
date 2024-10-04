@@ -29,6 +29,7 @@ jobs:
           - "3.10"
           - "3.11"
           - "3.12"
+          - "3.13"
 
         include:
           # Augment the matrix with additional values.
@@ -58,6 +59,7 @@ jobs:
         with:
           python-version: "${{ matrix.cpython }}"
           architecture: "${{ matrix.architecture }}"
+          allow-prereleases: true
 
       - name: "Install build prerequisites (Linux)"
         if: matrix.name == 'Linux'
