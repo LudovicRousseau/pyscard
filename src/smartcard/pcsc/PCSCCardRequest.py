@@ -290,7 +290,7 @@ class PCSCCardRequest(AbstractCardRequest):
                 readerstates[reader] = (reader, SCARD_STATE_UNAWARE)
 
         # call SCardGetStatusChange only if we have some readers
-        if {} != readerstates:
+        if readerstates:
             hresult, newstates = SCardGetStatusChange(
                 self.hcontext, 0, list(readerstates.values())
             )
@@ -299,12 +299,24 @@ class PCSCCardRequest(AbstractCardRequest):
             for state in newstates:
                 readername, eventstate, atr = state
                 readerstates[readername] = (readername, eventstate)
+
+                # self.readerstates is the previous state
+                # it is initialized to {} in __init__()
+                if eventstate & SCARD_STATE_PRESENT and not self.readerstates:
+                    presentcards.append(Card.Card(readername, atr))
+
         else:
             hresult = SCARD_S_SUCCESS
             newstates = []
 
-        # wait for card insertion
+        # store readerstates for next calls and getStatusChange thread
         self.readerstates = readerstates
+
+        # we have new (initial) cards
+        if presentcards:
+            return presentcards
+
+        # wait for card insertion
         waitThread = threading.Thread(target=self.getStatusChange)
         waitThread.start()
 
