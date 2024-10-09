@@ -81,6 +81,9 @@ class PCSCCardRequest(AbstractCardRequest):
 
         self.hcontext = PCSCContext().getContext()
         self.evt = threading.Event()
+        self.hresult = SCARD_S_SUCCESS
+        self.readerstates = {}
+        self.newstates = []
 
     def getReaderNames(self):
         """Returns the list of PCSC readers on which to wait for cards."""
