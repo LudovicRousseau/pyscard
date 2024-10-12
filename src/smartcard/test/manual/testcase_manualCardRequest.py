@@ -60,12 +60,6 @@ for card in cardz:
 class testcase_manualCardRequest(unittest.TestCase, CardObserver):
     """Test case for CardRequest."""
 
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
-
     def removeAllCards(self):
         """Wait for no card present"""
         print("please remove all inserted smart cards")
@@ -196,14 +190,6 @@ class testcase_manualCardRequest(unittest.TestCase, CardObserver):
             cardservice.connection.getReader(),
         )
         cardservice.connection.disconnect()
-
-
-def suite():
-    """suite"""
-    suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(
-        testcase_manualCardRequest
-    )
-    return unittest.TestSuite(suite1)
 
 
 if __name__ == "__main__":
