@@ -24,12 +24,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 import random
-import string
 import time
 import unittest
 
-from smartcard.CardConnection import CardConnection
-from smartcard.CardMonitoring import CardMonitor, CardObserver
+from smartcard.CardMonitoring import CardObserver
 from smartcard.CardRequest import CardRequest
 from smartcard.CardType import AnyCardType, ATRCardType
 from smartcard.Exceptions import CardConnectionException, CardRequestTimeoutException
@@ -86,7 +84,7 @@ class testcase_manualCardRequest(unittest.TestCase, CardObserver):
         cardrequest = CardRequest(timeout=None, cardType=cardtype, newcardonly=True)
         print("re-insert any combination of cards six time")
         count = 0
-        for i in range(0, 6):
+        for _ in range(0, 6):
             cardservice = cardrequest.waitforcard()
             try:
                 cardservice.connection.connect()
@@ -108,7 +106,7 @@ class testcase_manualCardRequest(unittest.TestCase, CardObserver):
 
         self.removeAllCards()
         count = 0
-        for i in range(0, 6):
+        for _ in range(0, 6):
             card = random.choice(cardz)
             cardtype = ATRCardType(card.atr)
             cardrequest = CardRequest(timeout=None, cardType=cardtype, newcardonly=True)
@@ -135,11 +133,11 @@ class testcase_manualCardRequest(unittest.TestCase, CardObserver):
         cardtype = AnyCardType()
         cardrequest = CardRequest(timeout=1, cardType=cardtype, newcardonly=True)
         count = 0
-        for i in range(0, 6):
+        for _ in range(0, 6):
+            before = time.time()
             try:
-                before = time.time()
-                cardservice = cardrequest.waitforcard()
-            except CardRequestTimeoutException as e:
+                cardrequest.waitforcard()
+            except CardRequestTimeoutException:
                 elapsed = int(10 * (time.time() - before))
                 print(".", end=" ")
                 self.assertTrue(elapsed >= 10 and elapsed <= 11.0)
@@ -157,15 +155,15 @@ class testcase_manualCardRequest(unittest.TestCase, CardObserver):
         cardtype = AnyCardType()
         cardrequest = CardRequest(timeout=5, cardType=cardtype, newcardonly=True)
         count = 0
-        for i in range(0, 6):
+        for _ in range(0, 6):
             try:
                 print("re-insert any card within the next 5 seconds")
                 before = time.time()
-                cardservice = cardrequest.waitforcard()
+                cardrequest.waitforcard()
                 count += 1
                 elapsed = int(10 * (time.time() - before))
                 self.assertTrue(elapsed <= 55.0)
-            except CardRequestTimeoutException as e:
+            except CardRequestTimeoutException:
                 print("too slow... Test will show a failure")
         print("\n")
         self.assertEqual(6, count)
@@ -189,7 +187,7 @@ class testcase_manualCardRequest(unittest.TestCase, CardObserver):
         cardrequest = CardRequest(
             timeout=None, readers=[_readerz[0]], cardType=cardtype, newcardonly=True
         )
-        print("Re-insert reader ", _readerz[0], "with a card inside")
+        print("Re-insert reader", _readerz[0], "with a card inside")
         cardservice = cardrequest.waitforcard()
         cardservice.connection.connect()
         print(
@@ -201,6 +199,7 @@ class testcase_manualCardRequest(unittest.TestCase, CardObserver):
 
 
 def suite():
+    """suite"""
     suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(
         testcase_manualCardRequest
     )
