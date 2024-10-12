@@ -185,8 +185,9 @@ class PCSCCardRequest(AbstractCardRequest):
             # create a dictionary entry for new readers
             readernames = self.getReaderNames()
 
-            # add PnP special reader
-            readernames.append("\\\\?PnP?\\Notification")
+            if self.readersAsked is None:
+                # add PnP special reader
+                readernames.append("\\\\?PnP?\\Notification")
 
             for reader in readernames:
                 if not reader in readerstates:
@@ -289,8 +290,9 @@ class PCSCCardRequest(AbstractCardRequest):
             # reinitialize at each iteration just in case a new reader appeared
             readernames = self.getReaderNames()
 
-            # add PnP special reader
-            readernames.append("\\\\?PnP?\\Notification")
+            if self.readersAsked is None:
+                # add PnP special reader
+                readernames.append("\\\\?PnP?\\Notification")
 
             for reader in readernames:
                 # create a dictionary entry for new readers
