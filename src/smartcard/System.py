@@ -29,9 +29,10 @@ import smartcard.reader.ReaderFactory
 
 
 def readers(groups=[]):
-    """Returns the list of smartcard readers in groups.
+    """Returns the list of smartcard readers in groups as
+    L{smartcard.reader.Reader}.
 
-    If group is not specified, returns the list of all smartcard readers.
+    If groups is not specified, returns the list of all smartcard readers.
 
     >>> import smartcard
     >>> r=smartcard.readers()
