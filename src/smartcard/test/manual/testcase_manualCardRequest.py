@@ -27,12 +27,32 @@ import random
 import time
 import unittest
 
+from smartcard.Card import Card
 from smartcard.CardMonitoring import CardObserver
 from smartcard.CardRequest import CardRequest
 from smartcard.CardType import AnyCardType, ATRCardType
-from smartcard.Exceptions import CardConnectionException, CardRequestTimeoutException
+from smartcard.Exceptions import (
+    CardConnectionException,
+    CardRequestTimeoutException,
+    NoCardException,
+)
 from smartcard.System import readers
 from smartcard.util import toHexString
+
+
+def get_cards(readers):
+    """return all the cards"""
+    cards = []
+    for reader in readers:
+        try:
+            c = reader.createConnection()
+            c.connect()
+            cards.append(Card(reader.name, c.getATR()))
+            c.disconnect()
+        except NoCardException:
+            pass
+    return cards
+
 
 #
 # setup test first: detect current readers and cards
@@ -47,12 +67,10 @@ for reader in readerz:
     print("\t", reader)
 
 print("insert two cards in the readers")
+cardz = get_cards(readerz)
 cardrequest = CardRequest(timeout=None)
-while True:
+while len(cardz) < 2:
     cardz = cardrequest.waitforcardevent()
-    if 2 <= len(cardz):
-        break
-    time.sleep(0.3)
 for card in cardz:
     print("\t", toHexString(card.atr))
 
@@ -63,11 +81,10 @@ class testcase_manualCardRequest(unittest.TestCase, CardObserver):
     def removeAllCards(self):
         """Wait for no card present"""
         print("please remove all inserted smart cards")
+        cardz = get_cards(readerz)
         cardrequest = CardRequest(timeout=None)
-        while True:
-            cards = cardrequest.waitforcardevent()
-            if 0 == len(cards):
-                break
+        while len(cardz) > 0:
+            cardz = cardrequest.waitforcardevent()
         print("ok")
 
     def testcase_CardRequestNewCardAnyCardTypeInfiniteTimeOut(self):
