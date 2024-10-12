@@ -67,13 +67,13 @@ class testcase_manualCardRequest(unittest.TestCase, CardObserver):
         pass
 
     def removeAllCards(self):
+        """Wait for no card present"""
         print("please remove all inserted smart cards")
-        cardrequest = CardRequest()
+        cardrequest = CardRequest(timeout=None)
         while True:
             cards = cardrequest.waitforcardevent()
             if 0 == len(cards):
                 break
-            time.sleep(0.3)
         print("ok")
 
     def testcase_CardRequestNewCardAnyCardTypeInfiniteTimeOut(self):
