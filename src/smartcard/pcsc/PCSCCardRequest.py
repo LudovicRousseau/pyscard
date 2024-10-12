@@ -84,6 +84,7 @@ class PCSCCardRequest(AbstractCardRequest):
         self.hresult = SCARD_S_SUCCESS
         self.readerstates = {}
         self.newstates = []
+        self.timeout_init = self.timeout
 
     def getReaderNames(self):
         """Returns the list of PCSC readers on which to wait for cards."""
@@ -180,6 +181,7 @@ class PCSCCardRequest(AbstractCardRequest):
                             return self.cardServiceClass(reader.createConnection())
 
         startDate = datetime.now()
+        self.timeout = self.timeout_init
         while not cardfound:
 
             # create a dictionary entry for new readers
@@ -285,6 +287,7 @@ class PCSCCardRequest(AbstractCardRequest):
 
         startDate = datetime.now()
         eventfound = False
+        self.timeout = self.timeout_init
         while not eventfound:
 
             # reinitialize at each iteration just in case a new reader appeared
