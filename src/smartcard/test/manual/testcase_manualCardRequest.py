@@ -47,7 +47,7 @@ for reader in readerz:
     print("\t", reader)
 
 print("insert two cards in the readers")
-cardrequest = CardRequest()
+cardrequest = CardRequest(timeout=None)
 while True:
     cardz = cardrequest.waitforcardevent()
     if 2 <= len(cardz):
