@@ -504,7 +504,6 @@ static SCARDRETCODE _GetStatusChange(
         return SCARD_E_INVALID_PARAMETER;
     }
 
-
     // remove changed bit
     for(i=0; i<prsl->cRStates; i++)
     {
@@ -515,10 +514,10 @@ static SCARDRETCODE _GetStatusChange(
     hresult = (mySCardGetStatusChangeA)(hcontext, dwTimeout, prsl->ars,
         prsl->cRStates);
 
-    //printf("\n%.8lx ", hresult);
+    //printf("\n%.8lx\n", hresult);
     //for(i=0; i<prsl->cRStates; i++)
     //{
-    //    printf("%.8lx %.8lx ", prsl->ars[i].dwCurrentState, prsl->ars[i].dwEventState);
+    //    printf("%s %.8lx %.8lx\n", prsl->ars[i].szReader, prsl->ars[i].dwCurrentState, prsl->ars[i].dwEventState);
     //}
 
     return hresult;
