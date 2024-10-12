@@ -33,6 +33,7 @@ import configcheck
 
 
 def suite():
+    """suite"""
     modules_to_test = (
         "testcase_getatr",
         "testcase_getattrib",
@@ -51,4 +52,4 @@ def suite():
 
 if __name__ == "__main__":
     configcheck.checklocalconfig()
-    unittest.main(defaultTest="suite")
+    unittest.main(defaultTest="suite", verbosity=1)

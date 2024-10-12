@@ -32,6 +32,7 @@ import configcheck
 
 
 def suite():
+    """suite"""
     modules_to_test = ("testcase_pcscreadergroups",)
     testsuite_framework = unittest.TestSuite()
     for module in map(__import__, modules_to_test):
@@ -41,4 +42,4 @@ def suite():
 
 if __name__ == "__main__":
     configcheck.checklocalconfig()
-    unittest.main(defaultTest="suite")
+    unittest.main(defaultTest="suite", verbosity=1)
