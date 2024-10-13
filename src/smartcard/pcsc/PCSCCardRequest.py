@@ -288,15 +288,18 @@ class PCSCCardRequest(AbstractCardRequest):
         startDate = datetime.now()
         eventfound = False
         self.timeout = self.timeout_init
+        previous_readernames = self.getReaderNames()
         while not eventfound:
 
             # reinitialize at each iteration just in case a new reader appeared
-            readernames = self.getReaderNames()
+            _readernames = self.getReaderNames()
+            readernames = _readernames
 
             if self.readersAsked is None:
                 # add PnP special reader
                 readernames.append("\\\\?PnP?\\Notification")
 
+            readerstates = {}
             for reader in readernames:
                 # create a dictionary entry for new readers
                 readerstates[reader] = (reader, SCARD_STATE_UNAWARE)
@@ -304,6 +307,21 @@ class PCSCCardRequest(AbstractCardRequest):
             hresult, newstates = SCardGetStatusChange(
                 self.hcontext, 0, list(readerstates.values())
             )
+
+            # check if a new reader with a card has just been connected
+            for state in newstates:
+                readername, eventstate, _ = state
+
+                # the reader is a new one
+                if readername not in previous_readernames:
+                    if eventstate & SCARD_STATE_PRESENT:
+                        eventfound = True
+
+            if eventfound:
+                break
+
+            # update previous readers list
+            previous_readernames = _readernames
 
             # update readerstate
             for state in newstates:
@@ -377,7 +395,14 @@ class PCSCCardRequest(AbstractCardRequest):
                         eventstate = eventstate & (0xFFFFFFFF ^ SCARD_STATE_CHANGED)
 
                     if eventstate & SCARD_STATE_CHANGED:
-                        eventfound = True
+                        if (
+                            # a reader or a card has been removed
+                            oldstate & SCARD_STATE_PRESENT
+                            or
+                            # a card has been inserted
+                            eventstate & SCARD_STATE_PRESENT
+                        ):
+                            eventfound = True
 
         # return all the cards present
         for state in newstates:
