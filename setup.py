@@ -128,6 +128,9 @@ kw = {
             swig_opts=["-outdir", "src/smartcard/scard"] + platform_swig_opts,
         )
     ],
+    "install_requires": [
+        "typing_extensions; python_version=='3.9'",
+    ],
     "extras_require": {
         "Gui": ["wxPython"],
     },
