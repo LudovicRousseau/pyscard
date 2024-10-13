@@ -8,39 +8,51 @@ Simple emulation of Java's 'synchronized'
 keyword, from Peter Norvig.
 """
 
-from threading import RLock
+from __future__ import annotations
+
+import functools
+import sys
+import threading
+from collections.abc import Iterable
+from typing import Any, Callable, Protocol, TypeVar
+
+if sys.version_info >= (3, 10):
+    from typing import ParamSpec
+else:
+    from typing_extensions import ParamSpec
 
 
-def synchronized(method):
+T = TypeVar("T")
+P = ParamSpec("P")
 
-    def f(*args):
-        self = args[0]
-        self.mutex.acquire()
-        # print(method.__name__, 'acquired')
-        try:
-            return method(*args)
-        finally:
-            self.mutex.release()
-            # print(method.__name__, 'released')
+
+def synchronized(method: Callable[P, T]) -> Callable[P, T]:
+    @functools.wraps(method)
+    def f(self: _SynchronizationProtocol, *args: Any, **kwargs: Any) -> Any:
+        with self.mutex:
+            return method(self, *args, **kwargs)
 
     return f
 
 
-def synchronize(klass, names=None):
+def synchronize(klass: type, names: str | Iterable[str] | None = None) -> None:
     """Synchronize methods in the given class.
     Only synchronize the methods whose names are
     given, or all methods if names=None."""
 
-    if isinstance(names, (str, bytes)):
+    if isinstance(names, str):
         names = names.split()
     for name, val in list(klass.__dict__.items()):
         if callable(val) and name != "__init__" and (names is None or name in names):
-            # print("synchronizing", name)
             setattr(klass, name, synchronized(val))
 
 
-class Synchronization:
+class _SynchronizationProtocol(Protocol):
+    mutex: threading.Lock | threading.RLock
+
+
+class Synchronization(_SynchronizationProtocol):
     # You can create your own self.mutex, or inherit from this class:
 
     def __init__(self):
-        self.mutex = RLock()
+        self.mutex = threading.RLock()
