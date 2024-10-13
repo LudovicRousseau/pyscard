@@ -128,8 +128,8 @@ class countobserver(ReaderObserver):
         self.removedreaderstats = {}
         self.countnotified = 0
 
-    def update(self, observable, actions):
-        (addedreaders, removedreaders) = actions
+    def update(self, observable, handlers):
+        (addedreaders, removedreaders) = handlers
         self.countnotified += 1
         for newreader in addedreaders:
             if newreader in self.insertedreaderstats:
@@ -180,12 +180,5 @@ class testcase_readermonitorstress(unittest.TestCase):
             self.assertEqual(observer.removedreaderstats, removedreaderstats)
 
 
-def suite():
-    suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(
-        testcase_readermonitorthread
-    )
-    return unittest.TestSuite(suite1)
-
-
 if __name__ == "__main__":
-    unittest.main()
+    unittest.main(verbosity=1)

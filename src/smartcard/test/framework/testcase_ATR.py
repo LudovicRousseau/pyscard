@@ -63,15 +63,10 @@ class testcase_ATR(unittest.TestCase):
         # we have at least two non empty ATRs
         count = 0
         for atr in expectedATRs:
-            if atr != []:
+            if atr:
                 count += 1
         self.assertTrue(count > 1)
 
 
-def suite():
-    suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(testcase_ATR)
-    return unittest.TestSuite(suite1)
-
-
 if __name__ == "__main__":
-    unittest.main()
+    unittest.main(verbosity=1)

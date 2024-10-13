@@ -32,6 +32,7 @@ import configcheck
 
 
 def suite():
+    """suite"""
     modules_to_test = (
         "testcase_ATR",
         "testcase_Card",
@@ -59,4 +60,4 @@ def suite():
 if __name__ == "__main__":
     configcheck.checklocalconfig()
     # set verbosity=2 to get more details
-    unittest.main(defaultTest="suite", verbosity=1)
+    unittest.main(defaultTest="suite", verbosity=2)

@@ -27,21 +27,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 
-# import local_config for reader/card configuration
-# configcheck.py is generating local_config.py in
-# the test suite.
 import sys
 import unittest
 
 sys.path += [".."]
 
 try:
-    from local_config import (
-        expectedATRinReader,
-        expectedATRs,
-        expectedReaderGroups,
-        expectedReaders,
-    )
+    from local_config import expectedReaderGroups, expectedReaders
 except ImportError:
     print("execute test suite first to generate the local_config.py file")
     sys.exit()
@@ -111,10 +103,5 @@ class testcase_readers(unittest.TestCase):
             self.assertTrue(readergroup in foundreadergroups)
 
 
-def suite():
-    suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(testcase_readers)
-    return unittest.TestSuite(suite1)
-
-
 if __name__ == "__main__":
-    unittest.main()
+    unittest.main(verbosity=1)

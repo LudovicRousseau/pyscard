@@ -27,8 +27,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 
-import string
-
 # import local_config for reader/card configuration
 # configcheck.py is generating local_config.py in
 # the test suite.
@@ -42,7 +40,6 @@ try:
         expectedATRinReader,
         expectedATRs,
         expectedReaderForATR,
-        expectedReaderGroups,
         expectedReaders,
     )
 except ImportError:
@@ -65,7 +62,7 @@ class testcase_CardRequest(unittest.TestCase):
         """Test smartcard.AnyCardType."""
 
         for atr in expectedATRs:
-            if [] != atr:
+            if atr:
                 ct = ATRCardType(atr)
                 cr = CardRequest(timeout=10, cardType=ct)
                 cs = cr.waitforcard()
@@ -81,7 +78,7 @@ class testcase_CardRequest(unittest.TestCase):
 
         for reader in expectedReaders:
             atr = expectedATRinReader[reader]
-            if [] != atr:
+            if atr:
                 ct = AnyCardType()
                 cr = CardRequest(timeout=10.6, readers=[reader], cardType=ct)
                 cs = cr.waitforcard()
@@ -114,9 +111,9 @@ class testcase_CardRequest(unittest.TestCase):
 
         for reader in expectedReaders:
             atr = expectedATRinReader[reader]
-            if [] != atr:
+            if atr:
                 ct = AnyCardType()
-                cardservice = smartcard.PassThruCardService.PassThruCardService
+                cardservice = PassThruCardService
                 cr = CardRequest(
                     timeout=10.6,
                     readers=[reader],
@@ -125,9 +122,7 @@ class testcase_CardRequest(unittest.TestCase):
                 )
                 cs = cr.waitforcard()
                 cs.connection.connect()
-                self.assertEqual(
-                    cs.__class__, smartcard.PassThruCardService.PassThruCardService
-                )
+                self.assertEqual(cs.__class__, PassThruCardService)
                 self.assertEqual(atr, cs.connection.getATR())
                 self.assertEqual(
                     cs.connection.getReader(), expectedReaderForATR[toHexString(atr)]
@@ -137,16 +132,10 @@ class testcase_CardRequest(unittest.TestCase):
         """Test smartcard.AnyCardType."""
 
         for reader in expectedReaders:
-            atr = expectedATRinReader[reader]
             ct = AnyCardType()
             cr = CardRequest(newcardonly=True, timeout=1, readers=[reader], cardType=ct)
             self.assertRaises(CardRequestTimeoutException, cr.waitforcard)
 
 
-def suite():
-    suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(testcase_CardRequest)
-    return unittest.TestSuite(suite1)
-
-
 if __name__ == "__main__":
-    unittest.main()
+    unittest.main(verbosity=1)

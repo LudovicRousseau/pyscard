@@ -26,7 +26,6 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-import string
 import unittest
 
 # gemalto jython
@@ -168,10 +167,5 @@ class testcase_CAtr(unittest.TestCase):
         self.assertTrue(a.TB[3 - 1] == 0x45)  # TB3
 
 
-def suite():
-    suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(testcase_CAtr)
-    return unittest.TestSuite(suite1)
-
-
 if __name__ == "__main__":
-    unittest.main()
+    unittest.main(verbosity=1)

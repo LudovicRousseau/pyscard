@@ -29,7 +29,18 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import unittest
 
-from smartcard.util import *
+from smartcard.util import (
+    COMMA,
+    HEX,
+    PACK,
+    UPPERCASE,
+    padd,
+    toASCIIBytes,
+    toASCIIString,
+    toBytes,
+    toGSM3_38Bytes,
+    toHexString,
+)
 
 
 class testcase_utils(unittest.TestCase):
@@ -167,10 +178,5 @@ class testcase_utils(unittest.TestCase):
         self.assertRaises(TypeError, toHexString, ["bad", "input"])
 
 
-def suite():
-    suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(testcase_utils)
-    return unittest.TestSuite(suite1)
-
-
 if __name__ == "__main__":
-    unittest.main()
+    unittest.main(verbosity=1)

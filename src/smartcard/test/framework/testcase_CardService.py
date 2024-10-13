@@ -26,8 +26,6 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-import string
-
 # import local_config for reader/card configuration
 # configcheck.py is generating local_config.py in
 # the test suite.
@@ -37,12 +35,7 @@ import unittest
 sys.path += [".."]
 
 try:
-    from local_config import (
-        expectedATRinReader,
-        expectedATRs,
-        expectedReaderGroups,
-        expectedReaders,
-    )
+    from local_config import expectedATRinReader
 except ImportError:
     print("execute test suite first to generate the local_config.py file")
     sys.exit()
@@ -62,7 +55,7 @@ class testcase_CardService(unittest.TestCase):
         DF_TELECOM = [0x7F, 0x10]
 
         for reader in readers():
-            if [] != expectedATRinReader[str(reader)]:
+            if expectedATRinReader[reader.name]:
                 cc = reader.createConnection()
                 cs = CardService(cc)
                 cs.connection.connect()
@@ -72,10 +65,5 @@ class testcase_CardService(unittest.TestCase):
                 self.assertTrue(f"{sw1:x} {sw2:x}" in expectedSWs or "9f" == "%x" % sw1)
 
 
-def suite():
-    suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(testcase_CardService)
-    return unittest.TestSuite(suite1)
-
-
 if __name__ == "__main__":
-    unittest.main()
+    unittest.main(verbosity=1)

@@ -27,8 +27,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 
-import string
-
 # import local_config for reader/card configuration
 # configcheck.py is generating local_config.py in
 # the test suite.
@@ -38,12 +36,7 @@ import unittest
 sys.path += [".."]
 
 try:
-    from local_config import (
-        expectedATRinReader,
-        expectedATRs,
-        expectedReaderGroups,
-        expectedReaders,
-    )
+    from local_config import expectedATRinReader, expectedReaders
 except ImportError:
     print("execute test suite first to generate the local_config.py file")
     sys.exit()
@@ -61,7 +54,7 @@ class testcase_Card(unittest.TestCase):
         """Create a dictionary with Card keys"""
         mydict = {}
         for reader in readers():
-            card = Card(reader, expectedATRinReader[str(reader)])
+            card = Card(reader, expectedATRinReader[reader.name])
             mydict[card] = reader
 
         for card in list(mydict.keys()):
@@ -74,9 +67,9 @@ class testcase_Card(unittest.TestCase):
         DF_TELECOM = [0x7F, 0x10]
 
         for reader in readers():
-            card = Card(reader, expectedATRinReader[str(reader)])
+            card = Card(reader, expectedATRinReader[reader.name])
             cc = card.createConnection()
-            if [] != expectedATRinReader[str(reader)]:
+            if expectedATRinReader[str(reader)]:
                 cc.connect()
                 response, sw1, sw2 = cc.transmit(SELECT + DF_TELECOM)
                 expectedSWs = {"9f 1a": 1, "9f 20": 2, "6e 0": 3}
@@ -92,9 +85,9 @@ class testcase_Card(unittest.TestCase):
         DF_TELECOM = [0x7F, 0x10]
 
         for reader in readers():
-            card = Card(str(reader), expectedATRinReader[str(reader)])
+            card = Card(str(reader), expectedATRinReader[reader.name])
             cc = card.createConnection()
-            if [] != expectedATRinReader[str(reader)]:
+            if expectedATRinReader[str(reader)]:
                 cc.connect()
                 response, sw1, sw2 = cc.transmit(SELECT + DF_TELECOM)
                 expectedSWs = {"9f 1a": 1, "9f 20": 2, "6e 0": 3}
@@ -106,22 +99,17 @@ class testcase_Card(unittest.TestCase):
     def testcase_Card_Eq_NotEq(self):
         """Test == and != for Cards."""
         for reader in readers():
-            card = Card(str(reader), expectedATRinReader[str(reader)])
+            card = Card(str(reader), expectedATRinReader[reader.name])
             cardcopy = Card(str(reader), expectedATRinReader[str(reader)])
             self.assertEqual(True, card == cardcopy)
             self.assertEqual(True, not card != cardcopy)
 
         for reader in readers():
-            card = Card(str(reader), expectedATRinReader[str(reader)])
+            card = Card(str(reader), expectedATRinReader[reader.name])
             cardcopy = Card(str(reader), [0, 0])
             self.assertEqual(True, card != cardcopy)
             self.assertEqual(True, not card == cardcopy)
 
 
-def suite():
-    suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(testcase_CardConnection)
-    return unittest.TestSuite(suite1)
-
-
 if __name__ == "__main__":
-    unittest.main()
+    unittest.main(verbosity=1)

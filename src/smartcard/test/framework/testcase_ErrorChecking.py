@@ -27,15 +27,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 
-import string
-
-# import local_config for reader/card configuration
-# configcheck.py is generating local_config.py in
-# the test suite.
-import sys
 import unittest
-
-sys.path += [".."]
 
 import smartcard.sw.SWExceptions
 from smartcard.sw.ErrorChecker import ErrorChecker
@@ -45,17 +37,6 @@ from smartcard.sw.ISO7816_4ErrorChecker import ISO7816_4ErrorChecker
 from smartcard.sw.ISO7816_8ErrorChecker import ISO7816_8ErrorChecker
 from smartcard.sw.ISO7816_9ErrorChecker import ISO7816_9ErrorChecker
 from smartcard.sw.op21_ErrorChecker import op21_ErrorChecker
-
-try:
-    from local_config import (
-        expectedATRinReader,
-        expectedATRs,
-        expectedReaderGroups,
-        expectedReaders,
-    )
-except ImportError:
-    print("execute test suite first to generate the local_config.py file")
-    sys.exit()
 
 
 class CustomSWException(smartcard.sw.SWExceptions.SWException):
@@ -77,7 +58,7 @@ class TestErrorChecker(ErrorChecker):
     def __call__(self, data, sw1, sw2):
         if 0x56 == sw1 and 0x55 == sw2:
             raise CustomSWException(data, sw1, sw2)
-        elif 0x63 == sw1:
+        if 0x63 == sw1:
             raise CustomSWException(data, sw1, sw2)
 
 
@@ -120,12 +101,11 @@ class testcase_ErrorChecking(unittest.TestCase):
         }
 
         for sw1 in range(0x00, 0xFF + 1):
-            sw2range = []
             exception = None
             if sw1 in tiso7816_4SW1:
                 exception = tiso7816_4SW1[sw1]
             for sw2 in range(0x00, 0xFF + 1):
-                if None != exception:
+                if exception is not None:
                     with self.assertRaises(exception):
                         ecs([], sw1, sw2)
                 else:
@@ -161,6 +141,7 @@ class testcase_ErrorChecking(unittest.TestCase):
             0x6F: (smartcard.sw.SWExceptions.CheckingErrorException, [0x00]),
         }
 
+        exception = None
         for sw1 in range(0x00, 0xFF + 1):
             sw2range = []
             if sw1 in tiso7816_4SW:
@@ -198,6 +179,7 @@ class testcase_ErrorChecking(unittest.TestCase):
             ),
         }
 
+        exception = None
         for sw1 in range(0x00, 0xFF + 1):
             sw2range = []
             if sw1 in tiso7816_8SW:
@@ -223,6 +205,7 @@ class testcase_ErrorChecking(unittest.TestCase):
             ),
         }
 
+        exception = None
         for sw1 in range(0x00, 0xFF + 1):
             sw2range = []
             if sw1 in tiso7816_9SW:
@@ -254,6 +237,7 @@ class testcase_ErrorChecking(unittest.TestCase):
             0x94: (smartcard.sw.SWExceptions.CheckingErrorException, [0x84, 0x85]),
         }
 
+        exception = None
         for sw1 in range(0x00, 0xFF + 1):
             sw2range = []
             if sw1 in top21_SW:
@@ -343,10 +327,5 @@ class testcase_ErrorChecking(unittest.TestCase):
             )
 
 
-def suite():
-    suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(testcase_ErrorChecking)
-    return unittest.TestSuite(suite1)
-
-
 if __name__ == "__main__":
-    unittest.main()
+    unittest.main(verbosity=1)

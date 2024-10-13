@@ -33,18 +33,15 @@ import threading
 import time
 import unittest
 
+# from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver
+from smartcard.CardRequest import CardRequest
+from smartcard.CardType import AnyCardType
+from smartcard.ExclusiveTransmitCardConnection import ExclusiveTransmitCardConnection
+
 # define the apdus used in this script
 GET_RESPONSE = [0xA0, 0xC0, 00, 00]
 SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
 DF_TELECOM = [0x7F, 0x10]
-
-from smartcard.CardConnection import CardConnection
-from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver
-from smartcard.CardMonitoring import CardMonitor, CardObserver
-from smartcard.CardRequest import CardRequest
-from smartcard.CardType import AnyCardType
-from smartcard.ExclusiveTransmitCardConnection import ExclusiveTransmitCardConnection
-from smartcard.util import toHexString
 
 
 def signalEvent(evt):
@@ -95,11 +92,11 @@ class testthread(threading.Thread):
                 connection.lock()
 
                 apdu = SELECT + DF_TELECOM
-                response, sw1, sw2 = connection.transmit(apdu)
+                _, sw1, sw2 = connection.transmit(apdu)
 
                 if 0x90 == (sw1 & 0xF0):
                     apdu = GET_RESPONSE + [sw2]
-                    response, sw1, sw2 = connection.transmit(apdu)
+                    _, sw1, sw2 = connection.transmit(apdu)
             finally:
                 connection.unlock()
             self.countTransmitted = self.countTransmitted + 1
@@ -126,12 +123,5 @@ class testcase_cardmonitor(unittest.TestCase):
                 )
 
 
-def suite():
-    suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(
-        testcase_cardmonitorthread
-    )
-    return unittest.TestSuite(suite1)
-
-
 if __name__ == "__main__":
-    unittest.main()
+    unittest.main(verbosity=1)

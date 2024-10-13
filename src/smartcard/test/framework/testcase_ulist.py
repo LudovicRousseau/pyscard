@@ -132,6 +132,7 @@ class testcase_ulist(unittest.TestCase):
         self.assertEqual(seed + [4] + ["word"], l)
 
     def testcase_ulist_append(self):
+        """append"""
 
         seed = [1, 2, 3]
         c = C(seed)
@@ -146,6 +147,7 @@ class testcase_ulist(unittest.TestCase):
         self.assertEqual(seed + [4] + ["word"], c)
 
     def testcase_ulist_insert(self):
+        """insert"""
 
         seed = [1, 2, 3]
         c = C(seed)
@@ -157,6 +159,7 @@ class testcase_ulist(unittest.TestCase):
         self.assertEqual([0] + seed, c)
 
     def testcase_ulist_pop(self):
+        """pop"""
 
         seed = [1, 2, 3]
         c = C(seed)
@@ -168,6 +171,7 @@ class testcase_ulist(unittest.TestCase):
         self.assertEqual(c, [1])
 
     def testcase_ulist_remove(self):
+        """remove"""
 
         seed = [1, 2, 3]
         c = C(seed)
@@ -179,10 +183,5 @@ class testcase_ulist(unittest.TestCase):
         self.assertEqual(c, [3])
 
 
-def suite():
-    suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(testcase_ulist)
-    return unittest.TestSuite(suite1)
-
-
 if __name__ == "__main__":
-    unittest.main()
+    unittest.main(verbosity=1)

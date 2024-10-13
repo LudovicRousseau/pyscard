@@ -27,8 +27,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 
-import string
-
 # import local_config for reader/card configuration
 # configcheck.py is generating local_config.py in
 # the test suite.
@@ -38,12 +36,7 @@ import unittest
 sys.path += [".."]
 
 try:
-    from local_config import (
-        expectedATRinReader,
-        expectedATRs,
-        expectedReaderGroups,
-        expectedReaders,
-    )
+    from local_config import expectedATRinReader
 except ImportError:
     print("execute test suite first to generate the local_config.py file")
     sys.exit()
@@ -62,7 +55,7 @@ class testcase_CardType(unittest.TestCase):
 
         ct = AnyCardType()
         for reader in readers():
-            if [] != expectedATRinReader[str(reader)]:
+            if expectedATRinReader[reader.name]:
                 connection = reader.createConnection()
                 connection.connect()
                 self.assertEqual(True, ct.matches(connection.getATR()))
@@ -73,8 +66,8 @@ class testcase_CardType(unittest.TestCase):
         """Test smartcard.ATRCardType without mask."""
 
         for reader in readers():
-            if [] != expectedATRinReader[str(reader)]:
-                ct = ATRCardType(expectedATRinReader[str(reader)])
+            if expectedATRinReader[reader.name]:
+                ct = ATRCardType(expectedATRinReader[reader.name])
                 connection = reader.createConnection()
                 connection.connect()
                 self.assertEqual(True, ct.matches(connection.getATR()))
@@ -85,8 +78,8 @@ class testcase_CardType(unittest.TestCase):
         """Test smartcard.ATRCardType mismatch without mask."""
 
         for reader in readers():
-            if [] != expectedATRinReader[str(reader)]:
-                atr = list(expectedATRinReader[str(reader)])
+            if expectedATRinReader[reader.name]:
+                atr = list(expectedATRinReader[reader.name])
                 # change the last byte of the expected atr
                 atr[-1] = 0xFF
                 ct = ATRCardType(atr)
@@ -100,11 +93,11 @@ class testcase_CardType(unittest.TestCase):
         """Test smartcard.ATRCardType with mask."""
 
         for reader in readers():
-            if [] != expectedATRinReader[str(reader)]:
-                mask = [0xFF for x in expectedATRinReader[str(reader)]]
+            if expectedATRinReader[reader.name]:
+                mask = [0xFF for x in expectedATRinReader[reader.name]]
                 # don't look to the last byte
                 mask[-1] = 0x00
-                ct = ATRCardType(expectedATRinReader[str(reader)], mask)
+                ct = ATRCardType(expectedATRinReader[reader.name], mask)
                 connection = reader.createConnection()
                 connection.connect()
                 atr = connection.getATR()
@@ -118,11 +111,11 @@ class testcase_CardType(unittest.TestCase):
         """Test smartcard.ATRCardType with mask and mismatch."""
 
         for reader in readers():
-            if [] != expectedATRinReader[str(reader)]:
-                mask = [0xFF for x in expectedATRinReader[str(reader)]]
+            if expectedATRinReader[reader.name]:
+                mask = [0xFF for x in expectedATRinReader[reader.name]]
                 # don't look to the last byte
                 mask[0] = mask[-1] = 0x00
-                ct = ATRCardType(expectedATRinReader[str(reader)], mask)
+                ct = ATRCardType(expectedATRinReader[reader.name], mask)
                 connection = reader.createConnection()
                 connection.connect()
                 atr = connection.getATR()
@@ -133,10 +126,5 @@ class testcase_CardType(unittest.TestCase):
                 self.assertEqual(False, ct.matches(atr, reader))
 
 
-def suite():
-    suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(testcase_CardType)
-    return unittest.TestSuite(suite1)
-
-
 if __name__ == "__main__":
-    unittest.main()
+    unittest.main(verbosity=1)

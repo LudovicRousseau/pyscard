@@ -38,12 +38,7 @@ import unittest
 sys.path += [".."]
 
 try:
-    from local_config import (
-        expectedATRinReader,
-        expectedATRs,
-        expectedReaderGroups,
-        expectedReaders,
-    )
+    from local_config import expectedATRs
 except ImportError:
     print("execute test suite first to generate the local_config.py file")
     sys.exit()
@@ -67,7 +62,7 @@ class printobserver(CardObserver):
         for card in addedcards:
             foundcards[toHexString(card.atr)] = 1
         for atr in expectedATRs:
-            if [] != atr and {} != foundcards:
+            if atr and foundcards:
                 self.testcase.assertTrue(toHexString(atr) in foundcards)
 
 
@@ -102,12 +97,5 @@ class testcase_cardmonitor(unittest.TestCase):
             t.join()
 
 
-def suite():
-    suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(
-        testcase_cardmonitorthread
-    )
-    return unittest.TestSuite(suite1)
-
-
 if __name__ == "__main__":
-    unittest.main()
+    unittest.main(verbosity=1)
