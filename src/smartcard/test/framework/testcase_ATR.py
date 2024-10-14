@@ -26,36 +26,23 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-import string
-
-# import local_config for reader/card configuration
-# configcheck.py is generating local_config.py in
-# the test suite.
 import sys
 import unittest
 
 sys.path += [".."]
 
 try:
-    from local_config import (
-        expectedATRinReader,
-        expectedATRs,
-        expectedReaderGroups,
-        expectedReaders,
-    )
+    from local_config import expectedATRs
 except ImportError:
     print("execute test suite first to generate the local_config.py file")
     sys.exit()
-
-
-# gemalto jython
-from smartcard import Session
 
 
 class testcase_ATR(unittest.TestCase):
     """Test ATR configuration for test suite"""
 
     def testcase_ATRconfig(self):
+        """ATRconfig"""
         # we have at list 2 readers (one is the simulator), e.g.
         # two potential ATRs
         self.assertTrue(len(expectedATRs) > 1)

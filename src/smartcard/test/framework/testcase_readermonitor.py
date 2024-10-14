@@ -46,6 +46,7 @@ from smartcard.ReaderMonitoring import ReaderMonitor, ReaderObserver
 
 # a simple reader observer that prints added/removed readers
 class printobserver(ReaderObserver):
+    """observer"""
 
     def __init__(self, obsindex, testcase):
         self.obsindex = obsindex
@@ -63,6 +64,7 @@ class printobserver(ReaderObserver):
 
 
 class testthread(threading.Thread):
+    """thread"""
 
     def __init__(self, obsindex, testcase):
         threading.Thread.__init__(self)
@@ -83,6 +85,7 @@ class testcase_readermonitor(unittest.TestCase):
     """Test smartcard framework reader monitoring methods"""
 
     def testcase_readermonitorthread(self):
+        """readermonitor thread"""
         threads = []
         for i in range(0, 4):
             t = testthread(i, self)

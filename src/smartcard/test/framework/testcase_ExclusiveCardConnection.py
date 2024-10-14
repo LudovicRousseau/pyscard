@@ -28,7 +28,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 
 import random
-import sys
 import threading
 import time
 import unittest
@@ -107,6 +106,7 @@ class testcase_cardmonitor(unittest.TestCase):
     """Test smartcard framework card monitoring classes"""
 
     def testcase_cardmonitorthread(self):
+        """card monitor thread"""
         threads = []
         for i in range(0, 4):
             t = testthread(i)
@@ -115,12 +115,8 @@ class testcase_cardmonitor(unittest.TestCase):
             t.start()
         for t in threads:
             t.join()
-        for t in threads:
-            if False:
-                print(
-                    "Thread %d: transmitted %ld apdus."
-                    % (t.threadindex, t.countTransmitted)
-                )
+        # for t in threads:
+        #     print(f"Thread {t.threadindex}: transmitted {t.countTransmitted} apdus.")
 
 
 if __name__ == "__main__":

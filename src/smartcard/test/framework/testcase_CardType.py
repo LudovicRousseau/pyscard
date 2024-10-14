@@ -42,8 +42,7 @@ except ImportError:
     sys.exit()
 
 
-from smartcard.CardType import AnyCardType, ATRCardType, CardType
-from smartcard.Exceptions import InvalidATRMaskLengthException
+from smartcard.CardType import AnyCardType, ATRCardType
 from smartcard.System import readers
 
 

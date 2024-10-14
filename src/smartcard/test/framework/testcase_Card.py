@@ -27,11 +27,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 
-# import local_config for reader/card configuration
-# configcheck.py is generating local_config.py in
-# the test suite.
 import sys
 import unittest
+
+from smartcard.Card import Card
+from smartcard.Exceptions import NoCardException
+from smartcard.System import readers
 
 sys.path += [".."]
 
@@ -42,9 +43,8 @@ except ImportError:
     sys.exit()
 
 
-from smartcard.Card import Card
-from smartcard.Exceptions import NoCardException
-from smartcard.System import readers
+SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
+DF_TELECOM = [0x7F, 0x10]
 
 
 class testcase_Card(unittest.TestCase):
@@ -63,8 +63,6 @@ class testcase_Card(unittest.TestCase):
     def testcase_Card_FromReaders(self):
         """Create a Card from Readers and test that the response
         to SELECT DF_TELECOM has two bytes."""
-        SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
-        DF_TELECOM = [0x7F, 0x10]
 
         for reader in readers():
             card = Card(reader, expectedATRinReader[reader.name])
@@ -74,15 +72,13 @@ class testcase_Card(unittest.TestCase):
                 response, sw1, sw2 = cc.transmit(SELECT + DF_TELECOM)
                 expectedSWs = {"9f 1a": 1, "9f 20": 2, "6e 0": 3}
                 self.assertEqual([], response)
-                self.assertTrue(f"{sw1:x} {sw2:x}" in expectedSWs or "9f" == "%x" % sw1)
+                self.assertTrue(f"{sw1:x} {sw2:x}" in expectedSWs or "9f" == f"{sw1:x}")
             else:
                 self.assertRaises(NoCardException, cc.connect)
 
     def testcase_Card_FromReaderStrings(self):
         """Create a Card from reader strings and test that the response
         to SELECT DF_TELECOM has two bytes."""
-        SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
-        DF_TELECOM = [0x7F, 0x10]
 
         for reader in readers():
             card = Card(str(reader), expectedATRinReader[reader.name])
@@ -92,7 +88,7 @@ class testcase_Card(unittest.TestCase):
                 response, sw1, sw2 = cc.transmit(SELECT + DF_TELECOM)
                 expectedSWs = {"9f 1a": 1, "9f 20": 2, "6e 0": 3}
                 self.assertEqual([], response)
-                self.assertTrue(f"{sw1:x} {sw2:x}" in expectedSWs or "9f" == "%x" % sw1)
+                self.assertTrue(f"{sw1:x} {sw2:x}" in expectedSWs or "9f" == f"{sw1:x}")
             else:
                 self.assertRaises(NoCardException, cc.connect)
 

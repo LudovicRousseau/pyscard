@@ -32,6 +32,7 @@ from smartcard.ulist import ulist
 
 
 class C(ulist):
+    """ulist subclass"""
 
     def __onadditem__(self, item):
         # print('+', item)

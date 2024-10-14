@@ -26,11 +26,11 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-# import local_config for reader/card configuration
-# configcheck.py is generating local_config.py in
-# the test suite.
 import sys
 import unittest
+
+from smartcard.CardService import CardService
+from smartcard.System import readers
 
 sys.path += [".."]
 
@@ -39,11 +39,6 @@ try:
 except ImportError:
     print("execute test suite first to generate the local_config.py file")
     sys.exit()
-
-
-# gemalto jython
-from smartcard.CardService import CardService
-from smartcard.System import readers
 
 
 class testcase_CardService(unittest.TestCase):
@@ -62,7 +57,7 @@ class testcase_CardService(unittest.TestCase):
                 response, sw1, sw2 = cs.connection.transmit(SELECT + DF_TELECOM)
                 expectedSWs = {"9f 1a": 1, "6e 0": 2, "9f 20": 3, "9f 22": 4}
                 self.assertEqual([], response)
-                self.assertTrue(f"{sw1:x} {sw2:x}" in expectedSWs or "9f" == "%x" % sw1)
+                self.assertTrue(f"{sw1:x} {sw2:x}" in expectedSWs or "9f" == f"{sw1:x}")
 
 
 if __name__ == "__main__":

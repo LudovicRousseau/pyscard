@@ -26,7 +26,6 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-import platform
 import unittest
 
 from smartcard.scard import resourceManager
@@ -146,10 +145,6 @@ if "winscard" == resourceManager:
             # clean-up
             groups.remove(self.biogroup)
             groups.remove(self.pinpadgroup)
-
-    def suite():
-        suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(testcase_readergroups)
-        return unittest.TestSuite(suite1)
 
 
 if __name__ == "__main__":

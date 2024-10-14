@@ -72,12 +72,12 @@ class testcase_ErrorChecking(unittest.TestCase):
             callableObj(*args, **kwargs)
         except excClass as e:
             return e
+
+        if hasattr(excClass, "__name__"):
+            exc_name = excClass.__name__
         else:
-            if hasattr(excClass, "__name__"):
-                excName = excClass.__name__
-            else:
-                excName = str(excClass)
-            raise self.failureException(excName)
+            exc_name = str(excClass)
+        raise self.failureException(exc_name)
 
     def testcase_ISO7816_4SW1ErrorChecker(self):
         """Test ISO7816_4_SW1ErrorChecker."""
@@ -101,9 +101,7 @@ class testcase_ErrorChecking(unittest.TestCase):
         }
 
         for sw1 in range(0x00, 0xFF + 1):
-            exception = None
-            if sw1 in tiso7816_4SW1:
-                exception = tiso7816_4SW1[sw1]
+            exception = tiso7816_4SW1.get(sw1)
             for sw2 in range(0x00, 0xFF + 1):
                 if exception is not None:
                     with self.assertRaises(exception):
