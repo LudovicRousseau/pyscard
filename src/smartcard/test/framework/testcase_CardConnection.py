@@ -126,7 +126,7 @@ class testcase_CardConnection(unittest.TestCase):
         cc.disconnect()
 
     def testcase_CardConnectionT0T1(self):
-        """Test test with T0 | T1  the response to SELECT DF_TELECOM."""
+        """Test test with T0 | T1 the response to SELECT DF_TELECOM."""
         SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
         DF_TELECOM = [0x7F, 0x10]
 
@@ -162,7 +162,7 @@ class testcase_CardConnection(unittest.TestCase):
         cc.disconnect()
 
     def testcase_CardConnectionT0T1inTransmitMustFail(self):
-        """Test with bad parameter in transmit  the response to SELECT
+        """Test with bad parameter in transmit the response to SELECT
         DF_TELECOM."""
         SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
         DF_TELECOM = [0x7F, 0x10]
