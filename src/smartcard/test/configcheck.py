@@ -28,7 +28,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 
 import os.path
+import time
 
+from smartcard.ATR import ATR
 from smartcard.Exceptions import NoCardException
 from smartcard.System import readers
 
@@ -53,18 +55,33 @@ def checklocalconfig():
     else:
         print("local_config.py not found; generating local_config.py...")
 
+    wrong_setup = False
     # generate local configuration
     with open("local_config.py", "w", encoding="utf-8") as f:
 
         f.write("from smartcard.util import toHexString\n")
         f.write("expectedReaders = ")
-        f.write(str(readers()) + "\n")
+        expectedReaders = readers()
+        if len(expectedReaders) < 2:
+            print("You should use at least 2 readers.")
+            wrong_setup = True
+        f.write(str(expectedReaders) + "\n")
         expectedATRs = []
-        for reader in readers():
+        atr_ok = 0
+        for reader in expectedReaders:
             try:
-                expectedATRs.append(getATR(reader))
+                atr = getATR(reader)
+                expectedATRs.append(atr)
+                if ATR(atr).isT1Supported():
+                    print("You should use T=0 cards")
+                    wrong_setup = True
+                atr_ok += 1
             except NoCardException:
                 expectedATRs.append([])
+        if atr_ok < 2:
+            print("You should use at least 2 cards.")
+            wrong_setup = True
+
         f.write("expectedATRs = ")
         f.write(repr(expectedATRs) + "\n")
 
@@ -80,6 +97,11 @@ def checklocalconfig():
         )
 
         f.write("expectedReaderGroups = ['SCard$DefaultReaders']\n")
+
+    if wrong_setup:
+        print("The readers or cards setup is invalid. Some tests WILL fail!")
+        print("Pause for 5 seconds")
+        time.sleep(5)
 
 
 if __name__ == "__main__":
