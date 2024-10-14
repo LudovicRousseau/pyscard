@@ -29,3 +29,11 @@ addopts = "--color=yes"
 filterwarnings = [
 #    "error",
 ]
+
+# pylint
+# ------
+
+[tool.pylint."MESSAGES CONTROL"]
+disable = """
+	invalid-name,
+"""
