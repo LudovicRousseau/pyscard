@@ -27,11 +27,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 
-import string
-
-# import local_config for reader/card configuration
-# configcheck.py is generating local_config.py in
-# the test suite.
 import sys
 import unittest
 
@@ -54,15 +49,15 @@ from smartcard.scard import (
 )
 from smartcard.System import readers
 
+SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
+DF_TELECOM = [0x7F, 0x10]
+
 
 class testcase_CardConnection(unittest.TestCase):
     """Test case for CardConnection."""
 
     def testcase_CardConnection(self):
         """Test with default protocols the response to SELECT DF_TELECOM."""
-        SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
-        DF_TELECOM = [0x7F, 0x10]
-
         for reader in readers():
             cc = reader.createConnection()
             if expectedATRinReader[str(reader)]:
@@ -70,15 +65,13 @@ class testcase_CardConnection(unittest.TestCase):
                 response, sw1, sw2 = cc.transmit(SELECT + DF_TELECOM)
                 expectedSWs = {"9f 1a": 1, "6e 0": 2, "9f 20": 3, "9f 22": 4}
                 self.assertEqual([], response)
-                self.assertTrue(f"{sw1:x} {sw2:x}" in expectedSWs or "9f" == "%x" % sw1)
+                self.assertTrue(f"{sw1:x} {sw2:x}" in expectedSWs or "9f" == f"{sw1:x}")
             else:
                 self.assertRaises(NoCardException, cc.connect)
         cc.disconnect()
 
     def testcase_CardConnectionT0(self):
         """Test with T0 the response to SELECT DF_TELECOM."""
-        SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
-        DF_TELECOM = [0x7F, 0x10]
 
         for reader in readers():
             cc = reader.createConnection()
@@ -87,7 +80,7 @@ class testcase_CardConnection(unittest.TestCase):
                 response, sw1, sw2 = cc.transmit(SELECT + DF_TELECOM)
                 expectedSWs = {"9f 1a": 1, "6e 0": 2, "9f 20": 3, "9f 22": 4}
                 self.assertEqual([], response)
-                self.assertTrue(f"{sw1:x} {sw2:x}" in expectedSWs or "9f" == "%x" % sw1)
+                self.assertTrue(f"{sw1:x} {sw2:x}" in expectedSWs or "9f" == f"{sw1:x}")
             else:
                 self.assertRaises(NoCardException, cc.connect)
         cc.disconnect()
@@ -108,8 +101,6 @@ class testcase_CardConnection(unittest.TestCase):
 
     def testcase_CardConnectionT1inTransmit(self):
         """Test that T1 in transmit for a T0 card fails."""
-        SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
-        DF_TELECOM = [0x7F, 0x10]
 
         for reader in readers():
             cc = reader.createConnection()
@@ -127,8 +118,6 @@ class testcase_CardConnection(unittest.TestCase):
 
     def testcase_CardConnectionT0T1(self):
         """Test test with T0 | T1 the response to SELECT DF_TELECOM."""
-        SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
-        DF_TELECOM = [0x7F, 0x10]
 
         for reader in readers():
             cc = reader.createConnection()
@@ -137,15 +126,13 @@ class testcase_CardConnection(unittest.TestCase):
                 response, sw1, sw2 = cc.transmit(SELECT + DF_TELECOM)
                 expectedSWs = {"9f 1a": 1, "6e 0": 2, "9f 20": 3, "9f 22": 4}
                 self.assertEqual([], response)
-                self.assertTrue(f"{sw1:x} {sw2:x}" in expectedSWs or "9f" == "%x" % sw1)
+                self.assertTrue(f"{sw1:x} {sw2:x}" in expectedSWs or "9f" == f"{sw1:x}")
             else:
                 self.assertRaises(NoCardException, cc.connect)
         cc.disconnect()
 
     def testcase_CardConnectionT0inTransmit(self):
         """Test with T0 in transmit the response to SELECT DF_TELECOM."""
-        SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
-        DF_TELECOM = [0x7F, 0x10]
 
         for reader in readers():
             cc = reader.createConnection()
@@ -156,7 +143,7 @@ class testcase_CardConnection(unittest.TestCase):
                 )
                 expectedSWs = {"9f 1a": 1, "6e 0": 2, "9f 20": 3, "9f 22": 4}
                 self.assertEqual([], response)
-                self.assertTrue(f"{sw1:x} {sw2:x}" in expectedSWs or "9f" == "%x" % sw1)
+                self.assertTrue(f"{sw1:x} {sw2:x}" in expectedSWs or "9f" == f"{sw1:x}")
             else:
                 self.assertRaises(NoCardException, cc.connect)
         cc.disconnect()
@@ -164,8 +151,6 @@ class testcase_CardConnection(unittest.TestCase):
     def testcase_CardConnectionT0T1inTransmitMustFail(self):
         """Test with bad parameter in transmit the response to SELECT
         DF_TELECOM."""
-        SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
-        DF_TELECOM = [0x7F, 0x10]
 
         for reader in readers():
             cc = reader.createConnection()
