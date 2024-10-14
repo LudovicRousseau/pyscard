@@ -31,14 +31,15 @@ from smartcard.reader.Reader import Reader
 from smartcard.scard import *
 
 
-def __PCSCreaders__(hcontext, groups=[]):
+def __PCSCreaders__(hcontext, groups=None):
     """Returns the list of PCSC smartcard readers in PCSC group.
 
     If group is not specified, returns the list of all PCSC smartcard readers.
     """
 
-    # in case we have a string instead of a list
-    if isinstance(groups, str):
+    if groups is None:
+        groups = []
+    elif isinstance(groups, str):
         groups = [groups]
     hresult, readers = SCardListReaders(hcontext, groups)
     if hresult != SCARD_S_SUCCESS:
@@ -104,7 +105,9 @@ class PCSCReader(Reader):
             return PCSCReader(readername)
 
     @staticmethod
-    def readers(groups=[]):
+    def readers(groups=None):
+        if groups is None:
+            groups = []
         creaders = []
         hcontext = PCSCContext().getContext()
 

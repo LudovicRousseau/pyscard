@@ -85,8 +85,10 @@ class CardConnectionDecorator(CardConnection):
         """call inner component transmit"""
         return self.component.transmit(command, protocol)
 
-    def control(self, controlCode, command=[]):
+    def control(self, controlCode, command=None):
         """call inner component control"""
+        if command is None:
+            command = []
         return self.component.control(controlCode, command)
 
     def getAttrib(self, attribId):
