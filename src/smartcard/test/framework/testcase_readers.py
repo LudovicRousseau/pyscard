@@ -30,6 +30,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 import sys
 import unittest
 
+from smartcard import listReaders
+from smartcard.scard import resourceManager
+from smartcard.System import readergroups, readers
+
 sys.path += [".."]
 
 try:
@@ -39,18 +43,15 @@ except ImportError:
     sys.exit()
 
 
-from smartcard import listReaders
-from smartcard.scard import resourceManager
-from smartcard.System import readergroups, readers
-
-
 class testcase_readers(unittest.TestCase):
     """Test smartcard framework readers factory methods"""
 
     def testcase_enoughreaders(self):
+        """enough readers"""
         self.assertTrue(len(readers()) > 1)
 
     def testcase_readers(self):
+        """readers"""
         foundreaders = {}
         for reader in readers():
             foundreaders[str(reader)] = 1
@@ -58,6 +59,7 @@ class testcase_readers(unittest.TestCase):
             self.assertTrue(reader in foundreaders)
 
     def testcase_hashreaders(self):
+        """hash readers"""
         foundreaders = {}
         for reader in readers():
             foundreaders[reader] = 1
@@ -65,6 +67,7 @@ class testcase_readers(unittest.TestCase):
             self.assertTrue(reader in readers())
 
     def testcase_legacyreaders(self):
+        """legacy readers"""
         foundreaders = {}
         for reader in listReaders():
             foundreaders[reader] = 1
@@ -72,6 +75,7 @@ class testcase_readers(unittest.TestCase):
             self.assertTrue(reader in foundreaders)
 
     def testcase_readers_in_readergroup(self):
+        """readers in readergroups"""
         foundreaders = {}
         for reader in readers(["SCard$DefaultReaders"]):
             foundreaders[str(reader)] = 1
@@ -79,6 +83,7 @@ class testcase_readers(unittest.TestCase):
             self.assertTrue(reader in foundreaders)
 
     def testcase_readers_in_readergroup_empty(self):
+        """readers in readergroups empty"""
         foundreaders = {}
         for reader in readers([]):
             foundreaders[str(reader)] = 1
@@ -88,14 +93,16 @@ class testcase_readers(unittest.TestCase):
     if "winscard" == resourceManager:
 
         def testcase_readers_in_readergroup_nonexistent(self):
+            """readers in readergroups nonexistent"""
             foundreaders = {}
             for reader in readers(["dummy$group"]):
                 foundreaders[reader] = 1
             for reader in expectedReaders:
-                self.assertTrue(not reader in foundreaders)
+                self.assertTrue(reader not in foundreaders)
             self.assertEqual(0, len(foundreaders))
 
     def testcase_readergroups(self):
+        """readergroups"""
         foundreadergroups = {}
         for readergroup in readergroups():
             foundreadergroups[readergroup] = 1

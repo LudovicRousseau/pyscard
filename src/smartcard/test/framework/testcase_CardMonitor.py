@@ -27,13 +27,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 
-# import local_config for reader/card configuration
-# configcheck.py is generating local_config.py in
-# the test suite.
 import sys
 import threading
 import time
 import unittest
+
+from smartcard.CardMonitoring import CardMonitor, CardObserver
+from smartcard.util import toHexString
 
 sys.path += [".."]
 
@@ -44,19 +44,16 @@ except ImportError:
     sys.exit()
 
 
-from smartcard.CardMonitoring import CardMonitor, CardObserver
-from smartcard.util import toHexString
-
-
 # a simple card observer that prints inserted/removed cards
 class printobserver(CardObserver):
+    """print observer"""
 
     def __init__(self, obsindex, testcase):
         self.obsindex = obsindex
         self.testcase = testcase
 
-    def update(self, observable, actions):
-        (addedcards, removedcards) = actions
+    def update(self, observable, handlers):
+        (addedcards, removedcards) = handlers
         foundcards = {}
         self.testcase.assertEqual(removedcards, [])
         for card in addedcards:
@@ -67,6 +64,7 @@ class printobserver(CardObserver):
 
 
 class testthread(threading.Thread):
+    """thread"""
 
     def __init__(self, obsindex, testcase):
         threading.Thread.__init__(self)
@@ -87,6 +85,7 @@ class testcase_cardmonitor(unittest.TestCase):
     """Test smartcard framework card monitoring classes"""
 
     def testcase_cardmonitorthread(self):
+        """card monitor thread"""
         threads = []
         for i in range(0, 4):
             t = testthread(i, self)
