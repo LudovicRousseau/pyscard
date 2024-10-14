@@ -53,7 +53,9 @@ class ReaderFactory:
         return ReaderFactory.factories[clazz].create(readername)
 
     @staticmethod
-    def readers(groups=[]):
+    def readers(groups=None):
+        if groups is None:
+            groups = []
         zreaders = []
         for fm in ReaderFactory.factorymethods:
             zreaders += fm(groups)

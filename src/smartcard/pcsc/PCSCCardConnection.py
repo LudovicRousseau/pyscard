@@ -285,7 +285,7 @@ class PCSCCardConnection(CardConnection):
         data = [(x + 256) % 256 for x in response[:-2]]
         return list(data), sw1, sw2
 
-    def doControl(self, controlCode, command=[]):
+    def doControl(self, controlCode, command=None):
         """Transmit a control command to the reader and return response.
 
         @param controlCode: control command
@@ -294,6 +294,8 @@ class PCSCCardConnection(CardConnection):
 
         @return:      response are the response bytes (if any)
         """
+        if command is None:
+            command = []
         CardConnection.doControl(self, controlCode, command)
         hresult, response = SCardControl(self.hcard, controlCode, command)
         if hresult != SCARD_S_SUCCESS:

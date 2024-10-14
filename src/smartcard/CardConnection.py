@@ -187,7 +187,7 @@ class CardConnection(Observable):
         transmission."""
         return [], 0, 0
 
-    def control(self, controlCode, command=[]):
+    def control(self, controlCode, command=None):
         """Send a control command and buffer.  Internally calls
         L{doControl()} class method and notify observers upon
         command/response events.  Subclasses must override the
@@ -197,6 +197,8 @@ class CardConnection(Observable):
 
         @param command:     list of bytes to transmit
         """
+        if command is None:
+            command = []
         Observable.setChanged(self)
         Observable.notifyObservers(
             self, CardConnectionEvent("command", [controlCode, command])

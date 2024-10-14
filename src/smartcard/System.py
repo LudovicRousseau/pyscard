@@ -28,7 +28,7 @@ import smartcard.pcsc.PCSCReaderGroups
 import smartcard.reader.ReaderFactory
 
 
-def readers(groups=[]):
+def readers(groups=None):
     """Returns the list of smartcard readers in groups as
     L{smartcard.reader.Reader}.
 
@@ -39,6 +39,8 @@ def readers(groups=[]):
     >>> r=smartcard.readers(['SCard$DefaultReaders', 'MyReaderGroup'])
     """
 
+    if groups is None:
+        groups = []
     return smartcard.reader.ReaderFactory.ReaderFactory.readers(groups)
 
 
