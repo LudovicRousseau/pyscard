@@ -39,7 +39,7 @@ repos:
       - id: "check-useless-excludes"
 
   - repo: "https://github.com/pre-commit/pre-commit-hooks"
-    rev: "v4.6.0"
+    rev: "v5.0.0"
     hooks:
       - id: "check-added-large-files"
       - id: "check-merge-conflict"
@@ -51,7 +51,7 @@ repos:
       - id: "trailing-whitespace"
 
   - repo: "https://github.com/asottile/pyupgrade"
-    rev: "v3.17.0"
+    rev: "v3.18.0"
     hooks:
       - id: "pyupgrade"
         name: "Enforce Python 3.9+ idioms"
@@ -59,7 +59,7 @@ repos:
           - "--py39-plus"
 
   - repo: "https://github.com/psf/black-pre-commit-mirror"
-    rev: "24.8.0"
+    rev: "24.10.0"
     hooks:
       - id: "black"
 
@@ -69,11 +69,11 @@ repos:
       - id: "isort"
 
   - repo: "https://github.com/python-jsonschema/check-jsonschema"
-    rev: "0.29.2"
+    rev: "0.29.4"
     hooks:
       - id: "check-github-workflows"
 
   - repo: "https://github.com/rhysd/actionlint"
-    rev: "v1.7.2"
+    rev: "v1.7.3"
     hooks:
       - id: "actionlint"
