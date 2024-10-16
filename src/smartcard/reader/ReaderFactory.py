@@ -6,10 +6,6 @@ Factory pattern implementation borrowed from
 Thinking in Python, Bruce Eckel,
 http://mindview.net/Books/TIPython
 
-The code to instantiate the reader Factory() has
-been updated to dynamically load the module with
-Robert Brewer ClassLoader.py.
-
 Copyright 2001-2012 gemalto
 Author: Jean-Daniel Aussel, mailto:jean-daniel.aussel@gemalto.com
 
@@ -30,7 +26,8 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-from smartcard.ClassLoader import get_class
+import importlib
+
 from smartcard.pcsc.PCSCReader import PCSCReader
 
 
@@ -42,14 +39,19 @@ class ReaderFactory:
 
     # A Template Method:
     @staticmethod
-    def createReader(clazz, readername):
+    def createReader(clazz: str, readername: str):
         """Static method to create a reader from a reader clazz.
 
         @param clazz:      the reader class name
         @param readername: the reader name
         """
-        if not clazz in ReaderFactory.factories:
-            ReaderFactory.factories[clazz] = get_class(clazz).Factory()
+
+        if clazz not in ReaderFactory.factories:
+            module_name, _, class_name = clazz.rpartition(".")
+            imported_module = importlib.import_module(module_name)
+            imported_class = getattr(imported_module, class_name)
+            ReaderFactory.factories[clazz] = imported_class.Factory()
+
         return ReaderFactory.factories[clazz].create(readername)
 
     @staticmethod
