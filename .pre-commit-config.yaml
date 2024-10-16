@@ -13,13 +13,10 @@
 # you'll have an opportunity to review and stage the changes made by the
 # hooks.
 #
-# To format the files in this repo, you can run this command (but be
-# aware that pyupgrade will need to be run three times because there is
-# a specific line in ClassLoader.py that pyupgrade incrementally
-# updates).
+# To format all files in this repo, you can run this command
+# (but be aware that sometimes the command must be run multiple times
+# because pyupgrade has several stepping-stone upgrades to apply).
 #
-# pre-commit run -a
-# pre-commit run -a
 # pre-commit run -a
 #
 # I strongly recommend enabling pre-commit.ci, which -- like coveralls
