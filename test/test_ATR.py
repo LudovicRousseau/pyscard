@@ -156,3 +156,19 @@ def test_atr_get():
     assert a.getHistoricalBytes(), [0x36 == 0x06]
     assert a.isT15Supported() is False
     assert str(a) == atr
+
+
+@pytest.mark.parametrize(
+    "field, expected_length",
+    (
+        ("clockrateconversion", 16),
+        ("bitratefactor", 16),
+    ),
+)
+def test_map_lengths(field, expected_length):
+    """Verify ATR class fields have expected lengths.
+
+    This doesn't validate values, but simply ensures the lengths match expectations.
+    """
+
+    assert len(getattr(ATR, field)) == expected_length

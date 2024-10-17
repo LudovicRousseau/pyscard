@@ -11,6 +11,7 @@ Unreleased changes
    * Build the docs as a part of the test suite
    * Begin to add type annotations to the package
    * Deprecate the `HexListToBinString`, `BinStringToHexList`, `hl2bs`, and `bs2hl` utility functions
+   * Support "64" as an ATR baud rate adjustment integer (ISO 7816-3 2006)
 
 2.1.1 (September 2024)
 ======================
