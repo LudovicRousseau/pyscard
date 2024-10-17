@@ -46,7 +46,6 @@ class ATR:
         2048,
         "RFU",
         "RFU",
-        "RFU",
     ]
     bitratefactor = [
         "RFU",
@@ -56,7 +55,7 @@ class ATR:
         8,
         16,
         32,
-        "RFU",
+        64,
         12,
         20,
         "RFU",
