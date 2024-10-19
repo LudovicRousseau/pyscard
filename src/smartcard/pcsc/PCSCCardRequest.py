@@ -154,7 +154,7 @@ class PCSCCardRequest(AbstractCardRequest):
         readernames.append("\\\\?PnP?\\Notification")
 
         for reader in readernames:
-            if not reader in readerstates:
+            if reader not in readerstates:
                 readerstates[reader] = (reader, SCARD_STATE_UNAWARE)
 
         # call SCardGetStatusChange only if we have some readers
@@ -207,7 +207,7 @@ class PCSCCardRequest(AbstractCardRequest):
                 readernames.append("\\\\?PnP?\\Notification")
 
             for reader in readernames:
-                if not reader in readerstates:
+                if reader not in readerstates:
                     readerstates[reader] = (reader, SCARD_STATE_UNAWARE)
 
             # remove dictionary entry for readers that disappeared
