@@ -32,7 +32,10 @@ from smartcard.Exceptions import (
     CardRequestTimeoutException,
     ListReadersException,
 )
-from smartcard.pcsc.PCSCContext import PCSCContext
+from smartcard.pcsc.PCSCExceptions import (
+    EstablishContextException,
+    ReleaseContextException,
+)
 from smartcard.pcsc.PCSCReader import PCSCReader
 from smartcard.scard import *
 
@@ -79,24 +82,36 @@ class PCSCCardRequest(AbstractCardRequest):
         else:
             self.timeout = int(self.timeout * 1000)
 
-        self.hcontext = PCSCContext().getContext()
+        hresult, self.hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+        if hresult != SCARD_S_SUCCESS:
+            raise EstablishContextException(hresult)
         self.evt = threading.Event()
         self.hresult = SCARD_S_SUCCESS
         self.readerstates = {}
         self.newstates = []
         self.timeout_init = self.timeout
 
+    def __del__(self):
+        hresult = SCardReleaseContext(self.hcontext)
+        if hresult != SCARD_S_SUCCESS:
+            raise ReleaseContextException(hresult)
+        self.hcontext = -1
+
     def getReaderNames(self):
         """Returns the list of PCSC readers on which to wait for cards."""
 
-        # renew the context in case PC/SC was stopped
-        # this happens on Windows when the last reader is disconnected
-        self.hcontext = PCSCContext().getContext()
-
         # get inserted readers
         hresult, pcscreaders = SCardListReaders(self.hcontext, [])
+
+        # renew the context in case PC/SC was stopped
+        # this happens on Windows when the last reader is disconnected
         if hresult in (SCARD_E_SERVICE_STOPPED, SCARD_E_NO_SERVICE):
-            self.hcontext = PCSCContext().renewContext()
+            hresult = SCardReleaseContext(self.hcontext)
+            if hresult != SCARD_S_SUCCESS:
+                raise ReleaseContextException(hresult)
+            hresult, self.hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+            if hresult != SCARD_S_SUCCESS:
+                raise EstablishContextException(hresult)
             hresult, pcscreaders = SCardListReaders(self.hcontext, [])
         if SCARD_E_NO_READERS_AVAILABLE == hresult:
             return []
