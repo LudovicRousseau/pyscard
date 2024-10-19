@@ -50,12 +50,9 @@ class PCSCContext:
     instance = None
 
     def __init__(self):
-        PCSCContext.mutex.acquire()
-        try:
+        with PCSCContext.mutex:
             if not PCSCContext.instance:
                 self.renewContext()
-        finally:
-            PCSCContext.mutex.release()
 
     def __getattr__(self, name):
         if self.instance:
@@ -63,13 +60,10 @@ class PCSCContext:
 
     @staticmethod
     def renewContext():
-        PCSCContext.mutex.acquire()
-        try:
+        with PCSCContext.mutex:
             if PCSCContext.instance is not None:
                 PCSCContext.instance.releaseContext()
 
             PCSCContext.instance = PCSCContext.__PCSCContextSingleton()
-        finally:
-            PCSCContext.mutex.release()
 
         return PCSCContext.instance.getContext()
