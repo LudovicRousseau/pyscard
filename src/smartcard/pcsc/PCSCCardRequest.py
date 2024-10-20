@@ -253,6 +253,10 @@ class PCSCCardRequest(AbstractCardRequest):
             elif SCARD_E_UNKNOWN_READER == hresult:
                 pass
 
+            # this happens on Windows when the last reader is disconnected
+            elif hresult in (SCARD_E_SYSTEM_CANCELLED, SCARD_E_NO_SERVICE):
+                pass
+
             # some error happened
             elif SCARD_S_SUCCESS != hresult:
                 raise CardRequestException(
@@ -379,6 +383,10 @@ class PCSCCardRequest(AbstractCardRequest):
 
             # the reader was unplugged during the loop
             elif SCARD_E_UNKNOWN_READER == hresult:
+                pass
+
+            # this happens on Windows when the last reader is disconnected
+            elif hresult in (SCARD_E_SYSTEM_CANCELLED, SCARD_E_NO_SERVICE):
                 pass
 
             # some error happened
