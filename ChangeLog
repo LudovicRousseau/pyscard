@@ -1,7 +1,22 @@
-Unreleased changes
-==================
+2.2.0 (October 2024)
+====================
+- patches from Ludovic Rousseau
+   * PCSCCardRequest: 
+    - handle KeyboardInterrupt in waitforcard() & waitforcardevent()
+	- use a local PC/SC context to avoid locks
+   * smartcard.util.padd(): do NOT modify the input parameter
+   * CardMonitoring: a timeout exception IS expected
+   * Fix pydoctor documentation
+   * wx: fix module and examples
+   * Minor changes
+- patches from Kurt McKee
    * Remove Python 2 conditional code
+   * Eliminate Windows Vista and Windows 7 conditionals
+   * Test and improve the synchronization code
+   * Test and update the `Observer.py` code
+   * Remove `ClassLoader.py`
    * Migrate a `src/` layout
+   * Migrate test/* from unittest to pytest
    * Add missing GSM 03.38 symbols for decoding
    * Support only Python 3.9 and higher
    * Remove the Python 2.x-only Pyro dependency
