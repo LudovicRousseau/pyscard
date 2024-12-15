@@ -302,13 +302,15 @@ class PCSCCardRequest(AbstractCardRequest):
         """Wait for card insertion or removal."""
         AbstractCardRequest.waitforcardevent(self)
         presentcards = []
-        readerstates = {}
 
         startDate = datetime.now()
         eventfound = False
         self.timeout = self.timeout_init
         previous_readernames = self.getReaderNames()
         while not eventfound:
+
+            # get states from previous run
+            readerstates = self.readerstates
 
             # reinitialize at each iteration just in case a new reader appeared
             _readernames = self.getReaderNames()
@@ -318,34 +320,59 @@ class PCSCCardRequest(AbstractCardRequest):
                 # add PnP special reader
                 readernames.append("\\\\?PnP?\\Notification")
 
-            readerstates = {}
-            for reader in readernames:
-                # create a dictionary entry for new readers
-                readerstates[reader] = (reader, SCARD_STATE_UNAWARE)
+            # first call?
+            if len(readerstates) == 0:
+                # init
+                for reader in readernames:
+                    # create a dictionary entry for new readers
+                    readerstates[reader] = (reader, SCARD_STATE_UNAWARE)
 
-            hresult, newstates = SCardGetStatusChange(
-                self.hcontext, 0, list(readerstates.values())
-            )
+                hresult, newstates = SCardGetStatusChange(
+                    self.hcontext, 0, list(readerstates.values())
+                )
 
             # check if a new reader with a card has just been connected
-            for state in newstates:
-                readername, eventstate, _ = state
+            for reader in _readernames:
+                # is the reader a new one?
+                if reader not in readerstates:
+                    # create a dictionary entry for new reader
+                    readerstates[reader] = (reader, SCARD_STATE_UNAWARE)
 
-                # the reader is a new one
-                if readername not in previous_readernames:
-                    if eventstate & SCARD_STATE_PRESENT:
+                    hresult, newstates = SCardGetStatusChange(
+                        self.hcontext, 0, list(readerstates.values())
+                    )
+
+                    # added reader is the last one (index is -1)
+                    _, state, _ = newstates[-1]
+                    if state & SCARD_STATE_PRESENT:
                         eventfound = True
+
+            # check if a reader has been removed
+            to_remove = []
+            for reader in readerstates:
+                if reader not in readernames:
+                    _, state = readerstates[reader]
+                    # was the card present?
+                    if state & SCARD_STATE_PRESENT:
+                        eventfound = True
+
+                    to_remove.append(reader)
+
+            if to_remove:
+                for reader in to_remove:
+                    # remove reader
+                    del readerstates[reader]
+
+                # get newstates with new reader list
+                hresult, newstates = SCardGetStatusChange(
+                    self.hcontext, 0, list(readerstates.values())
+                )
 
             if eventfound:
                 break
 
-            # update previous readers list
+            # update previous readers list (without PnP special reader)
             previous_readernames = _readernames
-
-            # update readerstate
-            for state in newstates:
-                readername, eventstate, atr = state
-                readerstates[readername] = (readername, eventstate)
 
             # wait for card insertion
             self.readerstates = readerstates
@@ -401,31 +428,17 @@ class PCSCCardRequest(AbstractCardRequest):
                 for state in newstates:
                     readername, eventstate, atr = state
 
-                    # ignore Pnp reader
+                    # ignore PnP reader
                     if readername == "\\\\?PnP?\\Notification":
                         continue
 
-                    _, oldstate = readerstates[readername]
-
-                    # the status can change on a card already inserted, e.g.
-                    # unpowered, in use, ... Clear the state changed bit if
-                    # the card was already inserted and is still inserted
-                    if (
-                        oldstate & SCARD_STATE_PRESENT
-                        and eventstate & (SCARD_STATE_CHANGED | SCARD_STATE_PRESENT)
-                        == SCARD_STATE_CHANGED | SCARD_STATE_PRESENT
-                    ):
-                        eventstate = eventstate & (0xFFFFFFFF ^ SCARD_STATE_CHANGED)
-
                     if eventstate & SCARD_STATE_CHANGED:
-                        if (
-                            # a reader or a card has been removed
-                            oldstate & SCARD_STATE_PRESENT
-                            or
-                            # a card has been inserted
-                            eventstate & SCARD_STATE_PRESENT
-                        ):
-                            eventfound = True
+                        eventfound = True
+
+            # update readerstates for next SCardGetStatusChange() call
+            self.readerstates = {}
+            for reader, state, atr in newstates:
+                self.readerstates[reader] = (reader, state)
 
         # return all the cards present
         for state in newstates:
