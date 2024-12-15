@@ -157,7 +157,7 @@ class CardMonitoringThread:
             """Runs until stopEvent is notified, and notify
             observers of all card insertion/removal.
             """
-            self.cardrequest = CardRequest(timeout=10)
+            self.cardrequest = CardRequest(timeout=60)
             while self.stopEvent.is_set() != 1:
                 try:
                     currentcards = self.cardrequest.waitforcardevent()
