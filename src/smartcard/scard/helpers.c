@@ -309,7 +309,7 @@ Builds a Python string from an ERRORSTRING
     if( NULL!=source )
     {
 #if (PY_MAJOR_VERSION >= 3) && defined(WIN32)
-        pystr = PyUnicode_Decode( source, strlen(source), "cp1250" , NULL);
+        pystr = PyUnicode_DecodeLocale(source, NULL);
 #else
         pystr = PyString_FromString( source );
 #endif
