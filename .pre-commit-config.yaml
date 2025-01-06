@@ -48,7 +48,7 @@ repos:
       - id: "trailing-whitespace"
 
   - repo: "https://github.com/asottile/pyupgrade"
-    rev: "v3.18.0"
+    rev: "v3.19.1"
     hooks:
       - id: "pyupgrade"
         name: "Enforce Python 3.9+ idioms"
@@ -66,11 +66,11 @@ repos:
       - id: "isort"
 
   - repo: "https://github.com/python-jsonschema/check-jsonschema"
-    rev: "0.29.4"
+    rev: "0.30.0"
     hooks:
       - id: "check-github-workflows"
 
   - repo: "https://github.com/rhysd/actionlint"
-    rev: "v1.7.3"
+    rev: "v1.7.6"
     hooks:
       - id: "actionlint"
