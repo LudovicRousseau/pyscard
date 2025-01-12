@@ -1,3 +1,12 @@
+2.2.1 (January 2025)
+====================
+- patches from Ludovic Rousseau
+   * waitforcardevent(): do not miss events between 2 calls
+   * Use Windows locale to decode Unicode text
+   * ACKS: add missing contributors
+- patches from Kurt McKee
+   * Test, fix, and simplify ATR parsing
+
 2.2.0 (October 2024)
 ====================
 - patches from Ludovic Rousseau
