@@ -43,17 +43,6 @@ extern PyObject* PyExc_SCardError;
     #define lstrlen strlen
 #endif // PCSCLITE
 
-#if PY_MAJOR_VERSION >= 3
-
-#define PyInt_Check(x) PyLong_Check(x)
-#define PyInt_AsLong(x) PyLong_AsLong(x)
-#define PyInt_FromLong(x) PyLong_FromLong(x)
-#define PyString_Check(name) PyUnicode_Check(name)
-#define PyString_FromString(x) PyUnicode_FromString(x)
-#define PyString_AsString(str) PyBytes_AsString(str)
-
-#endif
-
 
 /**=======================================================================**/
 static int _IsAReaderState( PyObject* o)
@@ -70,13 +59,13 @@ static int _IsAReaderState( PyObject* o)
     }
 
     o2 = PyTuple_GetItem(o, 0);
-    if(!PyString_Check(o2))
+    if(!PyUnicode_Check(o2))
     {
         PyErr_SetString( PyExc_TypeError, "Expected a string as reader name." );
         return 0;
     }
     o2 = PyTuple_GetItem(o, 1);
-    if(!PyInt_Check(o2) && !PyLong_Check(o2) )
+    if(!PyLong_Check(o2))
     {
         PyErr_SetString( PyExc_TypeError, "Expected an Int as second tuple item." );
         return 0;
@@ -100,14 +89,11 @@ static int _ReaderStateFromTuple( PyObject* o, READERSTATELIST* prl, unsigned in
 {
     char* psz;
     PyObject* o2;
-#if PY_MAJOR_VERSION >= 3
     PyObject* temp_bytes;
-#endif
 
     // first tuple item is reader name
     o2=PyTuple_GetItem(o, 0);
 
-#if PY_MAJOR_VERSION >= 3
     // Convert the readername from string (unicode) to bytes (ascii)
     temp_bytes = PyUnicode_AsEncodedString(o2, "ASCII", "strict"); // Owned reference
     if (temp_bytes != NULL)
@@ -118,9 +104,6 @@ static int _ReaderStateFromTuple( PyObject* o, READERSTATELIST* prl, unsigned in
     }
     else
         return 0;
-#else
-	psz = PyString_AsString(o2);
-#endif
 
     prl->aszReaderNames[x] = mem_Malloc(strlen(psz)+1);
     if (!prl->aszReaderNames[x])
@@ -131,13 +114,11 @@ static int _ReaderStateFromTuple( PyObject* o, READERSTATELIST* prl, unsigned in
     prl->ars[x].szReader = prl->aszReaderNames[x];
     strcpy( prl->aszReaderNames[x], psz );
 
-#if PY_MAJOR_VERSION >= 3
     Py_DECREF(temp_bytes);
-#endif
 
     // second tuple item is current state
     o2=PyTuple_GetItem(o, 1);
-    prl->ars[x].dwCurrentState = (SCARDDWORDARG)PyInt_AsLong(o2);
+    prl->ars[x].dwCurrentState = (SCARDDWORDARG)PyLong_AsLong(o2);
 
     // third tuple item is the ATR (optionally)
     if(PyTuple_Size(o)==3)
@@ -236,7 +217,7 @@ build a Python byte list from a BYTELIST
     for( x=0; x<cBytes; x++)
     {
         PyObject* o = PyList_GetItem( source, x );
-        if( !PyInt_Check(o) )
+        if( !PyLong_Check(o) )
         {
             PyErr_SetString( PyExc_TypeError, "Expected a list of bytes." );
             return NULL;
@@ -272,7 +253,7 @@ build a Python byte list from a BYTELIST
     for( x=0; x<cBytes; x++ )
     {
         PyObject* o = PyList_GetItem(source, x);
-        pbl->ab[x] = (unsigned char)PyInt_AsLong(o);
+        pbl->ab[x] = (unsigned char)PyLong_AsLong(o);
     }
     return (BYTELIST*)pbl;
 }
@@ -308,10 +289,10 @@ Builds a Python string from an ERRORSTRING
 
     if( NULL!=source )
     {
-#if (PY_MAJOR_VERSION >= 3) && defined(WIN32)
+#if defined(WIN32)
         pystr = PyUnicode_DecodeLocale(source, NULL);
 #else
-        pystr = PyString_FromString( source );
+        pystr = PyUnicode_FromString( source );
 #endif
         *ptarget = pystr;
     }
@@ -441,7 +422,7 @@ build a Python byte list from a GUIDLIST
     for( x=0; x<cBytes; x++)
     {
         PyObject* o = PyList_GetItem( source, x );
-        if( !PyInt_Check(o) )
+        if( !PyLong_Check(o) )
         {
             PyErr_SetString( PyExc_TypeError, "Expected a list of bytes." );
             return NULL;
@@ -487,7 +468,7 @@ build a Python byte list from a GUIDLIST
         for( x=0; x<sizeof(GUID); x++)
         {
             PyObject* o = PyList_GetItem(source, x);
-            p[x] = (unsigned char)PyInt_AsLong(o);
+            p[x] = (unsigned char)PyLong_AsLong(o);
         }
     }
     */
@@ -496,7 +477,7 @@ build a Python byte list from a GUIDLIST
     for( x=0; x<cBytes; x++ )
     {
         PyObject* o = PyList_GetItem(source, x);
-        p[x] = (unsigned char)PyInt_AsLong(o);
+        p[x] = (unsigned char)PyLong_AsLong(o);
     }
 
 
@@ -550,8 +531,8 @@ void SCardHelper_AppendReaderStateListToPyObject(
 
             // reader, event state, atr
             PyObject* ot = PyTuple_New( 3 );
-            oReader = PyString_FromString( source->ars[i].szReader );
-            oEventState = PyInt_FromLong( (SCARDDWORDARG)source->ars[i].dwEventState );
+            oReader = PyUnicode_FromString( source->ars[i].szReader );
+            oEventState = PyLong_FromLong( (SCARDDWORDARG)source->ars[i].dwEventState );
             // ATR visibly not initialised
             if ( source->ars[i].cbAtr > SCARD_ATR_LENGTH)
                 source->ars[i].cbAtr = 0;
@@ -559,7 +540,7 @@ void SCardHelper_AppendReaderStateListToPyObject(
             oAtr = PyList_New( source->ars[i].cbAtr );
             for(j=0; j<source->ars[i].cbAtr; j++)
             {
-                oByte = PyInt_FromLong( source->ars[i].rgbAtr[j] );
+                oByte = PyLong_FromLong( source->ars[i].rgbAtr[j] );
                 PyList_SetItem( oAtr, j, oByte );
             }
 
@@ -875,7 +856,7 @@ build a SCARDDWORDARG from a python SCARDDWORDARG
 
     // sanity check
     // do we have a python long or int?
-    if( !PyLong_Check(source) && !PyInt_Check(source) )
+    if( !PyLong_Check(source) )
     {
         PyErr_SetString( PyExc_TypeError, "Expected a python integer or long." );
         return -1;
@@ -908,7 +889,7 @@ Builds a Python string from a STRING
     {
         if(NULL!=source->sz)
         {
-            pystr = PyString_FromString( source->sz );
+            pystr = PyUnicode_FromString( source->sz );
         }
         else
         {
@@ -961,7 +942,7 @@ will have to be freed externally to the wrapper
     for(;;)
     {
         // sanity check
-        if( !PyString_Check( source ) )
+        if( !PyUnicode_Check( source ) )
         {
             PyErr_SetString( PyExc_TypeError, "Expected a string." );
             break;
@@ -974,7 +955,7 @@ will have to be freed externally to the wrapper
             break;
         }
 
-        ulLength=strlen( PyString_AsString(source)) + 1 ;
+        ulLength=strlen( PyBytes_AsString(source)) + 1 ;
         pstr->sz=(char*)mem_Malloc( ulLength );
         if(NULL==pstr->sz)
         {
@@ -982,7 +963,7 @@ will have to be freed externally to the wrapper
             break;
         }
 
-        strcpy( pstr->sz, PyString_AsString( source ) );
+        strcpy( pstr->sz, PyBytes_AsString( source ) );
         break;
     }
 
@@ -1055,7 +1036,7 @@ e.g. item0\0item2\0lastitem\0\0)
             if (lstrlen( p+i ) > 0)
             {
                 PyObject* pystr;
-                pystr = PyString_FromString( p+i );
+                pystr = PyUnicode_FromString( p+i );
                 PyList_SetItem( oStrList, j, pystr );
             }
             else
@@ -1116,16 +1097,12 @@ build a Python string list from a STRINGLIST
     for( x=0, cChars=0; x<cStrings; x++)
     {
         PyObject* o = PyList_GetItem( source, x );
-        if( !PyString_Check(o) )
+        if( !PyUnicode_Check(o) )
         {
             PyErr_SetString( PyExc_TypeError, "Expected a list of strings." );
             return NULL;
         }
-#if PY_MAJOR_VERSION >= 3
         cChars += PyUnicode_GET_LENGTH(o) + 1 ;
-#else
-        cChars += strlen( PyString_AsString(o)) + 1 ;
-#endif
     }
     cChars += 1;
 
@@ -1151,7 +1128,6 @@ build a Python string list from a STRINGLIST
         for( x=0, p=psl->ac; x<cStrings; x++ )
         {
             PyObject* o = PyList_GetItem(source, x);
-#if PY_MAJOR_VERSION >= 3
             // Convert the group name from string (unicode) to bytes (ascii)
             PyObject * temp_bytes = PyUnicode_AsEncodedString(o, "ASCII", "strict"); // Owned reference
             if (temp_bytes != NULL)
@@ -1162,9 +1138,6 @@ build a Python string list from a STRINGLIST
                 strcpy(p, psz);
                 Py_DECREF(temp_bytes);
             }
-#else
-            strcpy( p, PyString_AsString(o) );
-#endif
             p += strlen( p ) + 1;
         }
         strcpy( p, "\0" );
