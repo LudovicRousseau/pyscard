@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from smartcard.Exceptions import SmartcardException
 from smartcard.ulist import ulist
+import threading
 
 # pylint: disable=too-few-public-methods
 
@@ -92,12 +93,14 @@ class readergroups:
 
     # The single instance of __readergroups
     instance = None
+    instance_lock = threading.Lock()
     innerclazz = innerreadergroups
 
     def __init__(self, initlist=None):
         """Create a single instance of innerreadergroups on first call"""
-        if readergroups.instance is None:
-            readergroups.instance = self.innerclazz(initlist)
+        with readergroups.instance_lock:
+            if readergroups.instance is None:
+                readergroups.instance = self.innerclazz(initlist)
 
     # All operators redirected to inner class.
 
