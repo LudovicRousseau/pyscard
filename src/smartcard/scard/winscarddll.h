@@ -346,5 +346,6 @@ extern void * myg_prgSCardT1Pci;
 extern void * myg_prgSCardRawPci;
 
 long winscard_init(void);
+void my_log(const char *fmt, ...);
 
 #endif // __WINSCARDDLL_H__

@@ -506,7 +506,10 @@ static SCARDRETCODE _EndTransaction(SCARDHANDLE hcard, SCARDDWORDARG dwDispositi
 ///////////////////////////////////////////////////////////////////////////////
 static SCARDRETCODE _EstablishContext(SCARDDWORDARG dwScope, SCARDCONTEXT* phContext)
 {
-    return (mySCardEstablishContext)(dwScope, NULL, NULL, phContext);
+    long rv;
+    rv = (mySCardEstablishContext)(dwScope, NULL, NULL, phContext);
+    my_log("rv 1: %lX\n", rv);
+    return rv;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

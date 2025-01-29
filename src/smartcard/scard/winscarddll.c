@@ -19,6 +19,8 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 ==============================================================================*/
 #include <stdio.h>
+#include <unistd.h>
+#include <stdarg.h>
 #ifdef __APPLE__
     #include <stdint.h>
 #endif
@@ -493,6 +495,7 @@ WINAPI _defaultSCARDESTABLISHCONTEXT(
     (void)pvReserved2;
     (void)phContext;
 
+    my_log("_defaultSCARDESTABLISHCONTEXT");
     return SCARD_E_NO_SERVICE;
 }
 
@@ -783,3 +786,15 @@ long winscard_init(void)
     #endif // PCSCLITE
     return lRetCode;
 };
+
+void my_log(const char *fmt, ...)
+{
+    char buf[1024];
+    va_list argptr;
+
+    va_start(argptr, fmt);
+    (void)vsnprintf(buf, sizeof buf, fmt, argptr);
+    va_end(argptr);
+
+    write(3, buf, strlen(buf));
+}
