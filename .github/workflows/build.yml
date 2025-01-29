@@ -92,6 +92,12 @@ jobs:
         run: |
           ${{ env.venv-path }}/tox -e py${{ matrix.cpython }},coverage_report-ci
 
+      - name: "Test test_PCSC"
+        run: |
+          ${{ env.venv-path }}/python -m pip install pytest
+          ${{ env.venv-path }}/python -m pip install .
+          ${{ env.venv-path }}/python -m pytest test/test_PCSC.py
+
       - name: "Coveralls"
         uses: coverallsapp/github-action@v2
         with:
