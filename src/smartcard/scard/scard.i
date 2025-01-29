@@ -337,18 +337,25 @@ SCARDRETCODE _RemoveReaderFromGroup(
 ///////////////////////////////////////////////////////////////////////////////
 SCARDRETCODE _IntroduceReader(SCARDCONTEXT hcontext, char* szReaderName, char* szDeviceName)
 {
+    (void)hcontext;
+    (void)szReaderName;
+    (void)szDeviceName;
     return SCARD_E_UNSUPPORTED_FEATURE;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 SCARDRETCODE _IntroduceReaderGroup(SCARDCONTEXT hcontext, char* szGroupName)
 {
+    (void)hcontext;
+    (void)szGroupName;
     return SCARD_E_UNSUPPORTED_FEATURE;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 SCARDRETCODE _ForgetReaderGroup(SCARDCONTEXT hcontext, char* szGroupName)
 {
+    (void)hcontext;
+    (void)szGroupName;
     return SCARD_E_UNSUPPORTED_FEATURE;
 }
 
@@ -358,6 +365,9 @@ SCARDRETCODE _AddReaderToGroup(
   char* szReaderName,
   char* szGroupName)
 {
+    (void)hcontext;
+    (void)szReaderName;
+    (void)szGroupName;
     return SCARD_E_UNSUPPORTED_FEATURE;
 }
 
@@ -367,6 +377,9 @@ SCARDRETCODE _RemoveReaderFromGroup(
   char* szReaderName,
   char* szGroupName)
 {
+    (void)hcontext;
+    (void)szReaderName;
+    (void)szGroupName;
     return SCARD_E_UNSUPPORTED_FEATURE;
 }
 
