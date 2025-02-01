@@ -25,6 +25,9 @@ pypi: clean
 test:
 	pytest --verbose
 
+test_parallel:
+	pytest --parallel-threads=10 --iterations=10 --verbose
+
 coverage:
 	$(COVERAGE) erase
 	$(COVERAGE) run -m pytest

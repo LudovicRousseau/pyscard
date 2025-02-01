@@ -4,6 +4,7 @@ coveralls
 pylint
 pytest
 pytest-randomly
+pytest-run-parallel[psutil]
 setuptools
 tox
 wheel
