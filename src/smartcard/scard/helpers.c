@@ -258,21 +258,6 @@ build a Python byte list from a BYTELIST
     return (BYTELIST*)pbl;
 }
 
-/**=======================================================================**/
-void SCardHelper_PrintByteList( BYTELIST* apsz )
-/*===========================================================================
-dump a byte list
-===========================================================================*/
-{
-    unsigned long i;
-
-    for(i=0; i<apsz->cBytes; i++)
-    {
-        printf("0x%.2X ", apsz->ab[i] );
-    }
-    printf("\n");
-}
-
 
 /**==========================================================================
                             ERRORSTRING Helpers

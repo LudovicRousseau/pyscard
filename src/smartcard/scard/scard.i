@@ -271,7 +271,6 @@ SCARDRETCODE _ListCards(SCARDCONTEXT hcontext, BYTELIST* pbl, GUIDLIST* guidlist
     pmszCards->ac=NULL;
     pmszCards->hcontext=hcontext;
 
-    //SCardHelper_PrintByteList(pbl);
     return (mySCardListCardsA)(
         hcontext,
         pbl->ab,

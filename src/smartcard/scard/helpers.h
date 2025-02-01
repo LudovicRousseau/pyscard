@@ -75,7 +75,6 @@ typedef struct
 // BYTELIST helpers
 void SCardHelper_AppendByteListToPyObject( BYTELIST* source, PyObject** ptarget );
 BYTELIST* SCardHelper_PyByteListToBYTELIST(PyObject* source);
-void SCardHelper_PrintByteList( BYTELIST* apsz );
 
 // ERRORSTRING helpers
 void SCardHelper_OutErrorStringAsPyObject( ERRORSTRING source, PyObject** ptarget );
