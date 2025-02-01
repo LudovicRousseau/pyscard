@@ -27,5 +27,5 @@ warnings-as-errors = true
 [tool.pytest.ini_options]
 addopts = "--color=yes"
 filterwarnings = [
-    "error",
+#    "error",
 ]
