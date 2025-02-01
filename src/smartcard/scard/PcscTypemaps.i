@@ -92,11 +92,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 // support for ERRORSTRING
 //
 ==============================================================================*/
-// on win32, the ERRORSTRING is allocated and
-// must be free'd with Local Free
-// release ERRORSTRING OUTPUT argument.
-// on pcsc-lite, the error string is not allocated,
-// i.e. nothing to do.
 %typemap(ret) ERRORSTRING
 {
     #ifdef WIN32
@@ -109,6 +104,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
         }
     }
     #endif // WIN32
+    #ifdef PCSCLITE
+        free( $1 );
+    #endif // PCSCLITE
 }
 
 // builds a Python string from a STRING

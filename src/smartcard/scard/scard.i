@@ -799,7 +799,7 @@ static ERRORSTRING _GetErrorMessage(long lErrCode)
         return ppszError;
     #endif // WIN32
     #ifdef PCSCLITE
-        return myPcscStringifyError(lErrCode);
+        return strdup(myPcscStringifyError(lErrCode));
     #endif // PCSCLITE
 }
 
