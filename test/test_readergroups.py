@@ -34,6 +34,9 @@ def test_reader_groups_method_calls():
     reader_group.addreadertogroup("no-op", "bogus")
     reader_group.removereaderfromgroup("no-op", "bogus")
 
+    assert list.pop(reader_group.instance) == "a"
+    assert len(list(reader_group.instance)) == 0
+
 
 # ------------------------------------------------------------------------------------
 # The tests below this line demonstrate serious behavioral problems with readergroups.
@@ -87,3 +90,5 @@ def test_demonstrate_getting_is_impossible():
     list.append(reader_group.instance, "a")
     assert reader_group.instance == ["a"]
     assert reader_group.getreadergroups() == []
+    assert list.pop(reader_group.instance) == "a"
+    assert len(list(reader_group.instance)) == 0
