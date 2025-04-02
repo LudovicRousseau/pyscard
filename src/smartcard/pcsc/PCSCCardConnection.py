@@ -91,13 +91,19 @@ class PCSCCardConnection(CardConnection):
         """Destructor. Clean PCSC connection resources."""
         # race condition: module CardConnection
         # can disappear before __del__ is called
+        self.close()
+
+    def close(self):
+        """explicit close"""
         self.disconnect()
-        hresult = SCardReleaseContext(self.hcontext)
-        if hresult != SCARD_S_SUCCESS and hresult != SCARD_E_INVALID_VALUE:
-            raise CardConnectionException(
-                "Failed to release context: " + SCardGetErrorMessage(hresult),
-                hresult=hresult,
-            )
+        if self.hcontext is not None:
+            hresult = SCardReleaseContext(self.hcontext)
+            if hresult != SCARD_S_SUCCESS and hresult != SCARD_E_INVALID_VALUE:
+                raise CardConnectionException(
+                    "Failed to release context: " + SCardGetErrorMessage(hresult),
+                    hresult=hresult,
+                )
+            self.hcontext = None
         CardConnection.__del__(self)
 
     def connect(self, protocol=None, mode=None, disposition=None):
