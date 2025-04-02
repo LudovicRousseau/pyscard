@@ -61,6 +61,10 @@ class CardConnectionDecorator(CardConnection):
         """call inner component disconnect"""
         self.component.disconnect()
 
+    def release(self):
+        """call inner component release"""
+        self.component.release()
+
     def getATR(self):
         """call inner component getATR"""
         return self.component.getATR()
