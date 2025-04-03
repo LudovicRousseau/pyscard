@@ -221,14 +221,15 @@ class PCSCCardConnection(CardConnection):
             CardConnection.disconnect(self)
         except TypeError:
             pass
-        if self.hcard is not None:
-            hresult = SCardDisconnect(self.hcard, self.disposition)
-            self.hcard = None
-            if hresult != SCARD_S_SUCCESS:
-                raise CardConnectionException(
-                    "Failed to disconnect: " + SCardGetErrorMessage(hresult),
-                    hresult=hresult,
-                )
+        if self.hcard is None:
+            raise CardConnectionException("Card not connected")
+        hresult = SCardDisconnect(self.hcard, self.disposition)
+        self.hcard = None
+        if hresult != SCARD_S_SUCCESS:
+            raise CardConnectionException(
+                "Failed to disconnect: " + SCardGetErrorMessage(hresult),
+                hresult=hresult,
+            )
 
     def getATR(self):
         """Return card ATR"""
