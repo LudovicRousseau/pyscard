@@ -46,7 +46,7 @@ class CardService:
 
     def __del__(self):
         """Destructor. Disconnect card and destroy card service resources."""
-        self.connection.disconnect()
+        self.connection.disconnect(ignore_card=True)
 
     @staticmethod
     def supports(cardname):

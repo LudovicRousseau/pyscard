@@ -57,9 +57,9 @@ class CardConnectionDecorator(CardConnection):
         """call inner component reconnect"""
         self.component.reconnect(protocol, mode, disposition)
 
-    def disconnect(self):
+    def disconnect(self, ignore_card=False):
         """call inner component disconnect"""
-        self.component.disconnect()
+        self.component.disconnect(ignore_card=ignore_card)
 
     def close(self):
         """call inner component close"""

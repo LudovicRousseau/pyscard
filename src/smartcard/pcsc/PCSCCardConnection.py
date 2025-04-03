@@ -95,7 +95,7 @@ class PCSCCardConnection(CardConnection):
 
     def close(self):
         """explicit close"""
-        self.disconnect()
+        self.disconnect(ignore_card=True)
         if self.hcontext is not None:
             hresult = SCardReleaseContext(self.hcontext)
             if hresult != SCARD_S_SUCCESS and hresult != SCARD_E_INVALID_VALUE:
@@ -210,7 +210,7 @@ class PCSCCardConnection(CardConnection):
                     protocol = eval("CardConnection.%s_protocol" % dictProtocol[p])
         PCSCCardConnection.setProtocol(self, protocol)
 
-    def disconnect(self):
+    def disconnect(self, ignore_card=False):
         """Disconnect from the card."""
 
         # when __del__() is invoked in response to a module being deleted,
@@ -222,6 +222,8 @@ class PCSCCardConnection(CardConnection):
         except TypeError:
             pass
         if self.hcard is None:
+            if ignore_card:
+                return
             raise CardConnectionException("Card not connected")
         hresult = SCardDisconnect(self.hcard, self.disposition)
         self.hcard = None
