@@ -40,6 +40,14 @@ class PassThruCardService(CardService.CardService):
         """
         CardService.CardService.__init__(self, connection, cardname)
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, exc_traceback):
+        return CardService.CardService.__exit__(
+            self, exc_type, exc_value, exc_traceback
+        )
+
     @staticmethod
     def supports(cardname):
         """Returns True if the cardname is supported by the card service.
