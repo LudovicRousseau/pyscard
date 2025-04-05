@@ -93,6 +93,9 @@ class PCSCCardRequest(AbstractCardRequest):
         self.timeout_init = self.timeout
 
     def __del__(self):
+        self.release()
+
+    def release(self):
         if self.hcontext is not None:
             hresult = SCardReleaseContext(self.hcontext)
             if hresult != SCARD_S_SUCCESS:
