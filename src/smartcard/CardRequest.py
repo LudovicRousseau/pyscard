@@ -77,6 +77,13 @@ class CardRequest:
         """Wait for card insertion or removal."""
         return self.pcsccardrequest.waitforcardevent()
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, exc_traceback):
+        self.pcsccardrequest.release()
+        return False
+
 
 if __name__ == "__main__":
     """Small sample illustrating the use of CardRequest.py."""
