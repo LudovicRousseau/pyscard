@@ -84,6 +84,7 @@ class PCSCCardRequest(AbstractCardRequest):
 
         hresult, self.hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
         if hresult != SCARD_S_SUCCESS:
+            self.hcontext = None
             raise EstablishContextException(hresult)
         self.evt = threading.Event()
         self.hresult = SCARD_S_SUCCESS
@@ -92,10 +93,11 @@ class PCSCCardRequest(AbstractCardRequest):
         self.timeout_init = self.timeout
 
     def __del__(self):
-        hresult = SCardReleaseContext(self.hcontext)
-        if hresult != SCARD_S_SUCCESS:
-            raise ReleaseContextException(hresult)
-        self.hcontext = -1
+        if self.hcontext is not None:
+            hresult = SCardReleaseContext(self.hcontext)
+            if hresult != SCARD_S_SUCCESS:
+                raise ReleaseContextException(hresult)
+            self.hcontext = None
 
     def getReaderNames(self):
         """Returns the list of PCSC readers on which to wait for cards."""
