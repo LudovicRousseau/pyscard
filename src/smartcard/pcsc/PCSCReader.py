@@ -25,7 +25,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 from smartcard.CardConnectionDecorator import CardConnectionDecorator
 from smartcard.Exceptions import *
 from smartcard.pcsc.PCSCCardConnection import PCSCCardConnection
-from smartcard.pcsc.PCSCContext import PCSCContext
 from smartcard.pcsc.PCSCExceptions import *
 from smartcard.reader.Reader import Reader
 from smartcard.scard import *
@@ -109,13 +108,15 @@ class PCSCReader(Reader):
         if groups is None:
             groups = []
         creaders = []
-        hcontext = PCSCContext().getContext()
-
+        hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+        if SCARD_S_SUCCESS != hresult:
+            raise EstablishContextException(hresult)
         try:
             pcsc_readers = __PCSCreaders__(hcontext, groups)
-        except (CardServiceStoppedException, CardServiceNotFoundException):
-            hcontext = PCSCContext.renewContext()
-            pcsc_readers = __PCSCreaders__(hcontext, groups)
+        finally:
+            hresult = SCardReleaseContext(hcontext)
+            if SCARD_S_SUCCESS != hresult:
+                raise ReleaseContextException(hresult)
 
         for reader in pcsc_readers:
             creaders.append(PCSCReader.Factory.create(reader))
