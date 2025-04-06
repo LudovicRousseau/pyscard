@@ -28,13 +28,10 @@ from datetime import datetime
 from smartcard import Card
 from smartcard.AbstractCardRequest import AbstractCardRequest
 from smartcard.Exceptions import (
+    CardConnectionException,
     CardRequestException,
     CardRequestTimeoutException,
     ListReadersException,
-)
-from smartcard.pcsc.PCSCExceptions import (
-    EstablishContextException,
-    ReleaseContextException,
 )
 from smartcard.pcsc.PCSCReader import PCSCReader
 from smartcard.scard import *
@@ -85,7 +82,7 @@ class PCSCCardRequest(AbstractCardRequest):
         hresult, self.hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
         if hresult != SCARD_S_SUCCESS:
             self.hcontext = None
-            raise EstablishContextException(hresult)
+            raise CardConnectionException(hresult=hresult)
         self.evt = threading.Event()
         self.hresult = SCARD_S_SUCCESS
         self.readerstates = {}
@@ -99,7 +96,7 @@ class PCSCCardRequest(AbstractCardRequest):
         if self.hcontext is not None:
             hresult = SCardReleaseContext(self.hcontext)
             if hresult != SCARD_S_SUCCESS:
-                raise ReleaseContextException(hresult)
+                raise CardConnectionException(hresult=hresult)
             self.hcontext = None
 
     def getReaderNames(self):
@@ -113,10 +110,10 @@ class PCSCCardRequest(AbstractCardRequest):
         if hresult in (SCARD_E_SERVICE_STOPPED, SCARD_E_NO_SERVICE):
             hresult = SCardReleaseContext(self.hcontext)
             if hresult != SCARD_S_SUCCESS:
-                raise ReleaseContextException(hresult)
+                raise CardConnectionException(hresult=hresult)
             hresult, self.hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
             if hresult != SCARD_S_SUCCESS:
-                raise EstablishContextException(hresult)
+                raise CardConnectionException(hresult=hresult)
             hresult, pcscreaders = SCardListReaders(self.hcontext, [])
         if SCARD_E_NO_READERS_AVAILABLE == hresult:
             return []
