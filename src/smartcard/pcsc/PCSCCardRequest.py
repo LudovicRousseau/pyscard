@@ -141,7 +141,7 @@ class PCSCCardRequest(AbstractCardRequest):
 
     # thread waiting for a change
     # the main thread will handle a possible KeyboardInterrupt
-    def getStatusChange(self):
+    def __getStatusChange(self):
         self.hresult, self.newstates = SCardGetStatusChange(
             self.hcontext, self.timeout, list(self.readerstates.values())
         )
@@ -222,7 +222,7 @@ class PCSCCardRequest(AbstractCardRequest):
 
             # wait for card insertion
             self.readerstates = readerstates
-            waitThread = threading.Thread(target=self.getStatusChange)
+            waitThread = threading.Thread(target=self.__getStatusChange)
             waitThread.start()
 
             # the main thread handles a possible KeyboardInterrupt
@@ -239,7 +239,7 @@ class PCSCCardRequest(AbstractCardRequest):
             # wait for the thread to finish in case of KeyboardInterrupt
             self.evt.wait(timeout=None)
 
-            # get values set in the getStatusChange thread
+            # get values set in the __getStatusChange thread
             hresult = self.hresult
             newstates = self.newstates
 
@@ -381,7 +381,7 @@ class PCSCCardRequest(AbstractCardRequest):
 
             # wait for card insertion
             self.readerstates = readerstates
-            waitThread = threading.Thread(target=self.getStatusChange)
+            waitThread = threading.Thread(target=self.__getStatusChange)
             waitThread.start()
 
             # the main thread handles a possible KeyboardInterrupt
@@ -398,7 +398,7 @@ class PCSCCardRequest(AbstractCardRequest):
             # wait for the thread to finish in case of KeyboardInterrupt
             self.evt.wait(timeout=None)
 
-            # get values set in the getStatusChange thread
+            # get values set in the __getStatusChange thread
             hresult = self.hresult
             newstates = self.newstates
 
