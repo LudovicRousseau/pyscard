@@ -82,17 +82,35 @@ def test_card_connection_exception():
     text = str(exc)
     assert text == ""
 
-    exc = CardConnectionException("foo", SCARD_W_REMOVED_CARD)
+    exc = CardConnectionException(hresult=SCARD_W_REMOVED_CARD)
     assert exc.hresult == SCARD_W_REMOVED_CARD
     text = str(exc)
     if platform.system() == "Windows":
         expected = (
-            "foo: The smart card has been removed, "
+            "The smart card has been removed, "
             "so that further communication is not possible.  (0x80100069)"
         )
     else:
-        expected = "foo: Card was removed. (0x80100069)"
+        expected = "Card was removed. (0x80100069)"
 
+    assert text == expected
+
+    exc = CardConnectionException("", SCARD_W_REMOVED_CARD)
+    assert exc.hresult == SCARD_W_REMOVED_CARD
+    text = str(exc)
+    assert text == expected
+
+    # now add "foo" in the message
+    expected = "foo: " + expected
+
+    exc = CardConnectionException("foo", SCARD_W_REMOVED_CARD)
+    assert exc.hresult == SCARD_W_REMOVED_CARD
+    text = str(exc)
+    assert text == expected
+
+    exc = CardConnectionException(hresult=SCARD_W_REMOVED_CARD, message="foo")
+    assert exc.hresult == SCARD_W_REMOVED_CARD
+    text = str(exc)
     assert text == expected
 
 
