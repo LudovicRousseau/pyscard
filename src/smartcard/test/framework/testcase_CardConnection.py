@@ -69,6 +69,7 @@ class testcase_CardConnection(unittest.TestCase):
             else:
                 self.assertRaises(NoCardException, cc.connect)
         cc.disconnect()
+        cc.release()
 
     def testcase_CardConnectionT0(self):
         """Test with T0 the response to SELECT DF_TELECOM."""
@@ -84,6 +85,7 @@ class testcase_CardConnection(unittest.TestCase):
             else:
                 self.assertRaises(NoCardException, cc.connect)
         cc.disconnect()
+        cc.release()
 
     def testcase_CardConnectionT1inConnect(self):
         """Test that connecting with T1 on a T0 card fails."""
@@ -98,6 +100,7 @@ class testcase_CardConnection(unittest.TestCase):
             else:
                 self.assertRaises(NoCardException, cc.connect)
         cc.disconnect()
+        cc.release()
 
     def testcase_CardConnectionT1inTransmit(self):
         """Test that T1 in transmit for a T0 card fails."""
@@ -115,6 +118,7 @@ class testcase_CardConnection(unittest.TestCase):
             else:
                 self.assertRaises(NoCardException, cc.connect)
         cc.disconnect()
+        cc.release()
 
     def testcase_CardConnectionT0T1(self):
         """Test test with T0 | T1 the response to SELECT DF_TELECOM."""
@@ -130,6 +134,7 @@ class testcase_CardConnection(unittest.TestCase):
             else:
                 self.assertRaises(NoCardException, cc.connect)
         cc.disconnect()
+        cc.release()
 
     def testcase_CardConnectionT0inTransmit(self):
         """Test with T0 in transmit the response to SELECT DF_TELECOM."""
@@ -147,6 +152,7 @@ class testcase_CardConnection(unittest.TestCase):
             else:
                 self.assertRaises(NoCardException, cc.connect)
         cc.disconnect()
+        cc.release()
 
     def testcase_CardConnectionT0T1inTransmitMustFail(self):
         """Test with bad parameter in transmit the response to SELECT
@@ -165,6 +171,7 @@ class testcase_CardConnection(unittest.TestCase):
             else:
                 self.assertRaises(NoCardException, cc.connect)
         cc.disconnect()
+        cc.release()
 
     def testcase_CardReconnectProtocol(self):
         """Test .reconnect()"""
@@ -180,6 +187,7 @@ class testcase_CardConnection(unittest.TestCase):
                     protocol=CardConnection.T1_protocol,
                 )
                 cc.disconnect()
+                cc.release()
             else:
                 self.assertRaises(NoCardException, cc.connect)
 
@@ -196,6 +204,7 @@ class testcase_CardConnection(unittest.TestCase):
                     CardConnectionException, cc2.reconnect, mode=SCARD_SHARE_EXCLUSIVE
                 )
                 cc.disconnect()
+                cc.release()
             else:
                 self.assertRaises(NoCardException, cc.connect)
 
@@ -209,6 +218,7 @@ class testcase_CardConnection(unittest.TestCase):
                 cc.reconnect(disposition=SCARD_RESET_CARD)
                 cc.reconnect(disposition=SCARD_UNPOWER_CARD)
                 cc.disconnect()
+                cc.release()
             else:
                 self.assertRaises(NoCardException, cc.connect)
 
