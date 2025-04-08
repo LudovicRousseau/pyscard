@@ -72,6 +72,7 @@ class testcase_CardRequest(unittest.TestCase):
                     cs.connection.getReader(), expectedReaderForATR[toHexString(atr)]
                 )
                 cs.connection.disconnect()
+                cs.connection.release()
 
     def testcase_CardRequestAnyCardTypeInSelectedReader(self):
         """Test smartcard.AnyCardType."""
@@ -87,6 +88,8 @@ class testcase_CardRequest(unittest.TestCase):
                 self.assertEqual(
                     cs.connection.getReader(), expectedReaderForATR[toHexString(atr)]
                 )
+                cs.connection.disconnect()
+                cs.connection.release()
 
     def testcase_CardRequestATRCardTypeTimeout(self):
         """Test smartcard.AnyCardType."""
@@ -127,6 +130,8 @@ class testcase_CardRequest(unittest.TestCase):
                 self.assertEqual(
                     cs.connection.getReader(), expectedReaderForATR[toHexString(atr)]
                 )
+                cs.connection.disconnect()
+                cs.connection.release()
 
     def testcase_CardRequestAnyCardTypeInSelectedReaderNewCard(self):
         """Test smartcard.AnyCardType."""
