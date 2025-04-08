@@ -73,3 +73,4 @@ if __name__ == "__main__":
     data, sw1, sw2 = cs.connection.transmit(SELECT + DF_TELECOM)
     print(f"{sw1:X} {sw2:X}")
     cs.connection.disconnect()
+    cs.connection.release()
