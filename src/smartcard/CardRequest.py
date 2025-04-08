@@ -91,8 +91,8 @@ if __name__ == "__main__":
     from smartcard.util import toHexString
 
     print("Insert a new card within 10 seconds")
-    cr = CardRequest(timeout=10, newcardonly=True)
-    cs = cr.waitforcard()
-    cs.connection.connect()
-    print(cs.connection.getReader() + " " + toHexString(cs.connection.getATR()))
-    cs.connection.disconnect()
+    with CardRequest(timeout=10, newcardonly=True) as cr:
+        with cr.waitforcard() as cs:
+            cs.connection.connect()
+            print(cs.connection.getReader() + " " + toHexString(cs.connection.getATR()))
+            cs.connection.disconnect()
