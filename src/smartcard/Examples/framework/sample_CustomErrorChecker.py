@@ -79,7 +79,8 @@ if __name__ == "__main__":
     except SWException as e:
         print(e, f"{e.sw1:x} {e.sw2:x}")
 
-        cardservice.connection.disconnect()
+    cardservice.connection.disconnect()
+    cardservice.connection.release()
 
     import sys
 
