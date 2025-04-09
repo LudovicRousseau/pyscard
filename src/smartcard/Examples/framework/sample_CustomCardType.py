@@ -40,13 +40,12 @@ class DCCardType(CardType):
 # request a direct convention card
 cardtype = DCCardType()
 cardrequest = CardRequest(timeout=1, cardType=cardtype)
-cardservice = cardrequest.waitforcard()
+with cardrequest.waitforcard() as cardservice:
 
-
-# connect and print atr and reader
-cardservice.connection.connect()
-print(toHexString(cardservice.connection.getATR()))
-print(cardservice.connection.getReader())
+    # connect and print atr and reader
+    cardservice.connection.connect()
+    print(toHexString(cardservice.connection.getATR()))
+    print(cardservice.connection.getReader())
 
 
 import sys
