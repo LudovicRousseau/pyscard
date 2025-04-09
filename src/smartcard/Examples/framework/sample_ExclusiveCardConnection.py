@@ -67,6 +67,7 @@ try:
 finally:
     # unlock connection at the end of the transaction
     cardservice.connection.unlock()
+    cardservice.connection.release()
 
 import sys
 
