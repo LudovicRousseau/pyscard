@@ -120,6 +120,11 @@ class CardConnection(Observable):
         Observable.setChanged(self)
         Observable.notifyObservers(self, CardConnectionEvent("disconnect"))
 
+    def release(self):
+        """Release the context."""
+        Observable.setChanged(self)
+        Observable.notifyObservers(self, CardConnectionEvent("release"))
+
     def getATR(self):
         """Return card ATR"""
         pass
