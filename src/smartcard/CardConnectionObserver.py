@@ -58,6 +58,9 @@ class ConsoleCardConnectionObserver(CardConnectionObserver):
         elif "disconnect" == ccevent.type:
             print("disconnecting from " + cardconnection.getReader())
 
+        elif "release" == ccevent.type:
+            print("release from " + cardconnection.getReader())
+
         elif "command" == ccevent.type:
             print("> " + toHexString(ccevent.args[0]))
 
