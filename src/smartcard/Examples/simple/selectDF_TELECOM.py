@@ -64,6 +64,10 @@ try:
     else:
         print("no DF_TELECOM")
 
+    # disconnect and cleanup
+    cardservice.connection.disconnect()
+    cardservice.connection.release()
+
 except CardRequestTimeoutException:
     print("time-out: no card inserted during last 10s")
 
