@@ -84,28 +84,28 @@ DF_TELECOM = [0x7F, 0x10]
 # request any card type
 cardtype = AnyCardType()
 cardrequest = CardRequest(timeout=1.5, cardType=cardtype)
-cardservice = cardrequest.waitforcard()
+with cardrequest.waitforcard() as cardservice:
 
-# attach the console tracer
-observer = ConsoleCardConnectionObserver()
-cardservice.connection.addObserver(observer)
+    # attach the console tracer
+    observer = ConsoleCardConnectionObserver()
+    cardservice.connection.addObserver(observer)
 
-# attach our decorator
-cardservice.connection = FakeATRConnection(
-    SecureChannelConnection(cardservice.connection)
-)
+    # attach our decorator
+    cardservice.connection = FakeATRConnection(
+        SecureChannelConnection(cardservice.connection)
+    )
 
-# connect to the card and perform a few transmits
-cardservice.connection.connect()
+    # connect to the card and perform a few transmits
+    cardservice.connection.connect()
 
-print("ATR", toHexString(cardservice.connection.getATR()))
+    print("ATR", toHexString(cardservice.connection.getATR()))
 
-apdu = SELECT + DF_TELECOM
-response, sw1, sw2 = cardservice.connection.transmit(apdu)
-
-if sw1 == 0x9F:
-    apdu = GET_RESPONSE + [sw2]
+    apdu = SELECT + DF_TELECOM
     response, sw1, sw2 = cardservice.connection.transmit(apdu)
+
+    if sw1 == 0x9F:
+        apdu = GET_RESPONSE + [sw2]
+        response, sw1, sw2 = cardservice.connection.transmit(apdu)
 
 
 import sys
