@@ -59,6 +59,8 @@ class selectDFTELECOMObserver(CardObserver):
             if sw1 == 0x9F:
                 apdu = GET_RESPONSE + [sw2]
                 response, sw1, sw2 = card.connection.transmit(apdu)
+            card.connection.disconnect()
+            card.connection.release()
 
         for card in removedcards:
             print("-Removed: ", toHexString(card.atr))
