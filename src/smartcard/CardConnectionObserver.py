@@ -71,3 +71,5 @@ class ConsoleCardConnectionObserver(CardConnectionObserver):
                     + " "
                     + "%02X %02X" % tuple(ccevent.args[-2:])
                 )
+        else:
+            print("unknown event:", ccevent.type)
