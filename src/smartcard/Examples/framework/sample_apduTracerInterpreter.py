@@ -41,6 +41,9 @@ class TracerAndSELECTInterpreter(CardConnectionObserver):
         elif "disconnect" == ccevent.type:
             print("disconnecting from " + cardconnection.getReader())
 
+        elif "release" == ccevent.type:
+            print("release from " + cardconnection.getReader())
+
         elif "command" == ccevent.type:
             str = toHexString(ccevent.args[0])
             str = str.replace("A0 A4 00 00 02", "SELECT")
@@ -56,6 +59,9 @@ class TracerAndSELECTInterpreter(CardConnectionObserver):
                     toHexString(ccevent.args[0]),
                     "%-2X %-2X" % tuple(ccevent.args[-2:]),
                 )
+
+        else:
+            print("Unknown event:", ccevent.type)
 
 
 # define the apdus used in this script
