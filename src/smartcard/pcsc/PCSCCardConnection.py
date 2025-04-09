@@ -95,6 +95,7 @@ class PCSCCardConnection(CardConnection):
 
     def release(self):
         """explicit release"""
+        CardConnection.release(self)
         self.disconnect()
         if self.hcontext is not None:
             hresult = SCardReleaseContext(self.hcontext)
