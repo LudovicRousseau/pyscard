@@ -43,11 +43,11 @@ if __name__ == "__main__":
         i = int(sys.argv[1])
     print("Using: %s" % r[i])
 
-    connection = r[i].createConnection()
-    connection.connect()
+    with r[i].createConnection() as connection:
+        connection.connect()
 
-    data, sw1, sw2 = connection.transmit(SELECT_APPLET)
-    print(f"Select Applet: {sw1:02X} {sw2:02X}")
+        data, sw1, sw2 = connection.transmit(SELECT_APPLET)
+        print(f"Select Applet: {sw1:02X} {sw2:02X}")
 
-    data, sw1, sw2 = connection.transmit(GET_TIME)
-    print(f"Get Time: {sw1:02X} {sw2:02X}")
+        data, sw1, sw2 = connection.transmit(GET_TIME)
+        print(f"Get Time: {sw1:02X} {sw2:02X}")
