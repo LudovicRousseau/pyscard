@@ -95,9 +95,9 @@ class PCSCCardConnection(CardConnection):
 
     def release(self):
         """explicit release"""
-        CardConnection.release(self)
-        self.disconnect()
         if self.hcontext is not None:
+            CardConnection.release(self)
+            self.disconnect()
             hresult = SCardReleaseContext(self.hcontext)
             if hresult != SCARD_S_SUCCESS and hresult != SCARD_E_INVALID_VALUE:
                 raise CardConnectionException(
@@ -214,15 +214,16 @@ class PCSCCardConnection(CardConnection):
     def disconnect(self):
         """Disconnect from the card."""
 
-        # when __del__() is invoked in response to a module being deleted,
-        # e.g., when execution of the program is done, other globals referenced
-        # by the __del__() method may already have been deleted.
-        # this causes CardConnection.disconnect to except with a TypeError
-        try:
-            CardConnection.disconnect(self)
-        except TypeError:
-            pass
         if self.hcard is not None:
+            # when __del__() is invoked in response to a module being
+            # deleted, e.g., when execution of the program is done,
+            # other globals referenced by the __del__() method may
+            # already have been deleted.  this causes
+            # CardConnection.disconnect to except with a TypeError
+            try:
+                CardConnection.disconnect(self)
+            except TypeError:
+                pass
             hresult = SCardDisconnect(self.hcard, self.disposition)
             self.hcard = None
             if hresult != SCARD_S_SUCCESS:
