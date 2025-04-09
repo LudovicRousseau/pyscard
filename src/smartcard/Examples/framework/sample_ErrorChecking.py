@@ -79,6 +79,7 @@ if __name__ == "__main__":
         print(str(e))
 
     cardservice.connection.disconnect()
+    cardservice.connection.release()
 
     import sys
 
