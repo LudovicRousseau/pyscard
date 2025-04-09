@@ -36,6 +36,8 @@ for reader in readers():
         connection = reader.createConnection()
         connection.connect()
         print(reader, toHexString(connection.getATR()))
+        connection.disconnect()
+        connection.release()
     except NoCardException:
         print(reader, "no card inserted")
 
