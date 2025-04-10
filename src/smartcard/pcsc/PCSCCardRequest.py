@@ -333,6 +333,10 @@ class PCSCCardRequest(AbstractCardRequest):
                     self.hcontext, 0, list(readerstates.values())
                 )
 
+                # init readerstates
+                for reader, state, _ in newstates:
+                    readerstates[reader] = (reader, state)
+
             # check if a new reader with a card has just been connected
             for reader in _readernames:
                 # is the reader a new one?
