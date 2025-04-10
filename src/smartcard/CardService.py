@@ -49,9 +49,11 @@ class CardService:
         self.__exit__(None, None, None)
 
     def __enter__(self):
+        """Enter the runtime context."""
         return self
 
     def __exit__(self, exc_type, exc_value, exc_traceback):
+        """Exit the runtime context and disconnect + release the PC/SC context."""
         self.connection.disconnect()
         self.connection.release()
         return False

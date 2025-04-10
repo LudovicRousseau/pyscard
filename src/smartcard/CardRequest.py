@@ -78,9 +78,11 @@ class CardRequest:
         return self.pcsccardrequest.waitforcardevent()
 
     def __enter__(self):
+        """Enter the runtime context."""
         return self
 
     def __exit__(self, exc_type, exc_value, exc_traceback):
+        """Exit the runtime context and release the PC/SC context."""
         self.pcsccardrequest.release()
         return False
 
