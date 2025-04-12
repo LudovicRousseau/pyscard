@@ -92,6 +92,9 @@ if sw1 == 0x9F:
 else:
     print("no DF_TELECOM")
 
+cardservice.connection.disconnect()
+cardservice.connection.release()
+
 import sys
 
 if "win32" == sys.platform:
