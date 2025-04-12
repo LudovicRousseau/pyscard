@@ -107,6 +107,8 @@ with cardrequest.waitforcard() as cardservice:
         apdu = GET_RESPONSE + [sw2]
         response, sw1, sw2 = cardservice.connection.transmit(apdu)
 
+    cardservice.connection.disconnect()
+    cardservice.connection.release()
 
 import sys
 
