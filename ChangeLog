@@ -1,3 +1,12 @@
+2.2.2 (April 2025)
+==================
+   * add .release() method to CardConnection & PCSCCardRequest
+   * add context manager protocol to CardRequest & CardService
+   * fix some parallel execution issues
+   * PCSCCardRequest: correctly initialize waitforcardevent()
+   * user-guide: Update documentation
+   * Minor changes
+
 2.2.1 (January 2025)
 ====================
 - patches from Ludovic Rousseau
