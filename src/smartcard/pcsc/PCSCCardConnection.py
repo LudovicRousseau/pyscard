@@ -128,6 +128,9 @@ class PCSCCardConnection(CardConnection):
             disposition = SCARD_UNPOWER_CARD
         self.disposition = disposition
 
+        if self.hcontext is None:
+            raise CardConnectionException("Context already released")
+
         hresult, self.hcard, dwActiveProtocol = SCardConnect(
             self.hcontext, str(self.reader), mode, pcscprotocol
         )
