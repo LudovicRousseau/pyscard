@@ -543,7 +543,6 @@ static SCARDRETCODE _ListReaders(
 {
     LPCTSTR mszGroups;
     SCARDDWORDARG cchReaders;
-    LONG lRetCode;
 
     if (pmszGroups)
     {
@@ -569,6 +568,7 @@ static SCARDRETCODE _ListReaders(
         pmszReaders->hcontext=0;
         pmszReaders->ac=NULL;
         cchReaders=0;
+        LONG lRetCode;
 
         lRetCode = (mySCardListReadersA)(hcontext, mszGroups, NULL,
             &cchReaders);
@@ -621,7 +621,6 @@ static SCARDRETCODE _ListReaders(
 static SCARDRETCODE _ListReaderGroups(SCARDCONTEXT hcontext, STRINGLIST* pmszReaderGroups)
 {
     DWORD cchReaderGroups;
-    LONG lRetCode;
 
     #ifdef SCARD_AUTOALLOCATE
         cchReaderGroups = SCARD_AUTOALLOCATE;
@@ -633,10 +632,11 @@ static SCARDRETCODE _ListReaderGroups(SCARDCONTEXT hcontext, STRINGLIST* pmszRea
     #else
         // set hcontext to 0 so that mem_Free will
         // be called instead of SCardFreeMemory
-
         pmszReaderGroups->hcontext=0;
         cchReaderGroups = 0;
         pmszReaderGroups->ac=NULL;
+        LONG lRetCode;
+
         lRetCode = (mySCardListReaderGroupsA)(hcontext,
             (LPTSTR)pmszReaderGroups->ac, &cchReaderGroups);
         if (SCARD_S_SUCCESS!=lRetCode)
