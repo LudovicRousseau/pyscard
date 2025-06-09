@@ -40,7 +40,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     #define IN
     #define OUT
     #define LPSCARD_READERSTATEA SCARD_READERSTATE *
-    #define SCARD_AUTOALLOCATE (DWORD)(-1)
     #ifndef FALSE
         #define FALSE (0==1)
     #endif // FALSE
