@@ -554,7 +554,7 @@ static SCARDRETCODE _ListReaders(
         mszGroups=NULL;
     }
 
-    #ifdef NOAUTOALLOCATE
+    #ifdef SCARD_AUTOALLOCATE
         // autoallocate memory; will be freed on output typemap
         cchReaders=SCARD_AUTOALLOCATE;
 
@@ -563,11 +563,7 @@ static SCARDRETCODE _ListReaders(
 
         return (mySCardListReadersA)(hcontext, mszGroups,
             (LPTSTR)&pmszReaders->ac, &cchReaders);
-    #endif //AUTOALLOCATE
-
-    // no autoallocate on pcsc-lite; do a first call to get length
-    // then allocate memory and do a final call
-    #ifndef NOAUTOALLOCATE
+    #else
         // set hcontext to 0 so that mem_Free will
         // be called instead of SCardFreeMemory
         pmszReaders->hcontext=0;
@@ -618,7 +614,7 @@ static SCARDRETCODE _ListReaders(
             // SCARD_E_INSUFFICIENT_BUFFER so try again
         }
         return lRetCode;
-    #endif // !NOAUTOALLOCATE
+    #endif // !SCARD_AUTOALLOCATE
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -627,18 +623,14 @@ static SCARDRETCODE _ListReaderGroups(SCARDCONTEXT hcontext, STRINGLIST* pmszRea
     DWORD cchReaderGroups;
     LONG lRetCode;
 
-    #ifdef NOAUTOALLOCATE
+    #ifdef SCARD_AUTOALLOCATE
         cchReaderGroups = SCARD_AUTOALLOCATE;
         pmszReaderGroups->ac=NULL;
         pmszReaderGroups->hcontext=hcontext;
 
         return (mySCardListReaderGroupsA)(hcontext,
             (LPTSTR)&pmszReaderGroups->ac, &cchReaderGroups);
-    #endif // NOAUTOALLOCATE
-
-    // no autoallocate on pcsc-lite; do a first call to get length
-    // then allocate memory and do a final call
-    #ifndef NOAUTOALLOCATE
+    #else
         // set hcontext to 0 so that mem_Free will
         // be called instead of SCardFreeMemory
 
@@ -686,7 +678,7 @@ static SCARDRETCODE _ListReaderGroups(SCARDCONTEXT hcontext, STRINGLIST* pmszRea
             // SCARD_E_INSUFFICIENT_BUFFER so try again
         }
         return lRetCode;
-    #endif // !NOAUTOALLOCATE
+    #endif // !SCARD_AUTOALLOCATE
 };
 
 
