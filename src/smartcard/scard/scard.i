@@ -544,6 +544,7 @@ static SCARDRETCODE _ListReaders(
     LPCTSTR mszGroups;
     SCARDDWORDARG cchReaders;
     LONG lRetCode;
+    int i;
 
     if (pmszGroups)
     {
@@ -587,13 +588,41 @@ static SCARDRETCODE _ListReaders(
             return SCARD_S_SUCCESS;
         }
 
-        pmszReaders->ac=mem_Malloc(cchReaders*sizeof(char));
-        if (NULL==pmszReaders->ac)
+        // Loop (max 3 times) to handle situation when readers are added in beetween calls
+        // of SCardListReaders - after getting required length, newly added reader
+        // requires larger buffer, so function returns SCARD_E_INSUFFICIENT_BUFFER.
+        //
+        // Note that SCARD_E_INSUFFICIENT_BUFFER error indicates buffer too small, **BUT ALSO**
+        // required buffer size in cchReaders should be updated to contain new required size.
+        // (it is true for winscard and pcsc-lite, not sure for Apple pcsc-lite).
+        for (i=0; i<3; i++)
         {
-            return SCARD_E_NO_MEMORY;
-        }
+            SCARDDWORDARG cchReadersAllocated = cchReaders;
+            pmszReaders->ac=mem_Malloc(cchReaders*sizeof(char));
+            if (NULL==pmszReaders->ac)
+            {
+                return SCARD_E_NO_MEMORY;
+            }
+            // Zero memory, to handle reader removal in beetween, otherwise SystemError
+            // would be raised on invalid encoding caused by unitialized memory.
+            memset(pmszReaders->ac, 0, cchReaders*sizeof(char));
 
-        return (mySCardListReadersA)(hcontext, mszGroups, (LPTSTR)pmszReaders->ac, &cchReaders);
+            lRetCode = (mySCardListReadersA)(hcontext, mszGroups, (LPTSTR)pmszReaders->ac, &cchReaders);
+            if (lRetCode != SCARD_E_INSUFFICIENT_BUFFER)
+            {
+                break;
+            }
+            if (cchReaders <= cchReadersAllocated)
+            {
+                // This should not happen - when SCardListReaders returns SCARD_E_INSUFFICIENT_BUFFER
+                // correct required length is also returned in cchReaders.
+                // But if it occurs (on Apple pcsc-lite?), just allocate buffer twice as large and try again
+                cchReaders = cchReadersAllocated * 2;
+            }
+            mem_Free(pmszReaders->ac);
+            pmszReaders->ac = NULL;
+        }
+        return lRetCode;
     #endif // !NOAUTOALLOCATE
 }
 
@@ -602,6 +631,7 @@ static SCARDRETCODE _ListReaderGroups(SCARDCONTEXT hcontext, STRINGLIST* pmszRea
 {
     DWORD cchReaderGroups;
     LONG lRetCode;
+    int i;
 
     #ifdef NOAUTOALLOCATE
         cchReaderGroups = SCARD_AUTOALLOCATE;
@@ -633,13 +663,34 @@ static SCARDRETCODE _ListReaderGroups(SCARDCONTEXT hcontext, STRINGLIST* pmszRea
             return SCARD_S_SUCCESS;
         }
 
-        pmszReaderGroups->ac=mem_Malloc(cchReaderGroups*sizeof(char));
-        if (NULL==pmszReaderGroups->ac)
+        // Same comments as in _ListReaders apply here.
+        // Generally just list of reader groups can change in beetween calls
+        for (i=0; i<3; i++)
         {
-            return SCARD_E_NO_MEMORY;
-        }
+            DWORD cchReaderGroupsAllocated = cchReaderGroups;
+            pmszReaderGroups->ac=mem_Malloc(cchReaderGroups*sizeof(char));
+            if (NULL==pmszReaderGroups->ac)
+            {
+                return SCARD_E_NO_MEMORY;
+            }
+            memset(pmszReaderGroups->ac, 0, cchReaderGroups*sizeof(char));
 
-        return (mySCardListReaderGroupsA)(hcontext, (LPTSTR)pmszReaderGroups->ac, &cchReaderGroups);
+            lRetCode = (mySCardListReaderGroupsA)(hcontext, (LPTSTR)pmszReaderGroups->ac, &cchReaderGroups);
+            if (lRetCode != SCARD_E_INSUFFICIENT_BUFFER)
+            {
+                break;
+            }
+            if (cchReaderGroups <= cchReaderGroupsAllocated)
+            {
+                // This should not happen - when SCardListReaderGroups returns SCARD_E_INSUFFICIENT_BUFFER
+                // correct required length is also returned in cchReaderGroups.
+                // But if it occurs (on Apple pcsc-lite?), just allocate buffer twice as large and try again
+                cchReaderGroups = cchReaderGroupsAllocated * 2;
+            }
+            mem_Free(pmszReaderGroups->ac);
+            pmszReaderGroups->ac = NULL;
+        }
+        return lRetCode;
     #endif // !NOAUTOALLOCATE
 };
 
