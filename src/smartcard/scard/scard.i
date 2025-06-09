@@ -578,11 +578,6 @@ static SCARDRETCODE _ListReaders(
             return lRetCode;
         }
 
-        if (0==cchReaders)
-        {
-            return SCARD_S_SUCCESS;
-        }
-
         // Loop (max 3 times) to handle situation when readers are added
         // in beetween calls of SCardListReaders - after getting
         // required length, newly added reader requires larger buffer,
@@ -642,11 +637,6 @@ static SCARDRETCODE _ListReaderGroups(SCARDCONTEXT hcontext, STRINGLIST* pmszRea
         if (SCARD_S_SUCCESS!=lRetCode)
         {
             return lRetCode;
-        }
-
-        if (0==cchReaderGroups)
-        {
-            return SCARD_S_SUCCESS;
         }
 
         // Same comments as in _ListReaders apply here.
