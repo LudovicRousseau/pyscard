@@ -587,13 +587,37 @@ static SCARDRETCODE _ListReaders(
             return SCARD_S_SUCCESS;
         }
 
-        pmszReaders->ac=mem_Malloc(cchReaders*sizeof(char));
-        if (NULL==pmszReaders->ac)
+        // Loop (max 3 times) to handle situation when readers are added
+        // in beetween calls of SCardListReaders - after getting
+        // required length, newly added reader requires larger buffer,
+        // so function returns SCARD_E_INSUFFICIENT_BUFFER.
+        for (int i=0; i<3; i++)
         {
-            return SCARD_E_NO_MEMORY;
-        }
+            pmszReaders->ac=mem_Malloc(cchReaders*sizeof(char));
+            if (NULL==pmszReaders->ac)
+            {
+                return SCARD_E_NO_MEMORY;
+            }
 
-        return (mySCardListReadersA)(hcontext, mszGroups, (LPTSTR)pmszReaders->ac, &cchReaders);
+            lRetCode = (mySCardListReadersA)(hcontext, mszGroups,
+                (LPTSTR)pmszReaders->ac, &cchReaders);
+            if (SCARD_S_SUCCESS == lRetCode)
+            {
+                break;
+            }
+
+            // Error so clean allocated memory
+            mem_Free(pmszReaders->ac);
+            pmszReaders->ac = NULL;
+
+            if (lRetCode != SCARD_E_INSUFFICIENT_BUFFER)
+            {
+                break;
+            }
+
+            // SCARD_E_INSUFFICIENT_BUFFER so try again
+        }
+        return lRetCode;
     #endif // !NOAUTOALLOCATE
 }
 
@@ -633,13 +657,35 @@ static SCARDRETCODE _ListReaderGroups(SCARDCONTEXT hcontext, STRINGLIST* pmszRea
             return SCARD_S_SUCCESS;
         }
 
-        pmszReaderGroups->ac=mem_Malloc(cchReaderGroups*sizeof(char));
-        if (NULL==pmszReaderGroups->ac)
+        // Same comments as in _ListReaders apply here.
+        // Generally list of reader groups can change in beetween calls
+        for (int i=0; i<3; i++)
         {
-            return SCARD_E_NO_MEMORY;
-        }
+            pmszReaderGroups->ac=mem_Malloc(cchReaderGroups*sizeof(char));
+            if (NULL==pmszReaderGroups->ac)
+            {
+                return SCARD_E_NO_MEMORY;
+            }
 
-        return (mySCardListReaderGroupsA)(hcontext, (LPTSTR)pmszReaderGroups->ac, &cchReaderGroups);
+            lRetCode = (mySCardListReaderGroupsA)(hcontext,
+                (LPTSTR)pmszReaderGroups->ac, &cchReaderGroups);
+            if (SCARD_S_SUCCESS == lRetCode)
+            {
+                break;
+            }
+
+            // Error so clean allocated memory
+            mem_Free(pmszReaderGroups->ac);
+            pmszReaderGroups->ac = NULL;
+
+            if (lRetCode != SCARD_E_INSUFFICIENT_BUFFER)
+            {
+                break;
+            }
+
+            // SCARD_E_INSUFFICIENT_BUFFER so try again
+        }
+        return lRetCode;
     #endif // !NOAUTOALLOCATE
 };
 
