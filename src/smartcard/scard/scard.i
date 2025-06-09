@@ -334,7 +334,7 @@ SCARDRETCODE _RemoveReaderFromGroup(
 #else
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _IntroduceReader(SCARDCONTEXT hcontext, char* szReaderName, char* szDeviceName)
+static SCARDRETCODE _IntroduceReader(SCARDCONTEXT hcontext, char* szReaderName, char* szDeviceName)
 {
     (void)hcontext;
     (void)szReaderName;
@@ -343,7 +343,7 @@ SCARDRETCODE _IntroduceReader(SCARDCONTEXT hcontext, char* szReaderName, char* s
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _IntroduceReaderGroup(SCARDCONTEXT hcontext, char* szGroupName)
+static SCARDRETCODE _IntroduceReaderGroup(SCARDCONTEXT hcontext, char* szGroupName)
 {
     (void)hcontext;
     (void)szGroupName;
@@ -351,7 +351,7 @@ SCARDRETCODE _IntroduceReaderGroup(SCARDCONTEXT hcontext, char* szGroupName)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _ForgetReaderGroup(SCARDCONTEXT hcontext, char* szGroupName)
+static SCARDRETCODE _ForgetReaderGroup(SCARDCONTEXT hcontext, char* szGroupName)
 {
     (void)hcontext;
     (void)szGroupName;
@@ -359,7 +359,7 @@ SCARDRETCODE _ForgetReaderGroup(SCARDCONTEXT hcontext, char* szGroupName)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _AddReaderToGroup(
+static SCARDRETCODE _AddReaderToGroup(
   SCARDCONTEXT hcontext,
   char* szReaderName,
   char* szGroupName)
@@ -371,7 +371,7 @@ SCARDRETCODE _AddReaderToGroup(
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-SCARDRETCODE _RemoveReaderFromGroup(
+static SCARDRETCODE _RemoveReaderFromGroup(
   SCARDCONTEXT hcontext,
   char* szReaderName,
   char* szGroupName)
