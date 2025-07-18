@@ -68,8 +68,8 @@ class pcscinnerreadergroups(innerreadergroups):
                 raise error(
                     "Unable to introduce reader group: " + SCardGetErrorMessage(hresult)
                 )
-            else:
-                innerreadergroups.addreadergroup(self, newgroup)
+
+            innerreadergroups.addreadergroup(self, newgroup)
 
         finally:
             hresult = SCardReleaseContext(hcontext)
@@ -90,8 +90,8 @@ class pcscinnerreadergroups(innerreadergroups):
                 raise error(
                     "Unable to forget reader group: " + SCardGetErrorMessage(hresult)
                 )
-            else:
-                innerreadergroups.removereadergroup(self, group)
+
+            innerreadergroups.removereadergroup(self, group)
 
         finally:
             hresult = SCardReleaseContext(hcontext)
