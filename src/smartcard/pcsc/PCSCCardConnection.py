@@ -138,14 +138,14 @@ class PCSCCardConnection(CardConnection):
             self.hcard = None
             if hresult in (SCARD_W_REMOVED_CARD, SCARD_E_NO_SMARTCARD):
                 raise NoCardException("Unable to connect", hresult=hresult)
-            else:
-                raise CardConnectionException(
-                    "Unable to connect with protocol: "
-                    + dictProtocol[pcscprotocol]
-                    + ". "
-                    + SCardGetErrorMessage(hresult),
-                    hresult=hresult,
-                )
+
+            raise CardConnectionException(
+                "Unable to connect with protocol: "
+                + dictProtocol[pcscprotocol]
+                + ". "
+                + SCardGetErrorMessage(hresult),
+                hresult=hresult,
+            )
 
         protocol = 0
         if dwActiveProtocol == SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1:
@@ -193,14 +193,14 @@ class PCSCCardConnection(CardConnection):
             self.hcard = None
             if hresult in (SCARD_W_REMOVED_CARD, SCARD_E_NO_SMARTCARD):
                 raise NoCardException("Unable to reconnect", hresult=hresult)
-            else:
-                raise CardConnectionException(
-                    "Unable to reconnect with protocol: "
-                    + dictProtocol[pcscprotocol]
-                    + ". "
-                    + SCardGetErrorMessage(hresult),
-                    hresult=hresult,
-                )
+
+            raise CardConnectionException(
+                "Unable to reconnect with protocol: "
+                + dictProtocol[pcscprotocol]
+                + ". "
+                + SCardGetErrorMessage(hresult),
+                hresult=hresult,
+            )
 
         protocol = 0
         if dwActiveProtocol == SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1:
