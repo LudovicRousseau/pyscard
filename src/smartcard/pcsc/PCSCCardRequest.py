@@ -178,11 +178,7 @@ class PCSCCardRequest(AbstractCardRequest):
         # we can expect normally time-outs or reader
         # disappearing just before the call
         # otherwise, raise exception on error
-        if (
-            SCARD_S_SUCCESS != hresult
-            and SCARD_E_TIMEOUT != hresult
-            and SCARD_E_UNKNOWN_READER != hresult
-        ):
+        if hresult not in (SCARD_S_SUCCESS, SCARD_E_TIMEOUT, SCARD_E_UNKNOWN_READER):
             raise CardRequestException(
                 "Failed to SCardGetStatusChange " + SCardGetErrorMessage(hresult),
                 hresult=hresult,
