@@ -52,6 +52,7 @@ class ErrorCheckingChain:
         location = self.chain.index(self)
         if not self.end():
             return self.chain[location + 1]
+        return None
 
     def addFilterException(self, exClass):
         """Add an exception filter to the error checking chain.
@@ -85,11 +86,11 @@ class ErrorCheckingChain:
             # if exception is filtered, return
             for exception in self.excludes:
                 if exception == exc_info()[0]:
-                    return
+                    return None
             # otherwise reraise exception
             raise
 
         # if not done, call next strategy
         if self.end():
-            return
+            return None
         return self.next()(data, sw1, sw2)
