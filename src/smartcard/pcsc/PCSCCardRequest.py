@@ -303,6 +303,9 @@ class PCSCCardRequest(AbstractCardRequest):
                     # update state dictionary
                     readerstates[readername] = (readername, eventstate)
 
+        # should not happen
+        return None
+
     def waitforcardevent(self):
         """Wait for card insertion or removal."""
 
