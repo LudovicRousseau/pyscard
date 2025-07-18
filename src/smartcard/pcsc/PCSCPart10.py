@@ -150,7 +150,7 @@ def hasFeature(featureList, feature):
     @return: feature value or None
     """
     for f in featureList:
-        if f[0] == feature or Features[f[0]] == feature:
+        if feature in (f[0], Features[f[0]]):
             return f[1]
 
 
