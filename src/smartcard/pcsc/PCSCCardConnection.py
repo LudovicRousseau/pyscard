@@ -99,7 +99,7 @@ class PCSCCardConnection(CardConnection):
             CardConnection.release(self)
             self.disconnect()
             hresult = SCardReleaseContext(self.hcontext)
-            if hresult != SCARD_S_SUCCESS and hresult != SCARD_E_INVALID_VALUE:
+            if hresult not in (SCARD_S_SUCCESS, SCARD_E_INVALID_VALUE):
                 raise CardConnectionException(
                     "Failed to release context: " + SCardGetErrorMessage(hresult),
                     hresult=hresult,
