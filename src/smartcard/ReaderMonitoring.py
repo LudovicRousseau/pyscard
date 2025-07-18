@@ -142,6 +142,8 @@ class ReaderMonitoringThread(Thread):
     reader insertion event is available in pcsc.
     """
 
+    # pylint: disable=too-many-instance-attributes
+
     __shared_state = {}
 
     def __init__(self, observable, readerProc, period):

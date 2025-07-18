@@ -37,6 +37,8 @@ class ATR:
     Answer to Reset sequences are defined in ISO 7816-3, section 8.
     """
 
+    # pylint: disable=too-many-instance-attributes
+
     clockrateconversion: list[int | str] = [
         372,
         372,
