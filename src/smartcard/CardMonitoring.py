@@ -196,18 +196,21 @@ class CardMonitoringThread:
 
     # the singleton
     instance = None
+    lock = Lock()
 
     def __init__(self, observable):
-        if not CardMonitoringThread.instance:
-            CardMonitoringThread.instance = (
-                CardMonitoringThread.__CardMonitoringThreadSingleton(observable)
-            )
-            CardMonitoringThread.instance.start()
+        with CardMonitoringThread.lock:
+            if not CardMonitoringThread.instance:
+                CardMonitoringThread.instance = (
+                    CardMonitoringThread.__CardMonitoringThreadSingleton(observable)
+                )
+                CardMonitoringThread.instance.start()
 
     def join(self, *args, **kwargs):
-        if self.instance:
-            self.instance.join(*args, **kwargs)
-            CardMonitoringThread.instance = None
+        with CardMonitoringThread.lock:
+            if self.instance:
+                self.instance.join(*args, **kwargs)
+                CardMonitoringThread.instance = None
 
     def __getattr__(self, name):
         if self.instance:
