@@ -150,6 +150,8 @@ class PCSCCardRequest(AbstractCardRequest):
         """Wait for card insertion and returns a card service."""
 
         # pylint: disable=too-many-statements
+        # pylint: disable=too-many-locals
+        # pylint: disable=too-many-branches
 
         AbstractCardRequest.waitforcard(self)
         cardfound = False
@@ -309,6 +311,8 @@ class PCSCCardRequest(AbstractCardRequest):
         """Wait for card insertion or removal."""
 
         # pylint: disable=too-many-statements
+        # pylint: disable=too-many-locals
+        # pylint: disable=too-many-branches
 
         AbstractCardRequest.waitforcardevent(self)
         presentcards = []
