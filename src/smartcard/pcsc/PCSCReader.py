@@ -69,7 +69,7 @@ class PCSCReader(Reader):
             raise EstablishContextException(hresult)
         try:
             hresult = SCardIntroduceReader(hcontext, self.name, self.name)
-            if SCARD_S_SUCCESS != hresult and SCARD_E_DUPLICATE_READER != hresult:
+            if hresult not in (SCARD_S_SUCCESS, SCARD_E_DUPLICATE_READER):
                 raise IntroduceReaderException(hresult, self.name)
             hresult = SCardAddReaderToGroup(hcontext, self.name, groupname)
             if SCARD_S_SUCCESS != hresult:
