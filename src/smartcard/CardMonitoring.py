@@ -218,6 +218,8 @@ class CardMonitoringThread:
         if self.instance:
             return getattr(self.instance, name)
 
+        raise SmartcardException(".instance is not set")
+
 
 if __name__ == "__main__":
     print("insert or remove cards in the next 10 seconds")
