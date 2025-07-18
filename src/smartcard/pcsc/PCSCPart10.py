@@ -153,6 +153,8 @@ def hasFeature(featureList, feature):
         if feature in (f[0], Features[f[0]]):
             return f[1]
 
+    return None
+
 
 def getPinProperties(cardConnection, featureList=None, controlCode=None):
     """return the C{PIN_PROPERTIES} structure
