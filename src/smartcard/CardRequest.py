@@ -30,6 +30,8 @@ class CardRequest:
     kind of smart card an application is waited for.
     """
 
+    # pylint: disable=too-many-arguments
+    # pylint: disable=too-many-positional-arguments
     def __init__(
         self,
         newcardonly=False,

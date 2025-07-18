@@ -40,6 +40,8 @@ from smartcard.scard import *
 class PCSCCardRequest(AbstractCardRequest):
     """PCSC CardRequest class."""
 
+    # pylint: disable=too-many-arguments
+    # pylint: disable=too-many-positional-arguments
     def __init__(
         self,
         newcardonly=False,
