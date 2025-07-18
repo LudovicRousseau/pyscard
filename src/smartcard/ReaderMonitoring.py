@@ -162,6 +162,9 @@ class ReaderMonitoringThread(Thread):
         """Runs until stopEvent is notified, and notify
         observers of all reader insertion/removal.
         """
+
+        # pylint: disable=too-many-nested-blocks
+
         while not self.stopEvent.is_set():
             try:
                 # no need to monitor if no observers
