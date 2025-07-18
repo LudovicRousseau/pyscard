@@ -98,6 +98,8 @@ class ATR:
           - N: extra guard time
         """
 
+        # pylint: disable=too-many-statements
+
         if len(atr) < 2:
             raise SmartcardException(f"ATR sequences must be at least 2 bytes long")
         if atr[0] not in {0x3B, 0x3F}:
