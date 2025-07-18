@@ -255,7 +255,7 @@ class PCSCCardRequest(AbstractCardRequest):
                 raise CardRequestTimeoutException(hresult=hresult)
 
             # reader vanished before or during the call
-            elif SCARD_E_UNKNOWN_READER == hresult:
+            if SCARD_E_UNKNOWN_READER == hresult:
                 pass
 
             # this happens on Windows when the last reader is disconnected
@@ -423,7 +423,7 @@ class PCSCCardRequest(AbstractCardRequest):
                 raise CardRequestTimeoutException(hresult=hresult)
 
             # the reader was unplugged during the loop
-            elif SCARD_E_UNKNOWN_READER == hresult:
+            if SCARD_E_UNKNOWN_READER == hresult:
                 pass
 
             # this happens on Windows when the last reader is disconnected
