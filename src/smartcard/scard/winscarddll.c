@@ -751,6 +751,7 @@ long winscard_init(void)
 
                 #ifndef __APPLE__
                     GETPROCADDRESS( SCARDCONTROL, SCardControl, SCardControl );
+                    GETPROCADDRESS( SCARDFREEMEMORY, SCardFreeMemory, SCardFreeMemory);
                 #else // !__APPLE__
                     GETPROCADDRESS( SCARDCONTROL, SCardControl, SCardControl132 );
                 #endif // __APPLE__
