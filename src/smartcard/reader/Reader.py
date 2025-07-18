@@ -50,8 +50,8 @@ class Reader:
         """Returns True if self==other (same name)."""
         if type(other) == type(self):
             return self.name == other.name
-        else:
-            return False
+
+        return False
 
     def __hash__(self):
         """Returns a hash value for this object (self.name is unique)."""
