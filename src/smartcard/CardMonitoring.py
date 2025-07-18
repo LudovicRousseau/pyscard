@@ -39,6 +39,8 @@ from smartcard.scard import SCARD_E_NO_SERVICE
 
 _START_ON_DEMAND_ = False
 
+# pylint: disable=too-few-public-methods
+
 
 # CardObserver interface
 class CardObserver(Observer):

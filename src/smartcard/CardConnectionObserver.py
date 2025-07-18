@@ -28,6 +28,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 from smartcard.Observer import Observer
 from smartcard.util import toHexString
 
+# pylint: disable=too-few-public-methods
+
 
 # ReaderObserver interface
 class CardConnectionObserver(Observer):

@@ -16,6 +16,8 @@ import typing
 
 from smartcard.Synchronization import Synchronization, synchronize
 
+# pylint: disable=too-few-public-methods
+
 
 class Observer:
     def update(self, observable: Observable, arg: typing.Any) -> None:

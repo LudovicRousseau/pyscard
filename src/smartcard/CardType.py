@@ -26,6 +26,8 @@ from smartcard.Exceptions import InvalidATRMaskLengthException
 from smartcard.System import readers
 from smartcard.util import toHexString
 
+# pylint: disable=too-few-public-methods
+
 
 class CardType:
     """Abstract base class for CardTypes.

@@ -99,6 +99,9 @@ class PCSCReader(Reader):
         return CardConnectionDecorator(PCSCCardConnection(self.name))
 
     class Factory:
+
+        # pylint: disable=too-few-public-methods
+
         @staticmethod
         def create(readername):
             return PCSCReader(readername)

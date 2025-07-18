@@ -25,6 +25,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 import smartcard.sw.SWExceptions
 from smartcard.sw.ErrorChecker import ErrorChecker
 
+# pylint: disable=too-few-public-methods
+
 iso7816_9SW = {
     0x62: (
         smartcard.sw.SWExceptions.WarningProcessingException,

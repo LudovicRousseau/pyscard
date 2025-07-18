@@ -16,6 +16,8 @@ import threading
 from collections.abc import Iterable
 from typing import Any, Callable, Protocol, TypeVar
 
+# pylint: disable=too-few-public-methods
+
 if sys.version_info >= (3, 10):
     from typing import ParamSpec
 else:

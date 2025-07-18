@@ -25,6 +25,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 from smartcard.Exceptions import SmartcardException
 from smartcard.ulist import ulist
 
+# pylint: disable=too-few-public-methods
+
 
 class BadReaderGroupException(SmartcardException):
     """Raised when trying to add an invalid reader group."""

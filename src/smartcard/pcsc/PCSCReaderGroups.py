@@ -26,6 +26,8 @@ from smartcard.pcsc.PCSCExceptions import *
 from smartcard.reader.ReaderGroups import innerreadergroups, readergroups
 from smartcard.scard import *
 
+# pylint: disable=too-few-public-methods
+
 
 class pcscinnerreadergroups(innerreadergroups):
     """Smartcard PCSC readers groups inner class.

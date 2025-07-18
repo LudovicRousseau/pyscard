@@ -36,6 +36,8 @@ import smartcard.System
 from smartcard.Observer import Observable, Observer
 from smartcard.Synchronization import *
 
+# pylint: disable=too-few-public-methods
+
 
 # ReaderObserver interface
 class ReaderObserver(Observer):
