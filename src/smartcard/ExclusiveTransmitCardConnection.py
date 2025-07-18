@@ -58,9 +58,6 @@ class ExclusiveTransmitCardConnection(CardConnectionDecorator):
                         "Failed to lock with SCardBeginTransaction: "
                         + SCardGetErrorMessage(hresult)
                     )
-                else:
-                    # print('locked')
-                    pass
                 break
             if hasattr(component, "component"):
                 component = component.component
@@ -83,9 +80,6 @@ class ExclusiveTransmitCardConnection(CardConnectionDecorator):
                         "Failed to unlock with SCardEndTransaction: "
                         + SCardGetErrorMessage(hresult)
                     )
-                else:
-                    # print('unlocked')
-                    pass
                 break
             if hasattr(component, "component"):
                 component = component.component
