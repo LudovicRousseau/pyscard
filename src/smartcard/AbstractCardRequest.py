@@ -84,8 +84,7 @@ class AbstractCardRequest:
         # if readers not given, use all readers
         if self.readersAsked is None:
             return smartcard.System.readers()
-        else:
-            return self.readersAsked
+        return self.readersAsked
 
     def waitforcard(self):
         """Wait for card insertion and returns a card service."""
