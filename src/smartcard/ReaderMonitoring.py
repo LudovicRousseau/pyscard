@@ -224,6 +224,8 @@ if __name__ == "__main__":
 
     class testthread(Thread):
 
+        # pylint: disable=duplicate-code
+
         def __init__(self, obsindex):
             Thread.__init__(self)
             self.readermonitor = ReaderMonitor()

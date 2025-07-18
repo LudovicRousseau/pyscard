@@ -87,6 +87,9 @@ class ISO7816_9ErrorChecker(ErrorChecker):
         @param sw1:        apdu data status word 1
         @param sw2:        apdu data status word 2
         """
+
+        # pylint: disable=duplicate-code
+
         if sw1 in iso7816_9SW:
             exception, sw2dir = iso7816_9SW[sw1]
             if type(sw2dir) == type({}):
