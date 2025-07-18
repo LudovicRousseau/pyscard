@@ -247,8 +247,8 @@ class PCSCCardRequest(AbstractCardRequest):
             if self.timeout != INFINITE:
                 delta = datetime.now() - startDate
                 self.timeout -= int(delta.total_seconds() * 1000)
-                if self.timeout < 0:
-                    self.timeout = 0
+                # timeout cant be < 0
+                self.timeout = max(self.timeout, 0)
 
             # time-out
             if hresult in (SCARD_E_TIMEOUT, SCARD_E_CANCELLED):
@@ -415,8 +415,8 @@ class PCSCCardRequest(AbstractCardRequest):
             if self.timeout != INFINITE:
                 delta = datetime.now() - startDate
                 self.timeout -= int(delta.total_seconds() * 1000)
-                if self.timeout < 0:
-                    self.timeout = 0
+                # timeout cant be < 0
+                self.timeout = max(self.timeout, 0)
 
             # time-out
             if hresult in (SCARD_E_TIMEOUT, SCARD_E_CANCELLED):
