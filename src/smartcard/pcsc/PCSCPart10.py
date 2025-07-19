@@ -22,7 +22,7 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-from smartcard.scard import *
+from smartcard.scard import SCARD_CTL_CODE, SCARD_SHARE_DIRECT
 
 # constants defined in PC/SC v2 Part 10
 CM_IOCTL_GET_FEATURE_REQUEST = SCARD_CTL_CODE(3400)
