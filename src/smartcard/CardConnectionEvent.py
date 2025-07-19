@@ -31,12 +31,12 @@ class CardConnectionEvent:
 
     This event is notified by CardConnection objects."""
 
-    def __init__(self, type, args=None):
+    def __init__(self, event_type, args=None):
         """
-        @param type:   'connect', 'reconnect', 'disconnect', 'command', 'response'
+        @param event_type:   'connect', 'reconnect', 'disconnect', 'command', 'response'
         @param args:   None for 'connect', 'reconnect' or 'disconnect'
                 command APDU byte list for 'command'
                 [response data, sw1, sw2] for 'response'
         """
-        self.type = type
+        self.type = event_type
         self.args = args
