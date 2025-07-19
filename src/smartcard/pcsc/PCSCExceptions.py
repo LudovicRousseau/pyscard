@@ -36,10 +36,13 @@ class BaseSCardException(Exception):
 
     """
 
-    def __init__(self, hresult=-1, message="", *args):
+    def __init__(self, *args, hresult=-1, message=""):
         """Constructor that stores the pcsc error status."""
         if not message:
             message = "scard exception"
+        if -1 == hresult and len(args) > 0:
+            hresult = args[0]
+            args = args[1:]
         super().__init__(message, *args)
         self.message = message
         self.hresult = hresult
