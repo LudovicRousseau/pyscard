@@ -35,7 +35,13 @@ class SmartcardException(Exception):
 
     """
 
-    def __init__(self, message="", hresult=-1, *args):
+    def __init__(self, *args, message="", hresult=-1):
+        if not message and len(args) > 0:
+            message = args[0]
+            args = args[1:]
+        if -1 == hresult and len(args) > 0:
+            hresult = args[0]
+            args = args[1:]
         super().__init__(message, *args)
         self.hresult = int(hresult)
 
