@@ -106,6 +106,7 @@ class PCSCCardConnection(CardConnection):
         """
         CardConnection.__init__(self, reader)
         self.hcard = None
+        self.disposition = None
         hresult, self.hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
         if hresult != SCARD_S_SUCCESS:
             raise CardConnectionException(
