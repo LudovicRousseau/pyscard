@@ -61,7 +61,7 @@ class ExclusiveConnectCardConnection(CardConnectionDecorator):
                         raise CardConnectionException(
                             "Failed to disconnect: " + SCardGetErrorMessage(hresult)
                         )
-                hresult, component.hcard, dwActiveProtocol = SCardConnect(
+                hresult, component.hcard, _ = SCardConnect(
                     component.hcontext,
                     str(component.reader),
                     SCARD_SHARE_EXCLUSIVE,
