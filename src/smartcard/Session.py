@@ -112,5 +112,5 @@ class Session:
 
 
 if __name__ == "__main__":
-    """Small sample illustrating the use of Session.py."""
+    # Small sample illustrating the use of Session.py.
     pass

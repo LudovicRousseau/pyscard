@@ -129,7 +129,7 @@ class op21_ErrorChecker(ErrorChecker):
 
 
 if __name__ == "__main__":
-    """Small sample illustrating the use of op21_ErrorChecker."""
+    # Small sample illustrating the use of op21_ErrorChecker.
     ecs = op21_ErrorChecker()
     ecs([], 0x90, 0x00)
     ecs([], 0x94, 0x81)

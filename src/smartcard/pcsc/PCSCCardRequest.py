@@ -469,7 +469,7 @@ class PCSCCardRequest(AbstractCardRequest):
 
 
 if __name__ == "__main__":
-    """Small sample illustrating the use of PCSCCardRequest.py."""
+    # Small sample illustrating the use of PCSCCardRequest.py.
 
     from smartcard.util import toHexString
 

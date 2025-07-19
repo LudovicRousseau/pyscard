@@ -174,7 +174,7 @@ class ISO7816_4ErrorChecker(ErrorChecker):
 
 
 if __name__ == "__main__":
-    """Small sample illustrating the use of ISO7816_4ErrorChecker."""
+    # Small sample illustrating the use of ISO7816_4ErrorChecker.
     ecs = ISO7816_4ErrorChecker()
     ecs([], 0x90, 0x00)
     try:

@@ -250,7 +250,7 @@ def parseTlvProperties(response):
 
 
 if __name__ == "__main__":
-    """Small sample illustrating the use of PCSCPart10."""
+    # Small sample illustrating the use of PCSCPart10.
     from smartcard.pcsc.PCSCReader import PCSCReader
 
     cc = PCSCReader.readers()[0].createConnection()

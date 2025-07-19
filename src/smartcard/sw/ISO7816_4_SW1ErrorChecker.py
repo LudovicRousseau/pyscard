@@ -79,7 +79,7 @@ class ISO7816_4_SW1ErrorChecker(ErrorChecker):
 
 
 if __name__ == "__main__":
-    """Small sample illustrating the use of ISO7816_4_SW1ErrorChecker."""
+    # Small sample illustrating the use of ISO7816_4_SW1ErrorChecker.
     ecs = ISO7816_4_SW1ErrorChecker()
     ecs([], 0x90, 0x00)
     try:

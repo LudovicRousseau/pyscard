@@ -104,7 +104,7 @@ class ATRCardType(CardType):
 
 
 if __name__ == "__main__":
-    """Small sample illustrating the use of CardType.py."""
+    # Small sample illustrating the use of CardType.py.
     r = readers()
     print(r)
     connection = r[0].createConnection()

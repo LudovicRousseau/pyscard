@@ -92,7 +92,7 @@ class innerreadergroups(ulist):
 class readergroups:
     """ReadersGroups organizes smart card reader as groups."""
 
-    """The single instance of __readergroups"""
+    # The single instance of __readergroups
     instance = None
     innerclazz = innerreadergroups
 
@@ -101,7 +101,7 @@ class readergroups:
         if readergroups.instance is None:
             readergroups.instance = self.innerclazz(initlist)
 
-    """All operators redirected to inner class."""
+    # All operators redirected to inner class.
 
     def __getattr__(self, name):
         return getattr(self.instance, name)

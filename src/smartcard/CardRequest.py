@@ -90,7 +90,7 @@ class CardRequest:
 
 
 if __name__ == "__main__":
-    """Small sample illustrating the use of CardRequest.py."""
+    # Small sample illustrating the use of CardRequest.py.
 
     from smartcard.util import toHexString
 

@@ -101,7 +101,7 @@ class ISO7816_9ErrorChecker(ErrorChecker):
 
 
 if __name__ == "__main__":
-    """Small sample illustrating the use of ISO7816_9ErrorChecker."""
+    # Small sample illustrating the use of ISO7816_9ErrorChecker.
     ecs = ISO7816_9ErrorChecker()
     ecs([], 0x90, 0x00)
     ecs([], 0x6A, 0x81)

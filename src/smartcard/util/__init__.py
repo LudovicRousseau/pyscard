@@ -107,7 +107,7 @@ def toBytes(bytestring: str) -> list[int]:
         raise TypeError("not a string representing a list of bytes")
 
 
-"""GSM3.38 character conversion table."""
+# GSM3.38 character conversion table.
 __dic_GSM_3_38__ = {
     "@": 0x00,  # @ At symbol
     "£": 0x01,  # £ Britain pound symbol

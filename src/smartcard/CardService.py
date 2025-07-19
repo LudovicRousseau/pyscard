@@ -64,7 +64,7 @@ class CardService:
 
 
 if __name__ == "__main__":
-    """Small sample illustrating the use of CardService."""
+    # Small sample illustrating the use of CardService.
     SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
     DF_TELECOM = [0x7F, 0x10]
     from smartcard.System import readers
