@@ -257,11 +257,11 @@ if __name__ == "__main__":
     cc.connect(mode=SCARD_SHARE_DIRECT)
 
     # print(cc.control(CM_IOCTL_GET_FEATURE_REQUEST))
-    features = getFeatureRequest(cc)
-    print(features)
+    _features = getFeatureRequest(cc)
+    print(_features)
 
-    print(hasFeature(features, FEATURE_VERIFY_PIN_START))
-    print(hasFeature(features, FEATURE_VERIFY_PIN_DIRECT))
+    print(hasFeature(_features, FEATURE_VERIFY_PIN_START))
+    print(hasFeature(_features, FEATURE_VERIFY_PIN_DIRECT))
 
     properties = getPinProperties(cc)
     print("\nPinProperties:")
