@@ -34,7 +34,27 @@ from smartcard.Exceptions import (
     ListReadersException,
 )
 from smartcard.pcsc.PCSCReader import PCSCReader
-from smartcard.scard import *
+from smartcard.scard import (
+    INFINITE,
+    SCARD_E_CANCELLED,
+    SCARD_E_NO_READERS_AVAILABLE,
+    SCARD_E_NO_SERVICE,
+    SCARD_E_SERVICE_STOPPED,
+    SCARD_E_SYSTEM_CANCELLED,
+    SCARD_E_TIMEOUT,
+    SCARD_E_UNKNOWN_READER,
+    SCARD_S_SUCCESS,
+    SCARD_SCOPE_USER,
+    SCARD_STATE_CHANGED,
+    SCARD_STATE_PRESENT,
+    SCARD_STATE_UNAWARE,
+    SCardCancel,
+    SCardEstablishContext,
+    SCardGetErrorMessage,
+    SCardGetStatusChange,
+    SCardListReaders,
+    SCardReleaseContext,
+)
 
 
 class PCSCCardRequest(AbstractCardRequest):
