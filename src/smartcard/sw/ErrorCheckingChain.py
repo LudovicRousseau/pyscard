@@ -77,7 +77,7 @@ class ErrorCheckingChain:
         """Called to test data, sw1 and sw2 for error on the chain."""
         try:
             self.strategy(data, sw1, sw2)
-        except tuple(self.excludes) as exc:
+        except tuple(self.excludes):
             # The following additional filter may look redundant, it isn't.
             # It checks that type(exc) is *equal* to any of self.excludes,
             # rather than equal-or-subclass to any of self.excludes.
