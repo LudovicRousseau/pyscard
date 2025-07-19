@@ -51,9 +51,6 @@ class CardType:
 class AnyCardType(CardType):
     """The AnyCardType matches any card."""
 
-    def __init__(self):
-        super().__init__()
-
     def matches(self, atr, reader=None):
         """Always returns true, i.e. AnyCardType matches any card.
 
