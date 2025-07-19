@@ -242,6 +242,6 @@ class CardConnection(Observable):
         """Enter the runtime context."""
         return self
 
-    def __exit__(self, type, value, traceback):
+    def __exit__(self, e_type, value, traceback):
         """Exit the runtime context trying to disconnect."""
         self.disconnect()
