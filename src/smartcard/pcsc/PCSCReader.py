@@ -156,11 +156,11 @@ if __name__ == "__main__":
     SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
     DF_TELECOM = [0x7F, 0x10]
 
-    creaders = PCSCReader.readers()
-    for reader in creaders:
+    _creaders = PCSCReader.readers()
+    for _reader in _creaders:
         try:
-            print(reader.name)
-            connection = reader.createConnection()
+            print(_reader.name)
+            connection = _reader.createConnection()
             connection.connect()
             print(toHexString(connection.getATR()))
             data, sw1, sw2 = connection.transmit(SELECT + DF_TELECOM)
