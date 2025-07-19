@@ -183,7 +183,7 @@ class PCSCCardConnection(CardConnection):
         else:
             for p in dictProtocol:
                 if p == dwActiveProtocol:
-                    protocol = eval("CardConnection.%s_protocol" % dictProtocol[p])
+                    protocol = getattr(CardConnection, f"{dictProtocol[p]}_protocol")
         PCSCCardConnection.setProtocol(self, protocol)
 
     def reconnect(self, protocol=None, mode=None, disposition=None):
@@ -238,7 +238,7 @@ class PCSCCardConnection(CardConnection):
         else:
             for p in dictProtocol:
                 if p == dwActiveProtocol:
-                    protocol = eval("CardConnection.%s_protocol" % dictProtocol[p])
+                    protocol = getattr(CardConnection, f"{dictProtocol[p]}_protocol")
         PCSCCardConnection.setProtocol(self, protocol)
 
     def disconnect(self):
