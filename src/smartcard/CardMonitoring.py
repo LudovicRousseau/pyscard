@@ -183,7 +183,6 @@ class CardMonitoringThread:
                     pass
 
                 except SmartcardException as exc:
-                    # FIXME Tighten the exceptions caught by this block
                     traceback.print_exc()
                     # Most likely raised during interpreter shutdown due
                     # to unclean exit which failed to remove all observers.
