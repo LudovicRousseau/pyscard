@@ -44,13 +44,11 @@ class Session:
     >>> print(`s`)
     """
 
-    def __init__(self, readerName=None, cardServiceClass=None):
+    def __init__(self, readerName=None):
         """Session constructor. Initializes a smart card session and
         connect to the card.
 
         @param readerName: reader to connect to; default is first PCSC reader
-        @param cardServiceClass: card service to bind the session to; default
-                            is None
         """
 
         # if reader name not given, select first reader
