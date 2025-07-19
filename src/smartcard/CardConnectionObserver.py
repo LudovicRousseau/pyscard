@@ -38,42 +38,42 @@ class CardConnectionObserver(Observer):
     upon L{CardConnection} events.
     """
 
-    def update(self, cardconnection, cardconnectionevent):
+    def update(self, observable, arg):
         """Called upon CardConnection event.
 
-        @param cardconnection:         the observed card connection object
-        @param cardconnectionevent:    the CardConnectionEvent sent by the connection
+        @param observable:         the observed card connection object
+        @param arg:    the CardConnectionEvent sent by the connection
         """
 
 
 class ConsoleCardConnectionObserver(CardConnectionObserver):
 
-    def update(self, cardconnection, ccevent):
+    def update(self, observable, arg):
 
-        if "connect" == ccevent.type:
-            print("connecting to " + cardconnection.getReader())
+        if "connect" == arg.type:
+            print("connecting to " + observable.getReader())
 
-        elif "reconnect" == ccevent.type:
-            print("reconnecting to " + cardconnection.getReader())
+        elif "reconnect" == arg.type:
+            print("reconnecting to " + observable.getReader())
 
-        elif "disconnect" == ccevent.type:
-            print("disconnecting from " + cardconnection.getReader())
+        elif "disconnect" == arg.type:
+            print("disconnecting from " + observable.getReader())
 
-        elif "release" == ccevent.type:
-            print("release from " + cardconnection.getReader())
+        elif "release" == arg.type:
+            print("release from " + observable.getReader())
 
-        elif "command" == ccevent.type:
-            print("> " + toHexString(ccevent.args[0]))
+        elif "command" == arg.type:
+            print("> " + toHexString(arg.args[0]))
 
-        elif "response" == ccevent.type:
-            if [] == ccevent.args[0]:
-                print("<  [] %02X %02X" % tuple(ccevent.args[-2:]))
+        elif "response" == arg.type:
+            if [] == arg.args[0]:
+                print("<  [] %02X %02X" % tuple(arg.args[-2:]))
             else:
                 print(
                     "< "
-                    + toHexString(ccevent.args[0])
+                    + toHexString(arg.args[0])
                     + " "
-                    + "%02X %02X" % tuple(ccevent.args[-2:])
+                    + "%02X %02X" % tuple(arg.args[-2:])
                 )
         else:
-            print("unknown event:", ccevent.type)
+            print("unknown event:", arg.type)

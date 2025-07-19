@@ -52,11 +52,11 @@ class CardObserver(Observer):
     def __init__(self):
         pass
 
-    def update(self, observable, handlers):
+    def update(self, observable, arg):
         """Called upon smart card insertion / removal.
 
         @param observable:
-        @param handlers:
+        @param arg:
           - addedcards: list of inserted smart cards causing notification
           - removedcards: list of removed smart cards causing notification
         """
@@ -229,8 +229,8 @@ if __name__ == "__main__":
         def __init__(self, obsindex):
             self.obsindex = obsindex
 
-        def update(self, observable, handlers):
-            addedcards, removedcards = handlers
+        def update(self, observable, arg):
+            addedcards, removedcards = arg
             print("%d - added:   %s" % (self.obsindex, str(addedcards)))
             print("%d - removed: %s" % (self.obsindex, str(removedcards)))
 
