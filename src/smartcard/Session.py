@@ -71,8 +71,8 @@ class Session:
 
         try:
             self.reader
-        except AttributeError:
-            raise InvalidReaderException(self.readerName)
+        except AttributeError as exc:
+            raise InvalidReaderException(self.readerName) from exc
 
         # open card connection and bind PassThruCardService
         cc = self.reader.createConnection()
