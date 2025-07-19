@@ -88,8 +88,6 @@ class AbstractCardRequest:
 
     def waitforcard(self):
         """Wait for card insertion and returns a card service."""
-        pass
 
     def waitforcardevent(self):
         """Wait for card insertion or removal."""
-        pass

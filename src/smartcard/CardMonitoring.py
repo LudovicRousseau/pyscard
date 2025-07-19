@@ -60,7 +60,6 @@ class CardObserver(Observer):
           - addedcards: list of inserted smart cards causing notification
           - removedcards: list of removed smart cards causing notification
         """
-        pass
 
 
 class CardMonitor:

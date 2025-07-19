@@ -25,7 +25,6 @@ class Observer:
         modified. You call an Observable object's
         notifyObservers method to notify all the
         object's observers of the change."""
-        pass
 
 
 class Observable(Synchronization):

@@ -58,7 +58,6 @@ class CardConnection(Observable):
 
     def __del__(self):
         """Connect to card."""
-        pass
 
     def addSWExceptionToFilter(self, exClass):
         """Add a status word exception class to be filtered.
@@ -127,7 +126,6 @@ class CardConnection(Observable):
 
     def getATR(self):
         """Return card ATR"""
-        pass
 
     def getProtocol(self):
         """Return bit mask for the protocol of connection, or None if no

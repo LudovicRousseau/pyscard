@@ -57,7 +57,6 @@ class ReaderObserver(Observer):
           - addedreaders: list of added readers causing notification
           - removedreaders: list of removed readers causing notification
         """
-        pass
 
 
 class ReaderMonitor(Observable):

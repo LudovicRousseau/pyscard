@@ -44,7 +44,6 @@ class CardConnectionObserver(Observer):
         @param cardconnection:         the observed card connection object
         @param cardconnectionevent:    the CardConnectionEvent sent by the connection
         """
-        pass
 
 
 class ConsoleCardConnectionObserver(CardConnectionObserver):

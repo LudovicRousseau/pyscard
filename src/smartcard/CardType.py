@@ -37,7 +37,6 @@ class CardType:
 
     def __init__(self):
         """CardType constructor."""
-        pass
 
     def matches(self, atr, reader=None):
         """Returns true if atr and card connected match the L{CardType}.
@@ -47,7 +46,6 @@ class CardType:
 
         The reader can be used in some subclasses to do advanced
         matching that require connecting to the card."""
-        pass
 
 
 class AnyCardType(CardType):

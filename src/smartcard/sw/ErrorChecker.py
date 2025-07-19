@@ -47,4 +47,3 @@ class ErrorChecker:
         @param sw1:        apdu data status word 1
         @param sw2:        apdu data status word 2
         """
-        pass

@@ -82,11 +82,9 @@ class innerreadergroups(ulist):
 
     def addreadertogroup(self, readername, groupname):
         """Add a reader to a reader group"""
-        pass
 
     def removereaderfromgroup(self, readername, groupname):
         """Remove a reader from a reader group"""
-        pass
 
 
 class readergroups:

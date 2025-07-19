@@ -36,15 +36,12 @@ class Reader:
 
     def addtoreadergroup(self, groupname):
         """Add reader to a reader group."""
-        pass
 
     def removefromreadergroup(self, groupname):
         """Remove reader from a reader group."""
-        pass
 
     def createConnection(self):
         """Returns a card connection thru reader."""
-        pass
 
     def __eq__(self, other):
         """Returns True if self==other (same name)."""

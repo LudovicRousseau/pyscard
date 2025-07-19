@@ -56,13 +56,9 @@ class SmartcardException(Exception):
 class CardConnectionException(SmartcardException):
     """Raised when a CardConnection class method fails."""
 
-    pass
-
 
 class CardRequestException(SmartcardException):
     """Raised when a CardRequest wait fails."""
-
-    pass
 
 
 class CardRequestTimeoutException(SmartcardException):
@@ -77,19 +73,13 @@ class CardRequestTimeoutException(SmartcardException):
 class CardServiceException(SmartcardException):
     """Raised when a CardService class method fails."""
 
-    pass
-
 
 class CardServiceStoppedException(SmartcardException):
     """Raised when the CardService was stopped"""
 
-    pass
-
 
 class CardServiceNotFoundException(SmartcardException):
     """Raised when the CardService is not found"""
-
-    pass
 
 
 class InvalidATRMaskLengthException(SmartcardException):

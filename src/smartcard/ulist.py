@@ -116,9 +116,7 @@ class ulist(list):
     def __onadditem__(self, item):
         """Called for each item added. Override in subclasses for adding
         custom action."""
-        pass
 
     def __onremoveitem__(self, item):
         """Called for each item removed. Override in subclasses for
         adding custom action."""
-        pass
