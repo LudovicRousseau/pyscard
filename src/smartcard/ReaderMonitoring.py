@@ -34,7 +34,7 @@ from time import sleep
 
 import smartcard.System
 from smartcard.Observer import Observable, Observer
-from smartcard.Synchronization import *
+from smartcard.Synchronization import synchronize
 
 # pylint: disable=too-few-public-methods
 
