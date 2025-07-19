@@ -221,20 +221,20 @@ def parseTlvProperties(response):
     tmp = list(response)
     while tmp:
         tag = tmp[0]
-        len = tmp[1]
-        data = tmp[2 : 2 + len]
+        length = tmp[1]
+        data = tmp[2 : 2 + length]
 
         if PCSCv2_PART10_PROPERTY_sFirmwareID == tag:
             # convert to a string
             data = "".join([chr(c) for c in data])
         # we now suppose the value is an integer
-        elif 1 == len:
+        elif 1 == length:
             # byte
             data = data[0]
-        elif 2 == len:
+        elif 2 == length:
             # 16 bits value
             data = data[1] * 256 + data[0]
-        elif 4 == len:
+        elif 4 == length:
             # 32 bits value
             data = ((data[3] * 256 + data[2]) * 256 + data[1]) * 256 + data[0]
 
@@ -244,7 +244,7 @@ def parseTlvProperties(response):
         except KeyError:
             d["UNKNOWN"] = data
 
-        del tmp[0 : 2 + len]
+        del tmp[0 : 2 + length]
 
     return d
 
