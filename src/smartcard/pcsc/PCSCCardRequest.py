@@ -297,7 +297,7 @@ class PCSCCardRequest(AbstractCardRequest):
                 # or if a new card is requested, and there is a change+present
                 for state in newstates:
                     readername, eventstate, atr = state
-                    r, oldstate = readerstates[readername]
+                    _, oldstate = readerstates[readername]
 
                     # the status can change on a card already inserted, e.g.
                     # unpowered, in use, ...
@@ -339,7 +339,6 @@ class PCSCCardRequest(AbstractCardRequest):
         startDate = datetime.now()
         eventfound = False
         self.timeout = self.timeout_init
-        previous_readernames = self.getReaderNames()
         while not eventfound:
 
             # get states from previous run
@@ -407,9 +406,6 @@ class PCSCCardRequest(AbstractCardRequest):
 
             if eventfound:
                 break
-
-            # update previous readers list (without PnP special reader)
-            previous_readernames = _readernames
 
             # wait for card insertion
             self.readerstates = readerstates
