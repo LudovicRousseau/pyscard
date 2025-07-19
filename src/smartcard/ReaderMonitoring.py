@@ -33,6 +33,7 @@ from threading import Event, Thread
 from time import sleep
 
 import smartcard.System
+from smartcard.Exceptions import SmartcardException
 from smartcard.Observer import Observable, Observer
 from smartcard.Synchronization import synchronize
 
@@ -193,7 +194,7 @@ class ReaderMonitoringThread(Thread):
                 # wait every second on stopEvent
                 self.stopEvent.wait(self.period)
 
-            except Exception:
+            except SmartcardException:
                 # FIXME Tighten the exceptions caught by this block
                 traceback.print_exc()
                 # Most likely raised during interpreter shutdown due
