@@ -93,7 +93,7 @@ class ulist(list):
 
         # remove items already in self
         newother = []
-        for i in range(0, len(other)):
+        for _ in range(0, len(other)):
             item = other.pop(0)
             if not list.__contains__(self, item):
                 newother.append(item)
@@ -102,7 +102,7 @@ class ulist(list):
         other = []
         if newother != []:
             other.append(newother[0])
-            for i in range(1, len(newother)):
+            for _ in range(1, len(newother)):
                 item = newother.pop()
                 if not other.__contains__(item):
                     other.append(item)
