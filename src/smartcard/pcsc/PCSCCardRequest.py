@@ -248,13 +248,13 @@ class PCSCCardRequest(AbstractCardRequest):
             # the main thread handles a possible KeyboardInterrupt
             try:
                 waitThread.join()
-            except KeyboardInterrupt:
+            except KeyboardInterrupt as exc:
                 hresult = SCardCancel(self.hcontext)
                 if hresult != SCARD_S_SUCCESS:
                     raise CardRequestException(
                         "Failed to SCardCancel " + SCardGetErrorMessage(hresult),
                         hresult=hresult,
-                    )
+                    ) from exc
 
             # wait for the thread to finish in case of KeyboardInterrupt
             self.evt.wait(timeout=None)
@@ -415,13 +415,13 @@ class PCSCCardRequest(AbstractCardRequest):
             # the main thread handles a possible KeyboardInterrupt
             try:
                 waitThread.join()
-            except KeyboardInterrupt:
+            except KeyboardInterrupt as exc:
                 hresult = SCardCancel(self.hcontext)
                 if hresult != SCARD_S_SUCCESS:
                     raise CardRequestException(
                         "Failed to SCardCancel " + SCardGetErrorMessage(hresult),
                         hresult=hresult,
-                    )
+                    ) from exc
 
             # wait for the thread to finish in case of KeyboardInterrupt
             self.evt.wait(timeout=None)
