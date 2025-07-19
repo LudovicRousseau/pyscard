@@ -103,8 +103,8 @@ def toBytes(bytestring: str) -> list[int]:
 
     try:
         return list(bytes.fromhex(bytestring))
-    except ValueError:
-        raise TypeError("not a string representing a list of bytes")
+    except ValueError as exc:
+        raise TypeError("not a string representing a list of bytes") from exc
 
 
 # GSM3.38 character conversion table.
