@@ -499,6 +499,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     {
         if(NULL!=$1->ac)
         {
+// Only where SCARD_AUTOALLOCATE is defined and used
+#ifndef __APPLE__
             if($1->hcontext)
             {
                 unsigned long lRes=(mySCardFreeMemory)( $1->hcontext, $1->ac );
@@ -508,6 +510,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
                 }
             }
             else
+#endif
             {
 				mem_Free( $1->ac );
             }
