@@ -195,7 +195,6 @@ class ReaderMonitoringThread(Thread):
                 self.stopEvent.wait(self.period)
 
             except SmartcardException:
-                # FIXME Tighten the exceptions caught by this block
                 traceback.print_exc()
                 # Most likely raised during interpreter shutdown due
                 # to unclean exit which failed to remove all observers.
