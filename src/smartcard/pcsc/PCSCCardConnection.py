@@ -28,7 +28,33 @@ from smartcard.Exceptions import (
     NoCardException,
     SmartcardException,
 )
-from smartcard.scard import *
+from smartcard.scard import (
+    SCARD_E_INVALID_VALUE,
+    SCARD_E_NO_SMARTCARD,
+    SCARD_PCI_RAW,
+    SCARD_PCI_T0,
+    SCARD_PCI_T1,
+    SCARD_PROTOCOL_RAW,
+    SCARD_PROTOCOL_T0,
+    SCARD_PROTOCOL_T1,
+    SCARD_PROTOCOL_T15,
+    SCARD_RESET_CARD,
+    SCARD_S_SUCCESS,
+    SCARD_SCOPE_USER,
+    SCARD_SHARE_SHARED,
+    SCARD_UNPOWER_CARD,
+    SCARD_W_REMOVED_CARD,
+    SCardConnect,
+    SCardControl,
+    SCardDisconnect,
+    SCardEstablishContext,
+    SCardGetAttrib,
+    SCardGetErrorMessage,
+    SCardReconnect,
+    SCardReleaseContext,
+    SCardStatus,
+    SCardTransmit,
+)
 
 
 def translateprotocolmask(protocol):
