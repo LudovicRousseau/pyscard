@@ -128,10 +128,12 @@ class PCSCReader(Reader):
 
         @staticmethod
         def create(readername):
+            """Return a PCSCReader object"""
             return PCSCReader(readername)
 
     @staticmethod
     def readers(groups=None):
+        """Return the list of readers"""
         if groups is None:
             groups = []
         creaders = []
