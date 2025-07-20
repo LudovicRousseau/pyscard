@@ -85,7 +85,7 @@ PCSCv2_PART10_PROPERTY_wIdProduct = 12
 
 Properties = {
     "PCSCv2_PART10_PROPERTY_wLcdLayout": PCSCv2_PART10_PROPERTY_wLcdLayout,
-    "PCSCv2_PART10_PROPERTY_bEntryValidationCondition": PCSCv2_PART10_PROPERTY_bEntryValidationCondition,
+    "PCSCv2_PART10_PROPERTY_bEntryValidationCondition": PCSCv2_PART10_PROPERTY_bEntryValidationCondition,  # pylint: disable=line-too-long
     "PCSCv2_PART10_PROPERTY_bTimeOut2": PCSCv2_PART10_PROPERTY_bTimeOut2,
     "PCSCv2_PART10_PROPERTY_wLcdMaxCharacters": PCSCv2_PART10_PROPERTY_wLcdMaxCharacters,
     "PCSCv2_PART10_PROPERTY_wLcdMaxLines": PCSCv2_PART10_PROPERTY_wLcdMaxLines,
