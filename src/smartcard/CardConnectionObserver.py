@@ -67,14 +67,11 @@ class ConsoleCardConnectionObserver(CardConnectionObserver):
             print("> " + toHexString(arg.args[0]))
 
         elif "response" == arg.type:
+            sw1, sw2 = arg.args[-2:]
+            SW = f" {sw1:2X} {sw2:02X}"
             if [] == arg.args[0]:
-                print("<  [] %02X %02X" % tuple(arg.args[-2:]))
+                print("<  []" + SW)
             else:
-                print(
-                    "< "
-                    + toHexString(arg.args[0])
-                    + " "
-                    + "%02X %02X" % tuple(arg.args[-2:])
-                )
+                print("< " + toHexString(arg.args[0]) + SW)
         else:
             print("unknown event:", arg.type)
