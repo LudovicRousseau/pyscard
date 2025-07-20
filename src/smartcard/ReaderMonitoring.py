@@ -211,8 +211,8 @@ class ReaderMonitoringThread(Thread):
 if __name__ == "__main__":
     print("insert or remove readers in the next 20 seconds")
 
-    # a simple reader observer that prints added/removed readers
     class printobserver(ReaderObserver):
+        """a simple reader observer that prints added/removed readers"""
 
         def __init__(self, obsindex):
             self.obsindex = obsindex
@@ -223,6 +223,7 @@ if __name__ == "__main__":
             print("%d - removed: " % self.obsindex, removedreaders)
 
     class testthread(Thread):
+        """Test class"""
 
         # pylint: disable=duplicate-code
 
