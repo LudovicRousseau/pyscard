@@ -20,6 +20,8 @@ from smartcard.Synchronization import Synchronization, synchronize
 
 
 class Observer:
+    """Observer"""
+
     def update(self, observable: Observable, arg: typing.Any) -> None:
         """Called when the observed object is
         modified. You call an Observable object's
@@ -28,6 +30,8 @@ class Observer:
 
 
 class Observable(Synchronization):
+    """Observable"""
+
     def __init__(self) -> None:
         super().__init__()
         self.obs: list[Observer] = []
