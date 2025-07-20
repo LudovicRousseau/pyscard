@@ -232,8 +232,8 @@ if __name__ == "__main__":
 
         def update(self, observable, arg):
             addedcards, removedcards = arg
-            print("%d - added:   %s" % (self.obsindex, str(addedcards)))
-            print("%d - removed: %s" % (self.obsindex, str(removedcards)))
+            print(f"{self.obsindex} - added:   {str(addedcards)}")
+            print(f"{self.obsindex} - removed: {str(removedcards)}")
 
     class testthread(Thread):
         """Test class"""
