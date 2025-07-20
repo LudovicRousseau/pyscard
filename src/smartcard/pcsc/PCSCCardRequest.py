@@ -115,6 +115,7 @@ class PCSCCardRequest(AbstractCardRequest):
         self.release()
 
     def release(self):
+        """Release the PCSC context"""
         if self.hcontext is not None:
             hresult = SCardReleaseContext(self.hcontext)
             if hresult != SCARD_S_SUCCESS:
