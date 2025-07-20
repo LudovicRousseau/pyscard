@@ -174,7 +174,7 @@ class CardMonitoringThread:
                         if card not in currentcards:
                             removedcards.append(card)
 
-                    if addedcards != [] or removedcards != []:
+                    if addedcards or removedcards:
                         self.cards = currentcards
                         self.observable.setChanged()
                         self.observable.notifyObservers((addedcards, removedcards))
