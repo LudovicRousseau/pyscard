@@ -28,6 +28,7 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
+import _thread
 import traceback
 from threading import Event, Thread
 from time import sleep
@@ -107,7 +108,6 @@ class ReaderMonitor(Observable):
                     # avoid a deadlock; addObserver and notifyObservers called
                     # in the ReaderMonitoringThread run() method are
                     # synchronized
-                    import _thread
 
                     _thread.start_new_thread(self.rmthread.start, ())
         else:
