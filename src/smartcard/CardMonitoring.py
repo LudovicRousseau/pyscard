@@ -166,12 +166,12 @@ class CardMonitoringThread:
 
                     addedcards = []
                     for card in currentcards:
-                        if not self.cards.__contains__(card):
+                        if card not in self.cards:
                             addedcards.append(card)
 
                     removedcards = []
                     for card in self.cards:
-                        if not currentcards.__contains__(card):
+                        if card not in currentcards:
                             removedcards.append(card)
 
                     if addedcards != [] or removedcards != []:
