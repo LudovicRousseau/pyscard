@@ -56,7 +56,7 @@ class _SynchronizationProtocol(Protocol):
 
 
 class Synchronization(_SynchronizationProtocol):
-    # You can create your own self.mutex, or inherit from this class:
+    """You can create your own self.mutex, or inherit from this class"""
 
     def __init__(self):
         self.mutex = threading.RLock()
