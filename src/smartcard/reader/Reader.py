@@ -56,7 +56,7 @@ class Reader:
 
     def __repr__(self):
         """Returns card reader name string for `object` calls."""
-        return "'%s'" % self.name
+        return f"'{self.name}'"
 
     def __str__(self):
         """Returns card reader name string for str(object) calls."""
