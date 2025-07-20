@@ -181,9 +181,9 @@ class PCSCCardConnection(CardConnection):
             # then negotiated with the card
             protocol = CardConnection.T0_protocol | CardConnection.T1_protocol
         else:
-            for p in dictProtocol:
+            for p, p_name in dictProtocol.items():
                 if p == dwActiveProtocol:
-                    protocol = getattr(CardConnection, f"{dictProtocol[p]}_protocol")
+                    protocol = getattr(CardConnection, f"{p_name}_protocol")
         PCSCCardConnection.setProtocol(self, protocol)
 
     def reconnect(self, protocol=None, mode=None, disposition=None):
@@ -236,9 +236,9 @@ class PCSCCardConnection(CardConnection):
             # then negotiated with the card
             protocol = CardConnection.T0_protocol | CardConnection.T1_protocol
         else:
-            for p in dictProtocol:
+            for p, p_name in dictProtocol.items():
                 if p == dwActiveProtocol:
-                    protocol = getattr(CardConnection, f"{dictProtocol[p]}_protocol")
+                    protocol = getattr(CardConnection, f"{p_name}_protocol")
         PCSCCardConnection.setProtocol(self, protocol)
 
     def disconnect(self):
