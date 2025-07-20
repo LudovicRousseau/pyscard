@@ -45,7 +45,7 @@ class Reader:
 
     def __eq__(self, other):
         """Returns True if self==other (same name)."""
-        if type(other) == type(self):
+        if isinstance(other, type(self)):
             return self.name == other.name
 
         return False
