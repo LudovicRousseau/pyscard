@@ -93,6 +93,7 @@ class CardConnection(Observable):
         C{smartcard.scard.SCARD_UNPOWER_CARD} or
         C{smartcard.scard.SCARD_EJECT_CARD}
         """
+        # pylint: disable=unused-argument
         Observable.setChanged(self)
         Observable.notifyObservers(self, CardConnectionEvent("connect"))
 
@@ -111,6 +112,7 @@ class CardConnection(Observable):
         C{smartcard.scard.SCARD_UNPOWER_CARD} or
         C{smartcard.scard.SCARD_EJECT_CARD}
         """
+        # pylint: disable=unused-argument
         Observable.setChanged(self)
         Observable.notifyObservers(self, CardConnectionEvent("reconnect"))
 
@@ -188,6 +190,7 @@ class CardConnection(Observable):
 
         Subclasses must override this method for implementing apdu
         transmission."""
+        # pylint: disable=unused-argument
         return [], 0, 0
 
     def control(self, controlCode, command=None):
@@ -217,6 +220,7 @@ class CardConnection(Observable):
         """Performs the command control.
 
         Subclasses must override this method for implementing control."""
+        # pylint: disable=unused-argument
         return []
 
     def getAttrib(self, attribId):
@@ -236,6 +240,7 @@ class CardConnection(Observable):
         """Performs the command get attrib.
 
         Subclasses must override this method for implementing get attrib."""
+        # pylint: disable=unused-argument
         return []
 
     def __enter__(self):
