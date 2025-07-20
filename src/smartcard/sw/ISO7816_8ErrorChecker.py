@@ -134,7 +134,7 @@ class ISO7816_8ErrorChecker(ErrorChecker):
 
         if sw1 in iso7816_8SW:
             exception, sw2dir = iso7816_8SW[sw1]
-            if type(sw2dir) == type({}):
+            if isinstance(sw2dir, dict):
                 try:
                     message = sw2dir[sw2]
                     raise exception(data, sw1, sw2, message)
