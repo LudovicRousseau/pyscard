@@ -34,10 +34,12 @@ class Observable(Synchronization):
         self.changed = 0
 
     def addObserver(self, observer: Observer) -> None:
+        """Add an observer"""
         if observer not in self.obs:
             self.obs.append(observer)
 
     def deleteObserver(self, observer: Observer) -> None:
+        """Remove an observer"""
         self.obs.remove(observer)
 
     def notifyObservers(self, arg: typing.Any = None) -> None:
@@ -59,18 +61,23 @@ class Observable(Synchronization):
             observer.update(self, arg)
 
     def deleteObservers(self) -> None:
+        """Remove all observers"""
         self.obs = []
 
     def setChanged(self) -> None:
+        """Set the change flag"""
         self.changed = 1
 
     def clearChanged(self) -> None:
+        """Clear the change flag"""
         self.changed = 0
 
     def hasChanged(self) -> int:
+        """Somethig has changed?"""
         return self.changed
 
     def countObservers(self) -> int:
+        """Return the number of Observers"""
         return len(self.obs)
 
 
