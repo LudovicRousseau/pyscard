@@ -203,6 +203,7 @@ class ReaderMonitoringThread(Thread):
                 self.stopEvent.set()
 
     def stop(self):
+        """stop the thread by signaling stopEvent"""
         self.stopEvent.set()
         self.join()
 
