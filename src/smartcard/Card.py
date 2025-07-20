@@ -64,7 +64,7 @@ class Card:
         readerobj = None
         if isinstance(self.reader, Reader):
             readerobj = self.reader
-        elif type(self.reader) == str:
+        elif isinstance(self.reader, str):
             for reader in readers():
                 if self.reader == str(reader):
                     readerobj = reader
