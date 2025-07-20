@@ -47,6 +47,7 @@ class CardConnectionObserver(Observer):
 
 
 class ConsoleCardConnectionObserver(CardConnectionObserver):
+    """CardConnectionObserver output to the console"""
 
     def update(self, observable, arg):
 
