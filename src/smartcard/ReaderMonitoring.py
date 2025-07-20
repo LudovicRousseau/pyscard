@@ -219,8 +219,8 @@ if __name__ == "__main__":
 
         def update(self, observable, arg):
             addedreaders, removedreaders = arg
-            print("%d - added:   " % self.obsindex, addedreaders)
-            print("%d - removed: " % self.obsindex, removedreaders)
+            print(f"{self.obsindex} - added:   {addedreaders}")
+            print(f"{self.obsindex} - removed: {removedreaders}")
 
     class testthread(Thread):
         """Test class"""
