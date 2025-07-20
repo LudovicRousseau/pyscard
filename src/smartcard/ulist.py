@@ -100,7 +100,7 @@ class ulist(list):
 
         # remove duplicate items in other
         other = []
-        if newother != []:
+        if newother:
             other.append(newother[0])
             for _ in range(1, len(newother)):
                 item = newother.pop()
