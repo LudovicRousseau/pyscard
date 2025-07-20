@@ -29,6 +29,8 @@ P = ParamSpec("P")
 
 
 def synchronized(method: Callable[P, T]) -> Callable[P, T]:
+    """Synchronize methods with the same mutex"""
+
     @functools.wraps(method)
     def f(self: _SynchronizationProtocol, *args: Any, **kwargs: Any) -> Any:
         with self.mutex:
