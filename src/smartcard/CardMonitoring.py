@@ -224,8 +224,8 @@ class CardMonitoringThread:
 if __name__ == "__main__":
     print("insert or remove cards in the next 10 seconds")
 
-    # a simple card observer that prints added/removed cards
     class printobserver(CardObserver):
+        """a simple card observer that prints added/removed cards"""
 
         def __init__(self, obsindex):
             self.obsindex = obsindex
@@ -236,6 +236,7 @@ if __name__ == "__main__":
             print("%d - removed: %s" % (self.obsindex, str(removedcards)))
 
     class testthread(Thread):
+        """Test class"""
 
         def __init__(self, obsindex):
             Thread.__init__(self)
