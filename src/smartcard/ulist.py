@@ -104,7 +104,7 @@ class ulist(list):
             other.append(newother[0])
             for _ in range(1, len(newother)):
                 item = newother.pop()
-                if not other.__contains__(item):
+                if item not in other:
                     other.append(item)
         return other
 
