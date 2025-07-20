@@ -188,7 +188,7 @@ class PCSCCardRequest(AbstractCardRequest):
                 readerstates[reader] = (reader, SCARD_STATE_UNAWARE)
 
         # call SCardGetStatusChange only if we have some readers
-        if {} != readerstates:
+        if readerstates:
             hresult, newstates = SCardGetStatusChange(
                 self.hcontext, 0, list(readerstates.values())
             )
