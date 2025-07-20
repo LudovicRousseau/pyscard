@@ -58,7 +58,7 @@ class CardService:
 
     @staticmethod
     def supports(cardname):
-        pass
+        """Returns True if the cardname is supported by the card service."""
 
 
 if __name__ == "__main__":
