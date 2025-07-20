@@ -106,7 +106,7 @@ class Session:
 
     def __repr__(self):
         """Returns a string representation of the session."""
-        return "<Session instance: readerName=%s>" % self.readerName
+        return f"<Session instance: readerName={self.readerName}>"
 
 
 if __name__ == "__main__":
