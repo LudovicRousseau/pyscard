@@ -95,14 +95,14 @@ class InvalidATRMaskLengthException(SmartcardException):
     """Raised when an ATR mask does not match an ATR length."""
 
     def __init__(self, mask):
-        SmartcardException.__init__(self, "Invalid ATR mask length: %s" % mask)
+        SmartcardException.__init__(self, f"Invalid ATR mask length: {mask}")
 
 
 class InvalidReaderException(SmartcardException):
     """Raised when trying to access an invalid smartcard reader."""
 
     def __init__(self, readername):
-        SmartcardException.__init__(self, "Invalid reader: %s" % readername)
+        SmartcardException.__init__(self, f"Invalid reader: {readername}")
 
 
 class ListReadersException(SmartcardException):
