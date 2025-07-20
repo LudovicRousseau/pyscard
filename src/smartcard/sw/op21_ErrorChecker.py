@@ -120,7 +120,7 @@ class op21_ErrorChecker(ErrorChecker):
         """
         if sw1 in op21_SW:
             exception, sw2dir = op21_SW[sw1]
-            if type(sw2dir) == type({}):
+            if isinstance(sw2dir, dict):
                 try:
                     message = sw2dir[sw2]
                     raise exception(data, sw1, sw2, message)
