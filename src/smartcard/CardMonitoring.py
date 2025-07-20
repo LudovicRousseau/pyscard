@@ -191,8 +191,8 @@ class CardMonitoringThread:
                     if exc.hresult == SCARD_E_NO_SERVICE:
                         self.stopEvent.set()
 
-        # stop the thread by signaling stopEvent
         def stop(self):
+            """stop the thread by signaling stopEvent"""
             self.stopEvent.set()
 
     # the singleton
@@ -208,6 +208,7 @@ class CardMonitoringThread:
                 CardMonitoringThread.instance.start()
 
     def join(self, *args, **kwargs):
+        """wait for the CardMonitoringThread thread"""
         with CardMonitoringThread.lock:
             if self.instance:
                 self.instance.join(*args, **kwargs)
