@@ -56,6 +56,7 @@ class ReaderFactory:
 
     @staticmethod
     def readers(groups=None):
+        """Return the list of readers"""
         if groups is None:
             groups = []
         zreaders = []
