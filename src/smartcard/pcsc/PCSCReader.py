@@ -123,6 +123,7 @@ class PCSCReader(Reader):
         return CardConnectionDecorator(PCSCCardConnection(self.name))
 
     class Factory:
+        """Factory to create PCSCReader objects"""
 
         # pylint: disable=too-few-public-methods
 
