@@ -81,7 +81,7 @@ class pcscdiag(wx.Frame):
         readerNode = self.tree.AppendItem(self.tree.GetRootItem(), "Readers")
         for reader in smartcard.System.readers():
             childReader = self.tree.AppendItem(readerNode, repr(reader))
-            childCard = self.tree.AppendItem(childReader, getATR(reader))
+            self.tree.AppendItem(childReader, getATR(reader))
 
         readerGroupNode = self.tree.AppendItem(
             self.tree.GetRootItem(), "Readers Groups"
@@ -90,7 +90,7 @@ class pcscdiag(wx.Frame):
             childReaderGroup = self.tree.AppendItem(readerGroupNode, readergroup)
             readers = smartcard.System.readers(readergroup)
             for reader in readers:
-                child = self.tree.AppendItem(childReaderGroup, repr(reader))
+                self.tree.AppendItem(childReaderGroup, repr(reader))
 
     def OnExpandAll(self):
         """expand all nodes"""
