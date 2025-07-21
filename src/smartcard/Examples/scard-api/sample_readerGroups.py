@@ -172,6 +172,13 @@ try:
                     + SCardGetErrorMessage(hresult)
                 )
 
+            hresult = SCardForgetReader(hcontext, dummyreader)
+            if hresult != SCARD_E_UNSUPPORTED_FEATURE:
+                raise error(
+                    "Was expecting an error instead of: "
+                    + SCardGetErrorMessage(hresult)
+                )
+
     finally:
         hresult = SCardReleaseContext(hcontext)
         if hresult != SCARD_S_SUCCESS:
