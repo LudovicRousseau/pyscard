@@ -57,7 +57,7 @@ if __name__ == "__main__":
         if hresult != SCARD_S_SUCCESS:
             raise error("Failed to list readers: " + SCardGetErrorMessage(hresult))
         if len(readers) < 1:
-            raise Exception("No smart card readers")
+            raise error("No smart card readers")
         print("PCSC Readers:", readers)
 
         for reader in readers:
