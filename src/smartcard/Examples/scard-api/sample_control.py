@@ -25,7 +25,24 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-from smartcard.scard import *
+from smartcard.scard import (
+    SCARD_ATTR_VENDOR_NAME,
+    SCARD_CTL_CODE,
+    SCARD_PROTOCOL_T0,
+    SCARD_S_SUCCESS,
+    SCARD_SCOPE_USER,
+    SCARD_SHARE_DIRECT,
+    SCARD_UNPOWER_CARD,
+    SCardConnect,
+    SCardControl,
+    SCardDisconnect,
+    SCardEstablishContext,
+    SCardGetErrorMessage,
+    SCardListReaders,
+    SCardReleaseContext,
+    error,
+    resourceManager,
+)
 from smartcard.util import toASCIIString, toBytes, toHexString
 
 try:
