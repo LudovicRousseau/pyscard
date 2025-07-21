@@ -41,7 +41,7 @@ if __name__ == "__main__":
     i = 0
     if len(sys.argv) > 1:
         i = int(sys.argv[1])
-    print("Using: %s" % r[i])
+    print("Using:", r[i])
 
     with r[i].createConnection() as connection:
         connection.connect()
