@@ -108,7 +108,7 @@ if "winscard" == resourceManager:
                 reader, eventstate, atr = i
                 print(reader, end=" ")
                 for b in atr:
-                    print("0x%.2X" % b, end=" ")
+                    print(f"0x{b:02X}", end=" ")
                 print("")
                 if eventstate & SCARD_STATE_ATRMATCH:
                     print("Card found")
