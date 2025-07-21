@@ -49,8 +49,9 @@ GET_RESPONSE = [0xA0, 0xC0, 00, 00]
 SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
 DF_TELECOM = [0x7F, 0x10]
 
-if __name__ == "__main__":
 
+def main():
+    """main"""
     print("Insert a card within 10 seconds")
     print("Cards without a DF_TELECOM will except")
 
@@ -72,12 +73,10 @@ if __name__ == "__main__":
     cardservice.connection.connect()
 
     try:
-        SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
-        DF_TELECOM = [0x7F, 0x10]
         apdu = SELECT + DF_TELECOM
+        # pylint: disable=unused-variable
         response, sw1, sw2 = cardservice.connection.transmit(apdu)
         if sw1 == 0x9F:
-            GET_RESPONSE = [0xA0, 0xC0, 00, 00]
             apdu = GET_RESPONSE + [sw2]
             response, sw1, sw2 = cardservice.connection.transmit(apdu)
     except SWException as e:
@@ -85,6 +84,10 @@ if __name__ == "__main__":
 
     cardservice.connection.disconnect()
     cardservice.connection.release()
+
+
+if __name__ == "__main__":
+    main()
 
     import sys
 
