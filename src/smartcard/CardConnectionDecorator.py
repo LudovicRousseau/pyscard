@@ -24,10 +24,8 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-from smartcard.CardConnection import CardConnection
 
-
-class CardConnectionDecorator(CardConnection):
+class CardConnectionDecorator:
     """Card connection decorator class."""
 
     def __init__(self, cardConnectionComponent):
@@ -98,3 +96,10 @@ class CardConnectionDecorator(CardConnection):
     def getAttrib(self, attribId):
         """call inner component getAttrib"""
         return self.component.getAttrib(attribId)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, e_type, value, traceback):
+        self.disconnect()
+        self.release()
