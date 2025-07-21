@@ -83,35 +83,41 @@ SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
 DF_TELECOM = [0x7F, 0x10]
 
 
-# request any card type
-cardtype = AnyCardType()
-cardrequest = CardRequest(timeout=1.5, cardType=cardtype)
-with cardrequest.waitforcard() as cardservice:
+def main():
 
-    # attach the console tracer
-    observer = ConsoleCardConnectionObserver()
-    cardservice.connection.addObserver(observer)
+    # request any card type
+    cardtype = AnyCardType()
+    cardrequest = CardRequest(timeout=1.5, cardType=cardtype)
+    with cardrequest.waitforcard() as cardservice:
 
-    # attach our decorator
-    cardservice.connection = FakeATRConnection(
-        SecureChannelConnection(cardservice.connection)
-    )
+        # attach the console tracer
+        observer = ConsoleCardConnectionObserver()
+        cardservice.connection.addObserver(observer)
 
-    # connect to the card and perform a few transmits
-    cardservice.connection.connect()
+        # attach our decorator
+        cardservice.connection = FakeATRConnection(
+            SecureChannelConnection(cardservice.connection)
+        )
 
-    print("ATR", toHexString(cardservice.connection.getATR()))
+        # connect to the card and perform a few transmits
+        cardservice.connection.connect()
 
-    apdu = SELECT + DF_TELECOM
-    response, sw1, sw2 = cardservice.connection.transmit(apdu)
+        print("ATR", toHexString(cardservice.connection.getATR()))
 
-    if sw1 == 0x9F:
-        apdu = GET_RESPONSE + [sw2]
+        apdu = SELECT + DF_TELECOM
         response, sw1, sw2 = cardservice.connection.transmit(apdu)
 
-    cardservice.connection.disconnect()
-    cardservice.connection.release()
+        if sw1 == 0x9F:
+            apdu = GET_RESPONSE + [sw2]
+            response, sw1, sw2 = cardservice.connection.transmit(apdu)
 
-if "win32" == sys.platform:
-    print("press Enter to continue")
-    sys.stdin.read(1)
+        cardservice.connection.disconnect()
+        cardservice.connection.release()
+
+
+if __name__ == "__main__":
+    main()
+
+    if "win32" == sys.platform:
+        print("press Enter to continue")
+        sys.stdin.read(1)
