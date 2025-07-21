@@ -1,4 +1,7 @@
 #! /usr/bin/env python3
+
+# pylint: disable=invalid-name
+
 """
 Sample script that monitors smartcard insertion/removal.
 
@@ -32,13 +35,14 @@ from smartcard.util import toHexString
 
 # a simple card observer that prints inserted/removed cards
 class PrintObserver(CardObserver):
+    # pylint: disable=too-few-public-methods
     """A simple card observer that is notified
     when cards are inserted/removed from the system and
     prints the list of cards
     """
 
-    def update(self, observable, actions):
-        (addedcards, removedcards) = actions
+    def update(self, observable, arg):
+        (addedcards, removedcards) = arg
         for card in addedcards:
             print("+Inserted: ", toHexString(card.atr))
         for card in removedcards:
