@@ -52,10 +52,10 @@ class TracerAndSELECTInterpreter(CardConnectionObserver):
             print("release from " + observable.getReader())
 
         elif "command" == arg.type:
-            str = toHexString(arg.args[0])
-            str = str.replace("A0 A4 00 00 02", "SELECT")
-            str = str.replace("A0 C0 00 00", "GET RESPONSE")
-            print(">", str)
+            output_str = toHexString(arg.args[0])
+            output_str = output_str.replace("A0 A4 00 00 02", "SELECT")
+            output_str = output_str.replace("A0 C0 00 00", "GET RESPONSE")
+            print(">", output_str)
 
         elif "response" == arg.type:
             if [] == arg.args[0]:
