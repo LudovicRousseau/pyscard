@@ -1,4 +1,7 @@
 #! /usr/bin/env python3
+
+# pylint: disable=invalid-name
+
 """
 Sample script to illustrate toHexString() utility method
 
@@ -24,7 +27,9 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-from smartcard.util import *
+import sys
+
+from smartcard.util import COMMA, HEX, PACK, UPPERCASE, toHexString
 
 print(40 * "-")
 data = [59, 101, 0, 0, 156, 17, 1, 1, 3]
@@ -55,8 +60,6 @@ print(
     toHexString(data, HEX | UPPERCASE | COMMA),
 )
 
-
-import sys
 
 if "win32" == sys.platform:
     print("press Enter to continue")
