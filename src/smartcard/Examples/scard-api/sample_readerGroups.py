@@ -26,7 +26,24 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-from smartcard.scard import *
+from smartcard.scard import (
+    SCARD_E_UNSUPPORTED_FEATURE,
+    SCARD_S_SUCCESS,
+    SCARD_SCOPE_USER,
+    SCardAddReaderToGroup,
+    SCardEstablishContext,
+    SCardForgetReader,
+    SCardForgetReaderGroup,
+    SCardGetErrorMessage,
+    SCardIntroduceReader,
+    SCardIntroduceReaderGroup,
+    SCardListReaderGroups,
+    SCardListReaders,
+    SCardReleaseContext,
+    SCardRemoveReaderFromGroup,
+    error,
+    resourceManager,
+)
 
 newgroup = "MyReaderGroup"
 
