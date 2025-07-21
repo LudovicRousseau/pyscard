@@ -151,7 +151,7 @@ class testcase_manualCardRequest(unittest.TestCase, CardObserver):
             except CardRequestTimeoutException:
                 elapsed = int(10 * (time.time() - before))
                 print(".", end=" ")
-                self.assertTrue(elapsed >= 10 and elapsed <= 11.0)
+                self.assertTrue(10 <= elapsed <= 11.0)
                 count += 1
         print("\n")
         self.assertEqual(6, count)
