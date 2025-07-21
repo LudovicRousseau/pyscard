@@ -1,3 +1,5 @@
+# pylint: disable=missing-module-docstring
+
 import pytest
 
 import smartcard.reader.ReaderGroups
