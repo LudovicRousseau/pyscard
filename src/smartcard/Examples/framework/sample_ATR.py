@@ -57,7 +57,7 @@ atr = ATR(
 
 print(atr)
 print("historical bytes: ", toHexString(atr.getHistoricalBytes()))
-print("checksum: ", "0x%X" % atr.getChecksum())
+print(f"checksum: 0x{atr.getChecksum():02X}")
 print("checksum OK: ", atr.checksumOK)
 print("T0  supported: ", atr.isT0Supported())
 print("T1  supported: ", atr.isT1Supported())
