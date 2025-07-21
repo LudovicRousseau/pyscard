@@ -1,3 +1,6 @@
+# pylint: disable=missing-module-docstring
+# pylint: disable=too-many-statements
+
 import pytest
 
 import smartcard.ulist
