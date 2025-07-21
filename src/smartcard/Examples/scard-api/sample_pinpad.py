@@ -67,7 +67,7 @@ def can_do_modify_pin(hCard):
 def parse_get_feature_request(hCard, feature):
     # check the reader can do a verify pin
     CM_IOCTL_GET_FEATURE_REQUEST = SCARD_CTL_CODE(3400)
-    hresult, response = SCardControl(hcard, CM_IOCTL_GET_FEATURE_REQUEST, [])
+    hresult, response = SCardControl(hCard, CM_IOCTL_GET_FEATURE_REQUEST, [])
     if hresult != SCARD_S_SUCCESS:
         raise BaseSCardException(hresult)
     print(response)
@@ -120,7 +120,7 @@ def verifypin(hCard, control=None):
         0x30,
         0x30,
     ]  # abData
-    hresult, response = SCardControl(hcard, control, command)
+    hresult, response = SCardControl(hCard, control, command)
     if hresult != SCARD_S_SUCCESS:
         raise BaseSCardException(hresult)
     return hresult, response
