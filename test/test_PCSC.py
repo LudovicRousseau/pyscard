@@ -1,3 +1,7 @@
+# pylint: disable=missing-module-docstring
+# pylint: disable=invalid-name
+# pylint: disable=missing-function-docstring
+
 from smartcard.scard import (
     SCARD_E_NO_READERS_AVAILABLE,
     SCARD_E_NO_SERVICE,
