@@ -25,6 +25,8 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
+import sys
+
 from smartcard.scard import (
     SCARD_ATTR_VENDOR_NAME,
     SCARD_CTL_CODE,
@@ -114,8 +116,6 @@ try:
 
 except error as e:
     print(e)
-
-import sys
 
 if "win32" == sys.platform:
     print("press Enter to continue")
