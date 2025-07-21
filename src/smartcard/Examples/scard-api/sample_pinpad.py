@@ -27,8 +27,29 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import sys
 
-from smartcard.pcsc.PCSCExceptions import *
-from smartcard.scard import *
+from smartcard.pcsc.PCSCExceptions import (
+    BaseSCardException,
+    EstablishContextException,
+    ListReadersException,
+    ReleaseContextException,
+)
+from smartcard.scard import (
+    SCARD_CTL_CODE,
+    SCARD_PROTOCOL_T0,
+    SCARD_PROTOCOL_T1,
+    SCARD_S_SUCCESS,
+    SCARD_SCOPE_USER,
+    SCARD_SHARE_SHARED,
+    SCARD_UNPOWER_CARD,
+    SCardConnect,
+    SCardControl,
+    SCardDisconnect,
+    SCardEstablishContext,
+    SCardListReaders,
+    SCardReleaseContext,
+    SCardTransmit,
+    error,
+)
 
 
 def can_do_verify_pin(hCard):
