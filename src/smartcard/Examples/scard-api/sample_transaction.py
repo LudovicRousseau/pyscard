@@ -26,7 +26,27 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-from smartcard.scard import *
+import sys
+
+from smartcard.scard import (
+    SCARD_LEAVE_CARD,
+    SCARD_PROTOCOL_T0,
+    SCARD_PROTOCOL_T1,
+    SCARD_S_SUCCESS,
+    SCARD_SCOPE_USER,
+    SCARD_SHARE_SHARED,
+    SCARD_UNPOWER_CARD,
+    SCardBeginTransaction,
+    SCardConnect,
+    SCardDisconnect,
+    SCardEndTransaction,
+    SCardEstablishContext,
+    SCardGetErrorMessage,
+    SCardListReaders,
+    SCardReleaseContext,
+    SCardStatus,
+    error,
+)
 
 try:
     hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
@@ -102,8 +122,6 @@ try:
 
 except error as e:
     print(e)
-
-import sys
 
 if "win32" == sys.platform:
     print("press Enter to continue")
