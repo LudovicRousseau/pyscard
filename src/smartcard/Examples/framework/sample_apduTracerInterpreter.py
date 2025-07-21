@@ -58,14 +58,12 @@ class TracerAndSELECTInterpreter(CardConnectionObserver):
             print(">", output_str)
 
         elif "response" == arg.type:
+            _sw1, _sw2 = arg.args[-2:]
+            SW = f"{_sw1:02X} {_sw2:02X}"
             if [] == arg.args[0]:
-                print("<  []", "%-2X %-2X" % tuple(arg.args[-2:]))
+                print("<  []", SW)
             else:
-                print(
-                    "<",
-                    toHexString(arg.args[0]),
-                    "%-2X %-2X" % tuple(arg.args[-2:]),
-                )
+                print("<", toHexString(arg.args[0]), SW)
 
         else:
             print("Unknown event:", arg.type)
