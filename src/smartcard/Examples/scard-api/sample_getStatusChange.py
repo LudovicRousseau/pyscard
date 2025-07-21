@@ -95,8 +95,8 @@ try:
         print("PCSC Readers:", readers)
 
         readerstates = []
-        for i in range(len(readers)):
-            readerstates += [(readers[i], SCARD_STATE_UNAWARE)]
+        for reader in readers:
+            readerstates += [(reader, SCARD_STATE_UNAWARE)]
 
         print("----- Current reader and card states are: -------")
         hresult, newstates = SCardGetStatusChange(hcontext, 0, readerstates)
