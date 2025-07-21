@@ -126,84 +126,91 @@ def verifypin(hCard, control=None):
     return hresult, response
 
 
-try:
-    hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
-    if hresult != SCARD_S_SUCCESS:
-        raise EstablishContextException(hresult)
-    print("Context established!")
-
+def main():
     try:
-        hresult, readers = SCardListReaders(hcontext, [])
+        hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
         if hresult != SCARD_S_SUCCESS:
-            raise ListReadersException(hresult)
-        print("PCSC Readers:", readers)
+            raise EstablishContextException(hresult)
+        print("Context established!")
 
-        if len(readers) < 1:
-            raise Exception("No smart card readers")
+        try:
+            hresult, readers = SCardListReaders(hcontext, [])
+            if hresult != SCARD_S_SUCCESS:
+                raise ListReadersException(hresult)
+            print("PCSC Readers:", readers)
 
-        for zreader in readers:
+            if len(readers) < 1:
+                raise Exception("No smart card readers")
 
-            print("Trying to Control reader:", zreader)
+            for zreader in readers:
 
-            try:
-                hresult, hcard, dwActiveProtocol = SCardConnect(
-                    hcontext,
-                    zreader,
-                    SCARD_SHARE_SHARED,
-                    SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1,
-                )
-                if hresult != SCARD_S_SUCCESS:
-                    raise BaseSCardException(hresult)
-                print("Connected with active protocol", dwActiveProtocol)
+                print("Trying to Control reader:", zreader)
 
                 try:
-                    SELECT = [
-                        0x00,
-                        0xA4,
-                        0x04,
-                        0x00,
-                        0x06,
-                        0xA0,
-                        0x00,
-                        0x00,
-                        0x00,
-                        0x18,
-                        0xFF,
-                    ]
-                    hresult, response = SCardTransmit(hcard, dwActiveProtocol, SELECT)
+                    hresult, hcard, dwActiveProtocol = SCardConnect(
+                        hcontext,
+                        zreader,
+                        SCARD_SHARE_SHARED,
+                        SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1,
+                    )
                     if hresult != SCARD_S_SUCCESS:
                         raise BaseSCardException(hresult)
+                    print("Connected with active protocol", dwActiveProtocol)
 
-                    cmd_verify = can_do_verify_pin(hcard)
-                    if cmd_verify:
-                        print("can do verify pin: 0x%08X" % cmd_verify)
+                    try:
+                        SELECT = [
+                            0x00,
+                            0xA4,
+                            0x04,
+                            0x00,
+                            0x06,
+                            0xA0,
+                            0x00,
+                            0x00,
+                            0x00,
+                            0x18,
+                            0xFF,
+                        ]
+                        hresult, response = SCardTransmit(
+                            hcard, dwActiveProtocol, SELECT
+                        )
+                        if hresult != SCARD_S_SUCCESS:
+                            raise BaseSCardException(hresult)
 
-                    cmd_modify = can_do_modify_pin(hcard)
-                    if cmd_modify:
-                        print("can do modify pin: 0x%08X" % cmd_modify)
+                        cmd_verify = can_do_verify_pin(hcard)
+                        if cmd_verify:
+                            print("can do verify pin: 0x%08X" % cmd_verify)
 
-                    hresult, response = verifypin(hcard, cmd_verify)
-                    print("Control:", response)
-                except Exception as ex:
-                    print("Exception:", ex)
-                finally:
-                    hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
-                    if hresult != SCARD_S_SUCCESS:
-                        raise BaseSCardException(hresult)
-                    print("Disconnected")
+                        cmd_modify = can_do_modify_pin(hcard)
+                        if cmd_modify:
+                            print("can do modify pin: 0x%08X" % cmd_modify)
 
-            except BaseSCardException as ex:
-                print("SCard Exception:", ex)
+                        hresult, response = verifypin(hcard, cmd_verify)
+                        print("Control:", response)
+                    except Exception as ex:
+                        print("Exception:", ex)
+                    finally:
+                        hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
+                        if hresult != SCARD_S_SUCCESS:
+                            raise BaseSCardException(hresult)
+                        print("Disconnected")
 
-    finally:
-        hresult = SCardReleaseContext(hcontext)
-        if hresult != SCARD_S_SUCCESS:
-            raise ReleaseContextException(hresult)
-        print("Released context.")
+                except BaseSCardException as ex:
+                    print("SCard Exception:", ex)
 
-except error as e:
-    print(e)
+        finally:
+            hresult = SCardReleaseContext(hcontext)
+            if hresult != SCARD_S_SUCCESS:
+                raise ReleaseContextException(hresult)
+            print("Released context.")
 
-if "win32" == sys.platform:
-    print("press Enter to continue")
-    sys.stdin.read(1)
+    except error as e:
+        print(e)
+
+
+if __name__ == "__main__":
+    main()
+
+    if "win32" == sys.platform:
+        print("press Enter to continue")
+        sys.stdin.read(1)
