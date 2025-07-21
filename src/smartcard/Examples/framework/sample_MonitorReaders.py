@@ -1,4 +1,7 @@
 #! /usr/bin/env python3
+
+# pylint: disable=invalid-name
+
 """
 Sample script that monitors smartcard readers.
 
@@ -30,13 +33,14 @@ from smartcard.ReaderMonitoring import ReaderMonitor, ReaderObserver
 
 
 class printobserver(ReaderObserver):
+    # pylint: disable=too-few-public-methods
     """A simple reader observer that is notified
     when readers are added/removed from the system and
     prints the list of readers
     """
 
-    def update(self, observable, actions):
-        (addedreaders, removedreaders) = actions
+    def update(self, observable, arg):
+        (addedreaders, removedreaders) = arg
         print("Added readers", addedreaders)
         print("Removed readers", removedreaders)
 
