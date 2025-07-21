@@ -58,7 +58,7 @@ if "winscard" == resourceManager:
                     hcontext, i, SCARD_PROVIDER_PRIMARY
                 )
                 if hresult == SCARD_S_SUCCESS:
-                    print(i, "Primary provider:", providername)
+                    print(i, "Primary provider:", providerguid)
                 hresult, providername = SCardGetCardTypeProviderName(
                     hcontext, i, SCARD_PROVIDER_CSP
                 )
