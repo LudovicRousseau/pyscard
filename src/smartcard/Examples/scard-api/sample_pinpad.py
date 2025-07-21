@@ -79,6 +79,8 @@ def parse_get_feature_request(hCard, feature):
             ) + response[5]
         response = response[6:]
 
+    return None
+
 
 def verifypin(hCard, control=None):
     if control is None:
