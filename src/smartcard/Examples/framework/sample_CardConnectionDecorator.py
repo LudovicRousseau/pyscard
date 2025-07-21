@@ -23,6 +23,8 @@ You should have received a copy of the GNU Lesser General Public License
 along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
+import sys
+
 from smartcard.CardConnectionDecorator import CardConnectionDecorator
 from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver
 from smartcard.CardRequest import CardRequest
@@ -109,8 +111,6 @@ with cardrequest.waitforcard() as cardservice:
 
     cardservice.connection.disconnect()
     cardservice.connection.release()
-
-import sys
 
 if "win32" == sys.platform:
     print("press Enter to continue")
