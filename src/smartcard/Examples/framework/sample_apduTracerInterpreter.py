@@ -40,35 +40,35 @@ class TracerAndSELECTInterpreter(CardConnectionObserver):
     """This observer will interprer SELECT and GET RESPONSE bytes
     and replace them with a human readable string."""
 
-    def update(self, cardconnection, ccevent):
+    def update(self, observable, arg):
 
-        if "connect" == ccevent.type:
-            print("connecting to " + cardconnection.getReader())
+        if "connect" == arg.type:
+            print("connecting to " + observable.getReader())
 
-        elif "disconnect" == ccevent.type:
-            print("disconnecting from " + cardconnection.getReader())
+        elif "disconnect" == arg.type:
+            print("disconnecting from " + observable.getReader())
 
-        elif "release" == ccevent.type:
-            print("release from " + cardconnection.getReader())
+        elif "release" == arg.type:
+            print("release from " + observable.getReader())
 
-        elif "command" == ccevent.type:
-            str = toHexString(ccevent.args[0])
+        elif "command" == arg.type:
+            str = toHexString(arg.args[0])
             str = str.replace("A0 A4 00 00 02", "SELECT")
             str = str.replace("A0 C0 00 00", "GET RESPONSE")
             print(">", str)
 
-        elif "response" == ccevent.type:
-            if [] == ccevent.args[0]:
-                print("<  []", "%-2X %-2X" % tuple(ccevent.args[-2:]))
+        elif "response" == arg.type:
+            if [] == arg.args[0]:
+                print("<  []", "%-2X %-2X" % tuple(arg.args[-2:]))
             else:
                 print(
                     "<",
-                    toHexString(ccevent.args[0]),
-                    "%-2X %-2X" % tuple(ccevent.args[-2:]),
+                    toHexString(arg.args[0]),
+                    "%-2X %-2X" % tuple(arg.args[-2:]),
                 )
 
         else:
-            print("Unknown event:", ccevent.type)
+            print("Unknown event:", arg.type)
 
 
 # define the apdus used in this script
