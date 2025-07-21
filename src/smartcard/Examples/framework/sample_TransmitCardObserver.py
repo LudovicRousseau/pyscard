@@ -1,4 +1,7 @@
 #! /usr/bin/env python3
+
+# pylint: disable=invalid-name
+
 """
 Sample script that monitors card insertions,
 connects to cards and transmit an apdu
@@ -27,27 +30,29 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 from time import sleep
 
 from smartcard.CardMonitoring import CardMonitor, CardObserver
-from smartcard.util import *
+from smartcard.util import toHexString
 
 # replace by your favourite apdu
 SELECT_DF_TELECOM = [0xA0, 0xA4, 0x00, 0x00, 0x02, 0x7F, 0x10]
 
 
 class transmitobserver(CardObserver):
+    # pylint: disable=too-few-public-methods
     """A card observer that is notified when cards are inserted/removed
     from the system, connects to cards and SELECT DF_TELECOM"""
 
     def __init__(self):
         self.cards = []
 
-    def update(self, observable, actions):
-        (addedcards, removedcards) = actions
+    def update(self, observable, arg):
+        (addedcards, removedcards) = arg
         for card in addedcards:
             if card not in self.cards:
                 self.cards += [card]
                 print("+Inserted: ", toHexString(card.atr))
                 card.connection = card.createConnection()
                 card.connection.connect()
+                # pylint: disable=unused-variable
                 response, sw1, sw2 = card.connection.transmit(SELECT_DF_TELECOM)
                 print(f"{sw1:02x} {sw2:02x}")
                 card.connection.disconnect()
