@@ -36,6 +36,7 @@ def test_hresult_value():
 
 
 def test_list_readers_exception():
+    # pylint: disable=duplicate-code
     exc = ListReadersException(-1)
     assert str(exc) == "Failed to list readers"
 
