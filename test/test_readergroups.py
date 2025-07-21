@@ -1,3 +1,6 @@
+# pylint: disable=missing-module-docstring
+# pylint: disable=missing-function-docstring
+
 import pytest
 
 import smartcard.reader.ReaderGroups
@@ -57,6 +60,7 @@ def test_demonstrate_initlist_values_may_be_silently_ignored():
 
     smartcard.reader.ReaderGroups.readergroups(["a"])
     reader_group = smartcard.reader.ReaderGroups.readergroups(["b"])
+    # pylint: disable=unsupported-membership-test
     assert "b" in reader_group.instance
 
 
