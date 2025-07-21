@@ -1,4 +1,7 @@
 #! /usr/bin/env python3
+
+# pylint: disable=invalid-name
+
 """
 Sample script that monitors smartcard insertion/removal and select
 DF_TELECOM on inserted cards
@@ -39,6 +42,7 @@ DF_TELECOM = [0x7F, 0x10]
 
 # a simple card observer that tries to select DF_TELECOM on an inserted card
 class selectDFTELECOMObserver(CardObserver):
+    # pylint: disable=too-few-public-methods
     """A simple card observer that is notified
     when cards are inserted/removed from the system and
     prints the list of cards
@@ -47,14 +51,15 @@ class selectDFTELECOMObserver(CardObserver):
     def __init__(self):
         self.observer = ConsoleCardConnectionObserver()
 
-    def update(self, observable, actions):
-        (addedcards, removedcards) = actions
+    def update(self, observable, arg):
+        (addedcards, removedcards) = arg
         for card in addedcards:
             print("+Inserted: ", toHexString(card.atr))
             card.connection = card.createConnection()
             card.connection.connect()
             card.connection.addObserver(self.observer)
             apdu = SELECT + DF_TELECOM
+            # pylint: disable=unused-variable
             response, sw1, sw2 = card.connection.transmit(apdu)
             if sw1 == 0x9F:
                 apdu = GET_RESPONSE + [sw2]
