@@ -2,8 +2,28 @@ import platform
 
 import pytest
 
-from smartcard.Exceptions import *
-from smartcard.scard import *
+from smartcard.Exceptions import (
+    CardConnectionException,
+    CardRequestTimeoutException,
+    InvalidATRMaskLengthException,
+    InvalidReaderException,
+    ListReadersException,
+    NoCardException,
+    NoReadersException,
+    SmartcardException,
+)
+from smartcard.scard import (
+    SCARD_E_NO_SERVICE,
+    SCARD_E_NOT_TRANSACTED,
+    SCARD_E_UNKNOWN_READER,
+    SCARD_PROTOCOL_ANY,
+    SCARD_S_SUCCESS,
+    SCARD_SCOPE_USER,
+    SCARD_SHARE_SHARED,
+    SCARD_W_REMOVED_CARD,
+    SCardConnect,
+    SCardEstablishContext,
+)
 
 
 def test_hresult_value():
