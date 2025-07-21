@@ -36,7 +36,7 @@ class MyErrorChecker(ErrorChecker):
 
     def __call__(self, data, sw1, sw2):
         print(sw1, sw2)
-        if 0x61 < sw1 and 0x70 > sw1:
+        if 0x61 < sw1 < 0x70:
             raise SWException(data, sw1, sw2)
 
 
