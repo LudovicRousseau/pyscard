@@ -47,7 +47,7 @@ def module_path():
     return os.path.dirname(__file__)
 
 
-def main(argv):
+def main():
     app = SimpleSCardApp(
         appname="A simple reader monitoring tool",
         apppanel=None,
@@ -59,6 +59,4 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    import sys
-
-    main(sys.argv)
+    main()
