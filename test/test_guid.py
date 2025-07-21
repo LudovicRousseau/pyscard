@@ -1,3 +1,6 @@
+# pylint: disable=missing-module-docstring
+# pylint: disable=missing-function-docstring
+
 from smartcard.guid import GUIDToStr, strToGUID
 
 
