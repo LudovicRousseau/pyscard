@@ -2,6 +2,7 @@
 
 # pylint: disable=invalid-name
 # pylint: disable=too-few-public-methods
+# pylint: disable=duplicate-code
 
 """
 Sample script that defines a custom card connection observer.

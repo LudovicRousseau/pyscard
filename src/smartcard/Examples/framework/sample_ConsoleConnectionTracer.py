@@ -1,6 +1,7 @@
 #! /usr/bin/env python3
 
 # pylint: disable=invalid-name
+# pylint: disable=duplicate-code
 
 """
 Sample script that monitors card connection events.
