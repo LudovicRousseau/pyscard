@@ -92,8 +92,8 @@ try:
                             "failed to get status: " + SCardGetErrorMessage(hresult)
                         )
                     print("ATR:", end=" ")
-                    for i in range(len(atr)):
-                        print("0x%.2X" % atr[i], end=" ")
+                    for b in atr:
+                        print(f"0x{b:02X}", end=" ")
                     print("")
 
                 finally:
