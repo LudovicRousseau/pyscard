@@ -29,7 +29,22 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 import sys
 
 import smartcard.util
-from smartcard.scard import *
+from smartcard.scard import (
+    SCARD_PROTOCOL_T0,
+    SCARD_PROTOCOL_T1,
+    SCARD_S_SUCCESS,
+    SCARD_SCOPE_USER,
+    SCARD_SHARE_SHARED,
+    SCARD_UNPOWER_CARD,
+    SCardConnect,
+    SCardDisconnect,
+    SCardEstablishContext,
+    SCardGetErrorMessage,
+    SCardListReaders,
+    SCardReleaseContext,
+    SCardTransmit,
+    error,
+)
 
 SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
 DF_TELECOM = [0x7F, 0x10]
