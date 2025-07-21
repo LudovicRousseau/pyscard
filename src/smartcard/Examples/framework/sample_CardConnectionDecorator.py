@@ -1,4 +1,7 @@
 #! /usr/bin/env python3
+
+# pylint: disable=invalid-name
+
 """
 Sample script that illustrates card connection decorators.
 
@@ -84,6 +87,7 @@ DF_TELECOM = [0x7F, 0x10]
 
 
 def main():
+    """main"""
 
     # request any card type
     cardtype = AnyCardType()
@@ -105,6 +109,7 @@ def main():
         print("ATR", toHexString(cardservice.connection.getATR()))
 
         apdu = SELECT + DF_TELECOM
+        # pylint: disable=unused-variable
         response, sw1, sw2 = cardservice.connection.transmit(apdu)
 
         if sw1 == 0x9F:
