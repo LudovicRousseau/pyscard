@@ -1,4 +1,7 @@
 #! /usr/bin/env python3
+
+# pylint: disable=invalid-name
+
 """Sample script for APDU error checking with a custom error checker.
 
 __author__ = "https://www.gemalto.com/"
@@ -32,6 +35,7 @@ from smartcard.sw.SWExceptions import SWException
 
 
 class MyErrorChecker(ErrorChecker):
+    # pylint: disable=too-few-public-methods
     """Our custom error checker that will except if 0x61<sw1<0x70."""
 
     def __call__(self, data, sw1, sw2):
