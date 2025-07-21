@@ -129,6 +129,8 @@ def verifypin(hCard, control=None):
 
 
 def main():
+    # pylint: disable=too-many-nested-blocks
+    # pylint: disable=too-many-branches
     try:
         hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
         if hresult != SCARD_S_SUCCESS:
