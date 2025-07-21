@@ -99,8 +99,8 @@ if "winscard" == resourceManager:
             print("Cards:", cards)
 
             readerstates = []
-            for i in range(len(readers)):
-                readerstates += [(readers[i], SCARD_STATE_UNAWARE)]
+            for reader in readers:
+                readerstates += [(reader, SCARD_STATE_UNAWARE)]
             print(readerstates)
 
             hresult, newstates = SCardLocateCards(hcontext, cards, readerstates)
