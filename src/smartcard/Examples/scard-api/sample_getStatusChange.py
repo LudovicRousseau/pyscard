@@ -55,6 +55,7 @@ srTreeMask = [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 
 
 
 def printstate(state):
+    """Print card state"""
     reader, eventstate, atr = state
     print(reader + " " + smartcard.util.toHexString(atr, smartcard.util.HEX))
     if eventstate & SCARD_STATE_ATRMATCH:
