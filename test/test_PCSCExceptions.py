@@ -1,7 +1,22 @@
 import platform
 
-from smartcard.pcsc.PCSCExceptions import *
-from smartcard.scard import *
+from smartcard.pcsc.PCSCExceptions import (
+    AddReaderToGroupException,
+    BaseSCardException,
+    EstablishContextException,
+    IntroduceReaderException,
+    ListReadersException,
+    ReleaseContextException,
+    RemoveReaderFromGroupException,
+)
+from smartcard.scard import (
+    SCARD_E_DUPLICATE_READER,
+    SCARD_E_INVALID_HANDLE,
+    SCARD_E_NO_SERVICE,
+    SCARD_E_NOT_TRANSACTED,
+    SCARD_E_UNKNOWN_READER,
+    SCARD_S_SUCCESS,
+)
 
 
 def test_list_readers_exception():
