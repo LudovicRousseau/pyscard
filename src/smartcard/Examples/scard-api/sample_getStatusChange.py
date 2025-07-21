@@ -27,7 +27,28 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 import smartcard.util
-from smartcard.scard import *
+from smartcard.scard import (
+    INFINITE,
+    SCARD_S_SUCCESS,
+    SCARD_SCOPE_USER,
+    SCARD_STATE_ATRMATCH,
+    SCARD_STATE_CHANGED,
+    SCARD_STATE_EMPTY,
+    SCARD_STATE_EXCLUSIVE,
+    SCARD_STATE_IGNORE,
+    SCARD_STATE_INUSE,
+    SCARD_STATE_MUTE,
+    SCARD_STATE_PRESENT,
+    SCARD_STATE_UNAVAILABLE,
+    SCARD_STATE_UNAWARE,
+    SCARD_STATE_UNKNOWN,
+    SCardEstablishContext,
+    SCardGetErrorMessage,
+    SCardGetStatusChange,
+    SCardListReaders,
+    SCardReleaseContext,
+    error,
+)
 
 srTreeATR = [0x3B, 0x77, 0x94, 0x00, 0x00, 0x82, 0x30, 0x00, 0x13, 0x6C, 0x9F, 0x22]
 srTreeMask = [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
