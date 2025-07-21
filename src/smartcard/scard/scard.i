@@ -351,6 +351,14 @@ static SCARDRETCODE _IntroduceReaderGroup(SCARDCONTEXT hcontext, char* szGroupNa
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+SCARDRETCODE _ForgetReader(SCARDCONTEXT hcontext, char* szReaderName)
+{
+    (void)hcontext;
+    (void)szReaderName;
+    return SCARD_E_UNSUPPORTED_FEATURE;
+}
+
+///////////////////////////////////////////////////////////////////////////////
 static SCARDRETCODE _ForgetReaderGroup(SCARDCONTEXT hcontext, char* szGroupName)
 {
     (void)hcontext;
@@ -976,6 +984,28 @@ Windows only, not supported by PCSC lite wrapper.
 SCARDRETCODE _IntroduceReaderGroup(SCARDCONTEXT hcontext, char* szGroupName);
 
 ///////////////////////////////////////////////////////////////////////////////
+%define DOCSTRING_FORGETREADER
+"
+Removes a previously introduced smart card reader from the smart
+card subsystem.
+
+Windows only, not supported by PCSC lite wrapper.
+
+>>> from smartcard.scard import *
+>>> ... establish context ...
+>>> ...
+>>> hresult = SCardForgetReader(hcontext, dummyreader)
+>>> if hresult != SCARD_S_SUCCESS:
+>>>     raise error('Failed to forget readers ' +
+>>>     SCardGetErrorMessage(hresult))
+...
+"
+%enddef
+%feature("docstring") DOCSTRING_FORGETREADER;
+%rename(SCardForgetReader) _ForgetReader(SCARDCONTEXT hcontext, char* szReaderName);
+SCARDRETCODE _ForgetReader(SCARDCONTEXT hcontext, char* szReaderName);
+
+///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_FORGETREADERGROUP
 "
 Removes a previously introduced smart card reader group from the smart
@@ -1052,28 +1082,6 @@ Windows only, not supported by PCSC lite wrapper.
 %feature("docstring") DOCSTRING_FORGETCARDTYPE;
 %rename(SCardForgetCardType) _ForgetCardType(SCARDCONTEXT hcontext, char* szCardName);
 SCARDRETCODE _ForgetCardType(SCARDCONTEXT hcontext, char* szCardName);
-
-///////////////////////////////////////////////////////////////////////////////
-%define DOCSTRING_FORGETREADER
-"
-Removes a previously introduced smart card reader from the smart
-card subsystem.
-
-Windows only, not supported by PCSC lite wrapper.
-
->>> from smartcard.scard import *
->>> ... establish context ...
->>> ...
->>> hresult = SCardForgetReader(hcontext, dummyreader)
->>> if hresult != SCARD_S_SUCCESS:
->>>     raise error('Failed to forget readers ' +
->>>     SCardGetErrorMessage(hresult))
-...
-"
-%enddef
-%feature("docstring") DOCSTRING_FORGETREADER;
-%rename(SCardForgetReader) _ForgetReader(SCARDCONTEXT hcontext, char* szReaderName);
-SCARDRETCODE _ForgetReader(SCARDCONTEXT hcontext, char* szReaderName);
 
 ///////////////////////////////////////////////////////////////////////////////
 %define DOCSTRING_GETCARDTYPEPROVIDERNAME
