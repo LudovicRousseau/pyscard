@@ -51,6 +51,8 @@ from smartcard.scard import (
     error,
 )
 
+# pylint: disable=missing-function-docstring
+
 
 def can_do_verify_pin(hCard):
     FEATURE_VERIFY_PIN_DIRECT = 6
