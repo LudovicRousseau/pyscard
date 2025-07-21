@@ -1,4 +1,9 @@
 #! /usr/bin/env python3
+
+# pylint: disable=invalid-name
+# pylint: disable=missing-class-docstring
+# pylint: disable=too-few-public-methods
+
 """
 Sample script that demonstrates how to create a custom CardType.
 
@@ -23,6 +28,8 @@ You should have received a copy of the GNU Lesser General Public License
 along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
+import sys
+
 from smartcard.CardRequest import CardRequest
 from smartcard.CardType import CardType
 from smartcard.util import toHexString
@@ -47,8 +54,6 @@ with cardrequest.waitforcard() as cardservice:
     print(toHexString(cardservice.connection.getATR()))
     print(cardservice.connection.getReader())
 
-
-import sys
 
 if "win32" == sys.platform:
     print("press Enter to continue")
