@@ -114,7 +114,7 @@ class SamplePanel(wx.Panel, SimpleSCardAppEventObserver):
         self.feedbacktext.SetLabel("Selected reader: " + repr(reader))
 
 
-def main(argv):
+def main():
     app = SimpleSCardApp(
         appname="A simple card monitoring tool",
         apppanel=SamplePanel,
@@ -126,6 +126,4 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    import sys
-
-    main(sys.argv)
+    main()
