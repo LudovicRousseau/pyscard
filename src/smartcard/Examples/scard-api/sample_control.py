@@ -80,7 +80,7 @@ try:
                         hresult, response = SCardControl(
                             hcard,
                             SCARD_CTL_CODE(2),
-                            toBytes("%.8lx" % SCARD_ATTR_VENDOR_NAME),
+                            toBytes(f"{SCARD_ATTR_VENDOR_NAME:08x}"),
                         )
                         if hresult != SCARD_S_SUCCESS:
                             raise error(
