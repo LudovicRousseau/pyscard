@@ -1,3 +1,8 @@
+# pylint: disable=missing-module-docstring
+# pylint: disable=missing-class-docstring
+# pylint: disable=missing-function-docstring
+# pylint: disable=too-few-public-methods
+
 from __future__ import annotations
 
 import pytest
