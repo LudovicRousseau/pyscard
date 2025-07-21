@@ -86,7 +86,7 @@ def verifypin(hCard, control=None):
     if control is None:
         control = can_do_verify_pin(hCard)
         if control is None:
-            raise Exception("Not a pinpad")
+            raise BaseSCardException(message="Not a pinpad")
 
     command = [
         0x00,  # bTimerOut
@@ -142,7 +142,7 @@ def main():
             print("PCSC Readers:", readers)
 
             if len(readers) < 1:
-                raise Exception("No smart card readers")
+                raise BaseSCardException(message="No smart card readers")
 
             for zreader in readers:
 
@@ -189,7 +189,7 @@ def main():
 
                         hresult, response = verifypin(hcard, cmd_verify)
                         print("Control:", response)
-                    except Exception as ex:
+                    except BaseSCardException as ex:
                         print("Exception:", ex)
                     finally:
                         hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
