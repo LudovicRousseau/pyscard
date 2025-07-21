@@ -145,13 +145,17 @@ if "pcsclite" == resourceManager:
 
 
 def printAttribute(attrib, value):
+    """Print attribute value"""
     print("-----------------", attributes[attrib], "-----------------")
     print(value)
     print(smartcard.util.toHexString(value, smartcard.util.HEX))
     print(struct.pack(*["<" + "B" * len(value)] + value))
 
 
-if __name__ == "__main__":
+def main():
+    # pylint: disable=too-many-nested-blocks
+    # pylint: disable=too-many-branches
+    """main"""
     hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
     if hresult != SCARD_S_SUCCESS:
         raise error("Failed to establish context: " + SCardGetErrorMessage(hresult))
@@ -205,6 +209,10 @@ if __name__ == "__main__":
             raise error("Failed to release context: " + SCardGetErrorMessage(hresult))
         print("Released context.")
 
-if "win32" == sys.platform:
-    print("press Enter to continue")
-    sys.stdin.read(1)
+
+if __name__ == "__main__":
+    main()
+
+    if "win32" == sys.platform:
+        print("press Enter to continue")
+        sys.stdin.read(1)
