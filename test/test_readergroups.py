@@ -80,6 +80,7 @@ def test_demonstrate_removing_is_impossible():
     assert reader_group.instance == ["a"]
     with pytest.raises(ValueError, match="x not in list"):
         reader_group.removereadergroup("a")
+    # pylint: disable=use-implicit-booleaness-not-comparison
     assert reader_group.instance == []
 
 
