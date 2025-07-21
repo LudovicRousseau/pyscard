@@ -181,11 +181,11 @@ def main():
 
                         cmd_verify = can_do_verify_pin(hcard)
                         if cmd_verify:
-                            print("can do verify pin: 0x%08X" % cmd_verify)
+                            print(f"can do verify pin: 0x{cmd_verify:08X}")
 
                         cmd_modify = can_do_modify_pin(hcard)
                         if cmd_modify:
-                            print("can do modify pin: 0x%08X" % cmd_modify)
+                            print(f"can do modify pin: 0x{cmd_modify:08X}")
 
                         hresult, response = verifypin(hcard, cmd_verify)
                         print("Control:", response)
