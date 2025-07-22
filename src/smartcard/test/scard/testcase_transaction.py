@@ -33,7 +33,22 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 import sys
 import unittest
 
-from smartcard.scard import *
+from smartcard.scard import (
+    SCARD_LEAVE_CARD,
+    SCARD_PROTOCOL_T0,
+    SCARD_PROTOCOL_T1,
+    SCARD_SCOPE_USER,
+    SCARD_SHARE_SHARED,
+    SCARD_UNPOWER_CARD,
+    SCardBeginTransaction,
+    SCardConnect,
+    SCardDisconnect,
+    SCardEndTransaction,
+    SCardEstablishContext,
+    SCardListReaders,
+    SCardReleaseContext,
+    SCardStatus,
+)
 
 sys.path += [".."]
 
