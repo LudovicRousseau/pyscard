@@ -88,8 +88,8 @@ class testcase_locatecards(unittest.TestCase):
             self.assertEqual(hresult, 0)
 
             readerstates = []
-            for i in range(len(readers)):
-                readerstates += [(readers[i], SCARD_STATE_UNAWARE)]
+            for reader in readers:
+                readerstates += [(reader, SCARD_STATE_UNAWARE)]
 
             hresult, newstates = SCardLocateCards(self.hcontext, cards, readerstates)
             self.assertEqual(hresult, 0)
@@ -113,8 +113,8 @@ class testcase_locatecards(unittest.TestCase):
 
         elif "pcsclite" == resourceManager:
             readerstates = []
-            for i in range(len(readers)):
-                readerstates += [(readers[i], SCARD_STATE_UNAWARE)]
+            for reader in readers:
+                readerstates += [(reader, SCARD_STATE_UNAWARE)]
 
             hresult, newstates = SCardGetStatusChange(self.hcontext, 0, readerstates)
             self.assertEqual(hresult, 0)
