@@ -172,8 +172,8 @@ if "winscard" == resourceManager:
             hresult, cards = SCardListCards(self.hcontext, [], [])
             self.assertEqual(hresult, 0)
             foundCards = {}
-            for i in range(len(cards)):
-                foundCards[cards[i]] = 1
+            for card in cards:
+                foundCards[card] = 1
             for i in expectedCards:
                 self.assertTrue(i in foundCards)
 
@@ -186,19 +186,17 @@ if "winscard" == resourceManager:
                 "Schlumberger Cryptoflex 8k": [2, None],
                 "Schlumberger Cryptoflex 8k v2": [2, None],
             }
-            for i in range(len(cards)):
+            for card in cards:
                 hresult, providername = SCardGetCardTypeProviderName(
-                    self.hcontext, cards[i], SCARD_PROVIDER_PRIMARY
+                    self.hcontext, card, SCARD_PROVIDER_PRIMARY
                 )
-                if cards[i] in expectedPrimaryProviderResult:
-                    self.assertEqual(
-                        hresult, expectedPrimaryProviderResult[cards[i]][0]
-                    )
+                if card in expectedPrimaryProviderResult:
+                    self.assertEqual(hresult, expectedPrimaryProviderResult[card][0])
                     if hresult == SCARD_S_SUCCESS:
                         self.assertEqual(
                             providername,
                             smartcard.guid.GUIDToStr(
-                                expectedPrimaryProviderResult[cards[i]][1]
+                                expectedPrimaryProviderResult[card][1]
                             ),
                         )
 
@@ -219,15 +217,13 @@ if "winscard" == resourceManager:
                     "Schlumberger Cryptographic Service Provider",
                 ],
             }
-            for i in range(len(cards)):
+            for card in cards:
                 hresult, providername = SCardGetCardTypeProviderName(
-                    self.hcontext, cards[i], SCARD_PROVIDER_CSP
+                    self.hcontext, card, SCARD_PROVIDER_CSP
                 )
-                if cards[i] in expectedProviderCSPResult:
-                    self.assertEqual(hresult, expectedProviderCSPResult[cards[i]][0])
-                    self.assertEqual(
-                        providername, expectedProviderCSPResult[cards[i]][1]
-                    )
+                if card in expectedProviderCSPResult:
+                    self.assertEqual(hresult, expectedProviderCSPResult[card][0])
+                    self.assertEqual(providername, expectedProviderCSPResult[card][1])
 
     def suite():
         suite1 = unittest.defaultTestLoader.loadTestsFromTestCase(testcase_listcards)
