@@ -74,7 +74,7 @@ class testcase_transaction(unittest.TestCase):
 
     def _transaction(self, r):
         if r < len(expectedATRs) and [] != expectedATRs[r]:
-            hresult, hcard, dwActiveProtocol = SCardConnect(
+            hresult, hcard, _dwActiveProtocol = SCardConnect(
                 self.hcontext,
                 self.readers[r],
                 SCARD_SHARE_SHARED,
@@ -86,7 +86,7 @@ class testcase_transaction(unittest.TestCase):
                 hresult = SCardBeginTransaction(hcard)
                 self.assertEqual(hresult, 0)
 
-                hresult, reader, state, protocol, atr = SCardStatus(hcard)
+                hresult, reader, _state, _protocol, atr = SCardStatus(hcard)
                 self.assertEqual(hresult, 0)
                 self.assertEqual(reader, expectedReaders[r])
                 self.assertEqual(atr, expectedATRs[r])
