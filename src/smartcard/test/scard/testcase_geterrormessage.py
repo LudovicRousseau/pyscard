@@ -55,7 +55,7 @@ class testcase_geterrormessage(unittest.TestCase):
         self.assertEqual(hresult, 0)
 
     def test_getErrorMessage(self):
-        hresult, readers = SCardListReaders(self.hcontext, [])
+        hresult, _readers = SCardListReaders(self.hcontext, [])
         self.assertEqual(hresult, 0)
 
         hresult = SCardReleaseContext(pow(2, 63) >> 60)
