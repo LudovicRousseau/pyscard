@@ -60,9 +60,8 @@ class testcase_geterrormessage(unittest.TestCase):
 
         hresult = SCardReleaseContext(pow(2, 63) >> 60)
         if "win32" == sys.platform:
-            self.assertEqual(
-                (SCARD_E_INVALID_HANDLE == hresult or ERROR_INVALID_HANDLE == hresult),
-                True,
+            self.assertTrue(
+                hresult in (SCARD_E_INVALID_HANDLE, ERROR_INVALID_HANDLE),
             )
         else:
             self.assertEqual((SCARD_E_INVALID_HANDLE == hresult), True)
