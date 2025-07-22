@@ -40,6 +40,7 @@ from smartcard.scard import (
 
 if "winscard" == resourceManager:
 
+    # pylint: disable=no-name-in-module
     from smartcard.scard import (
         SCARD_PROVIDER_CSP,
         SCARD_PROVIDER_PRIMARY,
