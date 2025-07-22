@@ -40,6 +40,7 @@ from smartcard.scard import (
 )
 
 if "win32" == sys.platform:
+    # pylint: disable=no-name-in-module
     from smartcard.scard import ERROR_INVALID_HANDLE
 
 
