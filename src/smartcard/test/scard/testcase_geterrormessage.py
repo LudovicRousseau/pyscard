@@ -60,20 +60,15 @@ class testcase_geterrormessage(unittest.TestCase):
         self.assertEqual(hresult, 0)
 
         hresult = SCardReleaseContext(pow(2, 63) >> 60)
+        expected = "Invalid handle."
         if "win32" == sys.platform:
             self.assertTrue(
                 hresult in (SCARD_E_INVALID_HANDLE, ERROR_INVALID_HANDLE),
             )
+            expected = "The handle is invalid."
         else:
-            self.assertEqual((SCARD_E_INVALID_HANDLE == hresult), True)
-        self.assertEqual(
-            (
-                SCardGetErrorMessage(hresult).rstrip() == "Invalid handle.".rstrip()
-                or SCardGetErrorMessage(hresult).rstrip()
-                == "The handle is invalid.".rstrip()
-            ),
-            True,
-        )
+            self.assertEqual(SCARD_E_INVALID_HANDLE, hresult)
+        self.assertEqual(SCardGetErrorMessage(hresult), expected)
 
 
 def suite():
