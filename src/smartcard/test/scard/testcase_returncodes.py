@@ -97,6 +97,8 @@ from smartcard.scard import (
 class testcase_returncodes(unittest.TestCase):
     """Test scard API for return codes"""
 
+    # check that all return codes are defined as a symbol
+
     def test_getReturnCodes(self):
         errors = (
             SCARD_S_SUCCESS,
