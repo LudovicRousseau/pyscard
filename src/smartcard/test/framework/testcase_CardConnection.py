@@ -232,6 +232,13 @@ class testcase_CardConnection(unittest.TestCase):
             else:
                 self.assertRaises(NoCardException, cc.connect)
 
+    def testcase_context(self):
+        """Test context"""
+        for reader in readers():
+            with reader.createConnection() as cc:
+                cc.connect()
+                # .disconnect() and .release() are automatic
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=1)
