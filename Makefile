@@ -37,6 +37,7 @@ coverage:
 
 pylint:
 	$(PYTHON) -m pylint smartcard
+	cd test ; $(PYTHON) -m pylint .
 
 ChangeLog.git:
 	git log --stat --decorate=short > $@
