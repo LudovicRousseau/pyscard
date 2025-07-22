@@ -267,7 +267,7 @@ class PCSCCardConnection(CardConnection):
         CardConnection.getATR(self)
         if self.hcard is None:
             raise CardConnectionException("Card not connected")
-        hresult, reader, state, protocol, atr = SCardStatus(self.hcard)
+        hresult, _reader, _state, _protocol, atr = SCardStatus(self.hcard)
         if hresult != SCARD_S_SUCCESS:
             raise CardConnectionException(
                 "Failed to get status: " + SCardGetErrorMessage(hresult),
