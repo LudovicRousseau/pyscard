@@ -34,7 +34,26 @@ import platform
 import sys
 import unittest
 
-from smartcard.scard import *
+from smartcard.scard import (
+    SCARD_E_TIMEOUT,
+    SCARD_SCOPE_USER,
+    SCARD_STATE_CHANGED,
+    SCARD_STATE_PRESENT,
+    SCARD_STATE_UNAWARE,
+    SCardEstablishContext,
+    SCardGetErrorMessage,
+    SCardGetStatusChange,
+    SCardListReaders,
+    SCardReleaseContext,
+    resourceManager,
+)
+
+if "winscard" == resourceManager:
+    # pylint: disable=no-name-in-module
+    from smartcard.scard import (
+        SCardListCards,
+        SCardLocateCards,
+    )
 
 sys.path += [".."]
 
