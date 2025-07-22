@@ -30,7 +30,20 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 import unittest
 
 import smartcard.guid
-from smartcard.scard import *
+from smartcard.scard import (
+    SCARD_PROVIDER_CSP,
+    SCARD_PROVIDER_PRIMARY,
+    SCARD_S_SUCCESS,
+    SCARD_SCOPE_USER,
+    SCardEstablishContext,
+    SCardForgetCardType,
+    SCardGetCardTypeProviderName,
+    SCardIntroduceCardType,
+    SCardListCards,
+    SCardListInterfaces,
+    SCardReleaseContext,
+    resourceManager,
+)
 
 if "winscard" == resourceManager:
 
