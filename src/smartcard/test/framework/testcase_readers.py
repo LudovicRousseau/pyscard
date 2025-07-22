@@ -104,6 +104,7 @@ class testcase_readers(unittest.TestCase):
     def testcase_readergroups(self):
         """readergroups"""
         foundreadergroups = {}
+        # pylint: disable=not-an-iterable
         for readergroup in readergroups():
             foundreadergroups[readergroup] = 1
         for readergroup in expectedReaderGroups:
