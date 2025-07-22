@@ -30,7 +30,17 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 import sys
 import unittest
 
-from smartcard.scard import *
+from smartcard.scard import (
+    SCARD_E_INVALID_HANDLE,
+    SCARD_SCOPE_USER,
+    SCardEstablishContext,
+    SCardGetErrorMessage,
+    SCardListReaders,
+    SCardReleaseContext,
+)
+
+if "win32" == sys.platform:
+    from smartcard.scard import ERROR_INVALID_HANDLE
 
 
 class testcase_geterrormessage(unittest.TestCase):
