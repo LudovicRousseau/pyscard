@@ -59,6 +59,7 @@ def checklocalconfig():
     # generate local configuration
     with open("local_config.py", "w", encoding="utf-8") as f:
 
+        f.write('"""Do not edit by hand"""\n')
         f.write("from smartcard.util import toHexString\n")
         f.write("expectedReaders = ")
         expectedReaders = readers()
