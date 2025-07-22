@@ -27,8 +27,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 
-import struct
-
 # import local_config for reader/card configuration
 # configcheck.py is generating local_config.py in
 # the test suite.
@@ -104,11 +102,7 @@ class testcase_getAttrib(unittest.TestCase):
                     self.assertEqual(hresult, 0)
                     trimmedAttrib = attrib[:-1]
                     self.assertEqual(
-                        expectedReaders[r],
-                        apply(
-                            struct.pack,
-                            ["<" + "B" * len(trimmedAttrib)] + trimmedAttrib,
-                        ),
+                        expectedReaders[r], str(bytes(trimmedAttrib), encoding="utf-8")
                     )
 
             finally:
