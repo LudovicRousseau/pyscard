@@ -35,7 +35,24 @@ import struct
 import sys
 import unittest
 
-from smartcard.scard import *
+from smartcard.scard import (
+    SCARD_ATTR_ATR_STRING,
+    SCARD_ATTR_DEVICE_SYSTEM_NAME_A,
+    SCARD_PROTOCOL_T0,
+    SCARD_PROTOCOL_T1,
+    SCARD_SCOPE_USER,
+    SCARD_SHARE_SHARED,
+    SCARD_UNPOWER_CARD,
+    SCardConnect,
+    SCardDisconnect,
+    SCardEstablishContext,
+    SCardGetAttrib,
+    SCardListReaders,
+    SCardReleaseContext,
+    SCardStatus,
+    resourceManager,
+    scard,
+)
 
 sys.path += [".."]
 
