@@ -98,12 +98,14 @@ class testcase_Card(unittest.TestCase):
             card = Card(str(reader), expectedATRinReader[reader.name])
             cardcopy = Card(str(reader), expectedATRinReader[str(reader)])
             self.assertEqual(True, card == cardcopy)
+            # pylint: disable=unnecessary-negation
             self.assertEqual(True, not card != cardcopy)
 
         for reader in readers():
             card = Card(str(reader), expectedATRinReader[reader.name])
             cardcopy = Card(str(reader), [0, 0])
             self.assertEqual(True, card != cardcopy)
+            # pylint: disable=unnecessary-negation
             self.assertEqual(True, not card == cardcopy)
 
 
