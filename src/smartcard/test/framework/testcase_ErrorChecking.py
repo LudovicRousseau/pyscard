@@ -47,6 +47,7 @@ class CustomSWException(smartcard.sw.SWExceptions.SWException):
 
 
 class TestErrorChecker(ErrorChecker):
+    # pylint: disable=too-few-public-methods
     """Test error checking checker.
 
     This checker raises the following exception:
