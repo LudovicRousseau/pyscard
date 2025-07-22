@@ -31,21 +31,24 @@ import unittest
 
 import smartcard.guid
 from smartcard.scard import (
-    SCARD_PROVIDER_CSP,
-    SCARD_PROVIDER_PRIMARY,
     SCARD_S_SUCCESS,
     SCARD_SCOPE_USER,
     SCardEstablishContext,
-    SCardForgetCardType,
-    SCardGetCardTypeProviderName,
-    SCardIntroduceCardType,
-    SCardListCards,
-    SCardListInterfaces,
     SCardReleaseContext,
     resourceManager,
 )
 
 if "winscard" == resourceManager:
+
+    from smartcard.scard import (
+        SCARD_PROVIDER_CSP,
+        SCARD_PROVIDER_PRIMARY,
+        SCardForgetCardType,
+        SCardGetCardTypeProviderName,
+        SCardIntroduceCardType,
+        SCardListCards,
+        SCardListInterfaces,
+    )
 
     class testcase_listcards(unittest.TestCase):
         """Test scard API for ATR retrieval"""
