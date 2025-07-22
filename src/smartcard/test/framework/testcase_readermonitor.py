@@ -46,6 +46,7 @@ from smartcard.ReaderMonitoring import ReaderMonitor, ReaderObserver
 
 # a simple reader observer that prints added/removed readers
 class printobserver(ReaderObserver):
+    # pylint: disable=too-few-public-methods
     """observer"""
 
     def __init__(self, obsindex, testcase):
