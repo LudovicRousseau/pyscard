@@ -52,8 +52,8 @@ class printobserver(ReaderObserver):
         self.obsindex = obsindex
         self.testcase = testcase
 
-    def update(self, observable, handlers):
-        (addedreaders, removedreaders) = handlers
+    def update(self, observable, arg):
+        (addedreaders, removedreaders) = arg
         foundreaders = {}
         self.testcase.assertEqual(removedreaders, [])
         for reader in addedreaders:
