@@ -111,6 +111,7 @@ class readerRemovalThread(threading.Thread):
 
 
 class countobserver(ReaderObserver):
+    # pylint: disable=too-few-public-methods
     """A simple reader observer that counts added/removed readers."""
 
     def __init__(self, obsindex):
@@ -119,8 +120,8 @@ class countobserver(ReaderObserver):
         self.removedreaderstats = {}
         self.countnotified = 0
 
-    def update(self, observable, handlers):
-        (addedreaders, removedreaders) = handlers
+    def update(self, observable, arg):
+        (addedreaders, removedreaders) = arg
         self.countnotified += 1
         for newreader in addedreaders:
             if newreader in self.insertedreaderstats:
