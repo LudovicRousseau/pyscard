@@ -37,7 +37,6 @@ from smartcard.scard import (
     SCardReleaseContext,
     error,
     resourceManager,
-    scard,
 )
 
 if "winscard" == resourceManager:
@@ -87,9 +86,7 @@ if "winscard" == resourceManager:
         """main"""
         hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
         if hresult != SCARD_S_SUCCESS:
-            raise scard.error(
-                "Failed to establish context: " + SCardGetErrorMessage(hresult)
-            )
+            raise error("Failed to establish context: " + SCardGetErrorMessage(hresult))
         print("Context established!")
 
         try:
@@ -98,7 +95,7 @@ if "winscard" == resourceManager:
             expectedCard = "Schlumberger Cryptoflex 8k v2"
             hresult, interfaces = SCardListInterfaces(hcontext, expectedCard)
             if hresult != SCARD_S_SUCCESS:
-                raise scard.error(
+                raise error(
                     "Failed to list interfaces: " + SCardGetErrorMessage(hresult)
                 )
             print("Interfaces for ", expectedCard, ":", interfaces)
