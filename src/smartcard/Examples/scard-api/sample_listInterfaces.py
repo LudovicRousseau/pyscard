@@ -84,6 +84,7 @@ if "winscard" == resourceManager:
     znewcardSecGuid = smartcard.guid.strToGUID("{EB7F69EA-BA20-47d0-8C50-11CFDEB63BBE}")
 
     def main():
+        """main"""
         hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
         if hresult != SCARD_S_SUCCESS:
             raise scard.error(
