@@ -35,18 +35,6 @@ import unittest
 
 sys.path += [".."]
 
-try:
-    from local_config import (
-        expectedATRinReader,
-        expectedATRs,
-        expectedReaderGroups,
-        expectedReaders,
-    )
-except ImportError:
-    print("execute test suite first to generate the local_config.py file")
-    sys.exit()
-
-
 from smartcard.pcsc.PCSCReader import PCSCReader
 from smartcard.pcsc.PCSCReaderGroups import PCSCReaderGroups
 from smartcard.scard import resourceManager
