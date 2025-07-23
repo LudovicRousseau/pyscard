@@ -38,6 +38,8 @@ coverage:
 pylint:
 	$(PYTHON) -m pylint smartcard
 	cd test ; $(PYTHON) -m pylint .
+	cd src/smartcard/Examples ; $(PYTHON) -m pylint --ignore wx .
+	cd src/smartcard/test ; $(PYTHON) -m pylint .
 
 ChangeLog.git:
 	git log --stat --decorate=short > $@
