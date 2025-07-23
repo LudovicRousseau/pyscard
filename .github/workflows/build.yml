@@ -142,3 +142,11 @@ jobs:
       - name: "Perform quality checks: pylint_test"
         run: |
           temp/bin/tox -e pylint_test
+
+      - name: "Perform quality checks: pylint_Examples"
+        run: |
+          temp/bin/tox -e pylint_Examples
+
+      - name: "Perform quality checks: pylint_srctest"
+        run: |
+          temp/bin/tox -e pylint_srctest
