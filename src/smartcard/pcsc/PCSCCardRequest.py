@@ -360,14 +360,6 @@ class PCSCCardRequest(AbstractCardRequest):
                     # create a dictionary entry for new readers
                     readerstates[reader] = (reader, SCARD_STATE_UNAWARE)
 
-                hresult, newstates = SCardGetStatusChange(
-                    self.hcontext, 0, list(readerstates.values())
-                )
-
-                # init readerstates
-                for reader, state, _ in newstates:
-                    readerstates[reader] = (reader, state)
-
             # check if a new reader with a card has just been connected
             for reader in _readernames:
                 # is the reader a new one?
