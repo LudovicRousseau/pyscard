@@ -29,9 +29,25 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 import sys
 
 import smartcard.guid
-from smartcard.scard import *
+from smartcard.scard import (
+    SCARD_S_SUCCESS,
+    SCARD_SCOPE_USER,
+    SCardEstablishContext,
+    SCardGetErrorMessage,
+    SCardReleaseContext,
+    error,
+    resourceManager,
+    scard,
+)
 
 if "winscard" == resourceManager:
+
+    # pylint: disable=no-name-in-module
+    from smartcard.scard import (
+        SCardForgetCardType,
+        SCardIntroduceCardType,
+        SCardListInterfaces,
+    )
 
     znewcardName = "dummy-card"
     znewcardATR = [
