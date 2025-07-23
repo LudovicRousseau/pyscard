@@ -28,9 +28,26 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import sys
 
-from smartcard.scard import *
+from smartcard.scard import (
+    SCARD_S_SUCCESS,
+    SCARD_SCOPE_USER,
+    SCardEstablishContext,
+    SCardGetErrorMessage,
+    SCardReleaseContext,
+    error,
+    resourceManager,
+)
 
 if "winscard" == resourceManager:
+
+    # pylint: disable=no-name-in-module
+    from smartcard.scard import (
+        SCARD_PROVIDER_CSP,
+        SCARD_PROVIDER_PRIMARY,
+        SCardGetCardTypeProviderName,
+        SCardListCards,
+    )
+
     # Cryptoflex 8k v2 is introduced in standard Windows 2000
     slbCryptoFlex8kv2ATR = [0x3B, 0x95, 0x15, 0x40, 0x00, 0x68, 0x01, 0x02, 0x00, 0x00]
     try:
