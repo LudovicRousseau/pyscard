@@ -53,8 +53,8 @@ class printobserver(CardObserver):
         self.obsindex = obsindex
         self.testcase = testcase
 
-    def update(self, observable, arg):
-        (addedcards, removedcards) = arg
+    def update(self, observable, handlers):
+        (addedcards, removedcards) = handlers
         foundcards = {}
         self.testcase.assertEqual(removedcards, [])
         for card in addedcards:

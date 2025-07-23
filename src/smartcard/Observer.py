@@ -22,7 +22,7 @@ from smartcard.Synchronization import Synchronization, synchronize
 class Observer:
     """Observer"""
 
-    def update(self, observable: Observable, arg: typing.Any) -> None:
+    def update(self, observable: Observable, handlers: typing.Any) -> None:
         """Called when the observed object is
         modified. You call an Observable object's
         notifyObservers method to notify all the
@@ -46,12 +46,12 @@ class Observable(Synchronization):
         """Remove an observer"""
         self.obs.remove(observer)
 
-    def notifyObservers(self, arg: typing.Any = None) -> None:
+    def notifyObservers(self, handlers: typing.Any = None) -> None:
         """If 'changed' indicates that this object
         has changed, notify all its observers, then
         call clearChanged(). Each observer has its
         update() called with two arguments: this
-        observable object and the generic 'arg'."""
+        observable object and the generic 'handlers'."""
 
         with self.mutex:
             if not self.changed:
@@ -62,7 +62,7 @@ class Observable(Synchronization):
 
         # Update observers
         for observer in observers:
-            observer.update(self, arg)
+            observer.update(self, handlers)
 
     def deleteObservers(self) -> None:
         """Remove all observers"""

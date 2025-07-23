@@ -39,8 +39,8 @@ class printobserver(ReaderObserver):
     prints the list of readers
     """
 
-    def update(self, observable, arg):
-        (addedreaders, removedreaders) = arg
+    def update(self, observable, handlers):
+        (addedreaders, removedreaders) = handlers
         print("Added readers", addedreaders)
         print("Removed readers", removedreaders)
 

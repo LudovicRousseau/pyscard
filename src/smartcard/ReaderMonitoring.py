@@ -51,11 +51,11 @@ class ReaderObserver(Observer):
     def __init__(self):
         pass
 
-    def update(self, observable, arg):
+    def update(self, observable, handlers):
         """Called upon reader insertion/removal.
 
         @param observable:
-        @param arg:
+        @param handlers:
           - addedreaders: list of added readers causing notification
           - removedreaders: list of removed readers causing notification
         """
@@ -217,8 +217,8 @@ if __name__ == "__main__":
         def __init__(self, obsindex):
             self.obsindex = obsindex
 
-        def update(self, observable, arg):
-            addedreaders, removedreaders = arg
+        def update(self, observable, handlers):
+            addedreaders, removedreaders = handlers
             print(f"{self.obsindex} - added:   {addedreaders}")
             print(f"{self.obsindex} - removed: {removedreaders}")
 

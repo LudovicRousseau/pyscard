@@ -51,8 +51,8 @@ class selectDFTELECOMObserver(CardObserver):
     def __init__(self):
         self.observer = ConsoleCardConnectionObserver()
 
-    def update(self, observable, arg):
-        (addedcards, removedcards) = arg
+    def update(self, observable, handlers):
+        (addedcards, removedcards) = handlers
         for card in addedcards:
             print("+Inserted: ", toHexString(card.atr))
             card.connection = card.createConnection()

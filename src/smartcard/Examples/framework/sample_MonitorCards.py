@@ -41,8 +41,8 @@ class PrintObserver(CardObserver):
     prints the list of cards
     """
 
-    def update(self, observable, arg):
-        (addedcards, removedcards) = arg
+    def update(self, observable, handlers):
+        (addedcards, removedcards) = handlers
         for card in addedcards:
             print("+Inserted: ", toHexString(card.atr))
         for card in removedcards:

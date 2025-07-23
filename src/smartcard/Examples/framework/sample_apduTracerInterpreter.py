@@ -41,33 +41,33 @@ class TracerAndSELECTInterpreter(CardConnectionObserver):
     """This observer will interprer SELECT and GET RESPONSE bytes
     and replace them with a human readable string."""
 
-    def update(self, observable, arg):
+    def update(self, observable, handlers):
 
-        if "connect" == arg.type:
+        if "connect" == handlers.type:
             print("connecting to " + observable.getReader())
 
-        elif "disconnect" == arg.type:
+        elif "disconnect" == handlers.type:
             print("disconnecting from " + observable.getReader())
 
-        elif "release" == arg.type:
+        elif "release" == handlers.type:
             print("release from " + observable.getReader())
 
-        elif "command" == arg.type:
-            output_str = toHexString(arg.args[0])
+        elif "command" == handlers.type:
+            output_str = toHexString(handlers.args[0])
             output_str = output_str.replace("A0 A4 00 00 02", "SELECT")
             output_str = output_str.replace("A0 C0 00 00", "GET RESPONSE")
             print(">", output_str)
 
-        elif "response" == arg.type:
-            _sw1, _sw2 = arg.args[-2:]
+        elif "response" == handlers.type:
+            _sw1, _sw2 = handlers.args[-2:]
             SW = f"{_sw1:02X} {_sw2:02X}"
-            if [] == arg.args[0]:
+            if [] == handlers.args[0]:
                 print("<  []", SW)
             else:
-                print("<", toHexString(arg.args[0]), SW)
+                print("<", toHexString(handlers.args[0]), SW)
 
         else:
-            print("Unknown event:", arg.type)
+            print("Unknown event:", handlers.type)
 
 
 # define the apdus used in this script

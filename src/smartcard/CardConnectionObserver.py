@@ -38,40 +38,40 @@ class CardConnectionObserver(Observer):
     upon L{CardConnection} events.
     """
 
-    def update(self, observable, arg):
+    def update(self, observable, handlers):
         """Called upon CardConnection event.
 
         @param observable:         the observed card connection object
-        @param arg:    the CardConnectionEvent sent by the connection
+        @param handlers:    the CardConnectionEvent sent by the connection
         """
 
 
 class ConsoleCardConnectionObserver(CardConnectionObserver):
     """CardConnectionObserver output to the console"""
 
-    def update(self, observable, arg):
+    def update(self, observable, handlers):
 
-        if "connect" == arg.type:
+        if "connect" == handlers.type:
             print("connecting to " + observable.getReader())
 
-        elif "reconnect" == arg.type:
+        elif "reconnect" == handlers.type:
             print("reconnecting to " + observable.getReader())
 
-        elif "disconnect" == arg.type:
+        elif "disconnect" == handlers.type:
             print("disconnecting from " + observable.getReader())
 
-        elif "release" == arg.type:
+        elif "release" == handlers.type:
             print("release from " + observable.getReader())
 
-        elif "command" == arg.type:
-            print("> " + toHexString(arg.args[0]))
+        elif "command" == handlers.type:
+            print("> " + toHexString(handlers.args[0]))
 
-        elif "response" == arg.type:
-            sw1, sw2 = arg.args[-2:]
+        elif "response" == handlers.type:
+            sw1, sw2 = handlers.args[-2:]
             SW = f" {sw1:2X} {sw2:02X}"
-            if [] == arg.args[0]:
+            if [] == handlers.args[0]:
                 print("<  []" + SW)
             else:
-                print("< " + toHexString(arg.args[0]) + SW)
+                print("< " + toHexString(handlers.args[0]) + SW)
         else:
-            print("unknown event:", arg.type)
+            print("unknown event:", handlers.type)

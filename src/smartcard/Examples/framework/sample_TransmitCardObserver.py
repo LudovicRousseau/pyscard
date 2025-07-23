@@ -45,8 +45,8 @@ class transmitobserver(CardObserver):
     def __init__(self):
         self.cards = []
 
-    def update(self, observable, arg):
-        (addedcards, removedcards) = arg
+    def update(self, observable, handlers):
+        (addedcards, removedcards) = handlers
         for card in addedcards:
             if card not in self.cards:
                 self.cards += [card]
