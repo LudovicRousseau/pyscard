@@ -26,6 +26,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
 import sys
+import traceback
 
 from smartcard.pcsc.PCSCExceptions import (
     BaseSCardException,
@@ -193,6 +194,7 @@ def main():
                         print("Control:", response)
                     except BaseSCardException as ex:
                         print("Exception:", ex)
+                        traceback.print_exc()
                     finally:
                         hresult = SCardDisconnect(hcard, SCARD_UNPOWER_CARD)
                         if hresult != SCARD_S_SUCCESS:
