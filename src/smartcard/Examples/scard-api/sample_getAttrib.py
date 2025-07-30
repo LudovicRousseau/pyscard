@@ -79,7 +79,7 @@ from smartcard.scard import (
     SCARD_PROTOCOL_T1,
     SCARD_S_SUCCESS,
     SCARD_SCOPE_USER,
-    SCARD_SHARE_SHARED,
+    SCARD_SHARE_DIRECT,
     SCARD_UNPOWER_CARD,
     SCardConnect,
     SCardDisconnect,
@@ -175,7 +175,7 @@ def main():
             hresult, hcard, dwActiveProtocol = SCardConnect(
                 hcontext,
                 reader,
-                SCARD_SHARE_SHARED,
+                SCARD_SHARE_DIRECT,
                 SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1,
             )
             if hresult != SCARD_S_SUCCESS:
