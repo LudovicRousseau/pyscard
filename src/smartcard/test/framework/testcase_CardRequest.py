@@ -144,18 +144,19 @@ class testcase_CardRequest(unittest.TestCase):
     def testcase_context(self):
         """Test context."""
 
-        for atr in expectedATRs:
-            if atr:
-                ct = AnyCardType()
-                with CardRequest(timeout=10, cardType=ct) as cr:
-                    with cr.waitforcard() as cs:
-                        cs.connection.connect()
-                        self.assertEqual(atr, cs.connection.getATR())
-                        self.assertEqual(
-                            cs.connection.getReader(),
-                            expectedReaderForATR[toHexString(atr)],
-                        )
-                        # .disconnect() and .reader() are automatic
+        ct = AnyCardType()
+        for index, reader in enumerate(expectedReaders):
+            with CardRequest(timeout=10, readers=[reader], cardType=ct) as cr:
+                with cr.waitforcard() as cs:
+                    cs.connection.connect()
+                    atr = cs.connection.getATR()
+                    self.assertEqual(expectedATRs[index], atr)
+                    self.assertEqual(cs.connection.getReader(), reader)
+                    self.assertEqual(
+                        cs.connection.getReader(),
+                        expectedReaderForATR[toHexString(atr)],
+                    )
+                    # .disconnect() and .reader() are automatic
 
 
 if __name__ == "__main__":
