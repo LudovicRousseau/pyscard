@@ -93,7 +93,7 @@ def verifypin(hCard, control=None):
         0x00,  # bTimerOut
         0x00,  # bTimerOut2
         0x82,  # bmFormatString
-        0x04,  # bmPINBlockString
+        0x08,  # bmPINBlockString
         0x00,  # bmPINLengthFormat
         0x08,
         0x04,  # wPINMaxExtraDigit
