@@ -1,3 +1,14 @@
+2.3.0 (July 2025)
+==================
+   * PCSCCardRequest: fix waitforcardevent() initialization
+   * PCSCCardConnection: raise exception for .connect() after .release()
+   * Fix race issue in SCardListReaders() and SCardListReaderGroups()
+   * Use SCARD_AUTOALLOCATE where defined (everywhere except macOS)
+   * Use SCardFreeMemory() on Unix (except macOS)
+   * CardMonitoringThread: Fix a thread safeness issue
+   * fix/ignore all pylint warnings
+   * Minor changes
+
 2.2.2 (April 2025)
 ==================
    * add .release() method to CardConnection & PCSCCardRequest

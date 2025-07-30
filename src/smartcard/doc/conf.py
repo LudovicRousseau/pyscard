@@ -18,9 +18,9 @@ copyright = "2014, Jean-Daniel Aussel, Ludovic Rousseau"
 # built documents.
 #
 # The short X.Y version.
-version = "2.2.2"
+version = "2.3.0"
 # The full version, including alpha/beta/rc tags.
-release = "2.2.2"
+release = "2.3.0"
 
 pygments_style = "sphinx"
 
