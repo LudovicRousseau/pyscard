@@ -29,7 +29,6 @@ jobs:
           - "Windows (x64)"
           - "Windows (x86)"
         cpython:
-          - "3.9"
           - "3.10"
           - "3.11"
           - "3.12"
