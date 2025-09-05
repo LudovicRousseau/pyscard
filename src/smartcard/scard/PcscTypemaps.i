@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 %exception
 {
     Py_BEGIN_ALLOW_THREADS;
-    $function
+    $action
     Py_END_ALLOW_THREADS;
 }
 
