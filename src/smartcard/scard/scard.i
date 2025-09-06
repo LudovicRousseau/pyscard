@@ -132,6 +132,12 @@ Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 #ifdef __APPLE__
 #include <PCSC/winscard.h>
+
+// Mac OS X Snow Leopard
+#ifndef SCARD_PROTOCOL_UNDEFINED
+#define SCARD_PROTOCOL_UNDEFINED 0x00000000
+#endif
+
 #else
 #include <winscard.h>
 #endif
