@@ -165,6 +165,10 @@ Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 typedef STRING PROVIDERNAME_t;
 
+#ifndef SCARD_PROTOCOL_UNDEFINED
+#define SCARD_PROTOCOL_UNDEFINED 0x00000000
+#endif
+
 %}
 
 %include typemaps.i
