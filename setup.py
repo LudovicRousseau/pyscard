@@ -28,6 +28,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 import platform
 import shlex
 import subprocess
+import sys
 from shutil import which
 from sysconfig import get_platform
 
@@ -76,7 +77,7 @@ class BuildPyBuildExtFirst(build_py):
         if which("swig") is None:
             print("Install swig and try again")
             print("")
-            exit(1)
+            sys.exit(1)
         # Run build_ext first so that SWIG generated files are included
         self.run_command("build_ext")
         return build_py.run(self)
