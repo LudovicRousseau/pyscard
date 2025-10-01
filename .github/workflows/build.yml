@@ -56,7 +56,7 @@ jobs:
             runner: "windows-latest"
             architecture: "x86"
 
-          - name: "Windows (arm)"
+          - name: "Windows (arm64)"
             runner: "windows-11-arm"
             architecture: "arm64"
 
