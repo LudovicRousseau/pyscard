@@ -29,7 +29,7 @@ jobs:
           - "macOS"
           - "Windows (x64)"
           - "Windows (x86)"
-          - "Windows (arm)"
+          - "Windows (arm64)"
 
         cpython:
           - "3.10"
@@ -59,6 +59,10 @@ jobs:
           - name: "Windows (arm)"
             runner: "windows-11-arm"
             architecture: "arm64"
+
+        exclude:
+          - os: "windows-11-arm"
+            cpython: "3.10"
 
     steps:
       - name: "Checkout the repository"
