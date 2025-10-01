@@ -61,7 +61,7 @@ jobs:
             architecture: "arm64"
 
         exclude:
-          - os: "windows-11-arm"
+          - name: "Windows (arm64)"
             cpython: "3.10"
 
     steps:
