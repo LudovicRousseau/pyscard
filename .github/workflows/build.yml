@@ -29,7 +29,7 @@ jobs:
           - "macOS"
           - "Windows (x64)"
           - "Windows (x86)"
-          - "Windows (arm64)"
+          - "Windows (arm)"
 
         cpython:
           - "3.10"
