@@ -163,7 +163,7 @@ jobs:
   publish:
     name: "PyPI Publish"
     needs: ["test", "quality"]
-    if: ${{ ! startsWith(github.ref, 'refs/tags/') }}
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
     runs-on: "ubuntu-latest"
     environment:
       name: pypi
@@ -185,4 +185,4 @@ jobs:
       - name: Publish wheels to PyPI
         uses: pypa/gh-action-pypi-publish@ed0c53931b1dc9bd32cbe73a98c7f6766f8a527e # v1.13.0
         with:
-          attestation: true
+          attestations: true
