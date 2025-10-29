@@ -1,3 +1,9 @@
+2.3.1 (October 2025)
+====================
+   * Add support of SWIG 4.4.0
+   * Add support of Mac OS X Snow Leopard
+   * Minor changes
+
 2.3.0 (July 2025)
 ==================
    * PCSCCardRequest: fix waitforcardevent() initialization

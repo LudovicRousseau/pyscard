@@ -65,7 +65,7 @@ else:
     except:
         platform_include_dirs = ["/usr/include/PCSC", "/usr/local/include/PCSC"]
 
-VERSION_INFO = (2, 3, 0, 0)
+VERSION_INFO = (2, 3, 1, 0)
 VERSION_STR = "%i.%i.%i" % VERSION_INFO[:3]
 VERSION_ALT = "%i,%01i,%01i,%04i" % VERSION_INFO
 
