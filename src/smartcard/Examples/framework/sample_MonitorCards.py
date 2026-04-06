@@ -42,7 +42,7 @@ class PrintObserver(CardObserver):
     """
 
     def update(self, observable, handlers):
-        (addedcards, removedcards) = handlers
+        addedcards, removedcards = handlers
         for card in addedcards:
             print("+Inserted: ", toHexString(card.atr))
         for card in removedcards:

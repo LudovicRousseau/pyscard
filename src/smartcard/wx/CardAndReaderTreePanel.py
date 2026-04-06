@@ -122,11 +122,11 @@ class CardTreeCtrl(BaseCardTreeCtrl):
         Removes a card from the tree."""
         parentnode = self.root
         for cardtoremove in removedcards:
-            (childCard, cookie) = self.GetFirstChild(parentnode)
+            childCard, cookie = self.GetFirstChild(parentnode)
             while childCard.IsOk():
                 if self.GetItemText(childCard) == toHexString(cardtoremove.atr):
                     self.Delete(childCard)
-                (childCard, cookie) = self.GetNextChild(parentnode, cookie)
+                childCard, cookie = self.GetNextChild(parentnode, cookie)
         self.Expand(self.root)
         self.EnsureVisible(self.root)
         self.Repaint()
@@ -190,16 +190,16 @@ class ReaderTreeCtrl(BaseCardTreeCtrl):
         try:
             parentnode = self.root
             for cardtoadd in addedcards:
-                (childReader, cookie) = self.GetFirstChild(parentnode)
+                childReader, cookie = self.GetFirstChild(parentnode)
                 found = False
                 while childReader.IsOk() and not found:
                     if self.GetItemText(childReader) == str(cardtoadd.reader):
-                        (childCard, cookie2) = self.GetFirstChild(childReader)
+                        childCard, cookie2 = self.GetFirstChild(childReader)
                         self.SetItemText(childCard, toHexString(cardtoadd.atr))
                         self.SetItemData(childCard, cardtoadd)
                         found = True
                     else:
-                        (childReader, cookie) = self.GetNextChild(parentnode, cookie)
+                        childReader, cookie = self.GetNextChild(parentnode, cookie)
 
                 # reader was not found, add reader node
                 # this happens when card monitoring thread signals
@@ -234,12 +234,12 @@ class ReaderTreeCtrl(BaseCardTreeCtrl):
             for readertoadd in addedreaders:
                 # is the reader already here?
                 found = False
-                (childReader, cookie) = self.GetFirstChild(parentnode)
+                childReader, cookie = self.GetFirstChild(parentnode)
                 while childReader.IsOk() and not found:
                     if self.GetItemText(childReader) == str(readertoadd):
                         found = True
                     else:
-                        (childReader, cookie) = self.GetNextChild(parentnode, cookie)
+                        childReader, cookie = self.GetNextChild(parentnode, cookie)
                 if not found:
                     childReader = self.AppendItem(parentnode, str(readertoadd))
                     self.SetItemData(childReader, readertoadd)
@@ -264,15 +264,15 @@ class ReaderTreeCtrl(BaseCardTreeCtrl):
         try:
             parentnode = self.root
             for cardtoremove in removedcards:
-                (childReader, cookie) = self.GetFirstChild(parentnode)
+                childReader, cookie = self.GetFirstChild(parentnode)
                 found = False
                 while childReader.IsOk() and not found:
                     if self.GetItemText(childReader) == str(cardtoremove.reader):
-                        (childCard, cookie2) = self.GetFirstChild(childReader)
+                        childCard, cookie2 = self.GetFirstChild(childReader)
                         self.SetItemText(childCard, "no card inserted")
                         found = True
                     else:
-                        (childReader, cookie) = self.GetNextChild(parentnode, cookie)
+                        childReader, cookie = self.GetNextChild(parentnode, cookie)
             self.Expand(self.root)
         finally:
             self.mutex.release()
@@ -286,12 +286,12 @@ class ReaderTreeCtrl(BaseCardTreeCtrl):
         try:
             parentnode = self.root
             for readertoremove in removedreaders:
-                (childReader, cookie) = self.GetFirstChild(parentnode)
+                childReader, cookie = self.GetFirstChild(parentnode)
                 while childReader.IsOk():
                     if self.GetItemText(childReader) == str(readertoremove):
                         self.Delete(childReader)
                     else:
-                        (childReader, cookie) = self.GetNextChild(parentnode, cookie)
+                        childReader, cookie = self.GetNextChild(parentnode, cookie)
             self.Expand(self.root)
         finally:
             self.mutex.release()

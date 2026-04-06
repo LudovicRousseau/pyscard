@@ -26,7 +26,6 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-
 # import local_config for reader/card configuration
 # configcheck.py is generating local_config.py in
 # the test suite.

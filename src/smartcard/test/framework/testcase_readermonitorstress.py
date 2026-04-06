@@ -26,7 +26,6 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-
 import random
 import threading
 import time
@@ -121,7 +120,7 @@ class countobserver(ReaderObserver):
         self.countnotified = 0
 
     def update(self, observable, handlers):
-        (addedreaders, removedreaders) = handlers
+        addedreaders, removedreaders = handlers
         self.countnotified += 1
         for newreader in addedreaders:
             if newreader in self.insertedreaderstats:
