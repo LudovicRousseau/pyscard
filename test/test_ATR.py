@@ -14,8 +14,7 @@ from smartcard.util import toBytes
 
 def test_atr1(capsys):
     atr = [0x3F, 0x65, 0x25, 0x00, 0x2C, 0x09, 0x69, 0x90, 0x00]
-    data_out = textwrap.dedent(
-        """\
+    data_out = textwrap.dedent("""\
         TB1: 25
         TC1: 0
         supported protocols T=0
@@ -28,8 +27,7 @@ def test_atr1(capsys):
         \tguard time: 0
         nb of interface bytes: 2
         nb of historical bytes: 5
-        """
-    )
+        """)
     a = ATR(atr)
     with pytest.warns(DeprecationWarning, match=re.escape("print(ATR.render())")):
         a.dump()
@@ -39,8 +37,7 @@ def test_atr1(capsys):
 
 def test_atr2(capsys):
     atr = [0x3F, 0x65, 0x25, 0x08, 0x93, 0x04, 0x6C, 0x90, 0x00]
-    data_out = textwrap.dedent(
-        """\
+    data_out = textwrap.dedent("""\
         TB1: 25
         TC1: 8
         supported protocols T=0
@@ -53,8 +50,7 @@ def test_atr2(capsys):
         \tguard time: 8
         nb of interface bytes: 2
         nb of historical bytes: 5
-        """
-    )
+        """)
     a = ATR(atr)
     with pytest.warns(DeprecationWarning, match=re.escape("print(ATR.render())")):
         a.dump()
@@ -64,8 +60,7 @@ def test_atr2(capsys):
 
 def test_atr3(capsys):
     atr = [0x3B, 0x16, 0x94, 0x7C, 0x03, 0x01, 0x00, 0x00, 0x0D]
-    data_out = textwrap.dedent(
-        """\
+    data_out = textwrap.dedent("""\
         TA1: 94
         supported protocols T=0
         T=0 supported: True
@@ -77,8 +72,7 @@ def test_atr3(capsys):
         \tguard time: None
         nb of interface bytes: 1
         nb of historical bytes: 6
-        """
-    )
+        """)
     a = ATR(atr)
     with pytest.warns(DeprecationWarning, match=re.escape("print(ATR.render())")):
         a.dump()
@@ -88,8 +82,7 @@ def test_atr3(capsys):
 
 def test_atr4(capsys):
     atr = [0x3B, 0x65, 0x00, 0x00, 0x9C, 0x11, 0x01, 0x01, 0x03]
-    data_out = textwrap.dedent(
-        """\
+    data_out = textwrap.dedent("""\
         TB1: 0
         TC1: 0
         supported protocols T=0
@@ -102,8 +95,7 @@ def test_atr4(capsys):
         \tguard time: 0
         nb of interface bytes: 2
         nb of historical bytes: 5
-        """
-    )
+        """)
     a = ATR(atr)
     with pytest.warns(DeprecationWarning, match=re.escape("print(ATR.render())")):
         a.dump()
@@ -113,8 +105,7 @@ def test_atr4(capsys):
 
 def test_atr5(capsys):
     atr = [0x3B, 0xE3, 0x00, 0xFF, 0x81, 0x31, 0x52, 0x45, 0xA1, 0xA2, 0xA3, 0x1B]
-    data_out = textwrap.dedent(
-        """\
+    data_out = textwrap.dedent("""\
         TB1: 0
         TC1: ff
         TD1: 81
@@ -132,8 +123,7 @@ def test_atr5(capsys):
         \tguard time: 255
         nb of interface bytes: 6
         nb of historical bytes: 3
-        """
-    )
+        """)
     a = ATR(atr)
     with pytest.warns(DeprecationWarning, match=re.escape("print(ATR.render())")):
         a.dump()
@@ -143,8 +133,7 @@ def test_atr5(capsys):
 
 def test_atr6(capsys):
     atr = [0x3B, 0xE5, 0x00, 0x00, 0x81, 0x21, 0x45, 0x9C, 0x10, 0x01, 0x00, 0x80, 0x0D]
-    data_out = textwrap.dedent(
-        """\
+    data_out = textwrap.dedent("""\
         TB1: 0
         TC1: 0
         TD1: 81
@@ -161,8 +150,7 @@ def test_atr6(capsys):
         \tguard time: 0
         nb of interface bytes: 5
         nb of historical bytes: 5
-        """
-    )
+        """)
     a = ATR(atr)
     with pytest.warns(DeprecationWarning, match=re.escape("print(ATR.render())")):
         a.dump()
@@ -262,8 +250,7 @@ def test_2_bytes(ts):
     assert atr.isT15Supported() is False
 
     # Rendering
-    expected_rendering = textwrap.dedent(
-        """\
+    expected_rendering = textwrap.dedent("""\
         supported protocols T=0
         T=0 supported: True
         T=1 supported: False
@@ -274,8 +261,7 @@ def test_2_bytes(ts):
         \tguard time: None
         nb of interface bytes: 0
         nb of historical bytes: 0
-        """.rstrip()
-    )
+        """.rstrip())
     assert atr.render() == expected_rendering
 
     # Warnings

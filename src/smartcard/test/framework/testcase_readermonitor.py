@@ -26,7 +26,6 @@ along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-
 import sys
 import threading
 import time
@@ -54,7 +53,7 @@ class printobserver(ReaderObserver):
         self.testcase = testcase
 
     def update(self, observable, handlers):
-        (addedreaders, removedreaders) = handlers
+        addedreaders, removedreaders = handlers
         foundreaders = {}
         self.testcase.assertEqual(removedreaders, [])
         for reader in addedreaders:

@@ -40,7 +40,7 @@ class printobserver(ReaderObserver):
     """
 
     def update(self, observable, handlers):
-        (addedreaders, removedreaders) = handlers
+        addedreaders, removedreaders = handlers
         print("Added readers", addedreaders)
         print("Removed readers", removedreaders)
 

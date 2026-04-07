@@ -28,6 +28,7 @@ You should have received a copy of the GNU Lesser General Public License
 along with pyscard; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
+
 from time import sleep
 
 from smartcard.CardMonitoring import CardMonitor, CardObserver
@@ -46,7 +47,7 @@ class transmitobserver(CardObserver):
         self.cards = []
 
     def update(self, observable, handlers):
-        (addedcards, removedcards) = handlers
+        addedcards, removedcards = handlers
         for card in addedcards:
             if card not in self.cards:
                 self.cards += [card]
