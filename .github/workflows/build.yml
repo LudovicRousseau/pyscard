@@ -102,6 +102,9 @@ jobs:
         run: |
           ${{ env.venv-path }}/tox -e py${{ matrix.cpython }},coverage_report-ci
 
+      - name: Trust Coveralls Homebrew tap (Homebrew 6 requirement)
+        if: runner.os == 'macOS'
+        run: brew trust coverallsapp/coveralls
       - name: "Coveralls"
         uses: coverallsapp/github-action@v2
         with:
