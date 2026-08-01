@@ -65,7 +65,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: "Set up Python ${{ matrix.cpython }}"
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: "${{ matrix.cpython }}"
           architecture: "${{ matrix.architecture }}"
@@ -132,7 +132,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: "Set up Python"
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
@@ -189,7 +189,7 @@ jobs:
           ls -al dist/
 
       - name: Publish wheels to PyPI
-        uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b # v1.14.0
+        uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
 
   finish:
     needs: test
