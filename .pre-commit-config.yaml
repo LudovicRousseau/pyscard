@@ -56,17 +56,17 @@ repos:
           - "--py39-plus"
 
   - repo: "https://github.com/psf/black-pre-commit-mirror"
-    rev: "26.5.1"
+    rev: "26.10.0"
     hooks:
       - id: "black"
 
   - repo: "https://github.com/pycqa/isort"
-    rev: "9.0.0a3"
+    rev: "9.0.2"
     hooks:
       - id: "isort"
 
   - repo: "https://github.com/python-jsonschema/check-jsonschema"
-    rev: "0.37.4"
+    rev: "0.38.2"
     hooks:
       - id: "check-github-workflows"
 
