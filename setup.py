@@ -153,11 +153,4 @@ kw = {
     ],
 }
 
-# FIXME Sourceforge downloads are unauthenticated, migrate to PyPI
-kw["download_url"] = (
-    "https://sourceforge.net/projects/%(name)s/files"
-    "/%(name)s/%(name)s%%20%(version)s"
-    "/%(name)s-%(version)s.tar.gz/download" % kw
-)
-
 setup(**kw)
