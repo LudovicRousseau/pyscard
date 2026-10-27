@@ -120,6 +120,13 @@ jobs:
           name: wheel-${{ matrix.name }}-${{ matrix.cpython }}-${{ matrix.architecture }}
           path: dist/*.whl
 
+      - name: "Upload source"
+        uses: actions/upload-artifact@v7
+        if: matrix.name == 'Linux'
+        with:
+          name: source-${{ matrix.cpython }}
+          path: dist/*.tar.gz
+
 
   quality:
     name: "Quality"
@@ -184,6 +191,7 @@ jobs:
         run: |
           mkdir -v dist
           mv -v wheel-*/*.whl dist/
+          mv -v source-*/*.tar.gz dist/
           ls -al dist/
 
       - name: Publish wheels to PyPI
